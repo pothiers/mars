@@ -1,0 +1,11 @@
+<em>SUBSET of available files</em>
+
+{% if recent_image_list %}
+    <ul>
+    {% for im in recent_image_list %}
+        <li>{{im.date_obs}}: <a href="/siap/detail/{{ im.reference }}/">{{ im.dtacqnam }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No images are available.</p>
+{% endif %}

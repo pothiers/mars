@@ -1,0 +1,14 @@
+{% if dict %}
+<p>Details for image: {{ dict.reference }} </p>
+{# <p> {{ dict }} </p> #}
+<p>
+    <dl>
+    {% for key, value in dict.items %}
+      <dt> {{ key }} </dt>
+      <dd> {{ value }} </dd>
+    {% endfor %}
+    </dl>
+</p>
+{% else %}
+    <p>Dictionary empty.</p>
+{% endif %}
