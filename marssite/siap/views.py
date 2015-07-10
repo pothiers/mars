@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from .models import Image
+from django.views.generic.list import ListView
 
 # Create your views here.
 
@@ -18,8 +19,17 @@ def filenames(request, propid):
         'image_list': Image.objects
         .raw("SELECT * FROM voi.siap  WHERE prop_id = %s",[propid])
     })
-    
     return render(request, 'siap/filenames.html', context)
+
+class FileListView(ListView):
+    model = Image
+
+    def get_context_data(self, **kwargs):
+        context = super(FileListView, self).get_context_data(**kwargs)
+        context['image_list'] = Image.objects.raw("SELECT * FROM voi.siap  WHERE prop_id = %s",[propid])
+
+
+        return context    
 
 def detail(request, image_id):
     #!im = get_object_or_404(Image, pk=image_id)
