@@ -1,8 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext, loader
-
-
+import json
 
 # (telescope, date) => propid; date:: YYYY-MM-DD or None=any-date
 SCHEDULE = {  
@@ -31,5 +30,6 @@ def list(request):
 
 def schedprop(request, tele, date):
     prop = SCHEDULE.get((tele,date), 'Not-Provided')
-    return HttpResponse('Schedule for telescope="{}", date={}: {}'.
-                        format(tele,date,prop))
+    #!data = json.dumps(dict(telescope=tele, date=date, propid=prop))
+    #!return HttpResponse(data, content_type='application/json')
+    return HttpResponse(prop, content_type='text/plain')
