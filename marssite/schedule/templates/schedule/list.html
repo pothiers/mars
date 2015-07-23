@@ -1,0 +1,25 @@
+<h1>Full Schedule </h1>
+
+<p>
+  <em>
+    This schedule is hardcoded now.  It would naturally belong in PostgreSQL
+    as a new database.  The django admin facility could then be used to
+    modify content through the web interface.
+  </em>
+</p>
+
+{#<p> {{ schedule }} </p> #}
+<table border="1" >
+  <tr>
+    <th>Telescope</th>
+    <th>Date (YYYY-MM-DD)</th>
+    <th>PropId</th>
+  </tr>
+  {% for tele, date, prop in schedule %}
+  <tr>
+    <td> {{ tele }} </td>
+    <td> {{ date }} </td>
+    <td> {{ prop}} </td>
+  </tr>
+  {% endfor %}  
+</table>

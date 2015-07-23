@@ -3,11 +3,10 @@ from django.http import HttpResponse
 from django.template import RequestContext, loader
 from .models import Image
 
-# Create your views here.
-
 def index(request):
+    sql='SELECT * FROM voi.siap LIMIT 25' #!!! not all
     context = RequestContext(request, {
-        'recent_image_list': Image.objects.raw('SELECT * FROM voi.siap LIMIT 25') #!!! not all
+        'recent_image_list': Image.objects.raw(sql) 
     })
     return render(request, 'siap/index.html', context)
 

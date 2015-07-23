@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^siap/', include('siap.urls', namespace='siap')),
+    url(r'^schedule/', include('schedule.urls', namespace='schedule')),
     url(r'^admin/', include(admin.site.urls)),
 ]
