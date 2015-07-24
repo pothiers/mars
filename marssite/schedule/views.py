@@ -5,7 +5,7 @@ import json
 
 # (telescope, date) => propid; date:: YYYY-MM-DD or None=any-date
 SCHEDULE = {  
-    ('soar',   None       ): 'test-prop',
+    ('soar',  '2014-12-15'): 'soar',
     ('ct4m',   None       ): 'test-prop',    
     ('ct13m', '2014-12-25'): 'smarts',
     ('ct15m',  None       ): 'test-prop',  
@@ -28,6 +28,8 @@ def list(request):
     return render(request, 'schedule/list.html', context)
 
 
+# EXAMPLE in bash:
+#  propid=`curl 'http://127.0.0.1:8000/schedule/prop/ct13m/2014-12-25/'`
 def schedprop(request, tele, date):
     prop = SCHEDULE.get((tele,date), 'Not-Provided')
     #!data = json.dumps(dict(telescope=tele, date=date, propid=prop))
