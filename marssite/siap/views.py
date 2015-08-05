@@ -11,11 +11,20 @@ def index(request):
     })
     return render(request, 'siap/index.html', context)
 
+def getnsa(request, dtacqnam):
+    sql='SELECT dtnsanam FROM voi.siap WHERE dtacqnam = %s'
+    obs = Image.objects.raw(sql,[dtacqnam])
+    return HttpResponse(obs[0], content_type='text/plain')
+
+def getacq(request, dtnsanam):
+    sql='SELECT dtacqnam FROM voi.siap WHERE dtnsanam = %s'
+    obs = Image.objects.raw(sql,[dtnsanam])
+    return HttpResponse(obs[0], content_type='text/plain')
+
 def filenames(request, propid):
     context = RequestContext(request, {
         'propid': propid,
-        'image_list': Image.objects
-        .raw("SELECT * FROM voi.siap  WHERE prop_id = %s",[propid])
+        'image_list': Image.objects.raw("SELECT * FROM voi.siap  WHERE prop_id = %s",[propid])
     })
     return render(request, 'siap/filenames.html', context)
 
