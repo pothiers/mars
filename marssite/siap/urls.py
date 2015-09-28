@@ -12,4 +12,9 @@ urlpatterns = [
 
     # eg: /siap/detail/cp243352.fits.gz
     url(r'^detail/(?P<image_id>.+)/$', views.detail, name='detail'),
+
+    # eg: /siap/get/nsa/local_filename.fits
+    url(r'^get/nsa/(?P<fname>.+)/$', views.getnsa, name='getnsa'),
+    # eg: /siap/get/acq/archive_filename.fits
+    url(r'^get/acq/(?P<fname>.+)/$', views.getacq, name='getacq'),
 ]

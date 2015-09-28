@@ -4,8 +4,10 @@ from django.template import RequestContext, loader
 import json
 
 # (telescope, date) => propid; date:: YYYY-MM-DD or None=any-date
-SCHEDULE = {  
+SCHEDULE = {
+    # DTTELESC DTCALDAT       DTPROPID
     ('soar',  '2014-12-15'): 'soar',
+    ('soar',  '2014-12-19'): 'soar',
     ('ct4m',   None       ): 'test-prop',    
     ('ct13m', '2014-12-25'): 'smarts',
     ('ct15m',  None       ): 'test-prop',  
