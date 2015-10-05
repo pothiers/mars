@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'siap',
     'schedule',
+    'provisional',
 )
 
 MIDDLEWARE_CLASSES = (
