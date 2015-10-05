@@ -9,6 +9,7 @@ def index(request):
     context = RequestContext(request, {
         'recent_image_list': Image.objects.raw(sql) 
     })
+
     return render(request, 'siap/index.html', context)
 
 def getnsa(request, dtacqnam):

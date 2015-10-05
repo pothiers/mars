@@ -17,6 +17,9 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
+    # eg: /
+    url(r'^$', include('water.urls', namespace='water')),
+
     url(r'^siap/', include('siap.urls', namespace='siap')),
     url(r'^schedule/', include('schedule.urls', namespace='schedule')),
     url(r'^provisional/', include('provisional.urls', namespace='provisional')),

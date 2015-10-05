@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.template import RequestContext
 from .models import Fitsname
 
 # Create your views here.
 
 def index(request):
-    fnames = get_list_or_404(Fitsname)
+    fnames = get_list_or_404(Fitsname.objects.all())
     return render(request,
                   'provisional/index.html',
                   RequestContext(request, {
@@ -13,5 +14,5 @@ def index(request):
 
 def insert(request, dtacqnam, dtnsanam):
     sql='SELECT dtnsanam FROM voi.siap WHERE dtacqnam = %s'
-    obs = Image.objects.raw(sql,[dtacqnam])
+    obs = Fitsname.objects.raw(sql,[dtacqnam])
     return HttpResponse(obs[0], content_type='text/plain')

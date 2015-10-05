@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>Index</title>
+</head>
+<body>
+  
+<h1>Provisional archive files</h1>
+
+{% if fitname_list %}
+    <ul>
+    {% for fn in fitname_list %}
+        <li>{{fn.dtnsanam}}: {{ fn.dtacqnam }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No provisional files exist.</p>
+{% endif %}
+
+</body>
+</html>

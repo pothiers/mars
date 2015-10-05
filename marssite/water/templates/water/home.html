@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>MARS Home</title>
+</head>
+<body>
+  <h2>Links to key MARS apps</h2>
+  <ul>
+    <li>
+      <a href="{% url 'admin:index' %}">/admin/</a>
+      Change data
+    </li>
+    <li>
+      <a href="{% url 'siap:index' %}">/siap/</a>
+      SIAP index of all files
+    </li>
+    <li>
+      <a href="{% url 'siap:filenames' '2011A-0525' %}">/siap/prop/PROPID</a>
+      Filesnames associated with PROPID='2011A-0525'
+    </li>
+  </ul>
+
+  <h2>All MARS access points</h2>
+  <samp>
+/admin    
+  </samp>
+  
+  <hr>
+  <dl>
+    <dt>MARS</dt>
+    <dd>Metadata Archive Retrival Services</dd>
+  </dl>
+  
+</body>
+</html>
