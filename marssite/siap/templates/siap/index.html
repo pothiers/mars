@@ -6,7 +6,10 @@
 </head>
 <body>
   
-<em>SUBSET of available files</em>
+  <em>
+    SUBSET of {{ limit_count }} available files.
+    Total list contains {{ total_image_count }} files.
+  </em>
 
 {% if recent_image_list %}
     <ul>

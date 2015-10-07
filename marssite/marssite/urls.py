@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'^schedule/', include('schedule.urls', namespace='schedule')),
     url(r'^provisional/', include('provisional.urls', namespace='provisional')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^docs/', include('rest_framework_swagger.urls', namespace='docs')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

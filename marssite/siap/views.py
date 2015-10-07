@@ -5,9 +5,18 @@ from .models import Image
 from django.views.generic.list import ListView
 
 def index(request):
-    sql='SELECT * FROM voi.siap LIMIT 25' #!!! not all
+    'SIAP index of subset of all files.'
+    limit=250
+    sql = 'SELECT count(* )FROM voi.siap;'
+    sql2='SELECT * FROM voi.siap LIMIT {}'.format(limit) #!!! not all
+    from django.db import connection
+    cursor = connection.cursor()
+    cursor.execute( sql )
+    total = cursor.fetchone()[0]
     context = RequestContext(request, {
-        'recent_image_list': Image.objects.raw(sql) 
+        'total_image_count': total,
+        'limit_count': limit,
+        'recent_image_list': Image.objects.raw(sql2) ,
     })
 
     return render(request, 'siap/index.html', context)

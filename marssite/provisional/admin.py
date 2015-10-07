@@ -3,4 +3,9 @@ from .models import Fitsname
 
 # Register your models here.
 
-admin.site.register(Fitsname)
+
+class FitsnameAdmin(admin.ModelAdmin):
+    list_display = ('id', 'source')
+    
+admin.site.register(Fitsname, FitsnameAdmin)
+

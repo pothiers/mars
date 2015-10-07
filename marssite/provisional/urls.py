@@ -9,6 +9,6 @@ urlpatterns = [
 
  
     # eg: /siap/get/nsa/local_filename.fits
-    url(r'^insert/(?P<dtacqnam>.+)/(?P<dtnsanam>.+)/$',
-        views.insert, name='insert'),
+    url(r'^add/(?P<reference>.+)/$',
+        views.add, name='add'),
 ]

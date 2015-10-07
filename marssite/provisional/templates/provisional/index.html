@@ -11,7 +11,7 @@
 {% if fitname_list %}
     <ul>
     {% for fn in fitname_list %}
-        <li>{{fn.dtnsanam}}: {{ fn.dtacqnam }}</li>
+        <li>{{fn.pk}}: {{ fn.source }}</li>
     {% endfor %}
     </ul>
 {% else %}

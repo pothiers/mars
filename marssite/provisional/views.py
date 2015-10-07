@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.http import HttpResponse
 from django.template import RequestContext
 from .models import Fitsname
 
@@ -12,7 +13,11 @@ def index(request):
                       'fitname_list': fnames,
                   }))
 
-def insert(request, dtacqnam, dtnsanam):
-    sql='SELECT dtnsanam FROM voi.siap WHERE dtacqnam = %s'
-    obs = Fitsname.objects.raw(sql,[dtacqnam])
-    return HttpResponse(obs[0], content_type='text/plain')
+
+def add(request, reference=None):
+    source = request.GET.get('source')
+    fitsname = Fitsname(id=reference, source=source)
+    fitsname.save()
+    return HttpResponse('Added provisional name (id={}, source={})'
+                        .format(fitsname.id, fitsname.source), 
+                        content_type='text/plain')

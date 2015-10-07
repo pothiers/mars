@@ -2,12 +2,18 @@
 <p>Details for image: {{ dict.reference }} </p>
 {# <p> {{ dict }} </p> #}
 <p>
-    <dl>
+  <table>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
     {% for key, value in dict.items %}
-      <dt> {{ key }} </dt>
-      <dd> {{ value }} </dd>
+    <tr>
+      <td>{{ key }}</td>
+      <td>{{ value }}</td>
+    </tr>      
     {% endfor %}
-    </dl>
+  </table>
 </p>
 {% else %}
     <p>Dictionary empty.</p>

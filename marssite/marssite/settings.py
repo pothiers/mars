@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'schedule',
     'provisional',
     'water',
+    'rest_framework',
+    'rest_framework_swagger',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -91,5 +93,48 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+SWAGGER_SETTINGS = {
+    'exclude_namespaces': [],
+    'api_version': '0.1',
+    'api_path': '/',
+    'enabled_methods': [
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+    'api_key': '',
+    'is_authenticated': False,
+    'is_superuser': False,
+    'permission_denied_handler': None,
+    'resource_access_handler': None,
+    'base_path':'localhost:8000/docs',
+    'info': {
+        'contact': 'pothier@email.noao.edu',
+        'description': 'This is a prototype server for MARS. '
+                       'You can find out more about Swagger at '
+                       '<a href="http://swagger.wordnik.com">'
+                       'http://swagger.wordnik.com</a> '
+                       'or on irc.freenode.net, #swagger. '
+                       'For this sample, you can use the api key '
+                       '"special-key" to test '
+                       'the authorization filters',
+        'license': 'Apache 2.0',
+        'licenseUrl': 'http://www.apache.org/licenses/LICENSE-2.0.html',
+        'title': 'MARS prototype App',
+    },
+    #! 'doc_expansion': 'none',
+    'doc_expansion': 'full',
+}
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
 
 from .settings_local import *

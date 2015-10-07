@@ -1,0 +1,5 @@
+Django==1.8.5
+PyYAML==3.11
+django-rest-swagger==0.3.4
+djangorestframework==3.2.4
+psycopg2==2.6.1

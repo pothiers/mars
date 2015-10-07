@@ -5,32 +5,86 @@
     <title>MARS Home</title>
 </head>
 <body>
-  <h2>Links to key MARS apps</h2>
+  <h2>Key MARS apps</h2>
+  
   <ul>
     <li>
       <a href="{% url 'admin:index' %}">/admin/</a>
-      Change data
+      <br />
+      Change data.
+    </li>
+    <li>
+      <a href="{% url 'admin:index'  %}provisional/fitsname/add/">/admin/provisional/fitsname/add/</a>
+      <br />
+      Record FITS file as provisional.
     </li>
     <li>
       <a href="{% url 'siap:index' %}">/siap/</a>
-      SIAP index of all files
+      <br />
+      SIAP index of all files.
     </li>
     <li>
       <a href="{% url 'siap:filenames' '2011A-0525' %}">/siap/prop/PROPID</a>
+      <br />
       Filesnames associated with PROPID='2011A-0525'
     </li>
+    <li>
+      {# <a href="{% url recon:index' %}">/recon/</a> #}
+      <a href="recon:index">/recon/</a>
+      <br />
+      <em>UNDER CONSTRUCTION!! </em>
+      <br />
+      Reconcile files POSTED verses INGESTED into the archive. Compare
+      the list of files posted via <code>raw_post</code> from all
+      domes to the list of files stored in the Noao Science Archive.
+    </li>
+    <li>
+      <a href="{% url 'provisional:index' %}">/provisional/</a>
+      <br />
+      List of all files stored in the Archive on a provisional basis.
+      These can be deleted as a batch or individiually through web-services.
+    </li>
+    <li>
+      <a href="{% url 'provisional:index'%}add/ref999/?source=src999">
+        /provisional/add/REF_FILENAME/?source=SOURCE_FILENAME
+      </a>
+      <br />
+      Add a file to list of provisional files. Overwrites previous
+      REF_FILENAME if it exists.
+      can use as in:
+      <br />
+      <pre>
+        fname=/data/scraped/mtn_raw/ct15m-echelle/chi141225.1273.fits
+        curl "http://localhost:8000/provisional/add/ref5/?source=$fname"
+      </pre>
+
+    </li>
+    
+    <li>
+      <a href="docs">/docs/</a>
+      <br />
+      <em>UNDER CONSTRUCTION!! </em>
+      <br />
+      Web-service API automatically generated documentation.
+    </li>
+
   </ul>
 
+{% comment %}
   <h2>All MARS access points</h2>
   <samp>
 /admin    
   </samp>
   
   <hr>
+
   <dl>
     <dt>MARS</dt>
     <dd>Metadata Archive Retrival Services</dd>
   </dl>
+
+http://portal-pat-sdm.noao.edu/search/retrieve_dataset?reference=k4k_140922_234549_zuu_TADATEST_2409730908.fits.fz  
+{% endcomment %}
   
 </body>
 </html>
