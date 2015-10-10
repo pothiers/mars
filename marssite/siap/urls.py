@@ -6,6 +6,8 @@ urlpatterns = [
     # eg: /siap/
     url(r'^$', views.index, name='index'),
 
+    url(r'^tada/$', views.tada, name='tada'),
+
     # eg: /siap/prop/2011A-0525
     url(r'^prop/(?P<propid>.+)/$', views.filenames, name='filenames'),
     url(r'^propfiles/(?P<propid>.+)/$', views.FileListView.as_view(), name='pfiles'),

@@ -8,18 +8,19 @@
   
   <em>
     SUBSET of {{ limit_count }} available files.
-    Total list contains {{ total_image_count }} files.
+    The total list contains {{ recent_image_list|length }} files.
   </em>
-
-{% if recent_image_list %}
-    <ul>
+  
+  
+  <ul>
     {% for im in recent_image_list %}
-        <li>{{im.date_obs}}: <a href="{% url 'siap:detail' im.reference %}">{{ im.dtacqnam }}</a></li>
+    <li>{{im.date_obs}}:
+      <a href="{% url 'siap:detail' im.reference %}">{{ im.dtacqnam }}</a>
+    </li>
+    {% empty %}
+    <li>No images in the list</li>
     {% endfor %}
-    </ul>
-{% else %}
-    <p>No images are available.</p>
-{% endif %}
-
+  </ul>
+  
 </body>
 </html>

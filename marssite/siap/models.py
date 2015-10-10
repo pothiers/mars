@@ -6,13 +6,12 @@ from django.db import models
 
 # Create your models here.
 class Image(models.Model):
-    reference = models.CharField(max_length=80,
-                                 db_column='reference',
-                                 primary_key=True)
+    reference = models.CharField(max_length=80, primary_key=True)
     prop_id = models.CharField(max_length=80)
     dtpropid = models.CharField(max_length=80)
     dtnsanam = models.CharField(max_length=80)
     dtacqnam = models.CharField(max_length=80)
+    date_obs = models.DateTimeField()
     
     class Meta:
         managed = False

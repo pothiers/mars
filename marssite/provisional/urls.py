@@ -11,4 +11,7 @@ urlpatterns = [
     # eg: /siap/get/nsa/local_filename.fits
     url(r'^add/(?P<reference>.+)/$',
         views.add, name='add'),
+
+    url(r'^delete/(?P<reference>.+)/$',
+        views.dbdelete, name='delete'),
 ]

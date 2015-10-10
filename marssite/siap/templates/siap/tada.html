@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>TADA files</title>
+</head>
+<body>
+  
+  <em>
+    List of {{ tada_images|length }} files.
+    (no more than {{ limit_count }} will ever be displayed)
+  </em>
+
+  <ul>
+    {% for im in tada_images %}
+    <li>
+      <a href="{% url 'siap:detail' im %}">{{ im }}</a>
+    </li>
+    {% empty %}
+    <li>No images in the list</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

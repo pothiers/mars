@@ -7,20 +7,42 @@ from django.views.generic.list import ListView
 def index(request):
     'SIAP index of subset of all files.'
     limit=250
-    sql = 'SELECT count(* )FROM voi.siap;'
+    sql = 'SELECT count(*) FROM voi.siap;'
     sql2='SELECT * FROM voi.siap LIMIT {}'.format(limit) #!!! not all
     from django.db import connection
-    cursor = connection.cursor()
-    cursor.execute( sql )
-    total = cursor.fetchone()[0]
+    #!cursor = connection.cursor()
+    #!cursor.execute( sql )
+    #!total = cursor.fetchone()[0]
     context = RequestContext(request, {
-        'total_image_count': total,
+        #!'total_image_count': total,
         'limit_count': limit,
         'recent_image_list': Image.objects.raw(sql2) ,
     })
 
     return render(request, 'siap/index.html', context)
 
+def tada(request): 
+    'SIAP index of subset of all files containing TADA in Archive filename.'
+    from django.db import connection
+    limit = 1000
+    sql=("SELECT reference FROM voi.siap  "
+         "WHERE reference LIKE '%TADA%' LIMIT {}".format(limit))
+    cursor = connection.cursor()
+    cursor.execute( sql )
+    total = cursor.rowcount
+    print('TADA select found {} records'.format(total))
+
+    images = [r[0] for r in cursor.fetchall()]
+    for im in images:
+        print('Image={}'.format(im))
+    
+    context = RequestContext(request, {
+        'limit_count': limit,
+        'tada_images': images, # Image.objects.raw(sql),
+    })
+
+    return render(request, 'siap/tada.html', context)
+    
 def getnsa(request, dtacqnam):
     sql='SELECT dtnsanam FROM voi.siap WHERE dtacqnam = %s'
     obs = Image.objects.raw(sql,[dtacqnam])
