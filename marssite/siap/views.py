@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext, loader
 from .models import Image
 from django.views.generic.list import ListView
+from .queries import get_tada_references
 
 def index(request):
     'SIAP index of subset of all files.'
@@ -21,27 +22,33 @@ def index(request):
 
     return render(request, 'siap/index.html', context)
 
+# Regex search takes almost 20 seconds to search 11.3 million records
 def tada(request): 
-    'SIAP index of subset of all files containing TADA in Archive filename.'
-    from django.db import connection
-    limit = 1000
-    sql=("SELECT reference FROM voi.siap  "
-         "WHERE reference LIKE '%TADA%' LIMIT {}".format(limit))
-    cursor = connection.cursor()
-    cursor.execute( sql )
-    total = cursor.rowcount
-    print('TADA select found {} records'.format(total))
-
-    images = [r[0] for r in cursor.fetchall()]
-    for im in images:
-        print('Image={}'.format(im))
+    'List of SIAP files containing TADA in Archive filename.'
+    limit = 2000
+    images = get_tada_references(limit=limit)
+    #! images = [r[0] for r in cursor.fetchall()]
+    #!for im in images:
+    #!    print('Image={}'.format(im))
+    print('request.content_type={}'.format(request.META.get('CONTENT_TYPE')))
     
     context = RequestContext(request, {
         'limit_count': limit,
         'tada_images': images, # Image.objects.raw(sql),
     })
 
-    return render(request, 'siap/tada.html', context)
+    if request.META.get('CONTENT_TYPE','none') == 'application/json':
+        return JsonResponse([im[0] for im in images], safe=False)
+    if request.META.get('CONTENT_TYPE','none') == 'text/csv':
+        import csv
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="tada.csv"'
+        writer = csv.writer(response)
+        for im in images:
+            writer.writerow(im)
+        return response
+    else:
+        return render(request, 'siap/tada.html', context)
     
 def getnsa(request, dtacqnam):
     sql='SELECT dtnsanam FROM voi.siap WHERE dtacqnam = %s'

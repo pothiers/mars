@@ -27,7 +27,12 @@
     <li>
       <strong><a href="{% url 'siap:tada' %}">/siap/tada/</a></strong>
       <br />
-      List of all Archive files containing substring "TADA".
+      List of all Archive files containing substring "TADA". Get
+      different renderings based on requested content type. Examples:
+      <pre>
+curl -H "Content-type: application/json" 'http://localhost:8000/siap/tada/'
+curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
+      </pre>
     </li>
     <li>
       <strong><a href="{% url 'siap:filenames' '2011A-0525' %}">/siap/prop/PROPID</a></strong>
@@ -51,6 +56,22 @@
       <br />
       List of all files stored in the Archive on a provisional basis.
       These can be deleted as a batch or individiually through web-services.
+    </li>
+    <li>
+      <strong><a href="{% url 'provisional:stuff' %}">/provisional/stuff</a></strong>
+      <br />
+      Insert all files matching "TADA like" reference file into provisional list.
+    </li>
+    <li>
+      <strong>/provisional/delete/REF_FILENAME/</a></strong>
+      <br />
+      <strong>Delete a file from Archive</strong> and the provisional list.
+    </li>
+    <li>
+      <strong><a href="{% url 'provisional:rollback' %}">/provisional/rollback</a></strong>
+      <br />
+      <strong>Delete all files that in provisional list from
+      Archive</strong> and the provisional list.
     </li>
     <li>
       <strong>/provisional/add/REF_FILENAME/?source=SOURCE_FILENAME</strong>

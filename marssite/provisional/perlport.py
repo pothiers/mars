@@ -45,9 +45,9 @@ def create_drop_observation_sql_stmt(cursor, obs_id):
             # ONLY delete the observation IF this file is the last one
             # in assocation with it
             sql += ("DELETE FROM edu_noao_nsa.observation_proposal_assoc "
-                    "WHERE observation_id = %(obs_id)s;\n")
+                    "WHERE observation_id = '{obs_id}';\n").format(obs_id=obs_id)
             sql += ("DELETE FROM edu_noao_nsa.observation "
-                     "WHERE observation_id =  %(obs_id)s;\n")
+                     "WHERE observation_id = '{obs_id}';\n").format(obs_id=obs_id)
             #!sql += ("SELECT count(*) "
             #!        "FROM edu_noao_nsa.observation_proposal_assoc "
             #!        "WHERE observation_id = %(obs_id)s;")
@@ -67,7 +67,7 @@ def create_drop_header_sql_stmt(cursor, file_id):
     if get_header_count(cursor, file_id) > 0:
         # build the sql for deleting assocated fits header structures
         for prod_id, header_id in find_assoc_raw_headers(cursor, file_id):
-            print('DBG: header_id={}'.format(header_id))
+            #!print('DBG: header_id={}'.format(header_id))
             sql += ("DELETE FROM edu_noao_nsa.processed_fits_header "
                     "WHERE processed_fits_header_id = '{header_id}';\n"
                     "DELETE FROM edu_noao_nsa.fits_header "
@@ -81,7 +81,7 @@ def create_drop_header_sql_stmt(cursor, file_id):
     return sql
 
 def drop_file(cursor, reference):
-
+    print('Remove file: {}'.format(reference))
     # relevent part of: DbToolLib::glean_file_info_by_reference()
     sql = ("SELECT fits_data_product_id FROM viewspace.fits_data_product "
             "WHERE reference='{}';".format(reference))
@@ -140,8 +140,8 @@ DELETE FROM edu_noao_nsa.fits_data_product WHERE fits_data_product_id = %(fits_f
 DELETE FROM edu_noao_nsa.data_product WHERE data_product_id = %(fits_file_id)s;
 """.format(obs_sql = obs_sql,  hdr_sql = hdr_sql)
 
-    print('drop_file() EXECUTING SQL (fits_file_id = {}): {}'
-          .format(file_id,sql))
+    #!print('drop_file() EXECUTING SQL (fits_file_id = {}): {}'
+    #!      .format(file_id,sql))
 
     results = []
     #!for sqlline in sql.split('\n'):

@@ -1,22 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
     <link rel="stylesheet" href="style.css" />
     <title>Index</title>
 </head>
 <body>
-  
-<h1>Provisional archive files</h1>
 
-{% if fitname_list %}
-    <ul>
-    {% for fn in fitname_list %}
-        <li>{{fn.pk}}: {{ fn.source }}</li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No provisional files exist.</p>
-{% endif %}
+  {% if delcnt > 0 %}
+  <p>(Deleted {{ delcnt }} files)</p>
+  <h2>Provisional archive files.</h2>
+  <em>Listing {{ fitname_list|length }} files. (limit to {{ limit }})</em>
+  {% endif %}
+  
+
+<table border="1">
+  <tr>
+    <th><a href="{% url 'provisional:rollback' %}">Del</a></th>
+    <th>Reference</th>
+    <th>Source Path (dtacqnam)</th>
+  </tr>
+  {% for fn in fitname_list %}
+  <tr>
+    <td>
+      <a href="{% url 'provisional:delete' fn.pk %}">X</a>
+    <td>{{ fn.pk }}</td>
+    <td>{{ fn.source }}</td>
+  </tr>
+  {% empty %}
+  <tr>
+    <td>No images in the list</td>
+    <td><br /></td>
+  </tr>
+  {% endfor %}
+</table>
 
 </body>
 </html>

@@ -11,14 +11,27 @@
     (no more than {{ limit_count }} will ever be displayed)
   </em>
 
-  <ul>
-    {% for im in tada_images %}
-    <li>
-      <a href="{% url 'siap:detail' im %}">{{ im }}</a>
-    </li>
+  <table border="1">
+    <tr>
+      <th>Reference</th>
+      <th>Source Path (dtacqnam)</th>
+      <th>Date Obs</th>
+    </tr>
+
+    {% for im,p,do in tada_images %}
+    <tr>
+      <td><a href="{% url 'siap:detail' im %}">{{ im }}</a></td>
+      <td>{{ p }}</td>
+      <td>{{ do|date:"SHORT_DATE_FORMAT" }}</td>
+    </tr>
     {% empty %}
-    <li>No images in the list</li>
+    
+    <tr>
+      <td>No images in the list</td>
+      <td><br /></td>
+      <td><br /></td>
+    </tr>
     {% endfor %}
-    </ul>
+  </table>
 </body>
 </html>

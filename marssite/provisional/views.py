@@ -1,30 +1,43 @@
-from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.db import transaction
 from .models import Fitsname
 from .perlport import drop_file
+from siap.queries import get_tada_references
 
 # Create your views here.
 
-def index(request):
-    fnames = get_list_or_404(Fitsname.objects.all())
+def index(request, limit=2000):
+    delcnt = request.GET.get('delcnt',0)
+    fnames = Fitsname.objects.all()[:limit]
     return render(request,
                   'provisional/index.html',
                   RequestContext(request, {
+                      'limit': limit,
+                      'delcnt': delcnt,
                       'fitname_list': fnames,
                   }))
 
-    
-def add(request, reference=None):
+def stuff_with_tada(request, limit=1000):
+    images = get_tada_references(limit=limit)
+    for ref,src in images:
+        fitsname = Fitsname(id=ref, source=src)
+        fitsname.save()
+        
+    #return redirect(index)
+    return redirect('/provisional/')
 
+        
+def add(request, reference=None):
+    source = request.GET.get('source')
     cursor = connection.cursor()
     sql0 = ("SELECT fits_data_product_id FROM viewspace.fits_data_product "
             "WHERE reference='{}';".format(reference))
     cursor.execute(sql0)
     file_id = cursor.fetchone()[0]
 
-    fitsname = Fitsname(id=reference, source=request.GET.get('source'))
+    fitsname = Fitsname(id=reference, source=source)
 
     fitsname.save()
     return HttpResponse('Added provisional name (id={}, source={})'
@@ -33,23 +46,31 @@ def add(request, reference=None):
 
 
 
+@transaction.atomic
+def rollback(request):
+    'Remove all provisionaly added files from DB'
+    from . import perlport
+    from django.db import connection
+
+    ref_list = [fn.id for fn in Fitsname.objects.all()]
+    delcnt = len(ref_list)
+    Fitsname.objects.all().delete()
+    cursor = connection.cursor()
+    for ref in ref_list:
+        drop_file(cursor, ref)
+
+    return redirect('/provisional/?delcnt=delcnt') 
 
 @transaction.atomic
 def dbdelete(request, reference=None):
-    '''SCAFFOLDING: Only COUNT (instead of delete) records!!!
- Delete a fits file from the archive DB (all tables).'''
+    '''Delete a fits file from the archive DB (all tables).'''
     from . import perlport
     from django.db import connection
 
     cursor = connection.cursor()
-
-    #!results = drop_file(cursor, reference)
-    #!return HttpResponse(('Counts for {}: \n'+'\n'.join(results))
-    #!                    .format(reference),
-    #!                    content_type='text/plain')
-
+    Fitsname.objects.filter(id=reference).delete()
     results = drop_file(cursor, reference)
-    return HttpResponse(('Number of rows affected for file {} = {}'
-                         .format(reference, results)),
-                        content_type='text/plain')
- 
+    #!return HttpResponse(('Number of rows affected for file {} = {}'
+    #!                     .format(reference, results)),
+    #!                    content_type='text/plain')
+    return redirect('/provisional/') 
