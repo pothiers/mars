@@ -31,14 +31,7 @@ def stuff_with_tada(request, limit=1000):
         
 def add(request, reference=None):
     source = request.GET.get('source')
-    cursor = connection.cursor()
-    sql0 = ("SELECT fits_data_product_id FROM viewspace.fits_data_product "
-            "WHERE reference='{}';".format(reference))
-    cursor.execute(sql0)
-    file_id = cursor.fetchone()[0]
-
     fitsname = Fitsname(id=reference, source=source)
-
     fitsname.save()
     return HttpResponse('Added provisional name (id={}, source={})'
                         .format(fitsname.id, fitsname.source), 
