@@ -71,7 +71,8 @@ def create_drop_header_sql_stmt(cursor, file_id):
             sql += ("DELETE FROM edu_noao_nsa.processed_fits_header "
                     "WHERE processed_fits_header_id = '{header_id}';\n"
                     "DELETE FROM edu_noao_nsa.fits_header "
-                    "WHERE fits_header_id = '{header_id}';\n").format(header_id=header_id)
+                    "WHERE fits_header_id = '{header_id}';\n"
+            ).format(header_id=header_id)
             #!sql += ("SELECT count(*) FROM edu_noao_nsa.processed_fits_header "
             #!        "WHERE processed_fits_header_id = '{header_id}';\n"
             #!        "SELECT count(*) FROM edu_noao_nsa.fits_header "
@@ -155,5 +156,8 @@ DELETE FROM edu_noao_nsa.data_product WHERE data_product_id = %(fits_file_id)s;
     cursor.execute( sql, dict(fits_file_id=file_id ))
     results = cursor.rowcount
 
+    # Avoid having to wait 4+ minutes for materialized view to refresh.
+    cursor.execute('DELETE FROM voi.siap WHERE reference=%s',[reference])
+    
     return results
  

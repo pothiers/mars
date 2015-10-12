@@ -1,5 +1,8 @@
 from django.db import connection
 
+# WARNING: this is querying a materialized view.  It only gets
+# "materialized" every so often.  There is a delay before changes in
+# the underlying tables are reflected here. (4+ minutes)
 def get_tada_references(limit=50):
     sql=("SELECT reference,dtacqnam "
          "FROM voi.siap  "
