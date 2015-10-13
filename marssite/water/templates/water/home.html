@@ -3,118 +3,128 @@
 <head>
     <link rel="stylesheet" href="style.css" />
     <title>MARS Home</title>
+    <style>
+      table, th, td {
+      border: 1px solid gray;
+      padding: 5px;
+      text-align:left
+      }
+      table {
+      border-spacing: 0px;
+      }
+</style>
 </head>
 <body>
   <h2>Key MARS apps</h2>
-  
-  <ul>
-    <li>
-      <strong><a href="{% url 'admin:index' %}">/admin/</a></strong>
-      <br />
-      Change data.
-    </li>
-    <li>
-      <strong><a href="{% url 'admin:index'  %}provisional/fitsname/add/">/admin/provisional/fitsname/add/</a></strong>
-      <br />
-      Record FITS file as provisional.
-      <br /> <br />
-    </li>
-    <li>
-      <strong><a href="{% url 'siap:index' %}">/siap/</a></strong>
-      <br />
-      SIAP index of all files.
-    </li>
-    <li>
-      <strong><a href="{% url 'siap:tada' %}">/siap/tada/</a></strong>
-      <br />
-      List of all Archive files containing substring "TADA". Get
+
+  <table>
+    <tr>
+      <th><a href="{% url 'admin:index' %}">/admin/</a></th>
+      <td>Change data.</td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'admin:index'  %}provisional/fitsname/add/">/admin/provisional/fitsname/add/</a></th>
+      <td>Record FITS file as provisional.</td>
+    </tr>
+
+
+    <tr>
+      <th><a href="{% url 'schedule:list' %}">/schedule/</a></th>
+      <td>List the schedule.</td>
+    </tr>
+    <tr>
+      <th>/schedule/scrape/BEGIN_YYYYMMDD/END_YYYYMMDD/</th>
+      <th>Load schedule for range of dates.</th>
+    </tr>
+    <tr>
+      <th>/schedule/propid/TELESCOPE/DATE</th>
+      <td>Get propid given telescope and observation date.</td>
+    </tr>
+    
+
+    <tr>
+      <th><a href="{% url 'siap:index' %}">/siap/</a></th>
+      <td>SIAP index of all files.</td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'siap:tada' %}">/siap/tada/</a></th>
+      <td>List of all Archive files containing substring "TADA". Get
       different renderings based on requested content type. Examples:
       <pre>
 curl -H "Content-type: application/json" 'http://localhost:8000/siap/tada/'
 curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
-      </pre>
-    </li>
-    <li>
-      <strong><a href="{% url 'siap:filenames' '2011A-0525' %}">/siap/prop/PROPID</a></strong>
-      <br />
-      Filesnames associated with PROPID='2011A-0525'
-      <br /> <br />
-    </li>
-    <li>
+      </pre></td>
+    </tr>
+
+
+    <tr>
+      <th><a href="{% url 'siap:filenames' '2011A-0525' %}">/siap/prop/PROPID</a></th>
+      <td>Filesnames associated with PROPID='2011A-0525'</td>
+    </tr>
+
+
+    <tr>
       {# <a href="{% url recon:index' %}">/recon/</a> #}
-      <strong><a href="recon:index">/recon/</a></strong>
-      <br />
-      <em>UNDER CONSTRUCTION!! </em>
+      <th><a href="recon:index">/recon/</a></th>
+      <td><em>UNDER CONSTRUCTION!! </em>
       <br />
       Reconcile files POSTED verses INGESTED into the archive. Compare
       the list of files posted via <code>raw_post</code> from all
-      domes to the list of files stored in the Noao Science Archive.
-      <br /> <br />
-    </li>
-    <li>
-      <strong><a href="{% url 'provisional:index' %}">/provisional/</a></strong>
-      <br />
-      List of all files stored in the Archive on a provisional basis.
-      These can be deleted as a batch or individiually through web-services.
-    </li>
-    <li>
-      <strong><a href="{% url 'provisional:stuff' %}">/provisional/stuff</a></strong>
-      <br />
-      Insert all files matching "TADA like" reference file into provisional list.
-    </li>
-    <li>
-      <strong>/provisional/delete/REF_FILENAME/</a></strong>
-      <br />
-      <strong>Delete a file from Archive</strong> and the provisional list.
-    </li>
-    <li>
-      <strong><a href="{% url 'provisional:rollback' %}">/provisional/rollback</a></strong>
-      <br />
-      <strong>Delete all files that in provisional list from
-      Archive</strong> and the provisional list.
-    </li>
-    <li>
-      <strong>/provisional/add/REF_FILENAME/?source=SOURCE_FILENAME</strong>
-{% comment %}
-      <a href="{% url 'provisional:index'%}add/ref999/?source=src999">
-      </a>
-{% endcomment %}
-      <br />
-      Add a file to list of provisional files. Overwrites previous
-      REF_FILENAME if it exists.
-      can use as in:
-      <br />
-      <pre>
-        fname=/data/scraped/mtn_raw/ct15m-echelle/chi141225.1273.fits
-        curl "http://localhost:8000/provisional/add/ref5/?source=$fname"
-      </pre>
-    </li>
-    
-    <li>
-      <strong><a href="docs">/docs/</a></strong>
-      <br />
-      <em>UNDER CONSTRUCTION!! </em>
-      <br />
-      Web-service API automatically generated documentation.
-    </li>
+      domes to the list of files stored in the Noao Science Archive.</td>
+    </tr>
 
-  </ul>
 
-{% comment %}
-  <h2>All MARS access points</h2>
-  <samp>
-/admin    
-  </samp>
-  
-  <hr>
+    <tr>
+      <th><a href="{% url 'provisional:index'
+             %}">/provisional/</a></th>
 
-  <dl>
-    <dt>MARS</dt>
-    <dd>Metadata Archive Retrival Services</dd>
-  </dl>
+      <td>List of all files stored in the Archive on a provisional basis.
+        These can be deleted as a batch or individiually through
+        web-services.</td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'provisional:stuff' %}">/provisional/stuff</a></th>
+      <td>Insert all files matching "TADA like" reference file into
+        provisional list.</td>
+    </tr>
+    <tr>
+      <th>/provisional/delete/REF_FILENAME/</th>
+      <td><strong>Delete a file from Archive</strong> and the
+        provisional list.</td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'provisional:rollback' %}">/provisional/rollback</a></th>
+      <td><strong>Delete all files that in provisional list from
+          Archive</strong> and the provisional list.</td>
+    </tr>
+    <tr>
+      <th>/provisional/add/REF_FILENAME/?source=SOURCE_FILENAME</th>
+      <td>{% comment %}
+        <a href="{% url 'provisional:index'%}add/ref999/?source=src999">
+        </a>
+        {% endcomment %}
+        <br />
+        Add a file to list of provisional files. Overwrites previous
+        REF_FILENAME if it exists.
+        can use as in:
+        <br />
+        <pre>
+          fname=/data/scraped/mtn_raw/ct15m-echelle/chi141225.1273.fits
+          curl "http://localhost:8000/provisional/add/ref5/?source=$fname"
+        </pre>
+      </td>
+    </tr>
 
-http://portal-pat-sdm.noao.edu/search/retrieve_dataset?reference=k4k_140922_234549_zuu_TADATEST_2409730908.fits.fz  
-{% endcomment %}
+
+    <tr>
+      <th><a href="docs">/docs/</a></th>
+      <td><em>UNDER CONSTRUCTION!! </em>
+      <br />
+      Web-service API automatically generated documentation.</td>
+    </tr>
+
+
+  </table>
   
 </body>
 </html>

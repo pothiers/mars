@@ -1,30 +1,63 @@
 #! /usr/bin/env python3
 '''Get schedules in XML format for a bunch of dates and telescopes.'''
 
+# EXAMPLES:
+#   getschedule.py foo.xml --begindate=2015-10-09 --enddate=2015-10-11
+#   getschedule.py all.2014.2016.xml --begindate=2014-01-01 --enddate=2016-07-01
+
 import sys
 import argparse
 import logging
 import subprocess
 from datetime import date, datetime, timedelta as td
+import xml.etree.ElementTree as ET
 
 def getxml(outxml, begindate, enddate):
     '''begin/enddate :: DATE object'''
 
-    telescope_list = 'ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,het,keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,magI,magII,mmt,soar,wiyn'.split(',')
+    telescope_list = ('ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,het,'
+                      'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
+                      'magI,magII,mmt,soar,wiyn').split(',')
 
-    # getschedulexml.pl -tel=wiyn -date=2015-09-01 > wiyn.2015-09-01.schedule.xml
+    # getschedulexml.pl -tel=wiyn -date=2015-09-01 >wiyn.2015-09-01.schedule.xml
     cmdstr = '/home/pothiers/sandbox/mars/marssite/schedule/getschedulexml.pl -tel={telescope} -date={date}'
     #cmd = cmdstr.split()
 
     delta = enddate - begindate
+    ns = dict(noao="http://www.noao.edu/proposal/noao/", )
     with open(outxml, 'w') as f:
-        print('<all>', file=f, flush=True)
-        for tele in telescope_list:
-            for i in range(delta.days + 1):
-                obsdate = begindate + td(days=i)
-                out = subprocess.check_call(cmdstr.format(telescope=tele, date=obsdate),
-                                            shell=True,
-                                            stdout=f)
+        print('<all created="{}" begindate="{}" enddate="{}">'
+              .format(date.today().isoformat(),
+                      begindate.isoformat(),
+                      enddate.isoformat() ),
+              file=f, flush=True)
+        for i in range(delta.days + 1):
+            obsdate = begindate + td(days=i)
+            for tele in telescope_list:
+                out = subprocess.check_output(cmdstr.format(telescope=tele,
+                                                            date=obsdate),
+                                              shell=True)
+                #!print(out, file=f)
+                if len(out) < 3:
+                    continue
+                root = ET.fromstring(out)
+                prop_el = root.find('.//proposal')
+                if prop_el == None:
+                    continue
+                tele_el = root.find('.//parameter[@name="telescope"]')
+                date_el = root.find('.//parameter[@name="date"]')
+                print('tele={}, date={}, propid={}'
+                      .format(tele_el.text,
+                              date_el.text,
+                              prop_el.get('{{{noao}}}id'.format(**ns)),
+                      ))
+                print('<proposal telescope="{}" date="{}" propid="{}" />'
+                      .format(tele_el.text,
+                              date_el.text,
+                              prop_el.get('{{{noao}}}id'.format(**ns))),
+                      file=f
+                      )
+                
         print('</all>', file=f)                
 
 
@@ -33,7 +66,7 @@ def getxml(outxml, begindate, enddate):
 
 def main():
     "Parse command line arguments and do the work."
-    print('EXECUTING: %s\n\n' % (' '.join(sys.argv)))
+    #!print('EXECUTING: %s\n\n' % (' '.join(sys.argv)))
     parser = argparse.ArgumentParser(
         description='My shiny new python program',
         epilog='EXAMPLE: %(prog)s a b"'

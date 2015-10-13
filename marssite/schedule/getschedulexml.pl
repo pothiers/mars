@@ -35,7 +35,5 @@ my $propXml;
 my $result = $response->getProposalsScheduledOn ($tel, $date);
 unless ($result->fault) {
     $propXml = $result->result ();
-} else {
-    print join ', ', $result->faultcode, $result->faultstring;
-}
-print $propXml
+    print $propXml
+} 
