@@ -10,7 +10,7 @@ from siap.queries import get_tada_references
 
 def index(request, limit=2000):
     delcnt = request.GET.get('delcnt',0)
-    fnames = Fitsname.objects.all()[:limit]
+    fnames = Fitsname.objects.all().order_by('source')[:limit]
     return render(request,
                   'provisional/index.html',
                   RequestContext(request, {

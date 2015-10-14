@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en"> 
 <head>
-    <link rel="stylesheet" href="style.css" />
-    <title>Index</title>
+  <link rel="stylesheet" href="style.css" />
+  <title>Index</title>
 </head>
 <body>
 
   {% if delcnt > 0 %}
   <p>(Deleted {{ delcnt }} files)</p>
+  {% endif %}
   <h2>Provisional archive files.</h2>
   <em>Listing {{ fitname_list|length }} files. (limit to {{ limit }})</em>
-  {% endif %}
   
 
 <table border="1">
