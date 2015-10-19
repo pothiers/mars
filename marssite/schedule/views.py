@@ -4,7 +4,7 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
-from .forms import UploadFileForm
+from .forms import SlotSetForm
 from .models import Slot
 from .upload import handle_uploaded_file
 
@@ -12,6 +12,22 @@ import json
 import subprocess
 from datetime import date, datetime, timedelta as td
 import xml.etree.ElementTree as ET
+
+@csrf_exempt
+def upload_file(request):
+    print('EXECUTING: views<schedule>:uploaded_file')
+    if request.method == 'POST':
+        form = SlotSetForm(request.POST, request.FILES)
+        if form.is_valid():
+            # file is saved
+            form.save()
+            print('DBG-4')
+            load_schedule(request.FILES['xmlfile'])
+            return HttpResponseRedirect('/schedule/') # on success
+    else:
+        form = SlotSetForm()
+    return render_to_response('schedule/upload.html', {'form': form})    
+    return render('schedule/upload.html', {'form': form})    
 
 
 
@@ -74,13 +90,24 @@ def scrape(request,begindate, enddate):
                         content_type='text/plain')
 
 
-@csrf_protect
-def upload_file(request):
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            handle_uploaded_file(request.FILES['file'])
-            return HttpResponseRedirect('/success/url/')
-    else:
-        form = UploadFileForm()
-    return render_to_response('schedule/upload.html', {'form': form})    
+def load_schedule(uploadedfile, maxsize=1e6):
+    print('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
+    if uploadedfile.size > maxsize:
+        return None
+    xmlstr = uploadedfile.read()
+    root = ET.fromstring(xmlstr)
+    created = root.get('created')
+    begin = root.get('begindate')
+    end = root.get('enddate')
+    print('DBG-1: created={}, begin={}, end={}'.format(created, begin, end))
+
+    for proposal in root:
+
+        obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
+        slot = Slot(telescope = proposal.get('telescope'),
+                    obsdate = obsdate,
+                    propid = proposal.get('propid'),
+                    )
+        slot.save()
+    return redirect('/schedule/')
+

@@ -15,6 +15,6 @@ def get_tada_references(limit=50):
     cursor = connection.cursor()
     cursor.execute( sql )
     total = cursor.rowcount
-    print('TADA select found {} records'.format(total))
+    #print('TADA select found {} records'.format(total))
     images = cursor.fetchall()
     return images

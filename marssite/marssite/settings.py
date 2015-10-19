@@ -137,4 +137,6 @@ REST_FRAMEWORK = {
     ]
 }
 
+MEDIA_ROOT = '/var/mars/'
+
 from .settings_local import *

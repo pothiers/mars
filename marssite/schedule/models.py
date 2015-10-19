@@ -14,4 +14,7 @@ class Slot(models.Model):
         
 
 
-
+class SlotSet(models.Model):
+    xmlfile = models.FileField(upload_to='mars/%Y%m%d/schedule.xml')
+    begin = models.DateField()
+    end = models.DateField()
