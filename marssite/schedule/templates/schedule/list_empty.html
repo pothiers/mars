@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css" />
-    <title>Schedule</title>
+    <title>Slots accessed that have no propid</title>
     <style>
       table, th, td {
       border: 1px solid gray;
@@ -17,8 +17,8 @@
 <body>
 
 
-<h2>Full Schedule </h2>
-<em>Listing {{ slot_list|length }} files. (limit to {{ limit }})</em>
+<h2>Empty Slots </h2>
+<em>Listing {{ slot_list|length }} slot. (limit to {{ limit }})</em>
 
 
 <p><em>Use the admin interface to modify content. </em></p>
@@ -29,27 +29,16 @@
   <tr>
     <th>Telescope</th>
     <th>Date</th>
-    <th>PropId</th>
-
-    <th>PI Name</th>
-    <th>PI Affiliation</th>
-    <th>Title</th>
   </tr>
   {% for slot in slot_list %}
   <tr>
     <td> {{ slot.telescope }} </td>
     <td> {{ slot.obsdate }} </td>
-    <td> {{ slot.propid}} </td>
-
-    <td> {{ slot.pi_name}} </td>
-    <td> {{ slot.pi_affiliation}} </td>
-    <td> {{ slot.title}} </td>
   </tr>
 
   {% empty %}
   <tr>
-    <td><br /></td>
-    <td>No images in the list</td>
+    <td>None</td>
     <td><br /></td>
   </tr>
   {% endfor %}  

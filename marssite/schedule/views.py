@@ -1,11 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from .forms import SlotSetForm
-from .models import Slot
+from .models import Slot, EmptySlot
 from .upload import handle_uploaded_file
 
 import json
@@ -13,6 +13,11 @@ import subprocess
 from datetime import date, datetime, timedelta as td
 import xml.etree.ElementTree as ET
 
+def delete_schedule(request):
+    slots = Slot.objects.all().delete()
+    slots = EmptySlot.objects.all().delete()
+    return redirect('/schedule/')
+    
 @csrf_exempt
 def upload_file(request):
     print('EXECUTING: views<schedule>:uploaded_file')
@@ -21,13 +26,12 @@ def upload_file(request):
         if form.is_valid():
             # file is saved
             form.save()
-            print('DBG-4')
             load_schedule(request.FILES['xmlfile'])
             return HttpResponseRedirect('/schedule/') # on success
     else:
         form = SlotSetForm()
     return render_to_response('schedule/upload.html', {'form': form})    
-    return render('schedule/upload.html', {'form': form})    
+    #!return render('schedule/upload.html', {'form': form})    
 
 
 
@@ -41,15 +45,31 @@ def list(request, limit=4000):
                   })
                   )
 
+def list_empty(request, limit=4000):
+    slots = EmptySlot.objects.all()[:limit]
+    return render(request,
+                  'schedule/list_empty.html',
+                  RequestContext(request, {
+                      'limit': limit,
+                      'slot_list': slots,
+                  })
+                  )
+
 
 # EXAMPLE in bash:
 #  propid=`curl 'http://127.0.0.1:8000/schedule/getpropid/ct13m/2014-12-25/'`
 def getpropid(request, tele, date):
-    propid = Slot.objects.get(obsdate=date,telescope=tele)
-    #!data = json.dumps(dict(telescope=tele, date=date, propid=prop))
-    #!return HttpResponse(data, content_type='application/json')
-    return HttpResponse(propidcontent_type='text/plain')
-
+    try:
+        slot = Slot.objects.get(obsdate=date,telescope=tele)
+        propid = slot.propid
+        return HttpResponse(propid, content_type='text/plain')
+    except Exception as err:
+        if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
+            es = EmptySlot(obsdate=date,telescope=tele)
+            es.save()
+    #! return redirect('/schedule/empty/')
+    return HttpResponse('', content_type='text/plain')
+        
 def scrape(request,begindate, enddate):
     telescope_list = ('ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,het,'
                       'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
@@ -94,20 +114,33 @@ def load_schedule(uploadedfile, maxsize=1e6):
     print('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
     if uploadedfile.size > maxsize:
         return None
-    xmlstr = uploadedfile.read()
+    print("DBG-1: size={}".format(uploadedfile.size))
+    xmlstr = ''
+    for line in uploadedfile:
+        xmlstr += line.decode()
     root = ET.fromstring(xmlstr)
+    #!tree = ET.parse(uploadedfile)
     created = root.get('created')
     begin = root.get('begindate')
     end = root.get('enddate')
-    print('DBG-1: created={}, begin={}, end={}'.format(created, begin, end))
+    print('DBG-2: created={}, begin={}, end={}'.format(created, begin, end))
 
     for proposal in root:
-
         obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
-        slot = Slot(telescope = proposal.get('telescope'),
-                    obsdate = obsdate,
-                    propid = proposal.get('propid'),
-                    )
+        telescope = proposal.get('telescope')
+        propid = proposal.get('propid')
+        title=proposal.findtext('title')
+        piname=proposal.findtext('piname')
+        affiliation=proposal.findtext('affiliation')
+        #! print('DBG-3: telescope={}, obsdate={}, propid={}'.format(telescope, obsdate, propid))
+        #! print('DBG-3.2: title={}, pi={}, affil={}'.format(title, pi, affil))
+        
+        Slot.objects.filter(telescope=telescope, obsdate=obsdate).delete()
+        slot = Slot(telescope = telescope, obsdate = obsdate, propid = propid,
+                    pi_name=piname,
+                    pi_affiliation=affiliation,
+                    title=title
+        )
         slot.save()
     return redirect('/schedule/')
 

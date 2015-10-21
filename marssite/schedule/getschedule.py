@@ -11,6 +11,7 @@ import logging
 import subprocess
 from datetime import date, datetime, timedelta as td
 import xml.etree.ElementTree as ET
+from xml.sax.saxutils import escape
 
 def getxml(outxml, begindate, enddate):
     '''begin/enddate :: DATE object'''
@@ -44,20 +45,36 @@ def getxml(outxml, begindate, enddate):
                 prop_el = root.find('.//proposal')
                 if prop_el == None:
                     continue
+                title = prop_el.findtext('title',default='')
+                pif = prop_el.findtext(
+                    'investigators[1]/investigator/name/first',
+                    default='')
+                pil = prop_el.findtext(
+                    'investigators[1]/investigator/name/last',
+                    default='')
+                piname = pif + ' ' + pil
+                affil = prop_el.findtext(
+                    'investigators[1]/investigator/affiliation',
+                    default='')
+                
                 tele_el = root.find('.//parameter[@name="telescope"]')
                 date_el = root.find('.//parameter[@name="date"]')
-                print('tele={}, date={}, propid={}'
+                print('tele={}, date={} -> propid={}'
                       .format(tele_el.text,
                               date_el.text,
                               prop_el.get('{{{noao}}}id'.format(**ns)),
                       ))
-                print('<proposal telescope="{}" date="{}" propid="{}" />'
+                print('<proposal telescope="{}" date="{}" propid="{}"> \n'
+                      '  <title>{}</title> \n'
+                      '  <piname>{}</piname> \n'
+                      '  <affiliation>{}</affiliation> \n'
+                      '</proposal>'
                       .format(tele_el.text,
                               date_el.text,
-                              prop_el.get('{{{noao}}}id'.format(**ns))),
+                              prop_el.get('{{{noao}}}id'.format(**ns)),
+                              escape(title), escape(piname), escape(affil) ),
                       file=f
-                      )
-                
+                )
         print('</all>', file=f)                
 
 

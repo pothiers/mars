@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
@@ -44,6 +46,8 @@ def rollback(request):
     'Remove all provisionaly added files from DB'
     from . import perlport
     from django.db import connection
+
+    logging.debug('EXECUTING: mars:provisional/rollback()')
 
     ref_list = [fn.id for fn in Fitsname.objects.all()]
     delcnt = len(ref_list)
