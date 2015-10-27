@@ -1,15 +1,26 @@
 import logging
 
+from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.db import transaction
+from rest_framework import viewsets
 from .models import Fitsname
 from .perlport import drop_file
+from .serializers import FitsnameSerializer
 from siap.queries import get_tada_references
 
-# Create your views here.
+class ProvListView(ListView):
+    #model = Fitsname
+    limit=2000
+    queryset = Fitsname.objects.all().order_by('source')[:limit]
 
+    def get_context_data(self, **kwargs):
+        context = super(ProvListView, self).get_context_data(**kwargs)
+        context['limit'] = self.limit
+        return context
+ 
 def index(request, limit=2000):
     delcnt = request.GET.get('delcnt',0)
     fnames = Fitsname.objects.all().order_by('source')[:limit]
@@ -71,3 +82,10 @@ def dbdelete(request, reference=None):
     #!                     .format(reference, results)),
     #!                    content_type='text/plain')
     return redirect('/provisional/') 
+
+
+# ViewSets define the view behavior.
+class FitsnameViewSet(viewsets.ModelViewSet):
+    queryset = Fitsname.objects.all()
+    serializer_class = FitsnameSerializer
+

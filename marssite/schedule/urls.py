@@ -14,8 +14,11 @@ urlpatterns = [
     url(r'^propid/(?P<tele>.+)/(?P<date>.+)/$',
         views.getpropid, name='getpropid'),
 
-    url(r'^scrape/(?P<begindate>.+)/(?P<enddate>.+)/$',
-        views.scrape, name='scrape'),
+    url(r'^day/(?P<date>.+)/$',
+        views.list_day, name='list_day'),
+
+    #!url(r'^scrape/(?P<begindate>.+)/(?P<enddate>.+)/$',
+    #!    views.scrape, name='scrape'),
 
     url(r'^upload/$',
         views.upload_file, name='upload_file'),

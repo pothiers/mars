@@ -6,6 +6,7 @@ from . import views
 urlpatterns = [
     # eg: /provisional/
     url(r'^$', views.index, name='index'),
+    url(r'^list/$', views.ProvListView.as_view(), name='prov-list'),
 
     # eg: /provisional/stuff/
     url(r'^stuff/$',

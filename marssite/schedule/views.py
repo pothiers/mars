@@ -7,6 +7,9 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from .forms import SlotSetForm
 from .models import Slot, EmptySlot
 from .upload import handle_uploaded_file
+from rest_framework import viewsets
+from rest_framework.decorators import detail_route, list_route
+from .serializers import SlotSerializer
 
 import json
 import subprocess
@@ -35,21 +38,34 @@ def upload_file(request):
 
 
 
-def list(request, limit=4000):
+def list(request, limit=100):
+    #slots = Slot.objects.all()
     slots = Slot.objects.all()[:limit]
     return render(request,
                   'schedule/list.html',
+                  RequestContext(request, {
+                      'title': 'All',
+                      'limit': limit,
+                      'slot_list': slots,
+                  })
+                  )
+@list_route(methods=['get'])
+def list_empty(request, limit=4000):
+    slots = EmptySlot.objects.all()[:limit]
+    return render(request,
+                  'schedule/list_empty.html',
                   RequestContext(request, {
                       'limit': limit,
                       'slot_list': slots,
                   })
                   )
 
-def list_empty(request, limit=4000):
-    slots = EmptySlot.objects.all()[:limit]
+def list_day(request, date, limit=4000):
+    slots = Slot.objects.filter(obsdate=date)[:limit]
     return render(request,
-                  'schedule/list_empty.html',
+                  'schedule/list.html',
                   RequestContext(request, {
+                      'title': 'Day: {}'.format(date),
                       'limit': limit,
                       'slot_list': slots,
                   })
@@ -69,7 +85,8 @@ def getpropid(request, tele, date):
             es.save()
     #! return redirect('/schedule/empty/')
     return HttpResponse('', content_type='text/plain')
-        
+
+# OBSOLETE!
 def scrape(request,begindate, enddate):
     telescope_list = ('ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,het,'
                       'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
@@ -81,7 +98,6 @@ def scrape(request,begindate, enddate):
     edate = datetime.strptime(enddate,'%Y-%m-%d').date()
     delta = edate - bdate
     ns = dict(noao="http://www.noao.edu/proposal/noao/", )
-
 
     for i in range(delta.days + 1):
         obsdate = bdate + td(days=i)
@@ -144,3 +160,8 @@ def load_schedule(uploadedfile, maxsize=1e6):
         slot.save()
     return redirect('/schedule/')
 
+
+
+class ScheduleViewSet(viewsets.ModelViewSet):
+    queryset = Slot.objects.all()
+    serializer_class = SlotSerializer
