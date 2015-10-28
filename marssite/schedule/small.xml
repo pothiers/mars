@@ -1,0 +1,47 @@
+<all created="2015-10-27" begindate="2014-01-01" enddate="2014-01-03">
+<proposal telescope="ct4m" date="2014-01-01" propid="2012B-0001"> 
+  <title>The Dark Energy Survey</title> 
+  <piname>Josh Frieman</piname> 
+  <affiliation>Fermi National Accelerator Laboratory</affiliation> 
+</proposal>
+<proposal telescope="kp09m" date="2014-01-01" propid="2013B-0804"> 
+  <title>UBVRI HDI Photometry of Key Open Clusters</title> 
+  <piname>Con Deliyannis</piname> 
+  <affiliation>Indiana University</affiliation> 
+</proposal>
+<proposal telescope="kp21m" date="2014-01-01" propid="2013B-0621"> 
+  <title>Fluorine in Metal-Poor Stars with Phoenix</title> 
+  <piname>Catherine Pilachowski</piname> 
+  <affiliation>Indiana University</affiliation> 
+</proposal>
+<proposal telescope="kp21m" date="2014-01-02" propid="2013B-0621"> 
+  <title>Fluorine in Metal-Poor Stars with Phoenix</title> 
+  <piname>Catherine Pilachowski</piname> 
+  <affiliation>Indiana University</affiliation> 
+</proposal>
+<proposal telescope="kp4m" date="2014-01-02" propid="2013B-0270"> 
+  <title>Mission Accessible Near-Earth Objects Survey (MANOS)</title> 
+  <piname>Nicholas Moskovitz</piname> 
+  <affiliation>Lowell Observatory</affiliation> 
+</proposal>
+<proposal telescope="wiyn" date="2014-01-02" propid="2013B-0005"> 
+  <title>The Galactic Delinquents Survey: A Search for Massive Failures around Milky Way Analogs</title> 
+  <piname>Michael Cooper</piname> 
+  <affiliation>University of California, Irvine</affiliation> 
+</proposal>
+<proposal telescope="ct4m" date="2014-01-03" propid="2012B-0001"> 
+  <title>The Dark Energy Survey</title> 
+  <piname>Josh Frieman</piname> 
+  <affiliation>Fermi National Accelerator Laboratory</affiliation> 
+</proposal>
+<proposal telescope="kp21m" date="2014-01-03" propid="2013B-0602"> 
+  <title>Confirming Giant Planets and Brown Dwarf Companions Around Young Stars</title> 
+  <piname>Christopher M. Johns-Krull</piname> 
+  <affiliation>Rice University</affiliation> 
+</proposal>
+<proposal telescope="kp4m" date="2014-01-03" propid="2012B-0608"> 
+  <title>A unique opportunity to discover how energy is tranported through Jupiter's magnetosphere</title> 
+  <piname>Sarah Badman</piname> 
+  <affiliation>Institute of Space and Astronautical Science</affiliation> 
+</proposal>
+</all>

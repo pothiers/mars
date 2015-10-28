@@ -25,14 +25,18 @@ def delete_schedule(request):
 def upload_file(request):
     print('EXECUTING: views<schedule>:uploaded_file')
     if request.method == 'POST':
+        print('DBG-2')
         form = SlotSetForm(request.POST, request.FILES)
         if form.is_valid():
+            print('DBG-2.1')
             # file is saved
             form.save()
             load_schedule(request.FILES['xmlfile'])
             return HttpResponseRedirect('/schedule/') # on success
     else:
+        print('DBG-3')
         form = SlotSetForm()
+    print('DBG-4')
     return render_to_response('schedule/upload.html', {'form': form})    
     #!return render('schedule/upload.html', {'form': form})    
 
