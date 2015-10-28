@@ -18,7 +18,6 @@ class Slot(models.Model):
     obsdate = models.DateField(help_text='Observation date')
     propid = models.CharField(max_length=12,
                               help_text='YYYYs-nnnn (s:: A|B)')
-
     pi_name = models.CharField(max_length=80,
                                help_text='Principal Investigator name')
     pi_affiliation = models.CharField(max_length=160)

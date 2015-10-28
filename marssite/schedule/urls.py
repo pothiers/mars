@@ -11,6 +11,7 @@ urlpatterns = [
 
 
     # eg: /schedule/prop/ct13m/2014-12-25/  => smarts
+    #  kp4m/2014-01-01 =>  2013B-0142 
     url(r'^propid/(?P<tele>.+)/(?P<date>.+)/$',
         views.getpropid, name='getpropid'),
 

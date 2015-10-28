@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.db import transaction
+from rest_framework.decorators import detail_route, list_route, api_view
 from rest_framework import viewsets
 from .models import Fitsname
 from .perlport import drop_file
@@ -21,6 +22,7 @@ class ProvListView(ListView):
         context['limit'] = self.limit
         return context
  
+@api_view(['GET'])
 def index(request, limit=2000):
     delcnt = request.GET.get('delcnt',0)
     fnames = Fitsname.objects.all().order_by('source')[:limit]
@@ -52,6 +54,7 @@ def add(request, reference=None):
 
 
 
+@api_view(['GET'])
 @transaction.atomic
 def rollback(request):
     'Remove all provisionaly added files from DB'

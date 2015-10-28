@@ -23,20 +23,20 @@ from schedule.views import ScheduleViewSet, getpropid
 
 
 # Serializers define the API representation.
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'is_staff')
-
+#!class UserSerializer(serializers.HyperlinkedModelSerializer):
+#!    class Meta:
+#!        model = User
+#!        fields = ('url', 'username', 'email', 'is_staff')
+#!
 #!class GroupSerializer(serializers.HyperlinkedModelSerializer):
 #!    class Meta:
 #!        model = Group
 
 
 # ViewSets define the view behavior.
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+#!class UserViewSet(viewsets.ModelViewSet):
+#!    queryset = User.objects.all()
+#!    serializer_class = UserSerializer
 #!class GroupViewSet(viewsets.ModelViewSet):
 #!    queryset = Group.objects.all()
 #!    serializer_class = GroupSerializer
@@ -49,7 +49,8 @@ router = routers.DefaultRouter()
 
 #router.register(r'fitsnames', FitsnameViewSet)
 #router.register(r'schedules', ScheduleViewSet)
-router.register(r'schedule', getpropid, base_name='propid')
+#router.register(r'schedule', getpropid, base_name='propid')
+#router.register(r'provisional', getpropid, base_name='propid')
 
 urlpatterns = [
     url(r'^$', include('water.urls', namespace='water')),

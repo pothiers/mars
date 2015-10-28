@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
+from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from .forms import SlotSetForm
@@ -21,8 +22,8 @@ def delete_schedule(request):
     slots = EmptySlot.objects.all().delete()
     return redirect('/schedule/')
     
-@csrf_exempt
-@api_view(['POST'])
+@api_view(['GET', 'POST'])
+#@csrf_exempt
 def upload_file(request):
     print('EXECUTING: views<schedule>:uploaded_file')
     if request.method == 'POST':
@@ -38,7 +39,9 @@ def upload_file(request):
         print('DBG-3')
         form = SlotSetForm()
     print('DBG-4')
-    return render_to_response('schedule/upload.html', {'form': form})    
+    c = {'form': form}
+    c.update(csrf(request))
+    return render_to_response('schedule/upload.html', c)    
     #!return render('schedule/upload.html', {'form': form})    
 
 
@@ -67,7 +70,7 @@ def list_empty(request, limit=4000):
                   })
                   )
 
-def list_day(request, date, limit=4000):
+def list_day(request, date, limit=1000):
     slots = Slot.objects.filter(obsdate=date)[:limit]
     return render(request,
                   'schedule/list.html',
