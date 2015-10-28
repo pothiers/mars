@@ -15,7 +15,15 @@
 </style>
 </head>
 <body>
-  <h2>Key MARS apps</h2>
+  <h3>Key MARS apps</h3>
+
+  <p>
+    <em>
+      The only service used by normal TADA
+      is <code>/schedule/propid/TELESCOPE/DATE</code>.  For TADA testing
+      a few of the <code>/provisional/</code> services are used also.
+    </em>
+  </p>
 
   <table>
     <tr>
@@ -132,7 +140,10 @@ curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
       <br />
       Web-service API automatically generated documentation.</td>
     </tr>
-
+    <tr>
+      <th><a href="api">/api/</a></th>
+      <td>Django REST framework auto generated API pages</td>
+    </tr>
 
   </table>
 

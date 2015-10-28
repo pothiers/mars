@@ -8,7 +8,7 @@ from .forms import SlotSetForm
 from .models import Slot, EmptySlot
 from .upload import handle_uploaded_file
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import detail_route, list_route, api_view
 from .serializers import SlotSerializer
 
 import json
@@ -22,6 +22,7 @@ def delete_schedule(request):
     return redirect('/schedule/')
     
 @csrf_exempt
+@api_view(['POST'])
 def upload_file(request):
     print('EXECUTING: views<schedule>:uploaded_file')
     if request.method == 'POST':
@@ -42,6 +43,7 @@ def upload_file(request):
 
 
 
+@api_view(['GET'])
 def list(request, limit=100):
     #slots = Slot.objects.all()
     slots = Slot.objects.all()[:limit]
@@ -53,6 +55,7 @@ def list(request, limit=100):
                       'slot_list': slots,
                   })
                   )
+@api_view(['GET'])
 @list_route(methods=['get'])
 def list_empty(request, limit=4000):
     slots = EmptySlot.objects.all()[:limit]
@@ -76,19 +79,28 @@ def list_day(request, date, limit=4000):
                   )
 
 
+##    request_serializer: ScheduleQuerySerializer
+##    response_serializer: ScheduleSerializer
+
 # EXAMPLE in bash:
 #  propid=`curl 'http://127.0.0.1:8000/schedule/getpropid/ct13m/2014-12-25/'`
+@api_view(['GET'])
 def getpropid(request, tele, date):
+    '''
+    Retrieve a **propid** from the schedule given `telescope` and `date`.
+    ---
+    omit_serializer: true
+    '''
     try:
         slot = Slot.objects.get(obsdate=date,telescope=tele)
         propid = slot.propid
         return HttpResponse(propid, content_type='text/plain')
     except Exception as err:
-        if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
+        if EmptySlot.objects.filter(obsdate=date,telescope=tele).count() == 0:
             es = EmptySlot(obsdate=date,telescope=tele)
             es.save()
-    #! return redirect('/schedule/empty/')
-    return HttpResponse('', content_type='text/plain')
+        return HttpResponse('', content_type='text/plain')
+                
 
 # OBSOLETE!
 def scrape(request,begindate, enddate):
@@ -167,5 +179,5 @@ def load_schedule(uploadedfile, maxsize=1e6):
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
-    queryset = Slot.objects.all()
+    queryset = Slot.objects.all()[:99]
     serializer_class = SlotSerializer

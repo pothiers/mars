@@ -112,7 +112,7 @@ SWAGGER_SETTINGS = {
 #!    'resource_access_handler': None,
 #!    'base_path':'localhost:8000/docs',
     'info': {
-        'contact': 'pothier@email.noao.edu',
+        'title': 'MARS prototype API documentation',
         'description': ('This is documentation for the '
                         'MARS (Metadata Archive Retrival Services) '
                         'prototype server.  '
@@ -122,9 +122,8 @@ SWAGGER_SETTINGS = {
                         # 'http://swagger.wordnik.com</a> '
                         # 'or on irc.freenode.net, #swagger. '
         ),
-        'license': 'Apache 2.0',
-        'licenseUrl': 'http://www.apache.org/licenses/LICENSE-2.0.html',
-        'title': 'MARS prototype API documentation',
+#        'license': 'Apache 2.0',
+#        'licenseUrl': 'http://www.apache.org/licenses/LICENSE-2.0.html',
     },
 #!    #! 'doc_expansion': 'none',
 #!    'doc_expansion': 'full',

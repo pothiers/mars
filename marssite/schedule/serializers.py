@@ -5,3 +5,4 @@ from .models import Slot
 class SlotSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Slot
+
