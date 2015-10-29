@@ -99,7 +99,7 @@ def getpropid(request, tele, date):
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
     try:
-        slot = Slot.objects.get(obsdate=date,telescope=tele)
+        slot = Slot.objects.get(obsdate=date,telescope=telet)
         propid = slot.propid
         return HttpResponse(propid, content_type='text/plain')
     except Exception as err:
