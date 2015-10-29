@@ -24,12 +24,14 @@ class ProvListView(ListView):
  
 @api_view(['GET'])
 def index(request, limit=2000):
+    'List all files provisionaly added to DB'
     delcnt = request.GET.get('delcnt',0)
-    fnames = Fitsname.objects.all().order_by('source')[:limit]
+    #fnames = Fitsname.objects.all().order_by('source')[:limit]
+    fnames = Fitsname.objects.all()
     return render(request,
                   'provisional/index.html',
                   RequestContext(request, {
-                      'limit': limit,
+                      #'limit': limit,
                       'delcnt': delcnt,
                       'fitname_list': fnames,
                   }))

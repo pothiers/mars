@@ -1,3 +1,4 @@
+{% load render_table from django_tables2 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,34 +26,6 @@
 
 
 {#<p> {{ schedule }} </p> #}
-<table border="1" >
-  <tr>
-    <th>Telescope</th>
-    <th>Date</th>
-    <th>PropId</th>
-
-    <th>PI Name</th>
-    <th>PI Affiliation</th>
-    <th>Title</th>
-  </tr>
-  {% for slot in slot_list %}
-  <tr>
-    <td> {{ slot.telescope }} </td>
-    <td> {{ slot.obsdate }} </td>
-    <td> {{ slot.propid}} </td>
-
-    <td> {{ slot.pi_name}} </td>
-    <td> {{ slot.pi_affiliation}} </td>
-    <td> {{ slot.title}} </td>
-  </tr>
-
-  {% empty %}
-  <tr>
-    <td><br /></td>
-    <td>No images in the list</td>
-    <td><br /></td>
-  </tr>
-  {% endfor %}  
-</table>
+{% render_table slot_list %}
 </body>
 </html>

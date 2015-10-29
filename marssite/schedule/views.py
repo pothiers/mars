@@ -23,8 +23,8 @@ def delete_schedule(request):
     return redirect('/schedule/')
     
 @api_view(['GET', 'POST'])
-#@csrf_exempt
 def upload_file(request):
+    'Upload and XML file of schedule info and load into DB.'
     print('EXECUTING: views<schedule>:uploaded_file')
     if request.method == 'POST':
         print('DBG-2')
@@ -48,24 +48,28 @@ def upload_file(request):
 
 @api_view(['GET'])
 def list(request, limit=100):
-    #slots = Slot.objects.all()
-    slots = Slot.objects.all()[:limit]
+    'List the schedule. This is the full schedule available to TADA.'
+    slots = Slot.objects.all()
+    #slots = Slot.objects.all()[:limit]
     return render(request,
                   'schedule/list.html',
                   RequestContext(request, {
                       'title': 'All',
-                      'limit': limit,
+                      #'limit': limit,
+                      'limit': 'NONE',
                       'slot_list': slots,
                   })
                   )
 @api_view(['GET'])
 @list_route(methods=['get'])
-def list_empty(request, limit=4000):
-    slots = EmptySlot.objects.all()[:limit]
+def list_empty(request):
+    """List slots (telescope,date) that were queried but for which there is 
+no PROPID.  These should probably be filled."""
+    slots = EmptySlot.objects.all()
     return render(request,
                   'schedule/list_empty.html',
                   RequestContext(request, {
-                      'limit': limit,
+                      'limit': 'none',
                       'slot_list': slots,
                   })
                   )
@@ -84,16 +88,16 @@ def list_day(request, date, limit=1000):
 
 ##    request_serializer: ScheduleQuerySerializer
 ##    response_serializer: ScheduleSerializer
+##    ---
+##    omit_serializer: true
 
 # EXAMPLE in bash:
 #  propid=`curl 'http://127.0.0.1:8000/schedule/getpropid/ct13m/2014-12-25/'`
 @api_view(['GET'])
 def getpropid(request, tele, date):
-    '''
+    """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
-    ---
-    omit_serializer: true
-    '''
+    """
     try:
         slot = Slot.objects.get(obsdate=date,telescope=tele)
         propid = slot.propid

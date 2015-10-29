@@ -1,8 +1,19 @@
+{% load render_table from django_tables2 %}
 <!DOCTYPE html>
 <html lang="en"> 
 <head>
   <link rel="stylesheet" href="style.css" />
-  <title>Index</title>
+  <title>Provisional files</title>
+    <style>
+      table, th, td {
+      border: 1px solid gray;
+      padding: 5px;
+      text-align:left
+      }
+      table {
+      border-spacing: 0px;
+      }
+</style>  
 </head>
 <body>
 
@@ -10,36 +21,16 @@
   <p>(Deleted {{ delcnt }} files)</p>
   {% endif %}
   <h2>Provisional archive files.</h2>
-  <em>Listing {{ fitname_list|length }} files. (limit to {{ limit }})</em>
-  
-
-<table border="1">
-  <tr>
-    <th><a href="{% url 'provisional:rollback' %}">Del</a></th>
-    <th>Reference</th>
-    <th>Source Path (dtacqnam)</th>
-  </tr>
-  {% for fn in fitname_list %}
-  <tr>
-    <td>
-      <a href="{% url 'provisional:delete' fn.pk %}">X</a>
-    <td>{{ fn.pk }}</td>
-    <td>{{ fn.source }}</td>
-  </tr>
-  {% empty %}
-  <tr>
-    <td><br /></td>
-    <td>No images in the list</td>
-    <td><br /></td>
-  </tr>
-  {% endfor %}
-</table>
+  <em>Listing {{ fitname_list|length }} files.</em>
 
   <p>
     <a href="{% url 'provisional:stuff' %}">
       Load from query on TADA filenames
     </a>
   </p>
+
+{% render_table fitname_list %}  
+
 
 
 </body>
