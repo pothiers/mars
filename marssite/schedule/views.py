@@ -93,21 +93,21 @@ def list_day(request, date, limit=1000):
 
 # EXAMPLE in bash:
 #  propid=`curl 'http://127.0.0.1:8000/schedule/getpropid/ct13m/2014-12-25/'`
-@api_view(['GET'])
+#@api_view(['GET'])
 def getpropid(request, tele, date):
     """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
+    #! print('DBG-0: getpropid({}, {})'.format(tele, date))
     try:
-        slot = Slot.objects.get(obsdate=date,telescope=telet)
+        slot = Slot.objects.get(obsdate=date, telescope=tele)
         propid = slot.propid
         return HttpResponse(propid, content_type='text/plain')
     except Exception as err:
-        if EmptySlot.objects.filter(obsdate=date,telescope=tele).count() == 0:
-            es = EmptySlot(obsdate=date,telescope=tele)
+        if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
+            es = EmptySlot(obsdate=date, telescope=tele)
             es.save()
-        return HttpResponse('', content_type='text/plain')
-                
+        return HttpResponse('NA', content_type='text/plain')
 
 # OBSOLETE!
 def scrape(request,begindate, enddate):
