@@ -4,11 +4,12 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.views.generic import ListView, TodayArchiveView, WeekArchiveView, ArchiveIndexView
 
 from .forms import SlotSetForm
 from .models import Slot, EmptySlot
 from .upload import handle_uploaded_file
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework.decorators import detail_route, list_route, api_view
 from .serializers import SlotSerializer
 
@@ -16,6 +17,8 @@ import json
 import subprocess
 from datetime import date, datetime, timedelta as td
 import xml.etree.ElementTree as ET
+
+
 
 def delete_schedule(request):
     slots = Slot.objects.all().delete()
@@ -188,3 +191,40 @@ def load_schedule(uploadedfile, maxsize=1e6):
 class ScheduleViewSet(viewsets.ModelViewSet):
     queryset = Slot.objects.all()[:99]
     serializer_class = SlotSerializer
+
+class SlotList(ArchiveIndexView):
+    model = Slot
+    date_field = 'obsdate'
+    template_name = 'schedule/slot_list.html'
+    context_object_name = 'slot_list'
+    allow_future = True
+    
+    def get_context_data(self, **kwargs):
+        context = super(ArchiveIndexView, self).get_context_data(**kwargs)
+        context['title'] = 'Full Schedule'
+        return context
+
+class SlotTodayList(TodayArchiveView):
+    model = Slot
+    date_field = 'obsdate'
+    template_name = 'schedule/slot_list.html'
+    context_object_name = 'slot_list'
+    def get_context_data(self, **kwargs):
+        context = super(SlotTodayList, self).get_context_data(**kwargs)
+        context['title'] = 'Schedule for today'
+        return context
+    
+class SlotWeekList(WeekArchiveView):
+    model = Slot
+    date_field = 'obsdate'
+    template_name = 'schedule/slot_list.html'
+    context_object_name = 'slot_list'
+    def get_context_data(self, **kwargs):
+        context = super(SlotWeekList, self).get_context_data(**kwargs)
+        context['title'] = 'Schedule for today'
+        return context
+    
+#!class SlotList(generics.ListCreateAPIView):
+#!    queryset = Slot.objects.all()
+#!    serializer_class = SlotSerializer
+#!    paginate_by = 100

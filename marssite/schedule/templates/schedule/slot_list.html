@@ -1,0 +1,29 @@
+{% load render_table from django_tables2 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css" />
+    <title>Schedule</title>
+    <style>
+      table, th, td {
+      border: 1px solid gray;
+      padding: 5px;
+      text-align:left
+      }
+      table {
+      border-spacing: 0px;
+      }
+</style>
+</head>
+<body>
+
+
+  <h2>{{ title }}</h2>
+  <p>
+    <em>Listing {{ slot_list|length }} slots.</em>
+  Use the admin interface to modify content.
+  </p>
+
+  {% render_table slot_list %}
+</body>
+</html>

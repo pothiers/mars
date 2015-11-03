@@ -10,4 +10,4 @@ class UploadFileForm(forms.Form):
 class SlotSetForm(forms.ModelForm):
     class Meta:
         model  = SlotSet
-        fields = ['xmlfile', 'begin', 'end']
+        fields = ['xmlfile', 'comment']

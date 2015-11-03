@@ -6,7 +6,7 @@ class SlotAdmin(admin.ModelAdmin):
     list_display = ('frozen', 'obsdate', 'telescope', 'propid')
 
 class SlotSetAdmin(admin.ModelAdmin):
-    list_display = ('xmlfile', 'begin', 'end')
+    list_display = ('xmlfile', 'comment')
 
 
 admin.site.register(Slot, SlotAdmin)

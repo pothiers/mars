@@ -1,4 +1,7 @@
-python3 manage.py runserver 0.0.0.0:8000 2>&1 | tee ~/mars.log &
+#!python3 manage.py runserver 0.0.0.0:8000 2>&1 | tee ~/mars.log &
+python3 manage.py runserver 0.0.0.0:8000 &
 
 
-
+echo "Try:"
+echo "  ./manage.py test schedule.tests"
+echo "  ./manage.py test schedule.tests.ScheduleTest.test_fixture"

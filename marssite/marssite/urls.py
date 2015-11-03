@@ -19,7 +19,7 @@ from django.contrib import admin
 from rest_framework import routers, serializers, viewsets
 from django.contrib.auth.models import User # ,Group
 from provisional.views import FitsnameViewSet
-from schedule.views import ScheduleViewSet, getpropid
+from schedule.views import ScheduleViewSet
 
 
 # Serializers define the API representation.
@@ -48,9 +48,7 @@ router = routers.DefaultRouter()
 #!router.register(r'groups', GroupViewSet)
 
 #router.register(r'fitsnames', FitsnameViewSet)
-#router.register(r'schedules', ScheduleViewSet)
-#router.register(r'schedule', getpropid, base_name='propid')
-#router.register(r'provisional', getpropid, base_name='propid')
+router.register(r'schedules', ScheduleViewSet)
 
 urlpatterns = [
     url(r'^$', include('water.urls', namespace='water')),
