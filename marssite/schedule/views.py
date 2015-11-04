@@ -4,13 +4,15 @@ from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
-from django.views.generic import ListView, TodayArchiveView, WeekArchiveView, ArchiveIndexView
+from django.views.generic import ListView, TodayArchiveView, DayArchiveView, WeekArchiveView, MonthArchiveView, ArchiveIndexView, DetailView
 
 from .forms import SlotSetForm
 from .models import Slot, EmptySlot
 from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
 from rest_framework.decorators import detail_route, list_route, api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from .serializers import SlotSerializer
 
 import json
@@ -52,6 +54,7 @@ def upload_file(request):
 @api_view(['GET'])
 def list(request, limit=100):
     'List the schedule. This is the full schedule available to TADA.'
+    serializer_class = SlotSerializer
     slots = Slot.objects.all()
     #slots = Slot.objects.all()[:limit]
     return render(request,
@@ -63,6 +66,7 @@ def list(request, limit=100):
                       'slot_list': slots,
                   })
                   )
+
 @api_view(['GET'])
 @list_route(methods=['get'])
 def list_empty(request):
@@ -77,16 +81,16 @@ no PROPID.  These should probably be filled."""
                   })
                   )
 
-def list_day(request, date, limit=1000):
-    slots = Slot.objects.filter(obsdate=date)[:limit]
-    return render(request,
-                  'schedule/list.html',
-                  RequestContext(request, {
-                      'title': 'Day: {}'.format(date),
-                      'limit': limit,
-                      'slot_list': slots,
-                  })
-                  )
+#!def list_day(request, date, limit=1000):
+#!    slots = Slot.objects.filter(obsdate=date)[:limit]
+#!    return render(request,
+#!                  'schedule/list.html',
+#!                  RequestContext(request, {
+#!                      'title': 'Day: {}'.format(date),
+#!                      'limit': limit,
+#!                      'slot_list': slots,
+#!                  })
+#!                  )
 
 
 ##    request_serializer: ScheduleQuerySerializer
@@ -96,12 +100,13 @@ def list_day(request, date, limit=1000):
 
 # EXAMPLE in bash:
 #  propid=`curl 'http://127.0.0.1:8000/schedule/getpropid/ct13m/2014-12-25/'`
-#@api_view(['GET'])
+@api_view(['GET'])
 def getpropid(request, tele, date):
     """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
     #! print('DBG-0: getpropid({}, {})'.format(tele, date))
+    serializer_class = SlotSerializer
     try:
         slot = Slot.objects.get(obsdate=date, telescope=tele)
         propid = slot.propid
@@ -112,46 +117,27 @@ def getpropid(request, tele, date):
             es.save()
         return HttpResponse('NA', content_type='text/plain')
 
-# OBSOLETE!
-def scrape(request,begindate, enddate):
-    telescope_list = ('ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,het,'
-                      'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
-                      'magI,magII,mmt,soar,wiyn').split(',')
+class SlotGet(generics.GenericAPIView, ListView):
+    """
+    Retrieve a **propid** from the schedule given `telescope` and `date`.
+    """
+    serializer_class = SlotSerializer
+    model = Slot
+    template_name = 'schedule/slot_detail.html'
+    context_object_name = 'slot_list'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        context['title'] = ('Schedule for Telescope ({tele}) on {date}'
+                            .format(**self.kwargs))
+        return context
 
-    cmdstr = ('/home/pothiers/sandbox/mars/marssite/schedule/getschedulexml.pl '
-              '-tel={telescope} -date={date}')
-    bdate = datetime.strptime(begindate,'%Y-%m-%d').date()
-    edate = datetime.strptime(enddate,'%Y-%m-%d').date()
-    delta = edate - bdate
-    ns = dict(noao="http://www.noao.edu/proposal/noao/", )
+    # HACK!!! Get list of 1 item. Template pulls out fields
+    def get_queryset(self):
+        return Slot.objects.filter(obsdate=self.kwargs['date'],
+                                   telescope=self.kwargs['tele'])
 
-    for i in range(delta.days + 1):
-        obsdate = bdate + td(days=i)
-        for tele in telescope_list:
-            out = subprocess.check_output(cmdstr.format(telescope=tele,
-                                                        date=obsdate),
-                                          shell=True)
-            #!print(out, file=f)
-            if len(out) < 3:
-                continue
-            root = ET.fromstring(out)
-            prop_el = root.find('.//proposal')
-            if prop_el == None:
-                continue
-            tele_el = root.find('.//parameter[@name="telescope"]')
-            date_el = root.find('.//parameter[@name="date"]')
-
-            yyyymmdd = datetime.strptime(date_el.text,'%Y-%m-%d').date()
-            slot = Slot(telescope = tele_el.text,
-                        obsdate = yyyymmdd,
-                        propid = prop_el.get('{{{noao}}}id'.format(**ns)) )
-            slot.save()
-
-    return HttpResponse('Scraped schedule info for dates {} to {}.'
-                        .format(begindate, enddate),
-                        content_type='text/plain')
-
-
+    
 def load_schedule(uploadedfile, maxsize=1e6):
     print('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
     if uploadedfile.size > maxsize:
@@ -189,42 +175,91 @@ def load_schedule(uploadedfile, maxsize=1e6):
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
-    queryset = Slot.objects.all()[:99]
+    queryset = Slot.objects.all()
+    paginate_by = 100
     serializer_class = SlotSerializer
 
-class SlotList(ArchiveIndexView):
+class SlotList(generics.ListAPIView, ArchiveIndexView):
+    "Display all scheduled observations."
     model = Slot
     date_field = 'obsdate'
+    allow_future = True
     template_name = 'schedule/slot_list.html'
     context_object_name = 'slot_list'
-    allow_future = True
+    serializer_class = SlotSerializer
+    paginate_by = 200
     
     def get_context_data(self, **kwargs):
         context = super(ArchiveIndexView, self).get_context_data(**kwargs)
         context['title'] = 'Full Schedule'
         return context
 
-class SlotTodayList(TodayArchiveView):
+class SlotTodayList(generics.ListAPIView, TodayArchiveView):
+    "Display all scheduled observations for *TODAY*."
     model = Slot
     date_field = 'obsdate'
+    allow_future = True
     template_name = 'schedule/slot_list.html'
     context_object_name = 'slot_list'
+    serializer_class = SlotSerializer
     def get_context_data(self, **kwargs):
         context = super(SlotTodayList, self).get_context_data(**kwargs)
         context['title'] = 'Schedule for today'
         return context
     
-class SlotWeekList(WeekArchiveView):
+class SlotMonthList(generics.ListAPIView, MonthArchiveView):
+    "Display all scheduled observations for the selected month."
     model = Slot
     date_field = 'obsdate'
+    allow_future = True
     template_name = 'schedule/slot_list.html'
     context_object_name = 'slot_list'
+    serializer_class = SlotSerializer
+    
     def get_context_data(self, **kwargs):
+        date_list, obj_list, extra_content = self.get_dated_items()
+        context = super(SlotMonthList, self).get_context_data(**kwargs)
+        context['title'] = 'Schedule for month: {}'.format(extra_content['month'])
+        return context
+
+class SlotWeekList(generics.ListAPIView, WeekArchiveView):
+    "Display all scheduled observations for the selected week."
+    model = Slot
+    date_field = 'obsdate'
+    allow_future = True
+    week_format = "%W"
+    template_name = 'schedule/slot_list.html'
+    context_object_name = 'slot_list'
+    serializer_class = SlotSerializer
+    
+    def get_context_data(self, **kwargs):
+        date_list, obj_list, extra_content = self.get_dated_items()
+        print('DBG: date_list={}, extra_content={}'.format(date_list, extra_content))
         context = super(SlotWeekList, self).get_context_data(**kwargs)
-        context['title'] = 'Schedule for today'
+        print('DBG: context keys={}'.format(context.keys()))
+        context['title'] = 'Schedule for week: {}'.format(extra_content['week'])
+        return context
+
+class SlotDayList(generics.ListAPIView, DayArchiveView):
+    "Display all scheduled observations for a selected day."
+    model = Slot
+    date_field = 'obsdate'
+    allow_future = True
+    template_name = 'schedule/slot_list.html'
+    context_object_name = 'slot_list'
+    serializer_class = SlotSerializer
+    
+    def get_context_data(self, **kwargs):
+        date_list, obj_list, extra_content = self.get_dated_items()
+        #print('DBG: date_list={}, extra_content={}'.format(date_list, extra_content))
+        context = super(SlotDayList, self).get_context_data(**kwargs)
+        context['title'] = 'Schedule for day: {}'.format(extra_content['day'])
         return context
     
-#!class SlotList(generics.ListCreateAPIView):
-#!    queryset = Slot.objects.all()
-#!    serializer_class = SlotSerializer
-#!    paginate_by = 100
+
+@api_view(('GET',))
+def api_root(request, format=None):
+    return Response({
+        'upload': reverse('schedule:upload_file', request=request, format=format),
+        'empty': reverse('schedule:list_empty', request=request, format=format)
+    })
