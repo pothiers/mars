@@ -48,7 +48,7 @@ router = routers.DefaultRouter()
 #!router.register(r'groups', GroupViewSet)
 
 #router.register(r'fitsnames', FitsnameViewSet)
-router.register(r'schedules', ScheduleViewSet)
+#router.register(r'schedules', ScheduleViewSet)
 
 urlpatterns = [
     url(r'^$', include('water.urls', namespace='water')),

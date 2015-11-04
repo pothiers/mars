@@ -13,7 +13,7 @@ class Slot(models.Model):
                   'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
                   'magI,magII,mmt,soar,wiyn').split(',')
     
-    telescope = models.CharField(max_length=80,
+    telescope = models.CharField(max_length=10,
                                  choices=[(t,t) for t in telescopes] )
     obsdate = models.DateField(help_text='Observation date')
     propid = models.CharField(max_length=12,

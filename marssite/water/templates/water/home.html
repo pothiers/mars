@@ -9,8 +9,14 @@
       padding: 5px;
       text-align:left
       }
-      table {g
+      table {
       border-spacing: 0px;
+      }
+      .tada {
+      background-color: rgba(255,255,0,0.3);
+      }
+      .testing {
+      background-color: rgba(0,0,255,0.1);
       }
 </style>
 </head>
@@ -19,9 +25,9 @@
 
   <p>
     <em>
-      The only service used by normal TADA
-      is <code>/schedule/propid/TELESCOPE/DATE</code>.  For TADA testing
-      a few of the <code>/provisional/</code> services are used also.
+      The only <span class="tada">service used by normal TADA</span>
+      is <code>/schedule/propid/TELESCOPE/DATE</code>.  For <span class="testing">TADA testing</span>
+      some of the <code>/provisional/</code> services are used also.
     </em>
   </p>
 
@@ -49,10 +55,31 @@
       <th>Load schedule for range of dates.</th>
     </tr>
     -->
-    <tr>
-      <th>/schedule/propid/TELESCOPE/DATE</th>
+    <tr class="tada">
+      <th>
+	<a href="{% url 'schedule:getpropid' 'kp4m' '2014-01-01' %}">
+	  /schedule/propid/TELESCOPE/DATE
+	</a>
+      </th>
       <td>Get propid given telescope and observation date.</td>
     </tr>
+    <tr>
+      <th><a href="{% url 'schedule:month_list' '2015' 'aug' %}">/schedule/2015/aug/</a></th>
+      <td>Get a months worth.</td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'schedule:week_list' '2015' '23' %}">/schedule/2015/week/23/</a></th>
+      <td>Get a weeks worth.</td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'schedule:day_list' '2015' 'aug' '23' %}">/schedule/2015/aug/23/</a></th>
+      <td>Get a days worth.</td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'schedule:today_list' %}">/schedule/today/</a></th>
+      <td>Get a todays schedule.</td>
+    </tr>
+
     <tr>
       <th><a href="{% url 'schedule:upload_file' %}">/schedule/upload/</a></th>
       <td>Upload XML file of schedule data and load it.</td>
@@ -100,7 +127,7 @@ curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
         These can be deleted as a batch or individiually through
         web-services.</td>
     </tr>
-    <tr>
+    <tr class="testing">
       <th><a href="{% url 'provisional:stuff' %}">/provisional/stuff</a></th>
       <td>Insert all files matching "TADA like" reference file into
         provisional list.</td>
@@ -110,12 +137,12 @@ curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
       <td><strong>Delete a file from Archive</strong> and the
         provisional list.</td>
     </tr>
-    <tr>
+    <tr class="testing">
       <th><a href="{% url 'provisional:rollback' %}">/provisional/rollback</a></th>
       <td><strong>Delete all files that in provisional list from
           Archive</strong> and the provisional list.</td>
     </tr>
-    <tr>
+    <tr  class="testing">
       <th>/provisional/add/REF_FILENAME/?source=SOURCE_FILENAME</th>
       <td>{% comment %}
         <a href="{% url 'provisional:index'%}add/ref999/?source=src999">
