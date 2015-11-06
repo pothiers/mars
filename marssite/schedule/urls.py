@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^$', views.list, name='list'),
     url(r'^list/$', views.SlotList.as_view(), name='list'),
     #!url(r'^$', views.SlotList.as_view(), name='list'),
-    #!url(r'^$', views.api_root, name='api_root'),
 
     url(r'^about/$',
         TemplateView.as_view(template_name="schedule/about.html")),

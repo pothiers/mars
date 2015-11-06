@@ -12,7 +12,6 @@ from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from rest_framework.decorators import detail_route, list_route, api_view
-from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from .serializers import SlotSerializer
 
@@ -196,12 +195,6 @@ class SlotList(APIView, ArchiveIndexView):
 
     
 
-@api_view(('GET',))
-def api_root(request, format=None):
-    return Response({
-        'upload': reverse('schedule:upload_file', request=request, format=format),
-        'empty': reverse('schedule:list_empty', request=request, format=format)
-    })
 
 #class SlotTodayList(generics.ListAPIView, TodayArchiveView):
 class SlotTodayList(generics.GenericAPIView,TodayArchiveView):
