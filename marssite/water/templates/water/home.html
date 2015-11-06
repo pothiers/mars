@@ -18,6 +18,9 @@
       .testing {
       background-color: rgba(0,0,255,0.1);
       }
+      .disabled {
+      background-color: rgba(255,255,255,0.1);
+      }
 </style>
 </head>
 <body>
@@ -67,6 +70,7 @@
       <th><a href="{% url 'schedule:month_list' '2015' 'aug' %}">/schedule/2015/aug/</a></th>
       <td>Get a months worth.</td>
     </tr>
+    {% comment %}
     <tr>
       <th><a href="{% url 'schedule:week_list' '2015' '23' %}">/schedule/2015/week/23/</a></th>
       <td>Get a weeks worth.</td>
@@ -75,6 +79,7 @@
       <th><a href="{% url 'schedule:day_list' '2015' 'aug' '23' %}">/schedule/2015/aug/23/</a></th>
       <td>Get a days worth.</td>
     </tr>
+    {% endcomment %}
     <tr>
       <th><a href="{% url 'schedule:today_list' %}">/schedule/today/</a></th>
       <td>Get a todays schedule.</td>
