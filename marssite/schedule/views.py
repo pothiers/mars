@@ -10,8 +10,8 @@ from .forms import SlotSetForm
 from .models import Slot, EmptySlot
 from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
+from rest_framework.views import APIView
 from rest_framework.decorators import detail_route, list_route, api_view
-from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from .serializers import SlotSerializer
@@ -174,10 +174,13 @@ def load_schedule(uploadedfile, maxsize=1e6):
 
 
 
-class ScheduleViewSet(viewsets.ModelViewSet):
+
+#class SlotList(generics.ListAPIView, ArchiveIndexView):
+class SlotList(APIView, ArchiveIndexView):
+    "Display all scheduled observations."
     queryset = Slot.objects.all()
-    paginate_by = 100
     serializer_class = SlotSerializer
+    #paginate_by = 200
 
 class SlotDetail(APIView):
     "Retrieve, upate or deleted slot instance."
@@ -213,16 +216,21 @@ class SlotList(generics.ListAPIView, ArchiveIndexView):
     allow_future = True
     template_name = 'schedule/slot_list.html'
     context_object_name = 'slot_list'
+
     serializer_class = SlotSerializer
     paginate_by = 200
     print('DBG: serializer={}'.format(repr(SlotSerializer())))
-    
+
     def get_context_data(self, **kwargs):
         context = super(ArchiveIndexView, self).get_context_data(**kwargs)
         context['title'] = 'Full Schedule'
         return context
 
-class SlotTodayList(generics.ListAPIView, TodayArchiveView):
+    
+
+
+#class SlotTodayList(generics.ListAPIView, TodayArchiveView):
+class SlotTodayList(generics.GenericAPIView,TodayArchiveView):
     "Display all scheduled observations for *TODAY*."
     queryset = Slot.objects.all()
     model = Slot
@@ -236,8 +244,13 @@ class SlotTodayList(generics.ListAPIView, TodayArchiveView):
         context = super(SlotTodayList, self).get_context_data(**kwargs)
         context['title'] = 'Schedule for today'
         return context
-    
-class SlotMonthList(generics.ListAPIView, MonthArchiveView):
+
+    def get_queryset(self, **kwargs):
+        return super(TodayArchiveView, self).get_queryset(**kwargs)
+
+
+
+class SlotMonthList(generics.GenericAPIView, MonthArchiveView):
     "Display all scheduled observations for the selected month."
     model = Slot
     date_field = 'obsdate'
@@ -246,46 +259,21 @@ class SlotMonthList(generics.ListAPIView, MonthArchiveView):
     context_object_name = 'slot_list'
     serializer_class = SlotSerializer
     
+    def get_queryset(self, **kwargs):
+        return super(MonthArchiveView, self).get_queryset(**kwargs)
+
     def get_context_data(self, **kwargs):
-        date_list, obj_list, extra_content = self.get_dated_items()
         context = super(SlotMonthList, self).get_context_data(**kwargs)
-        context['title'] = 'Schedule for month: {}'.format(extra_content['month'])
+        context['title'] = ('Schedule for month: {}/{}'
+                            .format(self.kwargs['month'],
+                                    self.kwargs['year'] ))
         return context
-
-class SlotWeekList(generics.ListAPIView, WeekArchiveView):
-    "Display all scheduled observations for the selected week."
-    model = Slot
-    date_field = 'obsdate'
-    allow_future = True
-    week_format = "%W"
-    template_name = 'schedule/slot_list.html'
-    context_object_name = 'slot_list'
+    
+class ScheduleViewSet(viewsets.ModelViewSet):
+    queryset = Slot.objects.all()
+    paginate_by = 100
     serializer_class = SlotSerializer
-    
-    def get_context_data(self, **kwargs):
-        date_list, obj_list, extra_content = self.get_dated_items()
-        print('DBG: date_list={}, extra_content={}'.format(date_list, extra_content))
-        context = super(SlotWeekList, self).get_context_data(**kwargs)
-        print('DBG: context keys={}'.format(context.keys()))
-        context['title'] = 'Schedule for week: {}'.format(extra_content['week'])
-        return context
 
-class SlotDayList(generics.ListAPIView, DayArchiveView):
-    "Display all scheduled observations for a selected day."
-    model = Slot
-    date_field = 'obsdate'
-    allow_future = True
-    template_name = 'schedule/slot_list.html'
-    context_object_name = 'slot_list'
-    serializer_class = SlotSerializer
-    
-    def get_context_data(self, **kwargs):
-        date_list, obj_list, extra_content = self.get_dated_items()
-        #print('DBG: date_list={}, extra_content={}'.format(date_list, extra_content))
-        context = super(SlotDayList, self).get_context_data(**kwargs)
-        context['title'] = 'Schedule for day: {}'.format(extra_content['day'])
-        return context
-    
 
 @api_view(('GET',))
 def api_root(request, format=None):

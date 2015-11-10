@@ -14,20 +14,26 @@
       table {
       border-spacing: 0px;
       }
-      .tada {
+      .prod {
       background-color: rgba(255,255,0,0.3);
+      }
+      .ops {
+      background-color: rgba(0,255,0,0.3);
       }
       .testing {
       background-color: rgba(0,0,255,0.1);
       }
+      .inactive {
+      background-color: rgba(0,0,0,0.2);
+      }
 </style>
 </head>
 <body>
-  <h3>Key MARS apps (v151104)</h3>
+  <h3>Key MARS apps (v151106)</h3>
 
   <p>
     <em>
-      The only <span class="tada">service used by normal TADA</span>
+      The only <span class="prod">service used by normal TADA</span>
       is <code>/schedule/propid/TELESCOPE/DATE</code>.  For <span class="testing">TADA testing</span>
       some of the <code>/provisional/</code> services are used also.
     </em>
@@ -57,7 +63,7 @@
       <th>Load schedule for range of dates.</th>
     </tr>
     -->
-    <tr class="tada">
+    <tr class="prod">
       <th>
 	<a href="{% url 'schedule:getpropid' 'kp4m' '2014-01-01' %}">
 	  /schedule/propid/TELESCOPE/DATE
@@ -65,10 +71,11 @@
       </th>
       <td>Get propid given telescope and observation date.</td>
     </tr>
-    <tr>
+    <tr class="ops">
       <th><a href="{% url 'schedule:month_list' '2015' 'aug' %}">/schedule/2015/aug/</a></th>
       <td>Get a months worth.</td>
     </tr>
+    {% comment %}
     <tr>
       <th><a href="{% url 'schedule:week_list' '2015' '23' %}">/schedule/2015/week/23/</a></th>
       <td>Get a weeks worth.</td>
@@ -77,12 +84,13 @@
       <th><a href="{% url 'schedule:day_list' '2015' 'aug' '23' %}">/schedule/2015/aug/23/</a></th>
       <td>Get a days worth.</td>
     </tr>
-    <tr>
+    {% endcomment %}
+    <tr class="ops">
       <th><a href="{% url 'schedule:today_list' %}">/schedule/today/</a></th>
       <td>Get a todays schedule.</td>
     </tr>
 
-    <tr>
+    <tr class="ops">
       <th><a href="{% url 'schedule:upload_file' %}">/schedule/upload/</a></th>
       <td>Upload XML file of schedule data and load it.</td>
     </tr>
@@ -108,11 +116,11 @@
       <th>
         <a href="{% url 'siap:filenames' '2011A-0525' %}">/siap/prop/PROPID</a>
       </th>
-      <td>Filesnames associated with PROPID='2011A-0525'</td>
+      <td>Filenames associated with PROPID='2011A-0525'</td>
     </tr>
 
 
-    <tr>
+    <tr class="inactive">
       {# <a href="{% url recon:index' %}">/recon/</a> #}
       <th><a href="recon:index">/recon/</a></th>
       <td><em>UNDER CONSTRUCTION!! </em>
@@ -123,7 +131,7 @@
     </tr>
 
 
-    <tr>
+    <tr class="testing">
       <th><a href="{% url 'provisional:index' %}">/provisional/</a></th>
 
       <td>List of all files stored in the Archive on a provisional basis.
@@ -135,7 +143,7 @@
       <td>Insert all files matching "TADA like" reference file into
         provisional list.</td>
     </tr>
-    <tr>
+    <tr  class="testing">
       <th>/provisional/delete/REF_FILENAME/</th>
       <td><strong>Delete a file from Archive</strong> and the
         provisional list.</td>
@@ -163,15 +171,23 @@
     </tr>
     <tr>
       <th><a href="docs">/docs/</a></th>
-      <td><em>UNDER CONSTRUCTION!! </em>
-      <br />
-      Web-service API automatically generated documentation.</td>
+      <td>
+	Web-service API automatically generated documentation.
+      </td>
     </tr>
     <tr>
       <th><a href="api">/api/</a></th>
       <td>Django REST framework auto generated API pages</td>
     </tr>
 
+  </table>
+  <hr />
+  <table>
+    <caption>Legend</caption>
+    <tr class="ops"><td>Ops</td></tr>
+    <tr class="testing"><td>Testing</td></tr>
+    <tr class="inactive"><td>Inactive</td></tr>
+    <tr class="prod"><td>Production</td></tr>
   </table>
 
   
