@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf.urls.static import static
+from django.conf import settings
+
 
 from rest_framework import routers, serializers, viewsets
 from django.contrib.auth.models import User # ,Group
@@ -53,6 +56,7 @@ router = routers.DefaultRouter()
 urlpatterns = [
     url(r'^$', include('water.urls', namespace='water')),
     url(r'^home$', include('water.urls', namespace='water')),
+    #url(r'^favicon.ico$', 'django.views.static.server',  {'document_root': '/var/mars/Mars_icon.jpg'}),
 
     url(r'^siap/', include('siap.urls', namespace='siap')),
     url(r'^schedule/', include('schedule.urls', namespace='schedule')),
@@ -63,4 +67,4 @@ urlpatterns = [
         include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/', include(router.urls)),
     url(r'^docs/', include('rest_framework_swagger.urls', namespace='docs')),
-]
+]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

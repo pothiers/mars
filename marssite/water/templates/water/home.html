@@ -1,7 +1,9 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/jpg" href="{% static 'water/favicon.ico' %}" /> 
     <title>MARS Home</title>
     <style>
       table, th, td {
@@ -95,9 +97,10 @@
       <td>List of all Archive files containing substring "TADA". Get
       different renderings based on requested content type. Examples:
       <pre>
-curl -H "Content-type: application/json" 'http://localhost:8000/siap/tada/'
-curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
-      </pre></td>
+  curl -H "Content-type: application/json" 'http://localhost:8000/siap/tada/'
+  curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
+      </pre>
+      </td>
     </tr>
 
 
@@ -143,24 +146,21 @@ curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
           Archive</strong> and the provisional list.</td>
     </tr>
     <tr  class="testing">
-      <th>/provisional/add/REF_FILENAME/?source=SOURCE_FILENAME</th>
-      <td>{% comment %}
-        <a href="{% url 'provisional:index'%}add/ref999/?source=src999">
+      <th>
+        <a href="{% url 'provisional:index'%}add/ksb_150709_044421_ori_TADATEST.fits.fz/?source=my-bok-999.fits">
+          /provisional/add/{ref_filename}/?source={source_filename}
         </a>
-        {% endcomment %}
-        <br />
+      </th>
+      <td>
         Add a file to list of provisional files. Overwrites previous
         REF_FILENAME if it exists.
         can use as in:
-        <br />
         <pre>
-          fname=/data/scraped/mtn_raw/ct15m-echelle/chi141225.1273.fits
-          curl "http://localhost:8000/provisional/add/ref5/?source=$fname"
+  fname=/data/scraped/mtn_raw/ct15m-echelle/chi141225.1273.fits
+  curl "http://localhost:8000/provisional/add/ref5/?source=$fname"
         </pre>
       </td>
     </tr>
-
-
     <tr>
       <th><a href="docs">/docs/</a></th>
       <td><em>UNDER CONSTRUCTION!! </em>

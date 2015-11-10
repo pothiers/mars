@@ -46,7 +46,7 @@ def stuff_with_tada(request, limit=1000):
     return redirect('/provisional/')
 
         
-def add(request, reference=None):
+def add(request, reference):
     source = request.GET.get('source')
     fitsname = Fitsname(id=reference, source=source)
     fitsname.save()

@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
     # eg: /schedule/
     # The whole schedule
-    #!url(r'^$', views.list, name='list'),
-    url(r'^list/$', views.SlotList.as_view(), name='list'),
+    url(r'^list/$', views.list, name='list'),
+    #url(r'^list/$', views.SlotList.as_view(), name='list'),
     #!url(r'^$', views.SlotList.as_view(), name='list'),
     url(r'^$', views.api_root, name='api_root'),
 
@@ -44,6 +44,8 @@ urlpatterns = [
         views.getpropid, name='getpropid'),
     url(r'^slot/(?P<tele>.+)/(?P<date>.+)/$',
         views.SlotGet.as_view(), name='getslot'),
+    url(r'^slot_detail/(?P<pk>[0-9]+)/$',
+        views.SlotDetail.as_view(), name='slot-detail'),
 
     #!url(r'^day/(?P<date>.+)/$', views.list_day, name='list_day'),
 

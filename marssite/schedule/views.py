@@ -13,6 +13,7 @@ from rest_framework import viewsets, generics
 from rest_framework.decorators import detail_route, list_route, api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework.views import APIView
 from .serializers import SlotSerializer
 
 import json
@@ -117,17 +118,16 @@ def getpropid(request, tele, date):
             es.save()
         return HttpResponse('NA', content_type='text/plain')
 
-class SlotGet(generics.GenericAPIView, ListView):
+class SlotGet(generics.GenericAPIView, DetailView):
     """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
     serializer_class = SlotSerializer
     model = Slot
     template_name = 'schedule/slot_detail.html'
-    context_object_name = 'slot_list'
     
     def get_context_data(self, **kwargs):
-        context = super(ListView, self).get_context_data(**kwargs)
+        context = super(DetailView, self).get_context_data(**kwargs)
         context['title'] = ('Schedule for Telescope ({tele}) on {date}'
                             .format(**self.kwargs))
         return context
@@ -179,15 +179,43 @@ class ScheduleViewSet(viewsets.ModelViewSet):
     paginate_by = 100
     serializer_class = SlotSerializer
 
+class SlotDetail(APIView):
+    "Retrieve, upate or deleted slot instance."
+    def get_object(self, pk):
+        try:
+            return Slot.objects.get(pk=pk)
+        except Slot.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        slot = self.get_object(pk)
+        serializer = SlotSerializer(slot)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        slot = self.get_object(pk)
+        serializer = SlotSerializer(slot, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        slot = self.get_object(pk)
+        slot.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class SlotList(generics.ListAPIView, ArchiveIndexView):
     "Display all scheduled observations."
     model = Slot
     date_field = 'obsdate'
+    queryset = Slot.objects.all()
     allow_future = True
     template_name = 'schedule/slot_list.html'
     context_object_name = 'slot_list'
     serializer_class = SlotSerializer
     paginate_by = 200
+    print('DBG: serializer={}'.format(repr(SlotSerializer())))
     
     def get_context_data(self, **kwargs):
         context = super(ArchiveIndexView, self).get_context_data(**kwargs)
@@ -196,12 +224,14 @@ class SlotList(generics.ListAPIView, ArchiveIndexView):
 
 class SlotTodayList(generics.ListAPIView, TodayArchiveView):
     "Display all scheduled observations for *TODAY*."
+    queryset = Slot.objects.all()
     model = Slot
     date_field = 'obsdate'
     allow_future = True
     template_name = 'schedule/slot_list.html'
     context_object_name = 'slot_list'
     serializer_class = SlotSerializer
+
     def get_context_data(self, **kwargs):
         context = super(SlotTodayList, self).get_context_data(**kwargs)
         context['title'] = 'Schedule for today'
@@ -260,6 +290,8 @@ class SlotDayList(generics.ListAPIView, DayArchiveView):
 @api_view(('GET',))
 def api_root(request, format=None):
     return Response({
-        'upload': reverse('schedule:upload_file', request=request, format=format),
-        'empty': reverse('schedule:list_empty', request=request, format=format)
+        'upload': reverse('schedule:upload_file',
+                          request=request, format=format),
+        'empty': reverse('schedule:list_empty', request=request, format=format),
+        'list': reverse('schedule:list', request=request, format=format),
     })
