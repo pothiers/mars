@@ -50,7 +50,7 @@ def upload_file(request):
     return render_to_response('schedule/upload.html', c)    
     #!return render('schedule/upload.html', {'form': form})    
 
-
+3
 
 @api_view(['GET'])
 def list(request, limit=100):
@@ -110,7 +110,8 @@ def getpropid(request, tele, date):
     serializer_class = SlotSerializer
     try:
         slot = Slot.objects.get(obsdate=date, telescope=tele)
-        propid = slot.propid
+        #!propid = slot.propid
+        propid = slot.proposals.all()[0]
         return HttpResponse(propid, content_type='text/plain')
     except Exception as err:
         if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
