@@ -2,7 +2,7 @@ settings_local.py
 env_mars/
 OBSOLETE/
 foo.*
-settings_local.py
+marssite/schedule/OBSOLETE-views.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

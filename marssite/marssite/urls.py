@@ -22,9 +22,8 @@ from django.conf import settings
 from rest_framework import routers, serializers, viewsets
 from django.contrib.auth.models import User # ,Group
 from provisional.views import FitsnameViewSet
-from schedule.views import ScheduleViewSet
+#from schedule.views import ScheduleViewSet
 from water.views import api_root
-
 
 # Serializers define the API representation.
 #!class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -63,7 +62,9 @@ urlpatterns = [
     url(r'^schedule/', include('schedule.urls', namespace='schedule')),
     url(r'^provisional/', include('provisional.urls', namespace='provisional')),
 
+    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
+
     url(r'^api-auth/',
         include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^api/', include(router.urls)),

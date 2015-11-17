@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic import ListView, TodayArchiveView, DayArchiveView, WeekArchiveView, MonthArchiveView, ArchiveIndexView, DetailView
 
 from .forms import SlotSetForm
-from .models import Slot, EmptySlot
+from .models import Slot, EmptySlot, Proposal
 from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
@@ -77,8 +77,8 @@ no PROPID.  These should probably be filled."""
     return render(request,
                   'schedule/list_empty.html',
                   RequestContext(request, {
-                      'limit': 'none',
-                      'slot_list': slots,
+                                 'limit': 'none',
+                                 'slot_list': slots,
                   })
                   )
 
@@ -152,24 +152,28 @@ def load_schedule(uploadedfile, maxsize=1e6):
     begin = root.get('begindate')
     end = root.get('enddate')
     print('DBG-2: created={}, begin={}, end={}'.format(created, begin, end))
+    print('DBG-3: contains {} entries'.format(len(root)))
 
     for proposal in root:
         obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         telescope = proposal.get('telescope')
+
         propid = proposal.get('propid')
         title=proposal.findtext('title')
         piname=proposal.findtext('piname')
         affiliation=proposal.findtext('affiliation')
-        #! print('DBG-3: telescope={}, obsdate={}, propid={}'.format(telescope, obsdate, propid))
-        #! print('DBG-3.2: title={}, pi={}, affil={}'.format(title, pi, affil))
-        
-        Slot.objects.filter(telescope=telescope, obsdate=obsdate).delete()
-        slot = Slot(telescope = telescope, obsdate = obsdate, propid = propid,
-                    pi_name=piname,
-                    pi_affiliation=affiliation,
-                    title=title
-        )
-        slot.save()
+
+
+        # Never overwrite existing Proposal or Slot
+        ddict=dict(pi_name=piname,
+                   pi_affiliation=affiliation,
+                   title=title)
+        prop, pmade = Proposal.objects.get_or_create(pk=propid, defaults=ddict)
+        slot, smade = Slot.objects.get_or_create(telescope=telescope,
+                                                 obsdate=obsdate)
+        if smade:
+            slot.proposals.add(prop)
+            
     return redirect('/schedule/')
 
 
@@ -219,7 +223,7 @@ class SlotList(generics.ListAPIView, ArchiveIndexView):
 
     serializer_class = SlotSerializer
     paginate_by = 200
-    print('DBG: serializer={}'.format(repr(SlotSerializer())))
+    #!print('DBG: serializer={}'.format(repr(SlotSerializer())))
 
     def get_context_data(self, **kwargs):
         context = super(ArchiveIndexView, self).get_context_data(**kwargs)
