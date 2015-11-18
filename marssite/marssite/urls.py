@@ -53,6 +53,8 @@ router = routers.DefaultRouter()
 #router.register(r'fitsnames', FitsnameViewSet)
 #router.register(r'schedules', ScheduleViewSet)
 
+admin.site.site_header = 'MARS Administration'
+
 urlpatterns = [
     url(r'^$', include('water.urls', namespace='water')),
     url(r'^home$', include('water.urls', namespace='water')),
@@ -61,6 +63,7 @@ urlpatterns = [
     url(r'^siap/', include('siap.urls', namespace='siap')),
     url(r'^schedule/', include('schedule.urls', namespace='schedule')),
     url(r'^provisional/', include('provisional.urls', namespace='provisional')),
+    url(r'^tadas/', include('tadas.urls', namespace='tadas')),
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
@@ -71,3 +74,4 @@ urlpatterns = [
     url(r'^api/', api_root, name='api_root'),
     url(r'^docs/', include('rest_framework_swagger.urls', namespace='docs')),
 ]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

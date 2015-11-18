@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_swagger',
     'django_tables2',
+    'tadas',  # tada status REST API
 )
 
 MIDDLEWARE_CLASSES = (

@@ -3,6 +3,7 @@ from django.db import models
 class EmptySlot(models.Model):
     telescope = models.CharField(max_length=80)
     obsdate = models.DateField()
+    modified = models.DateTimeField(auto_now=True, help_text='When modified' )
 
     class Meta:
         unique_together = ('telescope', 'obsdate')
@@ -16,7 +17,8 @@ class Proposal(models.Model):
     pi_name = models.CharField(max_length=80,
                                help_text='Principal Investigator name')
     pi_affiliation = models.CharField(max_length=160)
-
+    modified = models.DateTimeField(auto_now=True, help_text='When modified')
+    
     def __str__(self):
         return self.propid
                 
@@ -33,7 +35,8 @@ class Slot(models.Model):
                                  choices=[(t,t) for t in telescopes] )
     obsdate = models.DateField(help_text='Observation date') # DATE-OBS
     proposals = models.ManyToManyField(Proposal)
-
+    modified = models.DateTimeField(auto_now=True, help_text='When modified' )
+    
     def propid_list(self):
         return ','.join([p.propid for p in self.proposals.all()[:4]])
     

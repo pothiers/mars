@@ -140,6 +140,8 @@ class SlotGet(generics.GenericAPIView, DetailView):
 
     
 def load_schedule(uploadedfile, maxsize=1e6):
+    """Load schedule slots from XML file. Skip any slots (date,telescope)
+that already have Propid values"""
     print('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
     if uploadedfile.size > maxsize:
         return None
@@ -158,12 +160,13 @@ def load_schedule(uploadedfile, maxsize=1e6):
     for proposal in root:
         obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         telescope = proposal.get('telescope')
-
         propid = proposal.get('propid')
+        #print('DBG-4.1: got proposal rec from XML: date={}, tele={}, propid={}'
+        #      .format(obsdate, telescope, propid))
+
         title=proposal.findtext('title')
         piname=proposal.findtext('piname')
         affiliation=proposal.findtext('affiliation')
-
 
         # Never overwrite existing Proposal or Slot
         ddict=dict(pi_name=piname,
@@ -172,8 +175,20 @@ def load_schedule(uploadedfile, maxsize=1e6):
         prop, pmade = Proposal.objects.get_or_create(pk=propid, defaults=ddict)
         slot, smade = Slot.objects.get_or_create(telescope=telescope,
                                                  obsdate=obsdate)
+        if pmade:
+            print('DBG-4.2: created proposal record for propid={}'
+                  .format(propid))
+        else:
+            print('DBG-4.2: Using previous proposal record for propid={}'
+                  .format(propid))
+
         if smade:
+            print('DBG-4.3: created slot record for tele={}, date={}'
+                  .format(telescope, obsdate))
             slot.proposals.add(prop)
+        else:
+            print('DBG-4.3: Using previous slot record for tele={}, date={}'
+                  .format(telescope, obsdate))
             
     return redirect('/schedule/')
 

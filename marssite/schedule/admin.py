@@ -9,7 +9,7 @@ class PropInline(admin.TabularInline):
 @admin.register(Slot)
 class SlotAdmin(admin.ModelAdmin):
     #!list_display = ('frozen', 'obsdate', 'telescope', 'propid')
-    list_display = ('obsdate', 'telescope', 'propid_list')
+    list_display = ('obsdate', 'telescope', 'propid_list', 'modified')
     list_filter = ['obsdate', 'telescope']
     filter_horizontal = ['proposals']
     date_hierarchy = 'obsdate'
@@ -20,6 +20,7 @@ class SlotAdmin(admin.ModelAdmin):
 @admin.register(Proposal)
 class ProposalAdmin(admin.ModelAdmin):
     fields = ('propid', 'title', ('pi_name', 'pi_affiliation'))
+    list_display = ('propid', 'title', 'pi_name', 'pi_affiliation', 'modified')
     inlines = (PropInline,)
 
 #@admin.register(SlotSet)    
