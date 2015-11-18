@@ -12,7 +12,10 @@
       .ops {
       background-color: rgba(0,255,0,0.3);
       }
-      .testing {
+      .dev {
+      background-color: rgba(255,0,0,0.3);
+      }
+      .test {
       background-color: rgba(0,0,255,0.1);
       }
       .inactive {
@@ -26,7 +29,7 @@
   <p>
     <em>
       The only <span class="prod">service used by normal TADA</span>
-      is <code>/schedule/propid/TELESCOPE/DATE</code>.  For <span class="testing">TADA testing</span>
+      is <code>/schedule/propid/TELESCOPE/DATE</code>.  For <span class="test">TADA testing</span>
       some of the <code>/provisional/</code> services are used also.
     </em>
   </p>
@@ -40,11 +43,11 @@
       <th><a href="{% url 'admin:index' %}provisional/fitsname/add/">/admin/provisional/fitsname/add/</a></th>
       <td>Record FITS file as provisional.</td>
     </tr>
-    <tr>
+    <tr class="ops">
       <th><a href="{% url 'admin:index' %}schedule/slot/">/admin/schedule/slot/</a></th>
       <td>Edit schedule.</td>
     </tr>
-    <tr>
+    <tr class="dev">
       <th><a href="{% url 'admin:index' %}doc/">/admin/doc/</a></th>
       <td>Documentation (for developers) automatically generated from docstrings of code.</td>
     </tr>
@@ -127,29 +130,29 @@
     </tr>
 
 
-    <tr class="testing">
+    <tr class="test">
       <th><a href="{% url 'provisional:index' %}">/provisional/</a></th>
 
       <td>List of all files stored in the Archive on a provisional basis.
         These can be deleted as a batch or individiually through
         web-services.</td>
     </tr>
-    <tr class="testing">
+    <tr class="test">
       <th><a href="{% url 'provisional:stuff' %}">/provisional/stuff</a></th>
       <td>Insert all files matching "TADA like" reference file into
         provisional list.</td>
     </tr>
-    <tr  class="testing">
+    <tr  class="test">
       <th>/provisional/delete/REF_FILENAME/</th>
       <td><strong>Delete a file from Archive</strong> and the
         provisional list.</td>
     </tr>
-    <tr class="testing">
+    <tr class="test">
       <th><a href="{% url 'provisional:rollback' %}">/provisional/rollback</a></th>
       <td><strong>Delete all files that in provisional list from
           Archive</strong> and the provisional list.</td>
     </tr>
-    <tr  class="testing">
+    <tr  class="test">
       <th>
         <a href="{% url 'provisional:index'%}add/ksb_150709_044421_ori_TADATEST.fits.fz/?source=my-bok-999.fits">
           /provisional/add/{ref_filename}/?source={source_filename}
@@ -180,10 +183,11 @@
   <hr />
   <table>
     <caption>Legend</caption>
-    <tr class="ops"><td>Ops</td></tr>
-    <tr class="testing"><td>Testing</td></tr>
-    <tr class="inactive"><td>Inactive</td></tr>
     <tr class="prod"><td>Production</td></tr>
+    <tr class="ops"><td>Operations</td></tr>
+    <tr class="dev"><td>Development</td></tr>
+    <tr class="test"><td>Testing</td></tr>
+    <tr class="inactive"><td>Inactive</td></tr>
   </table>
 
   
