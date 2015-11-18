@@ -73,5 +73,5 @@ urlpatterns = [
     #url(r'^api/', include(router.urls)),
     url(r'^api/', api_root, name='api_root'),
     url(r'^docs/', include('rest_framework_swagger.urls', namespace='docs')),
-]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] # + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
