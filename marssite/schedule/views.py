@@ -5,6 +5,7 @@ from django.shortcuts import render_to_response
 from django.core.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic import ListView, TodayArchiveView, DayArchiveView, WeekArchiveView, MonthArchiveView, ArchiveIndexView, DetailView
+from django.db.models import Value
 
 from .forms import SlotSetForm
 from .models import Slot, EmptySlot, Proposal
@@ -15,6 +16,7 @@ from rest_framework.decorators import detail_route, list_route, api_view
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 from .serializers import SlotSerializer
+from .tables import SlotTable
 
 import json
 import subprocess
@@ -58,6 +60,7 @@ def list(request, limit=100):
     serializer_class = SlotSerializer
     slots = Slot.objects.all()
     #slots = Slot.objects.all()[:limit]
+    #table = SlotTable(Slot.objects.all())
     return render(request,
                   'schedule/list.html',
                   RequestContext(request, {
@@ -65,6 +68,7 @@ def list(request, limit=100):
                       #'limit': limit,
                       'limit': 'NONE',
                       'slot_list': slots,
+                      #'table': table,
                   })
                   )
 
@@ -157,11 +161,12 @@ that already have Propid values"""
     print('DBG-2: created={}, begin={}, end={}'.format(created, begin, end))
     print('DBG-3: contains {} entries'.format(len(root)))
 
+    # kinda slow!  Perhaps because doing multi-queries + insert per slot.
     for proposal in root:
         obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         telescope = proposal.get('telescope')
         propid = proposal.get('propid')
-        #print('DBG-4.1: got proposal rec from XML: date={}, tele={}, propid={}'
+        #print('DBG-4.1: got proposal rec from XML: date={},tele={},propid={}'
         #      .format(obsdate, telescope, propid))
 
         title=proposal.findtext('title')
@@ -169,25 +174,23 @@ that already have Propid values"""
         affiliation=proposal.findtext('affiliation')
 
         # Never overwrite existing Proposal or Slot
-        ddict=dict(pi_name=piname,
-                   pi_affiliation=affiliation,
-                   title=title)
-        prop, pmade = Proposal.objects.get_or_create(pk=propid, defaults=ddict)
+        dd=dict(pi_name=piname, pi_affiliation=affiliation, title=title)
+        prop, pmade = Proposal.objects.get_or_create(pk=propid, defaults=dd)
         slot, smade = Slot.objects.get_or_create(telescope=telescope,
                                                  obsdate=obsdate)
         if pmade:
-            print('DBG-4.2: created proposal record for propid={}'
+            print('DBG-4.2a: created proposal record for propid={}'
                   .format(propid))
         else:
-            print('DBG-4.2: Using previous proposal record for propid={}'
+            print('DBG-4.2b: Using previous proposal record for propid={}'
                   .format(propid))
 
         if smade:
-            print('DBG-4.3: created slot record for tele={}, date={}'
-                  .format(telescope, obsdate))
             slot.proposals.add(prop)
+            print('DBG-4.3a: created slot record for tele={}, date={}'
+                  .format(telescope, obsdate))
         else:
-            print('DBG-4.3: Using previous slot record for tele={}, date={}'
+            print('DBG-4.3b: Using previous slot record for tele={}, date={}'
                   .format(telescope, obsdate))
             
     return redirect('/schedule/')
@@ -278,6 +281,7 @@ class SlotMonthList(generics.GenericAPIView, MonthArchiveView):
     template_name = 'schedule/slot_list.html'
     context_object_name = 'slot_list'
     serializer_class = SlotSerializer
+    ordering = 'obsdate'
     
     def get_queryset(self, **kwargs):
         return super(MonthArchiveView, self).get_queryset(**kwargs)

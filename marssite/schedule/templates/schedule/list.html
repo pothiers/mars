@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{% static "water/style.css" %}" />
+    <link rel="icon" type="image/jpg" href="{% static "water/favicon.ico" %}" /> 
     <title>Schedule</title>
     <style>
       table, th, td {
@@ -27,5 +28,16 @@
 
 {#<p> {{ schedule }} </p> #}
 {% render_table slot_list %}
+
+{% comment %}
+<table>
+  {% for slot in slot_list %}
+  <tr>
+    <td></td>
+  </tr>
+  {% endfor %}
+</table>
+{% endcomment %}
+
 </body>
 </html>

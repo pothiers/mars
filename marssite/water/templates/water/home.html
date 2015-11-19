@@ -24,13 +24,12 @@
 </style>
 </head>
 <body>
-  <h3>Key MARS apps (v151118b)</h3>
+  <h3>Key MARS apps (v151118c)</h3>
 
   <p>
     <em>
-      The only <span class="prod">service used by normal TADA</span>
-      is <code>/schedule/propid/TELESCOPE/DATE</code>.  For <span class="test">TADA testing</span>
-      some of the <code>/provisional/</code> services are used also.
+      Very few of these are used during production TADA processing.
+      See the legend at the bottom of the page.
     </em>
   </p>
 
@@ -70,7 +69,7 @@
       </th>
       <td>Get propid given telescope and observation date.</td>
     </tr>
-    <tr class="ops">
+    <tr>
       <th><a href="{% url 'schedule:month_list' '2015' 'aug' %}">/schedule/2015/aug/</a></th>
       <td>Get a months worth.</td>
     </tr>
@@ -84,9 +83,9 @@
       <td>Get a days worth.</td>
     </tr>
     {% endcomment %}
-    <tr class="ops">
+    <tr>
       <th><a href="{% url 'schedule:today_list' %}">/schedule/today/</a></th>
-      <td>Get a todays schedule.</td>
+      <td>Get todays schedule.</td>
     </tr>
 
     <tr class="ops">
@@ -120,15 +119,21 @@
 
 
     <tr class="inactive">
-      {# <a href="{% url recon:index' %}">/recon/</a> #}
-      <th><a href="recon:index">/recon/</a></th>
-      <td><em>UNDER CONSTRUCTION!! </em>
-      <br />
+      <th><a href="{% url 'tadas:submittal_list' %}">/tadas/</a></th>
+      <td>
+      Reconcile files POSTED verses INGESTED into the archive. Compare
+      the list of files posted via <code>raw_post</code> from all
+      domes to the list of files stored in the Noao Science Archive.</td>
+    </tr>
+    <tr class="inactive">
+      <th><a href="{% url 'tadas:submittal_add' %}">/tadas/add</a></th>
+      <td>
       Reconcile files POSTED verses INGESTED into the archive. Compare
       the list of files posted via <code>raw_post</code> from all
       domes to the list of files stored in the Noao Science Archive.</td>
     </tr>
 
+    
 
     <tr class="test">
       <th><a href="{% url 'provisional:index' %}">/provisional/</a></th>
@@ -180,14 +185,14 @@
     </tr>
 
   </table>
-  <hr />
+  <hr style="height:15px;" />
   <table>
     <caption>Legend</caption>
-    <tr class="prod"><td>Production</td></tr>
-    <tr class="ops"><td>Operations</td></tr>
-    <tr class="dev"><td>Development</td></tr>
-    <tr class="test"><td>Testing</td></tr>
-    <tr class="inactive"><td>Inactive</td></tr>
+    <tr class="prod"><td><em>Production</em></td></tr>
+    <tr class="ops"><td><em>Operations:</em> possibly used by DMO staff</td></tr>
+    <tr class="dev"><td><em>Development:</em> info on interfacing to services via software</td></tr>
+    <tr class="test"><td><em>Testing:</em> used by smoke tests, etc.</td></tr>
+    <tr class="inactive"><td>Inactive or under construction</td></tr>
   </table>
 
   

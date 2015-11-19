@@ -7,6 +7,8 @@ urlpatterns = [
     url(r'^$', views.SubmittalList.as_view(), name='submittal_list'),
     url(r'^(?P<pk>[0-9]+)/$',
         views.SubmittalDetail.as_view(),  name='submittal_detail'),
+    url(r'^add$', views.add_submit, name='submittal_add'),
+
 ]
 
 

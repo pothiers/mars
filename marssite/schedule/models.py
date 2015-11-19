@@ -21,8 +21,7 @@ class Proposal(models.Model):
     
     def __str__(self):
         return self.propid
-                
-    
+
 class Slot(models.Model):
     # These are the only telescopes allowed by the perl script that
     # uses a foreign web service for schedule retrieval.  Since the web
@@ -39,6 +38,8 @@ class Slot(models.Model):
     
     def propid_list(self):
         return ','.join([p.propid for p in self.proposals.all()[:4]])
+
+    propids = property(propid_list)
     
     def __str__(self):
         return '{}:{}'.format(self.obsdate, self.telescope)

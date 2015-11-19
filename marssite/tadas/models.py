@@ -11,6 +11,10 @@ class Submittal(models.Model):
                                 help_text='As JSON')
     when = models.DateTimeField(auto_now_add=True,  help_text='When submitted')
 
+    def __str__(self):
+        return ('{} -- {}({}): {}'
+                .format(self.source,self.archive,self.metadata,self.status))
+ 
     class Meta:
         ordering = ('when',)
         
