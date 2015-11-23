@@ -12,11 +12,11 @@ from .models import Submittal
 from .serializers import SubmittalSerializer
 
 
-# curl http://localhost:8000/tadas/ > ~/Downloads/list.json
+# curl http://localhost:8000/audit/ > ~/Downloads/list.json
 class SubmittalList(generics.ListAPIView):
     model = Submittal
     queryset = Submittal.objects.all()
-    template_name = 'tadas/submittal_list.html'
+    template_name = 'audit/submittal_list.html'
 
     serializer_class = SubmittalSerializer
     paginate_by = 50
@@ -24,11 +24,11 @@ class SubmittalList(generics.ListAPIView):
 class SubmittalDetail(generics.CreateAPIView):
     model = Submittal
     queryset = Submittal.objects.all()
-    template_name = 'tadas/submittal_detail.html'
+    template_name = 'audit/submittal_detail.html'
     serializer_class = SubmittalSerializer
 
-    
-# curl -H "Content-Type: application/json" -X POST -d '{"source":"xyz","archive":"xyz","status":"NA", "metadata":"NA"}' http://localhost:8000/tadas/add/ 
+
+#curl -H "Content-Type: application/json" -X POST -d '{"source":"xyz","archive":"xyz","status":"NA1", "metadata":"NA2"}' http://localhost:8000/audit/add
 @csrf_exempt
 @api_view(['POST'])
 @parser_classes((JSONParser,))
@@ -36,10 +36,10 @@ def add_submit(request):
     """Add a SUBMIT record using JSON data."""
     #if request.is_ajax():
     if request.method == 'POST':
-        print('Raw Data: "{}"'.format(request.body   ))
-        print('Parsed Data: "{}"'.format(request.data   ))
+        print('Raw Data: "{}"'.format(request.body))
+        print('Parsed Data: "{}"'.format(request.data))
         print('source={}'.format(request.data['source']))
         obj = Submittal(**request.data)
         print('obj={}'.format(obj))
         obj.save()
-    return HttpResponse('Under Construction', content_type='text/plain')    
+    return HttpResponse('Under Construction', content_type='text/plain')

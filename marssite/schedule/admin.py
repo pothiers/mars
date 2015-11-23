@@ -4,6 +4,7 @@ from .models import Slot, SlotSet, Proposal
 class PropInline(admin.TabularInline):
     model = Slot.proposals.through
     list_display = ('propid', 'pi_name')
+    #filter_horizontal = ['propid']
 
     
 @admin.register(Slot)

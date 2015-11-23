@@ -1,0 +1,168 @@
+<resultSet>
+<query>
+  <uri>http://www.noao.edu/Andes/ScheduleSearch</uri>
+  <timestamp>2015-10-12 19:09:24 MDT</timestamp>
+  <call name="getProposalsScheduledOn">
+    <parameter name="telescope">wiyn</parameter>
+    <parameter name="date">2015-09-01</parameter>
+  </call>
+</query>
+<records>
+<proposal xmlns:noao="http://www.noao.edu/proposal/noao/" xmlns:gemini="http://www.noao.edu/proposal/gemini/" noao:id="2015B-0102" noao:submissionSemester="2015B" noao:type="standard">
+  <keywords noao:category="solar system">
+    <noao:keyword>extrasolar planets</noao:keyword>
+  </keywords>
+  <title>Searching for Pre-Transit Hydrogen Absorption Around Hot Planets</title>
+  <abstract>Magnetic fields are a fundamental property of exoplanets and provide
+vital protection against atmospheric stripping from stellar wind
+particles.  For hot Jupiter exoplanets, the magnetic field can limit the
+atmospheric mass loss rate and enhance the energy available for star-
+planet interactions.  Our current knowledge of exoplanet magnetic
+fields, however, is extremely poor.  One promising method of detecting
+these fields around hot Jupiters is the interaction of the planetary
+magnetosphere with the stellar wind.  A bow shock is expected to form
+around these objects for a large range of hot Jupiter orbital
+parameters.  The dense material at the bow shock can produce pre-transit
+absorption signatures since the bow is expected to orbit ahead of the
+planet.  We propose to build on our previous detection of a signal
+consistent with a bow shock around HD 189733 b by attempting to detect
+these signatures around a sample of other hot Jupiter exoplanets.  Pre-
+transit absorption signatures allow us to estimate the planetary
+magnetic field strength by assuming pressure balance between the stellar
+wind and the planetary magnetosphere.</abstract>
+  <investigators>
+    <investigator noao:status="p" noao:isEmployedBy="false" noao:investigatorId="73865" noao:permanentAddressId="12393">
+      <name>
+        <first>Paul Wilson</first>
+        <last>Cauley</last>
+      </name>
+      <affiliation>Wesleyan University</affiliation>
+      <contact>
+        <email>pcauley@wesleyan.edu</email>
+        <phone>9142631489</phone>
+      </contact>
+      <mailingAddress>
+        <address>Department of Astronomy</address>
+        <address>96 Foss Hill Rd.</address>
+        <city>Middletown</city>
+        <postalCode>06457</postalCode>
+        <country>USA</country>
+      </mailingAddress>
+    </investigator>
+    <investigator noao:status="p" noao:isEmployedBy="false" noao:investigatorId="73866" noao:permanentAddressId="296">
+      <name>
+        <honourific>Dr.</honourific>
+        <first>Seth</first>
+        <last>Redfield</last>
+      </name>
+      <affiliation>Wesleyan University</affiliation>
+      <contact>
+        <email>sredfield@wesleyan.edu</email>
+        <phone>860-685-3669</phone>
+        <fax>(860) 685-2131</fax>
+      </contact>
+    </investigator>
+    <investigator noao:status="p" noao:isEmployedBy="false" noao:investigatorId="73867" noao:permanentAddressId="9986">
+      <name>
+        <first>Adam</first>
+        <last>Jensen</last>
+      </name>
+      <affiliation>University of Nebraska, Kearney</affiliation>
+      <contact>
+        <email>JensenAG@unk.edu</email>
+      </contact>
+    </investigator>
+    <investigator noao:status="p" noao:isEmployedBy="false" noao:investigatorId="73868" noao:permanentAddressId="10074">
+      <name>
+        <first>Michael</first>
+        <last>Endl</last>
+      </name>
+      <affiliation>University of Texas, Austin</affiliation>
+      <contact>
+        <email>mike@astro.as.utexas.edu</email>
+      </contact>
+    </investigator>
+    <investigator noao:status="p" noao:isEmployedBy="false" noao:investigatorId="73869" noao:permanentAddressId="4196">
+      <name>
+        <honourific>Dr.</honourific>
+        <first>William</first>
+        <last>Cochran</last>
+      </name>
+      <affiliation>University of Texas, Austin</affiliation>
+      <contact>
+        <email>wdc@astro.as.utexas.edu</email>
+        <phone>(512) 471-6474</phone>
+      </contact>
+    </investigator>
+    <investigator noao:status="p" noao:isEmployedBy="false" noao:investigatorId="73870" noao:permanentAddressId="8934">
+      <name>
+        <first>Travis</first>
+        <last>Barman</last>
+      </name>
+      <affiliation>University of Arizona</affiliation>
+      <contact>
+        <email>barman@lpl.arizona.edu</email>
+      </contact>
+    </investigator>
+    <investigator noao:status="g" noao:isEmployedBy="false" noao:investigatorId="75908" noao:permanentAddressId="14134">
+      <name>
+        <first>Girish</first>
+        <last>Duvvuri</last>
+      </name>
+      <affiliation>Wesleyan University</affiliation>
+      <contact>
+        <email>gduvvuri@wesleyan.edu</email>
+      </contact>
+    </investigator>
+    <investigator noao:status="g" noao:isEmployedBy="false" noao:investigatorId="75909" noao:permanentAddressId="14135">
+      <name>
+        <first>Julian</first>
+        <last>Dann</last>
+      </name>
+      <affiliation>Wesleyan University</affiliation>
+      <contact>
+        <email>jdann@wesleyan.edu</email>
+      </contact>
+    </investigator>
+  </investigators>
+  <noao:runs>
+    <noao:configuration noao:telescopeConfigurationId="5904" telescope="WIYN" instrument="HYDRR + STA1" mode="classical">
+      <parameter noao:type="proprietaryPeriod" units="months">18</parameter>
+      <parameter noao:type="grating">Echelle</parameter>
+      <parameter noao:type="gratingOrder">9</parameter>
+      <parameter noao:type="crossDisperser">No</parameter>
+      <parameter noao:type="wavelengthRangeStart">6423</parameter>
+      <parameter noao:type="wavelengthRangeEnd">6681</parameter>
+      <parameter noao:type="cable">red</parameter>
+      <parameter noao:type="collimator">WIYN/HYDRR + STA1 + grat:Echelle + ord:9 + 6423-6681A + cross:No +</parameter>
+      <parameter noao:type="adc">no</parameter>
+      <scheduling>
+        <dates>
+          <date interval="1" noao:telescope="WIYN" noao:observingMode="classical" noao:instrument="HYDRR + STA1">2015-09-01</date>
+          <date interval="2" noao:telescope="WIYN" noao:observingMode="classical" noao:instrument="HYDRR + STA1">2015-09-01</date>
+          <date interval="1" noao:telescope="WIYN" noao:observingMode="classical" noao:instrument="HYDRR + STA1">2015-09-08</date>
+          <date interval="2" noao:telescope="WIYN" noao:observingMode="classical" noao:instrument="HYDRR + STA1">2015-09-08</date>
+          <date interval="1" noao:telescope="WIYN" noao:observingMode="classical" noao:instrument="HYDRR + STA1">2015-12-27</date>
+          <date interval="2" noao:telescope="WIYN" noao:observingMode="classical" noao:instrument="HYDRR + STA1">2015-12-27</date>
+          <date interval="1" noao:telescope="WIYN" noao:observingMode="classical" noao:instrument="HYDRR + STA1">2016-01-18</date>
+          <date interval="2" noao:telescope="WIYN" noao:observingMode="classical" noao:instrument="HYDRR + STA1">2016-01-18</date>
+        </dates>
+      </scheduling>
+      <noao:observationParameterSet noao:parameterSetId="24130">
+        <parameter noao:type="semester" units="semester">2015B</parameter>
+        <parameter noao:type="nightsRequested" units="days">7</parameter>
+        <parameter noao:type="nightsRecommended" units="days">2</parameter>
+        <parameter noao:type="optimalDateRangeStart">2015-09-01</parameter>
+        <parameter noao:type="optimalDateRangeEnd">2015-10-31</parameter>
+        <parameter noao:type="acceptableStartDate">2015-08-01</parameter>
+        <parameter noao:type="acceptableEndDate">2016-01-31</parameter>
+        <parameter noao:type="principleTargetsEndRA">23</parameter>
+        <parameter noao:type="principleTargetsStartDec">19</parameter>
+        <parameter noao:type="principleTargetsEndDec">58</parameter>
+        <parameter noao:type="daysFromNewMoon" units="days">14</parameter>
+      </noao:observationParameterSet>
+    </noao:configuration>
+  </noao:runs>
+</proposal>
+</records>
+</resultSet>

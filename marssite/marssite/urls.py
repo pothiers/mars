@@ -63,7 +63,7 @@ urlpatterns = [
     url(r'^siap/', include('siap.urls', namespace='siap')),
     url(r'^schedule/', include('schedule.urls', namespace='schedule')),
     url(r'^provisional/', include('provisional.urls', namespace='provisional')),
-    url(r'^tadas/', include('tadas.urls', namespace='tadas')),
+    url(r'^audit/', include('audit.urls', namespace='audit')),
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),

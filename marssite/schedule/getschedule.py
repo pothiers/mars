@@ -41,6 +41,8 @@ def getxml(outxml, begindate, enddate):
                 #!print(out, file=f)
                 if len(out) < 3:
                     continue
+                logging.debug('XML from {}: {}'
+                              .format(cmdstr.format(telescope=tele, date=obsdate), out))
                 root = ET.fromstring(out)
                 prop_el = root.find('.//proposal')
                 if prop_el == None:
