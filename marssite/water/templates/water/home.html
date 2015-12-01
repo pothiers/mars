@@ -24,7 +24,7 @@
 </style>
 </head>
 <body>
-  <h3>Key MARS apps (v151118c)</h3>
+  <h3>Key MARS apps (v151130)</h3>
 
   <p>
     <em>
@@ -87,12 +87,26 @@
       <th><a href="{% url 'schedule:today_list' %}">/schedule/today/</a></th>
       <td>Get todays schedule.</td>
     </tr>
-
-    <tr class="ops">
+    <tr>
       <th><a href="{% url 'schedule:upload_file' %}">/schedule/upload/</a></th>
       <td>Upload XML file of schedule data and load it.</td>
     </tr>
-    
+    <tr class="ops">
+      <th>
+	<a href="{% url 'schedule:update_semester' '2015B'%}">
+	  /schedule/update/2015B
+	</a>
+      </th>
+      <td>Update DMO telescope SEMESTER schedule using www.noao.edu./noaoprop svc.</td>
+    </tr>
+    <tr class="ops">
+      <th>
+	<a href="{% url 'schedule:update_date' '2015-09-04' 'wiyn' %}">
+	  /schedule/update/2015-09-04/wiyn/
+	</a>
+      </th>
+      <td>Update DMO telescope DATE/TELESCOPE schedule using www.noao.edu./noaoprop svc.</td>
+    </tr>
 
     <tr>
       <th><a href="{% url 'siap:index' %}">/siap/</a></th>

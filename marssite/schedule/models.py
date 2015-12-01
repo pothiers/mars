@@ -33,8 +33,14 @@ class Slot(models.Model):
     telescope = models.CharField(max_length=10,
                                  choices=[(t,t) for t in telescopes] )
     obsdate = models.DateField(help_text='Observation date') # DATE-OBS
+    instrument = models.CharField(max_length=30)
+    half = models.CharField(max_length=1, choices=[('1','1'), ('2','2')])
+
     proposals = models.ManyToManyField(Proposal)
     modified = models.DateTimeField(auto_now=True, help_text='When modified' )
+    frozen = models.BooleanField(default=False,
+                                 help_text=('Protect against changing this '
+                                            'slot during a batch operation.'))
     
     def propid_list(self):
         return ','.join([p.propid for p in self.proposals.all()[:4]])
@@ -49,9 +55,6 @@ class Slot(models.Model):
     #!pi_affiliation = models.CharField(max_length=160)
     #!title = models.CharField(max_length=256)
     #!
-    #!frozen = models.BooleanField(default=False,
-    #!    help_text=('Protect against changing this slot '
-    #!               'during a batch operation.'))
     class Meta:
         unique_together = ('telescope', 'obsdate')
         index_together = ['telescope', 'obsdate']

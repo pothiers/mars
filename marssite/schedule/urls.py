@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     # eg: /schedule/
     # The whole schedule
-    url(r'^$', views.list, name='list'),
+    url(r'^$', views.list_full, name='list'),
     url(r'^list/$', views.SlotList.as_view(), name='list'),
 
     #!url(r'^$', views.SlotList.as_view(), name='list'),
@@ -52,6 +52,10 @@ urlpatterns = [
         views.upload_file, name='upload_file'),
     url(r'^delete_all_schedule_i_really_mean_it/$',
         views.delete_schedule, name='delete_schedule'),
-    
+
+    url(r'^update/(?P<date>\d{4}-\d{2}-\d{2})/(?P<telescope>.+)/$',
+        views.update_date, name='update_date'),
+    url(r'^update/(?P<semester>\d{4}[AB])/$',    
+        views.update_semester, name='update_semester'),
 ]
 

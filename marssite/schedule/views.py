@@ -18,12 +18,72 @@ from rest_framework.views import APIView
 from .serializers import SlotSerializer
 from .tables import SlotTable
 
+import logging
 import json
 import subprocess
 from datetime import date, datetime, timedelta as td
 import xml.etree.ElementTree as ET
+import urllib.parse
+import urllib.request
+from collections import defaultdict
 
 
+def update_from_noaoprop(**query):
+    """Update/add object unless it already exists and is FROZEN. """
+    params = urllib.parse.urlencode(query)
+    #print('DBG: query={}, params={}'.format(query, params))
+    url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
+
+    try:
+        with urllib.request.urlopen(url, timeout=4) as f:
+            #print('DBG: got f={}'.format(f))
+            tree = ET.parse(f)
+            root = tree.getroot()
+    except:
+        logging.error('MARS: Error contacting NOAO PROP service via "{}"'
+                      .format(url))
+        return redirect('/schedule/')
+
+    update_props = defaultdict(set) # dict[slot] = [prop, ...]
+    for proposal in root:
+        telescope = proposal.get('telescope')
+        if telescope not in Slot.telescopes:
+            logging.warning('MARS: Telescope "{}" not one of: {}'
+                            .format(telescope, Slot.telescopes))
+            continue
+        #!obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
+        obsdate = proposal.get('date')
+        propid = proposal.get('propid')
+        slot, smade = Slot.objects.get_or_create(telescope=telescope,
+                                                 obsdate=obsdate)
+        msg = ('telescope={}, obsdate={}'.format(telescope, obsdate))
+        if smade:
+            # did NOT exist
+            print('ADDED: {}'.format(msg))
+            prop, pmade = Proposal.objects.get_or_create(pk=propid)
+            slot.proposals.add(prop)
+        else:
+            if slot.frozen:
+                # already existed but FROZEN
+                print('IGNORED FROZEN: {}'.format(msg))
+            else:
+                # already existed and NOT FROZEN
+                prop, pmade = Proposal.objects.get_or_create(pk=propid)
+                #slot.proposals.add(prop)
+                update_props[slot].add(prop)
+    print('Updating propid lists for {} slots:'.format(len(update_props)))
+    for slot,prop_set in update_props.items():
+        print('UPDATED: {}={}'.format(slot, prop_set))
+        slot.proposals = list(prop_set)
+
+    return redirect('/schedule/')
+
+
+def update_date(request, date, telescope):
+    return update_from_noaoprop(telescope=telescope,date=date)
+
+def update_semester(request, semester):
+    return update_from_noaoprop(semester=semester)
 
 def delete_schedule(request):
     slots = Slot.objects.all().delete()
@@ -52,10 +112,9 @@ def upload_file(request):
     return render_to_response('schedule/upload.html', c)    
     #!return render('schedule/upload.html', {'form': form})    
 
-3
 
 @api_view(['GET'])
-def list(request, limit=100):
+def list_full(request, limit=100):
     'List the schedule. This is the full schedule available to TADA.'
     serializer_class = SlotSerializer
     slots = Slot.objects.all()
@@ -307,3 +366,4 @@ def api_root(request, format=None):
         'empty': reverse('schedule:list_empty', request=request, format=format),
         'list': reverse('schedule:list', request=request, format=format),
     })
+
