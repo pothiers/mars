@@ -33,7 +33,7 @@ def update_from_noaoprop(**query):
     params = urllib.parse.urlencode(query)
     #print('DBG: query={}, params={}'.format(query, params))
     url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
-
+    print('DBG: url={}'.format(url))
     try:
         with urllib.request.urlopen(url, timeout=4) as f:
             #print('DBG: got f={}'.format(f))
@@ -44,7 +44,8 @@ def update_from_noaoprop(**query):
                       .format(url))
         return redirect('/schedule/')
 
-    update_props = defaultdict(set) # dict[slot] = [prop, ...]
+    #update_props = defaultdict(set) # dict[slot] = [prop, ...]
+    slot_pids = defaultdict(set) # dict[slot] = [propid, ...]
     for proposal in root:
         telescope = proposal.get('telescope')
         if telescope not in Slot.telescopes:
@@ -56,31 +57,38 @@ def update_from_noaoprop(**query):
         propid = proposal.get('propid')
         slot, smade = Slot.objects.get_or_create(telescope=telescope,
                                                  obsdate=obsdate)
-        msg = ('telescope={}, obsdate={}'.format(telescope, obsdate))
+        msg = 'slot={}'.format(slot)
         if smade:
             # did NOT exist
             print('ADDED: {}'.format(msg))
-            prop, pmade = Proposal.objects.get_or_create(pk=propid)
-            slot.proposals.add(prop)
+            #!prop, pmade = Proposal.objects.get_or_create(pk=propid)
+            #!update_props[slot].add(prop)
+            slot_pids[slot].add(propid)                    
         else:
             if slot.frozen:
                 # already existed but FROZEN
                 print('IGNORED FROZEN: {}'.format(msg))
             else:
                 # already existed and NOT FROZEN
-                prop, pmade = Proposal.objects.get_or_create(pk=propid)
-                #slot.proposals.add(prop)
-                update_props[slot].add(prop)
-    print('Updating propid lists for {} slots:'.format(len(update_props)))
-    for slot,prop_set in update_props.items():
-        print('UPDATED: {}={}'.format(slot, prop_set))
-        slot.proposals = list(prop_set)
+                if propid in slot_pids[slot]:
+                    continue
+                
+                #!prop, pmade = Proposal.objects.get_or_create(pk=propid)
+                #!update_props[slot].add(prop)
+                slot_pids[slot].add(propid)                    
+                print('NOT FROZEN: {}; propids={}'.format(msg, slot_pids[slot]))
+    print('Updating propid lists for {} slots:'.format(len(slot_pids)))
+    for index,(slot,propids) in enumerate(slot_pids.items()):
+        prop_list = [Proposal.objects.get_or_create(pk=propid)[0]
+                     for propid in propids]
+        print('UPDATED[{}]: {}={}'.format(index, slot, prop_list))
+        slot.proposals = list(prop_list)
 
     return redirect('/schedule/')
 
 
-def update_date(request, date, telescope):
-    return update_from_noaoprop(telescope=telescope,date=date)
+def update_date(request, date):
+    return update_from_noaoprop(date=date)
 
 def update_semester(request, semester):
     return update_from_noaoprop(semester=semester)
@@ -121,7 +129,7 @@ def list_full(request, limit=100):
     #slots = Slot.objects.all()[:limit]
     #table = SlotTable(Slot.objects.all())
     return render(request,
-                  'schedule/list.html',
+                  'schedule/list0.html',
                   RequestContext(request, {
                       'title': 'All',
                       #'limit': limit,
@@ -130,6 +138,25 @@ def list_full(request, limit=100):
                       #'table': table,
                   })
                   )
+
+#!@api_view(['GET'])
+#!def list_full(request, limit=100):
+#!    'List the schedule. This is the full schedule available to TADA.'
+#!    serializer_class = SlotSerializer
+#!    slots = Slot.objects.all()
+#!    #slots = Slot.objects.all()[:limit]
+#!    #table = SlotTable(Slot.objects.all())
+#!    return render(request,
+#!                  'schedule/list.html',
+#!                  RequestContext(request, {
+#!                      'title': 'All',
+#!                      #'limit': limit,
+#!                      'limit': 'NONE',
+#!                      'slot_list': slots,
+#!                      #'table': table,
+#!                  })
+#!                  )
+
 
 @api_view(['GET'])
 @list_route(methods=['get'])

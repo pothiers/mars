@@ -56,8 +56,8 @@ router = routers.DefaultRouter()
 admin.site.site_header = 'MARS Administration'
 
 urlpatterns = [
-    url(r'^$', include('water.urls', namespace='water')),
-    url(r'^home$', include('water.urls', namespace='water')),
+    url(r'^', include('water.urls', namespace='water')),
+    url(r'^home', include('water.urls', namespace='water')),
     #url(r'^favicon.ico$', 'django.views.static.server',  {'document_root': '/var/mars/Mars_icon.jpg'}),
 
     url(r'^siap/', include('siap.urls', namespace='siap')),

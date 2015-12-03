@@ -24,7 +24,7 @@
 </style>
 </head>
 <body>
-  <h3>Key MARS apps (v151130)</h3>
+  <h3>Key MARS apps (v151202)</h3>
 
   <p>
     <em>
@@ -61,6 +61,15 @@
       <th>Load schedule for range of dates.</th>
     </tr>
     -->
+    <tr class="ops">
+      <th>
+	<a href="{% url 'schedule:list_empty' %}">
+	  /schedule/empty/
+	</a>
+      </th>
+      <td>List slots that have been queried but didn't contain
+      anything. </td>
+    </tr>
     <tr class="prod">
       <th>
 	<a href="{% url 'schedule:getpropid' 'kp4m' '2014-01-01' %}">
@@ -93,19 +102,19 @@
     </tr>
     <tr class="ops">
       <th>
+	<a href="{% url 'schedule:update_date' '2015-09-04' %}">
+	  /schedule/update/2015-09-04/
+	</a>
+      </th>
+      <td>Update DMO telescope DATE (all telescopes) schedule using www.noao.edu./noaoprop svc.</td>
+    </tr>
+    <tr class="ops">
+      <th>
 	<a href="{% url 'schedule:update_semester' '2015B'%}">
 	  /schedule/update/2015B
 	</a>
       </th>
       <td>Update DMO telescope SEMESTER schedule using www.noao.edu./noaoprop svc.</td>
-    </tr>
-    <tr class="ops">
-      <th>
-	<a href="{% url 'schedule:update_date' '2015-09-04' 'wiyn' %}">
-	  /schedule/update/2015-09-04/wiyn/
-	</a>
-      </th>
-      <td>Update DMO telescope DATE/TELESCOPE schedule using www.noao.edu./noaoprop svc.</td>
     </tr>
 
     <tr>

@@ -11,12 +11,13 @@ class EmptySlot(models.Model):
 
 class Proposal(models.Model):
     propid = models.CharField(primary_key=True,
-                              max_length=12,
+                              max_length=10,
                               help_text='YYYYs-nnnn (s[emester]:: A|B)')
-    title = models.CharField(max_length=256)
-    pi_name = models.CharField(max_length=80,
-                               help_text='Principal Investigator name')
-    pi_affiliation = models.CharField(max_length=160)
+
+    #!title = models.CharField(max_length=256)
+    #!pi_name = models.CharField(max_length=80,
+    #!                           help_text='Principal Investigator name')
+    #!pi_affiliation = models.CharField(max_length=160)
     modified = models.DateTimeField(auto_now=True, help_text='When modified')
     
     def __str__(self):
@@ -26,24 +27,22 @@ class Slot(models.Model):
     # These are the only telescopes allowed by the perl script that
     # uses a foreign web service for schedule retrieval.  Since the web
     # service will return error for anything else, we limit also.
-    telescopes = ('ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,het,'
+    telescopes = ('aat,ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,gemn,gems,het,'
                   'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
                   'magI,magII,mmt,soar,wiyn').split(',')
 
     telescope = models.CharField(max_length=10,
                                  choices=[(t,t) for t in telescopes] )
     obsdate = models.DateField(help_text='Observation date') # DATE-OBS
-    instrument = models.CharField(max_length=30)
-    half = models.CharField(max_length=1, choices=[('1','1'), ('2','2')])
 
     proposals = models.ManyToManyField(Proposal)
     modified = models.DateTimeField(auto_now=True, help_text='When modified' )
     frozen = models.BooleanField(default=False,
                                  help_text=('Protect against changing this '
-                                            'slot during a batch operation.'))
+                                            'slot during a bulk operation.'))
     
     def propid_list(self):
-        return ','.join([p.propid for p in self.proposals.all()[:4]])
+        return ', '.join([p.propid for p in self.proposals.all()[:4]])
 
     propids = property(propid_list)
     

@@ -53,7 +53,7 @@ urlpatterns = [
     url(r'^delete_all_schedule_i_really_mean_it/$',
         views.delete_schedule, name='delete_schedule'),
 
-    url(r'^update/(?P<date>\d{4}-\d{2}-\d{2})/(?P<telescope>.+)/$',
+    url(r'^update/(?P<date>\d{4}-\d{2}-\d{2})/$',
         views.update_date, name='update_date'),
     url(r'^update/(?P<semester>\d{4}[AB])/$',    
         views.update_semester, name='update_semester'),
