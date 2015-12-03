@@ -129,7 +129,7 @@ def list_full(request, limit=100):
     #slots = Slot.objects.all()[:limit]
     #table = SlotTable(Slot.objects.all())
     return render(request,
-                  'schedule/list0.html',
+                  'schedule/list.html',
                   RequestContext(request, {
                       'title': 'All',
                       #'limit': limit,
