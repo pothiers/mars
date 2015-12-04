@@ -36,7 +36,7 @@ class SubmittalDetail(generics.CreateAPIView):
 def add_submit(request):
     """Add a SUBMIT record using JSON data."""
     #if request.is_ajax():
-    print('DBG: audit/add_submit. Request={}', request)
+    print('DBG: audit/add_submit. Request={}'.format(request))
     if request.method == 'POST':
         print('Raw Data: "{}"'.format(request.body))
         print('Parsed Data: "{}"'.format(request.data))
