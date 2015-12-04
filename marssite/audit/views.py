@@ -1,7 +1,8 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -35,6 +36,7 @@ class SubmittalDetail(generics.CreateAPIView):
 def add_submit(request):
     """Add a SUBMIT record using JSON data."""
     #if request.is_ajax():
+    print('DBG: audit/add_submit. Request={}', request)
     if request.method == 'POST':
         print('Raw Data: "{}"'.format(request.body))
         print('Parsed Data: "{}"'.format(request.data))
@@ -42,4 +44,4 @@ def add_submit(request):
         obj = Submittal(**request.data)
         print('obj={}'.format(obj))
         obj.save()
-    return HttpResponse('Under Construction', content_type='text/plain')
+    return redirect(reverse('audit:submittal_list'))
