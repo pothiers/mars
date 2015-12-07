@@ -7,8 +7,6 @@
         "frozen": false,
         "telescope": "kp4m",
         "propid": "2013B-0142",
-        "pi_affiliation": "University of Arizona",
-        "pi_name": "Robert McMillan",
         "obsdate": "2014-01-01"
     }
 },
@@ -20,8 +18,6 @@
         "frozen": false,
         "telescope": "wiyn",
         "propid": "2013B-0005",
-        "pi_affiliation": "University of California, Irvine",
-        "pi_name": "Michael Cooper",
         "obsdate": "2014-01-01"
     }
 }

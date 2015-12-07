@@ -21,7 +21,7 @@ from .tables import SlotTable
 import logging
 import json
 import subprocess
-from datetime import date, datetime, timedelta as td
+from datetime import date, datetime, timedelta
 import xml.etree.ElementTree as ET
 import urllib.parse
 import urllib.request
@@ -83,15 +83,22 @@ def update_from_noaoprop(**query):
                      for propid in propids]
         print('UPDATED[{}]: {}={}'.format(index, slot, prop_list))
         slot.proposals = list(prop_list)
+    #return redirect('/schedule/')
 
-    return redirect('/schedule/')
 
-
-def update_date(request, date):
-    return update_from_noaoprop(date=date)
+def update_date(request, day):
+    update_from_noaoprop(date=day)
+    d1 = datetime.strptime(day, '%Y-%m-%d').date()
+    d2 = d1 + timedelta(days=1)
+    return redirect('/admin/schedule/slot/?obsdate__gte={}&obsdate__lt={}'
+                    .format(d1,d2))
 
 def update_semester(request, semester):
-    return update_from_noaoprop(semester=semester)
+    update_from_noaoprop(semester=semester)
+    d1 = date(int(semester[:4]),12,1)
+    d2 = d1 + timedelta(days=1)
+    return redirect('/admin/schedule/slot/?obsdate__gte={}&obsdate__lt={}'
+                    .format(d1, d2))
 
 def delete_schedule(request):
     slots = Slot.objects.all().delete()
