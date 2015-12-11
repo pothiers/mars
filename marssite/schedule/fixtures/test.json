@@ -1,12 +1,26 @@
 [
 {
+    "model": "schedule.proposal",
+    "pk": "2013B-0005",
+    "fields": {
+        "modified": "2015-12-02T21:39:54.985Z"
+    }
+},
+{
+    "model": "schedule.proposal",
+    "pk": "2013B-0142",
+    "fields": {
+        "modified": "2015-12-02T21:39:53.210Z"
+    }
+},
+{
     "pk": 17701,
     "model": "schedule.slot",
     "fields": {
-        "title": "Astrometry and Photometry of NEOs Discovered by Ground-based Surveys",
         "frozen": false,
         "telescope": "kp4m",
-        "propid": "2013B-0142",
+        "proposals": ["2013B-0142"],
+        "modified": "2015-12-02T21:22:59.375Z",
         "obsdate": "2014-01-01"
     }
 },
@@ -14,10 +28,10 @@
     "pk": 17702,
     "model": "schedule.slot",
     "fields": {
-        "title": "The Galactic Delinquents Survey: A Search for Massive Failures around Milky Way Analogs",
         "frozen": false,
         "telescope": "wiyn",
-        "propid": "2013B-0005",
+        "proposals": ["2013B-0005"],
+        "modified": "2015-12-02T21:22:59.375Z",
         "obsdate": "2014-01-01"
     }
 }

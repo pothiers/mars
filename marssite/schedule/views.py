@@ -110,10 +110,9 @@ def upload_file(request):
     'Upload and XML file of schedule info and load into DB.'
     print('EXECUTING: views<schedule>:uploaded_file')
     if request.method == 'POST':
-        print('DBG-2')
         form = SlotSetForm(request.POST, request.FILES)
         if form.is_valid():
-            print('DBG-2.1')
+            #!print('DBG-2.1')
             # file is saved
             form.save()
             load_schedule(request.FILES['xmlfile'])
@@ -128,7 +127,7 @@ def upload_file(request):
     #!return render('schedule/upload.html', {'form': form})    
 
 
-@api_view(['GET'])
+#@api_view(['GET'])
 def list_full(request, limit=100):
     'List the schedule. This is the full schedule available to TADA.'
     serializer_class = SlotSerializer
@@ -239,10 +238,10 @@ class SlotGet(generics.GenericAPIView, DetailView):
 def load_schedule(uploadedfile, maxsize=1e6):
     """Load schedule slots from XML file. Skip any slots (date,telescope)
 that already have Propid values"""
-    print('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
+    #!print('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
     if uploadedfile.size > maxsize:
         return None
-    print("DBG-1: size={}".format(uploadedfile.size))
+    #print("DBG-1: size={}".format(uploadedfile.size))
     xmlstr = ''
     for line in uploadedfile:
         xmlstr += line.decode()
@@ -251,8 +250,8 @@ that already have Propid values"""
     created = root.get('created')
     begin = root.get('begindate')
     end = root.get('enddate')
-    print('DBG-2: created={}, begin={}, end={}'.format(created, begin, end))
-    print('DBG-3: contains {} entries'.format(len(root)))
+    #!print('DBG-2: created={}, begin={}, end={}'.format(created, begin, end))
+    #!print('DBG-3: contains {} entries'.format(len(root)))
 
     # kinda slow!  Perhaps because doing multi-queries + insert per slot.
     for proposal in root:

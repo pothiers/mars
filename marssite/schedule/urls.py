@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     # eg: /schedule/
     # The whole schedule
-    url(r'^$', views.list_full, name='list'),
+    url(r'^$', views.list_full, name='list_full'),
     url(r'^list/$', views.SlotList.as_view(), name='list'),
 
     #!url(r'^$', views.SlotList.as_view(), name='list'),
