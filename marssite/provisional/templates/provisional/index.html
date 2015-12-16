@@ -1,22 +1,13 @@
+{% load staticfiles %}
 {% load render_table from django_tables2 %}
 <!DOCTYPE html>
 <html lang="en"> 
 <head>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="{% static "provisional/style.css" %}" />
+  <link rel="icon" type="image/jpg" href="static/favicon.ico" /> 
   <title>Provisional files</title>
-    <style>
-      table, th, td {
-      border: 1px solid gray;
-      padding: 5px;
-      text-align:left
-      }
-      table {
-      border-spacing: 0px;
-      }
-</style>  
 </head>
 <body>
-
   {% if delcnt > 0 %}
   <p>(Deleted {{ delcnt }} files)</p>
   {% endif %}
