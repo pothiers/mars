@@ -14,6 +14,10 @@ def get_tada_references(limit=50):
          "LIMIT {}"
          .format(limit))
     cursor = connection.cursor()
+    # Force material view refresh
+    cursor.execute('SELECT * FROM refresh_voi_material_views()')
+    cursor.fetchall()
+    #
     cursor.execute( sql )
     total = cursor.rowcount
     #print('TADA select found {} records'.format(total))
