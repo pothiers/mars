@@ -72,6 +72,9 @@ def rollback(request):
     for ref in ref_list:
         drop_file(cursor, ref)
 
+    # Force material view refresh
+    cursor.execute('SELECT * FROM refresh_voi_material_views()')
+    cursor.fetchall()
     return redirect('/provisional/?delcnt=delcnt') 
 
 @transaction.atomic
