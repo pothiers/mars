@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.db import transaction
+from django.conf import settings
+
 from rest_framework.decorators import detail_route, list_route, api_view
 from rest_framework import viewsets
 from .models import Fitsname
@@ -33,16 +35,21 @@ def index(request, limit=2000):
                   RequestContext(request, {
                       #'limit': limit,
                       'delcnt': delcnt,
+                      'dbhost': settings.DATABASES['default']['HOST'],
                       'fitname_list': fnames,
                   }))
 
 def stuff_with_tada(request, limit=1000):
+    print('Stuff with TADA')
     images = get_tada_references(limit=limit)
+    print('...got {} images'.format(len(images)))
     for ref,src in images:
         fitsname = Fitsname(id=ref, source=src)
+        print('...ref={}, src={}'.format(ref,src))
         fitsname.save()
         
     #return redirect(index)
+    print('all stuffed')
     return redirect('/provisional/')
 
         

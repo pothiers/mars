@@ -10,7 +10,7 @@ def get_tada_references(limit=50):
          #!"WHERE reference LIKE '%TADA%' "
          # hundredths of a second since 1/1/2015
          #!"WHERE reference ~ '.*_\d{{10}}\.fits' OR reference LIKE '%TADA%'"
-         "WHERE reference LIKE '%_TADA%'"
+         "WHERE reference LIKE '%TADA%'"
          "LIMIT {}"
          .format(limit))
     cursor = connection.cursor()

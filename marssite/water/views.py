@@ -2,12 +2,15 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.views.generic.list import ListView
+from django.conf import settings
+
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 
 def home(request):
     context = RequestContext(request, {
+        'dbhost': settings.DATABASES['default']['HOST'],
     })
     return render(request, 'water/home.html', context)
 

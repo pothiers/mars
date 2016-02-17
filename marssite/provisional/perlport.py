@@ -157,7 +157,7 @@ DELETE FROM edu_noao_nsa.data_product WHERE data_product_id = %(fits_file_id)s;
     results = cursor.rowcount
 
     # Avoid having to wait 4+ minutes for materialized view to refresh.
-    cursor.execute('DELETE FROM voi.siap WHERE reference=%s',[reference])
+    #cursor.execute('DELETE FROM voi.siap WHERE reference=%s',[reference])
     
     return results
  
