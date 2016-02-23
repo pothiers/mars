@@ -84,21 +84,23 @@ def update_from_noaoprop(**query):
         print('UPDATED[{}]: {}={}'.format(index, slot, prop_list))
         slot.proposals = list(prop_list)
     #return redirect('/schedule/')
-
+    return slot_pids # dict[obsdate:telescope] = set([propid, ...])
 
 def update_date(request, day):
-    update_from_noaoprop(date=day)
+    slot_pids = update_from_noaoprop(date=day) 
+    # slot_pits:: dict[obsdate:telescope] = set([propid, ...])
+ 
     d1 = datetime.strptime(day, '%Y-%m-%d').date()
     d2 = d1 + timedelta(days=1)
-    return redirect('/admin/schedule/slot/?obsdate__gte={}&obsdate__lt={}'
-                    .format(d1,d2))
+    return redirect('/schedule/empty/')
 
 def update_semester(request, semester):
     update_from_noaoprop(semester=semester)
     d1 = date(int(semester[:4]),12,1)
     d2 = d1 + timedelta(days=1)
-    return redirect('/admin/schedule/slot/?obsdate__gte={}&obsdate__lt={}'
-                    .format(d1, d2))
+    #redirect('/admin/schedule/slot/?obsdate__gte={}&obsdate__lt={}'
+    #.format(d1, d2))
+    return redirect('/schedule/empty/')
 
 def delete_schedule(request):
     slots = Slot.objects.all().delete()
