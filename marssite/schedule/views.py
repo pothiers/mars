@@ -204,13 +204,15 @@ def getpropid(request, tele, date):
     """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
-    #! print('DBG-0: getpropid({}, {})'.format(tele, date))
     serializer_class = SlotSerializer
     try:
         slot = Slot.objects.get(obsdate=date, telescope=tele)
         #!propid = slot.propid
-        propid = slot.proposals.all()[0]
-        return HttpResponse(propid, content_type='text/plain')
+        #propid = slot.proposals.all()[0]
+        #proplist = ','.join(slot.proposals.all())
+        proplist = slot.propids
+        print('DBG-0: getpropid({}, {})=>{}'.format(tele, date, proplist))
+        return HttpResponse(proplist, content_type='text/plain')
     except Exception as err:
         if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
             es = EmptySlot(obsdate=date, telescope=tele)
