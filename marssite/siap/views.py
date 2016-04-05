@@ -1,8 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext, loader
-from .models import Image
 from django.views.generic.list import ListView
+from django.core.context_processors import csrf
+
+from .models import Image
 from .queries import get_tada_references
 
 def index(request):
@@ -86,3 +88,19 @@ def detail(request, image_id):
         'dict': im_list[0].__dict__,
     })
     return render(request, 'siap/detail.html', context)
+
+#@api_view(['POST'])
+def query_by_file(request):
+    'Upload a file constaining SQL that does a SELECT against SIAP table.'
+    print('EXECUTING: views<siap>:query_by_file')
+    # Easy way to test post???
+    if request.method == 'POST':
+        print('DBG-2')
+        body = json.loads(request.body.decode('utf-8'))
+        print('body={}'.format(body))
+    #!print('DBG-4')
+    #!c = {'form': form}
+    c = {}
+    c.update(csrf(request))
+    #return render_to_response('siap/query-result.html', c)    
+    return redirect('/siap/')

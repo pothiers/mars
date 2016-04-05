@@ -1,4 +1,5 @@
 from django.conf.urls import url
+
 from . import views
 
 
@@ -19,4 +20,6 @@ urlpatterns = [
     url(r'^get/nsa/(?P<fname>.+)/$', views.getnsa, name='getnsa'),
     # eg: /siap/get/acq/archive_filename.fits
     url(r'^get/acq/(?P<fname>.+)/$', views.getacq, name='getacq'),
+
+    url(r'^arch/query/$', views.query_by_file, name='query_by_file'),
 ]

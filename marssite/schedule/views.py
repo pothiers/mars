@@ -118,7 +118,7 @@ def upload_file(request):
             # file is saved
             form.save()
             load_schedule(request.FILES['xmlfile'])
-            return HttpResponseRedirect('/schedule/') # on success
+            return HttpResponseRedirect('/schedule/') # on succses
     else:
         print('DBG-3')
         form = SlotSetForm()
