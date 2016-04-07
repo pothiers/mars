@@ -131,6 +131,20 @@
       <td>SIAP index of all files.</td>
     </tr>
     <tr>
+      <th><a href="/siap/fquery?cols=reference&limit=2">
+	  /siap/fquery?cols=reference&limit=2
+      </a></th>
+      <td>Query voi.siap using form or URL parameter. Direct query using a string payload
+	is available via: {% url 'siap:query_by_str' %}
+      </td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'siap:query_by_json' %}">/siap/fquery</a></th>
+      <td>Query voi.siap using form. Direct query using a string payload
+	is available via: {% url 'siap:query_by_str' %}
+      </td>
+    </tr>
+    <tr>
       <th><a href="{% url 'siap:tada' %}">/siap/tada/</a></th>
       <td>List of all Archive files containing substring "TADA". Get
       different renderings based on requested content type. Examples:

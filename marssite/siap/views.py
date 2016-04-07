@@ -105,14 +105,42 @@ def detail(request, image_id):
 # curl -H "Content-Type: application/json" -X POST -d @foo.json http://localhost:8000/siap/arch/query
 #@api_view(['POST'])
 @csrf_exempt
-def query_by_json(request, format='json'):
+def query_by_json(request, format='json', cols=None, where=None, limit=None):
     'Upload a file constaining SQL that does a SELECT against SIAP table.'
-    print('EXECUTING: views<siap>:query_by_file')
+    print('EXECUTING: views<siap>:query_by_file; method={}'
+          .format(request.method))
     # Easy way to test post???
     if request.method == 'POST':
         body = json.loads(request.body.decode('utf-8'))
         print('body={}'.format(body))
-        sql = body['sql']
+        jsql = body['sql']
+        cursor = connection.cursor()
+        # Force material view refresh
+        cursor.execute('SELECT * FROM refresh_voi_material_views()') 
+        #!cursor.fetchall()
+        #!cursor.execute( jsql )
+        #!total = cursor.rowcount
+        #!results = cursor.fetchall()
+        #print('results={}'.format(results))
+        qs = VoiSiap.objects.raw(jsql)
+        print('qs={}'.format(list(qs)))
+        print('serialized results={}'.format(serializers.serialize(format, qs)))
+        return JsonResponse(serializers.serialize(format, qs), safe=False)
+    elif request.method == 'GET':
+        print('get qdict lists={}'.format(list(request.GET.lists())))
+        format = request.GET.get('format', 'json')
+        cols = request.GET.get('cols', '*')
+        where = request.GET.get('where', None)
+        limit  = request.GET.get('limit', '2')
+        sql = ('SELECT {} FROM voi.siap {} {}'
+               .format(cols,
+                       'WHERE '+where if where != None else '',
+                       'LIMIT '+limit if limit != None else ''))
+        #return HttpResponse('No SQL given so there are no results!')
+        #!print('raw sql={}'.format(sql))
+        #!qs = VoiSiap.objects.raw(sql)
+        #!print('qs={}'.format(list(qs)))
+        #!print('serialized results={}'.format(serializers.serialize('json',qs)))
         cursor = connection.cursor()
         # Force material view refresh
         cursor.execute('SELECT * FROM refresh_voi_material_views()') 
@@ -120,15 +148,29 @@ def query_by_json(request, format='json'):
         cursor.execute( sql )
         total = cursor.rowcount
         results = cursor.fetchall()
+        return HttpResponse(results)
+
+@csrf_exempt
+def query_by_str(request, format='json'):
+    'Upload a file constaining SQL that does a SELECT against SIAP table.'
+    # To test post:
+    # curl -H "Content-Type: application/json" -X POST --data-binary @foo.txt http://localhost:8000/siap/arch/query 
+    if request.method == 'POST':
+        sql = request.body.decode('utf-8')
+        cursor = connection.cursor()
+        # Force material view refresh
+        cursor.execute('SELECT * FROM refresh_voi_material_views()') 
+        #!cursor.fetchall()
+        #!cursor.execute( sql )
+        #!total = cursor.rowcount
+        #!results = cursor.fetchall()
         #print('results={}'.format(results))
         qs = VoiSiap.objects.raw(sql)
         
     #!c = {'form': form}
     #!c.update(csrf(request))
-    resdict = dict(sql=sql, results=list(results))
-    print('resdict={}'.format(resdict))
+    #!resdict = dict(sql=sql, results=list(results))
+    #!print('resdict={}'.format(resdict))
     print('qs={}'.format(list(qs)))
-    #return JsonResponse(dict(sql=sql, results=list(results), ))
-    #return JsonResponse(serializers.serialize('json', qs), safe=False)
     print('serialized results={}'.format(serializers.serialize(format, qs)))
     return JsonResponse(serializers.serialize(format, qs), safe=False)
