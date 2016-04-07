@@ -1,10 +1,16 @@
+import json
+
+from django.db import connection
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext, loader
 from django.views.generic.list import ListView
 from django.core.context_processors import csrf
+from django.core import serializers
+from django.views.decorators.csrf import csrf_exempt
 
-from .models import Image
+
+from .models import Image, VoiSiap
 from .queries import get_tada_references
 
 def index(request):
@@ -89,18 +95,40 @@ def detail(request, image_id):
     })
     return render(request, 'siap/detail.html', context)
 
+# NB: raw SQL is string with FORMATTING PARAMETERS so '%' indicates paramter.
+#     Double any occurances to protect from interpretation.
+# curl -H "Content-Type: application/json" -X POST -d '{"sql":"xyz","bitcoins":"100"}' http://localhost:8000/siap/arch/query
+#
+# cat <<EOF > foo.json
+# {"sql":"SELECT * FROM voi.siap WHERE reference LIKE '%%TADA%%' ", "bitcoins":"100"}
+# EOF
+# curl -H "Content-Type: application/json" -X POST -d @foo.json http://localhost:8000/siap/arch/query
 #@api_view(['POST'])
-def query_by_file(request):
+@csrf_exempt
+def query_by_json(request, format='json'):
     'Upload a file constaining SQL that does a SELECT against SIAP table.'
     print('EXECUTING: views<siap>:query_by_file')
     # Easy way to test post???
     if request.method == 'POST':
-        print('DBG-2')
         body = json.loads(request.body.decode('utf-8'))
         print('body={}'.format(body))
-    #!print('DBG-4')
+        sql = body['sql']
+        cursor = connection.cursor()
+        # Force material view refresh
+        cursor.execute('SELECT * FROM refresh_voi_material_views()') 
+        cursor.fetchall()
+        cursor.execute( sql )
+        total = cursor.rowcount
+        results = cursor.fetchall()
+        #print('results={}'.format(results))
+        qs = VoiSiap.objects.raw(sql)
+        
     #!c = {'form': form}
-    c = {}
-    c.update(csrf(request))
-    #return render_to_response('siap/query-result.html', c)    
-    return redirect('/siap/')
+    #!c.update(csrf(request))
+    resdict = dict(sql=sql, results=list(results))
+    print('resdict={}'.format(resdict))
+    print('qs={}'.format(list(qs)))
+    #return JsonResponse(dict(sql=sql, results=list(results), ))
+    #return JsonResponse(serializers.serialize('json', qs), safe=False)
+    print('serialized results={}'.format(serializers.serialize(format, qs)))
+    return JsonResponse(serializers.serialize(format, qs), safe=False)
