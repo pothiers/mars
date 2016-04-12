@@ -48,7 +48,10 @@
     </tr>
     <tr class="dev">
       <th><a href="{% url 'admin:index' %}doc/">/admin/doc/</a></th>
-      <td>Documentation (for developers) automatically generated from docstrings of code.</td>
+      <td>Documentation (for developers) automatically generated from
+	docstrings of code.  Includes: template
+	tags, template filters, models, views, bookmarklets
+      </td>
     </tr>
     
     <tr>
@@ -139,10 +142,16 @@
       </td>
     </tr>
     <tr>
-      <th><a href="{% url 'siap:query_by_json' %}">/siap/fquery</a></th>
-      <td>Query voi.siap using form. Direct query using a string payload
+      <th><a href="{% url 'siap:query_by_str' %}">
+	  {% url 'siap:query_by_str' %}
+      </a></th>
+      <td>Query voi.siap using string. Direct query using a string payload
 	is available via: {% url 'siap:query_by_str' %}
       </td>
+    </tr>
+    <tr>
+      <th><a href="{% url 'siap:query' %}">{% url 'siap:query' %}</a></th>
+      <td>Query voi.siap using web page.</td>
     </tr>
     <tr>
       <th><a href="{% url 'siap:tada' %}">/siap/tada/</a></th>

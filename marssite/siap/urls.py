@@ -21,6 +21,7 @@ urlpatterns = [
     # eg: /siap/get/acq/archive_filename.fits
     url(r'^get/acq/(?P<fname>.+)/$', views.getacq, name='getacq'),
 
-    url(r'^fquery$', views.query_by_json, name='query_by_json'),
-    url(r'^query$', views.query_by_str, name='query_by_str'),
+    url(r'^fquery/$', views.query_by_json, name='query_by_json'),
+    url(r'^squery$', views.query_by_str, name='query_by_str'),
+    url(r'^query$', views.query, name='query'),
 ]

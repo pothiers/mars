@@ -11,6 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 from .models import Image, VoiSiap
+from .forms import VoiSiapForm
 from .queries import get_tada_references
 
 def index(request):
@@ -174,3 +175,20 @@ def query_by_str(request, format='json'):
     print('qs={}'.format(list(qs)))
     print('serialized results={}'.format(serializers.serialize(format, qs)))
     return JsonResponse(serializers.serialize(format, qs), safe=False)
+
+def query(request):
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = VoiSiapForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect('/thanks/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = VoiSiapForm()
+
+    return render(request, 'siap/siap.html', {'form': form})        
