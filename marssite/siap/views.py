@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext, loader
 from django.views.generic.list import ListView
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 
@@ -167,14 +167,14 @@ def query_by_str(request, format='json'):
         #!results = cursor.fetchall()
         #print('results={}'.format(results))
         qs = VoiSiap.objects.raw(sql)
+        print('qs={}'.format(list(qs)))
+        print('serialized results={}'.format(serializers.serialize(format, qs)))
+        return JsonResponse(serializers.serialize(format, qs), safe=False)
         
     #!c = {'form': form}
     #!c.update(csrf(request))
     #!resdict = dict(sql=sql, results=list(results))
     #!print('resdict={}'.format(resdict))
-    print('qs={}'.format(list(qs)))
-    print('serialized results={}'.format(serializers.serialize(format, qs)))
-    return JsonResponse(serializers.serialize(format, qs), safe=False)
 
 def query(request):
     if request.method == 'POST':

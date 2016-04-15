@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext, loader
 from django.shortcuts import render_to_response
-from django.core.context_processors import csrf
+from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic import ListView, TodayArchiveView, DayArchiveView, WeekArchiveView, MonthArchiveView, ArchiveIndexView, DetailView
 from django.db.models import Value
