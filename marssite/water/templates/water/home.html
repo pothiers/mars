@@ -139,15 +139,17 @@
 	  /siap/fquery?cols=reference&limit=2
       </a></th>
       <td>Query voi.siap using form or URL parameter. Direct query using a string payload
-	is available via: {% url 'siap:query_by_str' %}
+	is available via: {% url 'siap:query_by_sql' %}
       </td>
     </tr>
     <tr class="inactive">
-      <th><a href="{% url 'siap:query_by_str' %}">
-	  {% url 'siap:query_by_str' %}
-      </a></th>
-      <td>Query voi.siap using string. Direct query using a string payload
-	is available via: {% url 'siap:query_by_str' %}
+      <th>{% url 'siap:query_by_sql' %}</th>
+      <td>Query voi.siap using SQL string. 
+	<br /> For SQL in file use something like: <br />
+	<i>curl -H "Content-Type: application/json" -X POST --data-binary @sql/files20.sql http://localhost:8000/siap/squery</i>
+	<br />
+	<br />For SQL in string use something like: <br />
+	<i>curl -H "Content-Type: application/json" -X POST --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
       </td>
     </tr>
     <tr class="inactive">

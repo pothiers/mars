@@ -1,4 +1,5 @@
 import json
+import re
 
 from django.db import connection
 from django.shortcuts import render, redirect, render_to_response
@@ -151,13 +152,48 @@ def query_by_json(request, format='json', cols=None, where=None, limit=None):
         results = cursor.fetchall()
         return HttpResponse(results)
 
+siapsqlre = re.compile(r"(?i)SELECT\s+\S+\s+FROM\s+voi.siap\s+"    )
+def validate_sql(sql):
+    "Require SQL like:  SELECT <fields> FROM voi.siap <something>"
+    if siapsqlre.match(sql):
+        return True, None
+    else:
+        return False, ('SQL must be of format: '
+                       '"SELECT <field>[,<field>...] '
+                       'FROM voi.siap <something>"\n')
+
+@csrf_exempt
+def query_by_sql(request, format='json'):
+    'POST  payload is SQL string that does a SELECT against SIAP table.'
+    # To test post:
+    # curl -H "Content-Type: application/json" -X POST --data-binary @sql/tada-files.sql http://localhost:8000/siap/arch/query 
+    print('DBG-0: siap/views.py:query_by_sql()')
+    if request.method == 'POST':
+        sql = ' '.join(request.body.decode('utf-8').strip().split())
+        print('DBG-1: siap/views.py:query_by_sql(); sql={}'.format(sql))
+        validsql, message = validate_sql(sql)
+        if validsql:
+            cursor = connection.cursor()
+            # Force material view refresh
+            cursor.execute('SELECT * FROM refresh_voi_material_views()') 
+            cursor.fetchall()
+            cursor.execute( sql )
+            total = cursor.rowcount
+            results = cursor.fetchall()
+            print('results={}'.format(results))
+            return HttpResponse('\n'.join(['\t'.join([str(v) for v in tup])
+                                           for tup in results])+'\n')
+        else:
+            return HttpResponse('ERROR: '+message)
 @csrf_exempt
 def query_by_str(request, format='json'):
-    'Upload a file constaining SQL that does a SELECT against SIAP table.'
+    'POST  payload is string of SQL that does a SELECT against SIAP table.'
     # To test post:
-    # curl -H "Content-Type: application/json" -X POST --data-binary @foo.txt http://localhost:8000/siap/arch/query 
+    # curl -H "Content-Type: application/json" -X POST --data-binary @sql/tada-files.sql http://localhost:8000/siap/arch/query 
+    print('DBG-0: siap/views.py:query_by_str()')
     if request.method == 'POST':
-        sql = request.body.decode('utf-8')
+        sql = ' '.join(request.body.decode('utf-8').strip().split())
+        print('DBG-1: siap/views.py:query_by_str(); sql={}'.format(sql))
         cursor = connection.cursor()
         # Force material view refresh
         cursor.execute('SELECT * FROM refresh_voi_material_views()') 
