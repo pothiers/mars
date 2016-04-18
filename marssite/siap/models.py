@@ -1,5 +1,6 @@
 from django.db import models
 
+
 ## import siap.models
 ## im = siap.models.Image.objects.raw('SELECT * FROM voi.siap LIMIT 3')[0]
 ## pprint(im.__dict__)
@@ -17,6 +18,7 @@ class Image(models.Model):
         db_table = 'voi.siap' # Simple Image Access Prototype
 
 
+    
 class VoiSiap(models.Model):
     reference        = models.CharField(max_length=80, primary_key=True)
     fits_extension   = models.IntegerField()
@@ -112,6 +114,9 @@ class VoiSiap(models.Model):
     plqname          = models.CharField(max_length=80)
     pldname          = models.CharField(max_length=80)
     fk5coords        = models.CharField(max_length=80) # geometry(Point,100000) 
+
+    def __str__(self):
+        return self.reference
 
 
     class Meta:
