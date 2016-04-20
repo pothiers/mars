@@ -211,7 +211,7 @@ def getpropid(request, tele, date):
         #propid = slot.proposals.all()[0]
         #proplist = ','.join(slot.proposals.all())
         proplist = slot.propids
-        print('DBG-0: getpropid({}, {})=>{}'.format(tele, date, proplist))
+        #! print('DBG-0: getpropid({}, {})=>{}'.format(tele, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except Exception as err:
         if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:

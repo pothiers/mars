@@ -22,7 +22,7 @@ class ScheduleTest(TestCase):
         #!print('DBG: db propids={}'.format(propids))
         expected = '2013B-0142'
         self.assertIn(expected, propids)
-
+    
     def test_getpropid(self):
         tele = 'kp4m'
         date = '2014-01-01'
@@ -30,7 +30,7 @@ class ScheduleTest(TestCase):
         response = schedule.views.getpropid(request, tele, date)
         self.assertEqual(200, response.status_code)
         self.assertEqual('2013B-0142', response.content.decode())
-
+    
     #!def test_upload(self):
     #!    test_file = '/var/mars/small.xml'
     #!    with open(test_file, 'rb') as fp:
@@ -47,7 +47,7 @@ class ScheduleTest(TestCase):
     #!    #!self.assertRedirects(response, reverse('schedule:list'))
     #!    self.assertEqual(response.status_code, 302)
     #!    self.assertEqual(propid, expected)
-
+    
     #!def test_list(self):
     #!    request = self.factory.get('/schedule/list/')
     #!    response = schedule.views.SlotList.as_view()(request)

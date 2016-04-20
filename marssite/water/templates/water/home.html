@@ -35,6 +35,11 @@
 
   <table>
     <tr>
+      <th>Example URI</th>
+      <th>Description</th>
+    </tr>
+
+    <tr>
       <th><a href="{% url 'admin:index' %}">/admin/</a></th>
       <td>Change data.</td>
     </tr>
@@ -142,14 +147,14 @@
 	is available via: {% url 'siap:query_by_sql' %}
       </td>
     </tr>
-    <tr class="inactive">
+    <tr class="ops">
       <th>{% url 'siap:query_by_sql' %}</th>
       <td>Query voi.siap using SQL string. 
-	<br /> For SQL in file use something like: <br />
-	<i>curl -H "Content-Type: application/json" -X POST --data-binary @sql/files20.sql http://localhost:8000/siap/squery</i>
+	<br /> For <b>SQL in file</b> use something like: <br />
+	<i>curl -X POST --data-binary @sql/files20.sql http://localhost:8000/siap/squery</i>
 	<br />
-	<br />For SQL in string use something like: <br />
-	<i>curl -H "Content-Type: application/json" -X POST --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
+	<br />For <b>SQL in string</b> use something like: <br />
+	<i>curl X POST --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
       </td>
     </tr>
     <tr class="inactive">
@@ -177,18 +182,36 @@
 
 
     <tr class="inactive">
-      <th><a href="{% url 'audit:submittal_list' %}">/audit/</a></th>
+      <th>
+	<a href="{% url 'audit:submittal_list' %}">
+	  {% url 'audit:submittal_list' %}
+	</a>
+      </th>
       <td>
-      Reconcile files POSTED verses INGESTED into the archive. Compare
-      the list of files posted via <code>raw_post</code> from all
-      domes to the list of files stored in the Noao Science Archive.</td>
+	For <b>monitoring progress</b> ingestion.  Reconcile files POSTED
+	(via dropbox or direct submit) verses INGESTED into the
+	archive. Compare the list of files posted
+	via <code>raw_post</code> from all domes to the list of files
+	stored in the Noao Science Archive.</td>
     </tr>
     <tr class="inactive">
-      <th><a href="{% url 'audit:submittal_add' %}">/audit/add</a></th>
+      <th>
+	<a href="{% url 'audit:submittal_add' %}">
+	  {% url 'audit:submittal_add' %}
+	</a>
+      </th>
       <td>
-      Reconcile files POSTED verses INGESTED into the archive. Compare
-      the list of files posted via <code>raw_post</code> from all
-      domes to the list of files stored in the Noao Science Archive.</td>
+	<p>Reconcile files POSTED verses INGESTED into the archive. Compare
+	  the list of files posted via <code>raw_post</code> from all
+	  domes to the list of files stored in the Noao Science
+	  Archive.
+	<p><b>Example:</b>
+	<p>
+	  <i>
+	    curl -H "Content-Type: application/json" -X POST -d '{"source":"xyz","archive":"xyz","status":"NA1", "metadata":"NA2"}' http://localhost:8000/audit/add
+	  </i>
+      </td>
+      
     </tr>
 
     
@@ -241,8 +264,8 @@
       <th><a href="api">/api/</a></th>
       <td>Django REST framework auto generated API pages</td>
     </tr>
-
   </table>
+
   <hr style="height:15px;" />
   <table>
     <caption>Legend</caption>

@@ -160,23 +160,27 @@ def validate_sql(sql):
     else:
         return False, ('SQL must be of format: '
                        '"SELECT <field>[,<field>...] '
-                       'FROM voi.siap <something>"\n')
+                       'FROM voi.siap <something>"; Got: {}\n'.format(sql))
 
+    # curl "Content-Type: application/json" -X POST --data-binary @sql/tada-files.sql http://localhost:8000/siap/squery 
 @csrf_exempt
-def query_by_sql(request, format='json'):
+def query_by_sql(request, format='json', refresh_view=True):
     'POST  payload is SQL string that does a SELECT against SIAP table.'
     # To test post:
-    # curl -H "Content-Type: application/json" -X POST --data-binary @sql/tada-files.sql http://localhost:8000/siap/arch/query 
+    # curl -X POST --data-binary @sql/tada-files.sql http://localhost:8000/siap/squery
+    # Text mode MIGHT work (depending on whitepace particulars):
+    # curl -X POST -d @sql/tada-files.sql http://localhost:8000/siap/squery 
     print('DBG-0: siap/views.py:query_by_sql()')
     if request.method == 'POST':
         sql = ' '.join(request.body.decode('utf-8').strip().split())
-        print('DBG-1: siap/views.py:query_by_sql(); sql={}'.format(sql))
+        print('DBG-1: siap/views.py:query_by_sql(); sql="{}"'.format(sql))
         validsql, message = validate_sql(sql)
         if validsql:
             cursor = connection.cursor()
             # Force material view refresh
-            cursor.execute('SELECT * FROM refresh_voi_material_views()') 
-            cursor.fetchall()
+            #! cursor.execute('SELECT * FROM refresh_voi_material_views()') 
+            #! cursor.fetchall()
+
             cursor.execute( sql )
             total = cursor.rowcount
             results = cursor.fetchall()

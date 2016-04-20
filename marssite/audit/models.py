@@ -18,3 +18,16 @@ class Submittal(models.Model):
     class Meta:
         ordering = ('when',)
         
+
+class SourceFile(models.Model):
+    source = models.CharField(max_length=256,
+                              help_text='Path of file as submitted')
+    when = models.DateTimeField(auto_now_add=True, help_text='When recorded')
+
+    def __str__(self):
+        return '{} -- {}'.format(self.when,self.source)
+ 
+    class Meta:
+        ordering = ('when',)
+        
+        
