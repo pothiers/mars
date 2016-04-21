@@ -1,9 +1,26 @@
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+<!doctype html>
+<html>
+    <head>
+      <link rel="stylesheet" href="{% static "audit/screen.css" %}" />
+    </head>
+    <body>
+      <h2>{{ title }} Audit </h2>
+        {% render_table sourcefile_list %}
+    </body>
+</html>
+
+{% comment %}
 {% if sourcefile_list %}
-    <ul>
-    {% for  obj in sourcefile_list %}
-        <li>{{ obj.source }}</li>
-    {% endfor %}
-    </ul>
+<ul>
+  {% for  obj in sourcefile_list %}
+  <li>{{ obj.source }}</li>
+  {% endfor %}
+</ul>
 {% else %}
-    <p>No source-files are available.</p>
+<p>No source-files are available.</p>
 {% endif %}
+{% endcomment %}
+
+
