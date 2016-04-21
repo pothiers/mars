@@ -56,7 +56,7 @@ def add_submit(request):
 def source(request, format='yaml'):
     """Record list of source paths to be submitted for ingest.
 EXAMPLE:    
-    curl -X POST -d '/04202016/tele/img1.fits /04202016/tele/img2.fits' http://localhost:8000/audit/source/
+    curl -d '/04202016/tele/img1.fits /04202016/tele/img2.fits' http://localhost:8000/audit/source/
     """
 
 
@@ -95,8 +95,7 @@ EXAMPLE:
         return HttpResponse('ERROR: expected POST')
 
 
-def update(request):
-    "Query Archive for all SourceFiles"
+def add_ingested():    
     cursor = connection.cursor()
     # Force material view refresh
     cursor.execute('SELECT * FROM refresh_voi_material_views()')
@@ -108,8 +107,23 @@ def update(request):
             SourceFile.objects.filter(source=obj.dtacqnam).update(
                 success=True,
                 archfile=obj.reference)
-            
+
+def update(request):
+    "Query Archive for all SourceFiles"
+    add_ingested()
     return redirect('/admin/audit/sourcefile/')
+
+def not_ingested(request):
+    "Show source files that have not made it into the Archive"
+    add_ingested()
+    qs = SourceFile.objects.filter(success=True)
+    return render(request, 'audit/not_ingested.html', {"srcfiles": qs})
+
+def failed_ingest(request):
+    "Show source files that where submitted Archive but failed to ingest."
+    qs = SourceFile.objects.filter(success=False)
+    return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
+    
         
 #!class SourceFilelList(generics.ListAPIView):
 #!    model = SourceFile
@@ -121,4 +135,5 @@ def update(request):
 
 class SourceFilelList(ListView):
     model = SourceFile
+
     

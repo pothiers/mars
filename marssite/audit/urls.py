@@ -11,7 +11,9 @@ urlpatterns = [
     url(r'^add$', views.add_submit, name='submittal_add'),
     url(r'^source/$', views.source, name='source'),    
     url(r'^submit/$', views.submit, name='submit'),    
-    url(r'^update/$', views.update, name='update'),    
+    url(r'^update/$', views.update, name='update'),
+    url(r'^missing/$', views.not_ingested, name='not_ingested'),    
+    url(r'^failed/$', views.failed_ingest, name='failed_ingest'),    
 ]
 
 

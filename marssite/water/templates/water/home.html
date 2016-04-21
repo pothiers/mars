@@ -232,7 +232,7 @@
     <!-- ### Audit                       -->
     <!-- ###                             -->
 
-    <tr class="inactive">
+    <tr class="ops">
       <th>
 	<a href="{% url 'audit:sourcefile_list' %}">
 	  {% url 'audit:sourcefile_list' %}
@@ -245,10 +245,10 @@
 	via <code>raw_post</code> from all domes to the list of files
 	stored in the Noao Science Archive.</td>
     </tr>
-    <tr class="inactive">
+    <tr class="ops">
       <th>
-	<a href="{% url 'audit:submittal_add' %}">
-	  {% url 'audit:submittal_add' %}
+	<a href="{% url 'audit:source' %}">
+	  {% url 'audit:source' %}
 	</a>
       </th>
       <td>
@@ -259,10 +259,29 @@
 	<p><b>Example:</b>
 	<p>
 	  <i>
-	    curl -H "Content-Type: application/json" -X POST -d '{"source":"xyz","archive":"xyz","status":"NA1", "metadata":"NA2"}' http://localhost:8000/audit/add
+	    curl -d '/a/b/img1.fits /a/b/img2.fits' http://localhost:8000/audit/source/	    
 	  </i>
       </td>
-      
+    </tr>
+    <tr class="ops">
+      <th>
+	<a href="{% url 'audit:not_ingested' %}">
+	  {% url 'audit:not_ingested' %}
+	</a>
+      </th>
+      <td>
+	Show source files that have not made it into the Archive.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	<a href="{% url 'audit:failed_ingest' %}">
+	  {% url 'audit:failed_ingest' %}
+	</a>
+      </th>
+      <td>
+	Show source files that where submitted Archive but failed to ingest.
+      </td>
     </tr>
 
     
@@ -341,7 +360,7 @@
     <caption>Legend</caption>
     <tr class="prod"><td><em>Production</em></td></tr>
     <tr class="ops"><td><em>Operations:</em> possibly used by DMO staff</td></tr>
-    <tr class="dev"><td><em>Development:</em> info on interfacing to services via software</td></tr>
+    <tr class="dev"><td><em>Deveolpment:</em> info on interfacing to services via software</td></tr>
     <tr class="test"><td><em>Testing:</em> used by smoke tests, etc.</td></tr>
     <tr class="inactive"><td>Inactive or under construction</td></tr>
   </table>

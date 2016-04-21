@@ -1,0 +1,13 @@
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+<!doctype html>
+<html>
+    <head>
+      <link rel="stylesheet" href="{% static "audit/screen.css" %}" />
+    </head>
+    <body>
+      <h2>{{ title }} Submitted files that are not in Archive</h2>
+        {% render_table srcfiles %}
+    </body>
+</html>
+
