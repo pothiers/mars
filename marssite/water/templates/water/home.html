@@ -39,16 +39,27 @@
       <th>Description</th>
     </tr>
 
+    <!-- #################################################################### -->
+    <!-- ### Admin                       -->
+    <!-- ###                             -->
+    
     <tr>
       <th><a href="{% url 'admin:index' %}">/admin/</a></th>
       <td>Change data.</td>
     </tr>
     <tr>
-      <th><a href="{% url 'admin:index' %}provisional/fitsname/add/">/admin/provisional/fitsname/add/</a></th>
+      <th>
+	<a href="{% url 'admin:index' %}provisional/fitsname/add/">
+	  /admin/provisional/fitsname/add/
+      </a></th>
       <td>Record FITS file as provisional.</td>
     </tr>
     <tr class="ops">
-      <th><a href="{% url 'admin:index' %}schedule/slot/">/admin/schedule/slot/</a></th>
+      <th>
+	<a href="{% url 'admin:index' %}schedule/slot/">
+	  /admin/schedule/slot/
+	</a>
+      </th>
       <td>Edit schedule.</td>
     </tr>
     <tr class="dev">
@@ -59,8 +70,12 @@
       </td>
     </tr>
     
+    <!-- #################################################################### -->
+    <!-- ### Schedule                    -->
+    <!-- ###                             -->
+    
     <tr>
-      <th><a href="{% url 'schedule:list' %}">/schedule/</a></th>
+      <th><a href="{% url 'schedule:list' %}">{% url 'schedule:list' %}</a></th>
       <td>List the schedule.</td>
     </tr>
     <!--
@@ -72,7 +87,7 @@
     <tr class="ops">
       <th>
 	<a href="{% url 'schedule:list_empty' %}">
-	  /schedule/empty/
+	  {% url 'schedule:list_empty' %}
 	</a>
       </th>
       <td>List slots that have been queried but didn't contain
@@ -86,11 +101,15 @@
       </th>
       <td>
 	Get propid given telescope and observation date.
-	/schedule/propid/TELESCOPE/DATE (2015B-0313)
+	<i>/schedule/propid/TELESCOPE/DATE (2015B-0313)</i>
       </td>
     </tr>
     <tr>
-      <th><a href="{% url 'schedule:month_list' '2015' 'aug' %}">/schedule/2015/aug/</a></th>
+      <th>
+	<a href="{% url 'schedule:month_list' '2015' 'aug' %}">
+	  {% url 'schedule:month_list' '2015' 'aug' %}
+	</a>
+      </th>
       <td>Get a months worth.</td>
     </tr>
     {% comment %}
@@ -99,33 +118,52 @@
       <td>Get a weeks worth.</td>
     </tr>
     <tr>
-      <th><a href="{% url 'schedule:day_list' '2015' 'aug' '23' %}">/schedule/2015/aug/23/</a></th>
+      <th>
+	<a href="{% url 'schedule:day_list' '2015' 'aug' '23' %}">
+	  {% url 'schedule:day_list' '2015' 'aug' '23' %}
+	</a>
+      </th>
       <td>Get a days worth.</td>
     </tr>
     {% endcomment %}
     <tr>
-      <th><a href="{% url 'schedule:today_list' %}">/schedule/today/</a></th>
+      <th>
+	<a href="{% url 'schedule:today_list' %}">
+	  {% url 'schedule:today_list' %}
+	</a>
+      </th>
       <td>Get todays schedule.</td>
     </tr>
     <tr>
-      <th><a href="{% url 'schedule:upload_file' %}">/schedule/upload/</a></th>
+      <th>
+	<a href="{% url 'schedule:upload_file' %}">
+	  {% url 'schedule:upload_file' %}
+	</a>
+      </th>
       <td>Upload XML file of schedule data and load it.</td>
     </tr>
     <tr class="ops">
       <th>
 	<a href="{% url 'schedule:update_date' '2015-09-04' %}">
-	  /schedule/update/2015-09-04/
+	  {% url 'schedule:update_date' '2015-09-04' %}
 	</a>
       </th>
-      <td>Update DMO telescope DATE (all telescopes) schedule using www.noao.edu./noaoprop svc.</td>
+      <td>
+	Update DMO telescope DATE (all telescopes) schedule using
+	www.noao.edu./noaoprop service.
+      </td>
     </tr>
     <tr class="ops">
       <th>
 	<a href="{% url 'schedule:update_semester' '2015B'%}">
-	  /schedule/update/2015B
+	  {% url 'schedule:update_semester' '2015B'%}
 	</a>
       </th>
-      <td>Update DMO telescope SEMESTER schedule using www.noao.edu./noaoprop svc.</td>
+      <td>
+	Update DMO telescope SEMESTER schedule using
+	www.noao.edu./noaoprop service.
+	<b>Will take several minutes!</b>
+      </td>
     </tr>
     <tr class="dev">
       <th>
@@ -136,7 +174,10 @@
       <td>The schedule from Dave Bell's DB (one semester)</td>
     </tr>
 
-
+    <!-- #################################################################### -->
+    <!-- ### SIAP querying               -->
+    <!-- ###                             -->
+    
     <tr>
       <th><a href="{% url 'siap:index' %}">/siap/</a></th>
       <td>SIAP index of all files.</td>
@@ -154,10 +195,10 @@
       <th>{% url 'siap:query_by_sql' %}</th>
       <td>Query voi.siap using SQL string. 
 	<br /> For <b>SQL in file</b> use something like: <br />
-	<i>curl -X POST --data-binary @sql/files20.sql http://localhost:8000/siap/squery</i>
+	<i>curl --data-binary @sql/files20.sql http://localhost:8000/siap/squery</i>
 	<br />
 	<br />For <b>SQL in string</b> use something like: <br />
-	<i>curl X POST --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
+	<i>curl --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
       </td>
     </tr>
     <tr class="inactive">
@@ -178,16 +219,23 @@
 
     <tr>
       <th>
-        <a href="{% url 'siap:filenames' '2011A-0525' %}">/siap/prop/PROPID</a>
+        <a href="{% url 'siap:filenames' '2011A-0525' %}">
+	  {% url 'siap:filenames' '2011A-0525' %}
+	  (<i>/siap/prop/PROPID</i>)
+	</a>
       </th>
       <td>Filenames associated with PROPID='2011A-0525'</td>
     </tr>
 
 
+    <!-- #################################################################### -->
+    <!-- ### Audit                       -->
+    <!-- ###                             -->
+
     <tr class="inactive">
       <th>
-	<a href="{% url 'audit:submittal_list' %}">
-	  {% url 'audit:submittal_list' %}
+	<a href="{% url 'audit:sourcefile_list' %}">
+	  {% url 'audit:sourcefile_list' %}
 	</a>
       </th>
       <td>
@@ -218,6 +266,9 @@
     </tr>
 
     
+    <!-- #################################################################### -->
+    <!-- ### Provisional                 -->
+    <!-- ###                             -->
 
     <tr class="test">
       <th><a href="{% url 'provisional:index' %}">/provisional/</a></th>
@@ -227,7 +278,11 @@
         web-services.</td>
     </tr>
     <tr class="test">
-      <th><a href="{% url 'provisional:stuff' %}">/provisional/stuff</a></th>
+      <th>
+	<a href="{% url 'provisional:stuff' %}">
+	  {% url 'provisional:stuff' %}
+	</a>
+      </th>
       <td>Insert all files matching "TADA like" reference file into
         provisional list.</td>
     </tr>
@@ -237,11 +292,18 @@
         provisional list.</td>
     </tr>
     <tr class="test">
-      <th><a href="{% url 'provisional:rollback' %}">/provisional/rollback</a></th>
-      <td><strong>Delete all files that are in provisional list from
-          Archive</strong> and from the provisional list.</td>
+      <th>
+	<a href="{% url 'provisional:rollback' %}">
+	  {% url 'provisional:rollback' %}
+	</a>
+      </th>
+      <td>
+	<strong>Delete all files that are in provisional list from Archive
+	</strong>
+	and from the provisional list.
+      </td>
     </tr>
-    <tr  class="test">
+    <tr class="test">
       <th>
         <a href="{% url 'provisional:index'%}add/ksb_150709_044421_ori_TADATEST.fits.fz/?source=my-bok-999.fits">
           /provisional/add/{ref_filename}/?source={source_filename}
@@ -257,6 +319,11 @@
         </pre>
       </td>
     </tr>
+
+    <!-- #################################################################### -->
+    <!-- ### Other                       -->
+    <!-- ###                             -->
+    
     <tr>
       <th><a href="docs">/docs/</a></th>
       <td>

@@ -1,0 +1,9 @@
+{% if sourcefile_list %}
+    <ul>
+    {% for  obj in sourcefile_list %}
+        <li>{{ obj.source }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No source-files are available.</p>
+{% endif %}

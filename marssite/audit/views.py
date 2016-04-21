@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.utils import timezone
+from django.db import connection
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -12,13 +13,14 @@ from rest_framework import generics
 from rest_framework.decorators import  api_view,parser_classes
 
 from .models import Submittal, SourceFile
-from .serializers import SubmittalSerializer
+from .serializers import SubmittalSerializer, SourceFileSerializer
 
+from siap.models import VoiSiap
 
 # curl http://localhost:8000/audit/ > ~/Downloads/list.json
 class SubmittalList(generics.ListAPIView):
     model = Submittal
-    queryset = Submittal.objects.all()
+    queryset = Submittal.objects.all().all
     template_name = 'audit/submittal_list.html'
 
     serializer_class = SubmittalSerializer
@@ -92,3 +94,31 @@ EXAMPLE:
     else:
         return HttpResponse('ERROR: expected POST')
 
+
+def update(request):
+    "Query Archive for all SourceFiles"
+    cursor = connection.cursor()
+    # Force material view refresh
+    cursor.execute('SELECT * FROM refresh_voi_material_views()')
+    sql = 'SELECT reference,dtacqnam FROM voi.siap WHERE dtacqnam = %s'
+    for sf in SourceFile.objects.all():
+        qs = VoiSiap.objects.raw(sql,[sf.source])
+        #print('pairs={}'.format([(obj.reference, obj.dtacqnam) for obj in qs]))
+        for obj in qs:
+            SourceFile.objects.filter(source=obj.dtacqnam).update(
+                success=True,
+                archfile=obj.reference)
+            
+    return redirect('/admin/audit/sourcefile/')
+        
+#!class SourceFilelList(generics.ListAPIView):
+#!    model = SourceFile
+#!    queryset = SourceFile.objects.all()
+#!    template_name = 'audit/submittal_list.html'
+#!    serializer_class = SourceFileSerializer
+#!    paginate_by = 50
+
+
+class SourceFilelList(ListView):
+    model = SourceFile
+    
