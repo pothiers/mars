@@ -36,7 +36,7 @@ urlpatterns = [
 
     # eg: /schedule/propid/ct13m/2014-12-25/  => smarts
     #  kp4m/2014-01-01 =>  2013B-0142 
-    url(r'^propid/(?P<tele>.+)/(?P<date>.+)/$',
+    url(r'^propid/(?P<tele>.+)/(?P<instrum>.+)/(?P<date>.+)/$',
         views.getpropid, name='getpropid'),
     url(r'^slot/(?P<tele>.+)/(?P<date>.+)/$',
         views.SlotGet.as_view(), name='getslot'),

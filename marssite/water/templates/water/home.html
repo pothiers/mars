@@ -80,11 +80,14 @@
     </tr>
     <tr class="prod">
       <th>
-	<a href="{% url 'schedule:getpropid' 'kp4m' '2014-01-01' %}">
-	  /schedule/propid/TELESCOPE/DATE
+	<a href="{% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}">
+	  {% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}
 	</a>
       </th>
-      <td>Get propid given telescope and observation date.</td>
+      <td>
+	Get propid given telescope and observation date.
+	/schedule/propid/TELESCOPE/DATE (2015B-0313)
+      </td>
     </tr>
     <tr>
       <th><a href="{% url 'schedule:month_list' '2015' 'aug' %}">/schedule/2015/aug/</a></th>

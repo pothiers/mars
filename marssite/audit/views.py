@@ -1,8 +1,10 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
+from django.core import serializers
+from django.utils import timezone
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -44,15 +46,49 @@ def add_submit(request):
         obj.save()
     return redirect(reverse('audit:submittal_list'))
 
+##############################################################################
+### Newer version
+###
+
 @csrf_exempt
-def submitted(request):
-    """Record list of source paths as submitted for ingest.
+def source(request, format='yaml'):
+    """Record list of source paths to be submitted for ingest.
 EXAMPLE:    
-    curl -X POST -d '/04202016/tele/img1.fits /04202016/tele/img2.fits' http://localhost:8000/audit/submitted/
+    curl -X POST -d '/04202016/tele/img1.fits /04202016/tele/img2.fits' http://localhost:8000/audit/source/
     """
 
 
     if request.method == 'POST':
-        paths = request.body.decode('utf-8').strip().split()
-        SourceFile.objects.bulk_create([SourceFile(source=path) for path in paths])
-    return redirect(reverse('audit:submittal_list'))
+        for path in request.body.decode('utf-8').strip().split():
+            print('DBG: source={}'.format(path))
+            SourceFile.objects.update_or_create(
+                source=path,
+                defaults=dict(recorded=timezone.now()
+                ))
+        qs = SourceFile.objects.all()
+        return JsonResponse(serializers.serialize(format, qs), safe=False)
+    else:
+        return HttpResponse('ERROR: expected POST')
+
+@csrf_exempt
+def submit(request, format='yaml'):
+    """Record results of Archive ingest submittal.
+EXAMPLE:    
+    curl -H "Content-Type: application/json" -X POST \
+      -d '{"source":"/a/b.fits","archfile":"xyz"}' \
+       http://localhost:8000/audit/source/
+    """
+    if request.method == 'POST':
+        body = json.loads(request.body.decode('utf-8'))
+        print('body={}'.format(body))
+        SourceFile.objects.update_or_create(
+            dict(source=src,
+                 submitted=timezone.now(),
+                 success=body.get('success',True),
+                 archerr=body.get('archerr', ''),
+                 archfile=body['archfile']))
+        
+        return JsonResponse(serializers.serialize(format, qs), safe=False)
+    else:
+        return HttpResponse('ERROR: expected POST')
+

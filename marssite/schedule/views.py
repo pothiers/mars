@@ -27,11 +27,36 @@ import urllib.parse
 import urllib.request
 from collections import defaultdict
 
+# instrument Mapping from Dave's NOAOPROP service to FITS header fields
+sched2hdr= {
+    # Schedule      Fits Header
+    'ARCoIRIS':    'arcoiris',
+    'CFIM+T2K':    None,		# ccd_imager
+    'COSMOS':     'cosmos',
+    'DECam':      'decam',           
+    'Goodman':    'goodman',
+    'HDI':        'hdi',
+    'KOSMOS':     'kosmos',
+    'MOSA3':      'mosaic3', #!
+    'NEWFIRM':    'newfirm',
+    #'ODI':        '(p)odi',		# not archived - remove
+    'OSIRIS':     'osiris',
+    'SAM':        'sami',		# should be sami
+    'SOI':        'soi',
+    'Spartan':    'spartan',
+    'WHIRC':      'whirc',
+    ########################################
+    #(None:         'goodman spectrograph'}	# goodman as above
+    #(None:         'bench'}			# bench
+    #(None:         'spartan ir camera'}	# spartan as above
+}
+
+
 
 def update_from_noaoprop(**query):
     """Update/add object unless it already exists and is FROZEN. """
     params = urllib.parse.urlencode(query)
-    #print('DBG: query={}, params={}'.format(query, params))
+    #print{'DBG: query={}, params={}'.format(query, params))
     url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
     print('DBG: url={}'.format(url))
     try:
@@ -48,21 +73,27 @@ def update_from_noaoprop(**query):
     slot_pids = defaultdict(set) # dict[slot] = [propid, ...]
     for proposal in root:
         telescope = proposal.get('telescope')
+        instrument = sched2hdr.get(proposal.get('instrument'),None)
+        if instrument == None:
+            continue
         if telescope not in Slot.telescopes:
             logging.warning('MARS: Telescope "{}" not one of: {}'
                             .format(telescope, Slot.telescopes))
+            continue
+        if instrument not in Slot.instruments:
+            logging.warning('MARS: Instrument "{}" not one of: {}'
+                            .format(instrument, Slot.instruments))
             continue
         #!obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         obsdate = proposal.get('date')
         propid = proposal.get('propid')
         slot, smade = Slot.objects.get_or_create(telescope=telescope,
+                                                 instrument=instrument,
                                                  obsdate=obsdate)
         msg = 'slot={}'.format(slot)
         if smade:
             # did NOT exist
             print('ADDED: {}'.format(msg))
-            #!prop, pmade = Proposal.objects.get_or_create(pk=propid)
-            #!update_props[slot].add(prop)
             slot_pids[slot].add(propid)                    
         else:
             if slot.frozen:
@@ -73,8 +104,6 @@ def update_from_noaoprop(**query):
                 if propid in slot_pids[slot]:
                     continue
                 
-                #!prop, pmade = Proposal.objects.get_or_create(pk=propid)
-                #!update_props[slot].add(prop)
                 slot_pids[slot].add(propid)                    
                 print('NOT FROZEN: {}; propids={}'.format(msg, slot_pids[slot]))
     print('Updating propid lists for {} slots:'.format(len(slot_pids)))
@@ -200,13 +229,13 @@ no PROPID.  These should probably be filled."""
 # EXAMPLE in bash:
 #  propid=`curl 'http://127.0.0.1:8000/schedule/getpropid/ct13m/2014-12-25/'`
 @api_view(['GET'])
-def getpropid(request, tele, date):
+def getpropid(request, tele, instrum, date):
     """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
     serializer_class = SlotSerializer
     try:
-        slot = Slot.objects.get(obsdate=date, telescope=tele)
+        slot = Slot.objects.get(obsdate=date, telescope=tele, instrument=instrum)
         #!propid = slot.propid
         #propid = slot.proposals.all()[0]
         #proplist = ','.join(slot.proposals.all())

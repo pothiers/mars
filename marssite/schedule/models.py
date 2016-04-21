@@ -2,13 +2,18 @@ from django.db import models
 
 class EmptySlot(models.Model):
     telescope = models.CharField(max_length=80)
+    instrument = models.CharField(max_length=20)
+
     obsdate = models.DateField()
     modified = models.DateTimeField(auto_now=True, help_text='When modified' )
 
     class Meta:
-        unique_together = ('telescope', 'obsdate')
-        index_together = ['telescope', 'obsdate']
+        unique_together = ('telescope', 'instrument', 'obsdate')
+        index_together = ['telescope', 'instrument', 'obsdate']
 
+    def __str__(self):
+        return '{}:{}-{}'.format(self.obsdate, self.telescope, self.instrument)
+        
 class Proposal(models.Model):
     propid = models.CharField(primary_key=True,
                               max_length=10,
@@ -23,6 +28,10 @@ class Proposal(models.Model):
     def __str__(self):
         return self.propid
 
+
+
+
+
 class Slot(models.Model):
     # These are the only telescopes allowed by the perl script that
     # uses a foreign web service for schedule retrieval.  Since the web
@@ -30,9 +39,18 @@ class Slot(models.Model):
     telescopes = ('aat,ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,gemn,gems,het,'
                   'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
                   'magI,magII,mmt,soar,wiyn').split(',')
+    instruments = ('mosaic3', 'mop/ice', 'arcon', 'spartan', 'decam',
+                   '90prime', 'falmingos', 'gtcam', 'wildfire', 'chiron',
+                   'osiris', 'arcoiris', 'andicam', 'echelle', 'flamingos',
+                   'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
+                   'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
+                   'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
+                   'cosmos')
 
     telescope = models.CharField(max_length=10,
-                                 choices=[(t,t) for t in telescopes] )
+                                 choices=[(val,val) for val in telescopes] )
+    instrument = models.CharField(max_length=20,
+                                 choices=[(val,val) for val in instruments] )
     obsdate = models.DateField(help_text='Observation date') # DATE-OBS
 
     proposals = models.ManyToManyField(Proposal)
@@ -47,7 +65,7 @@ class Slot(models.Model):
     propids = property(propid_list)
     
     def __str__(self):
-        return '{}:{}'.format(self.obsdate, self.telescope)
+        return '{}:{}-{}'.format(self.obsdate, self.telescope, self.instrument)
         
     #!pi_name = models.CharField(max_length=80,
     #!                           help_text='Principal Investigator name')
@@ -55,8 +73,8 @@ class Slot(models.Model):
     #!title = models.CharField(max_length=256)
     #!
     class Meta:
-        unique_together = ('telescope', 'obsdate')
-        index_together = ['telescope', 'obsdate']
+        unique_together = ('telescope', 'instrument', 'obsdate')
+        index_together = ['telescope', 'instrument', 'obsdate']
         
 
 
