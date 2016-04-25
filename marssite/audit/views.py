@@ -1,3 +1,15 @@
+# Use to insure all files from domes make it into Archive.
+# Files from dome as uniquely identified by combination of:
+#   telescope
+#   instrument
+#   dome host
+#   full path of FITS (on dome)
+#
+# If a file doesn't make it into the archive, we want to know why.
+# Bad header? (missing values, fails TADA validation test)
+# Archived rejected it? (error message?)
+# Didn't make it to Valley? Didn't make it to Mountain?
+
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
