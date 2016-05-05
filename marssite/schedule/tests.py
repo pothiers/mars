@@ -5,31 +5,35 @@ from django.test import TestCase, RequestFactory
 from .models import Slot, EmptySlot
 import schedule.views
 
-
-
 class ScheduleTest(TestCase):
     # Load (special test) DB with data
-    fixtures = ['test.json']
+    fixtures = ['schedule.yaml']
     
     def setUp(self):
         self.factory = RequestFactory()
 
     def test_fixture(self):
         tele = 'kp4m'
-        date = '2014-01-01'
-        slot = Slot.objects.get(obsdate=date, telescope=tele)
+        instrum = 'y4kcam'
+        date = '2016-01-01'
+        slot = Slot.objects.get(obsdate=date,
+                                telescope=tele,
+                                instrument=instrum)
         propids = slot.propids.split(', ')
         #!print('DBG: db propids={}'.format(propids))
-        expected = '2013B-0142'
+        expected = '2015B-0254'
         self.assertIn(expected, propids)
     
     def test_getpropid(self):
         tele = 'kp4m'
-        date = '2014-01-01'
-        request = self.factory.get('/schedule/propid/{}/{}/'.format(tele, date))
-        response = schedule.views.getpropid(request, tele, date)
+        instrum = 'y4kcam'
+        date = '2016-01-01'
+        request = self.factory.get('/schedule/propid/{}/{}/{}/'
+                                   .format(tele, instrum, date))
+        response = schedule.views.getpropid(request, tele, instrum, date)
         self.assertEqual(200, response.status_code)
-        self.assertEqual('2013B-0142', response.content.decode())
+        expected = '2015B-0254'
+        self.assertEqual(expected, response.content.decode())
     
     #!def test_upload(self):
     #!    test_file = '/var/mars/small.xml'

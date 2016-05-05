@@ -1,0 +1,12 @@
+- model: schedule.proposal
+  pk: 2015B-0254
+  fields: {modified: !!timestamp '2015-12-02 21:28:05.893065+00:00'}
+- model: schedule.slot
+  pk: 31686
+  fields:
+    telescope: kp4m
+    instrument: y4kcam
+    obsdate: 2016-01-01
+    modified: 2015-12-02 21:23:40.890296+00:00
+    frozen: false
+    proposals: [2015B-0254]
