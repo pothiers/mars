@@ -234,16 +234,13 @@
 
     <tr class="ops">
       <th>
-	<a href="{% url 'audit:sourcefile_list' %}">
-	  {% url 'audit:sourcefile_list' %}
-	</a>
+	    <a href="{% url 'audit:sourcefile_list' %}">
+	      {% url 'audit:sourcefile_list' %}
+	    </a>
       </th>
       <td>
-	For <b>monitoring progress</b> ingestion.  Reconcile files POSTED
-	(via dropbox or direct submit) verses INGESTED into the
-	archive. Compare the list of files posted
-	via <code>raw_post</code> from all domes to the list of files
-	stored in the Noao Science Archive.</td>
+	    For <b>monitoring progress</b> ingestion.  List audit records. 
+      </td>
     </tr>
     <tr class="ops">
       <th>
@@ -252,15 +249,13 @@
 	</a>
       </th>
       <td>
-	<p>Reconcile files POSTED verses INGESTED into the archive. Compare
-	  the list of files posted via <code>raw_post</code> from all
-	  domes to the list of files stored in the Noao Science
-	  Archive.
-	<p><b>Example:</b>
-	<p>
-	  <i>
-	    curl -d '/a/b/img1.fits /a/b/img2.fits' http://localhost:8000/audit/source/	    
-	  </i>
+	    Reconcile files POSTED verses INGESTED into the archive. Compare
+	    the list of files posted via <code>raw_post</code> from all
+	    domes to the list of files stored in the NOAO Science
+	    Archive.
+	    <p><b>Example:</b>
+	      <br />
+	      <i>curl -d '/a/b/img1.fits /a/b/img2.fits' http://localhost:8000/audit/source/</i>
       </td>
     </tr>
     <tr class="ops">

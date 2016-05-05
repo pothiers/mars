@@ -1,5 +1,5 @@
 # Use to insure all files from domes make it into Archive.
-# Files from dome as uniquely identified by combination of:
+# Files from dome is identified by combination of:
 #   telescope
 #   instrument
 #   dome host
@@ -133,10 +133,14 @@ def not_ingested(request):
 
 def failed_ingest(request):
     "Show source files that where submitted Archive but failed to ingest."
+    add_ingested()
     qs = SourceFile.objects.filter(success=False)
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
-    
-        
+
+def progress_count(request):
+    add_ingested()
+    qs = SourceFile.objects.filter(success=False)    
+
 #!class SourceFilelList(generics.ListAPIView):
 #!    model = SourceFile
 #!    queryset = SourceFile.objects.all()
