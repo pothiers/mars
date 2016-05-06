@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     #url(r'^$', views.SubmittalList.as_view(), name='submittal_list'),
-    url(r'^$', views.SourceFilelList.as_view(), name='sourcefile_list'),
+    url(r'^$', views.SourceFileList.as_view(), name='sourcefile_list'),
     url(r'^(?P<pk>[0-9]+)/$',
         views.SubmittalDetail.as_view(), name='submittal_detail'),
     url(r'^add$', views.add_submit, name='submittal_add'),
@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^update/$', views.update, name='update'),
     url(r'^missing/$', views.not_ingested, name='not_ingested'),
     url(r'^failed/$', views.failed_ingest, name='failed_ingest'),
+    url(r'^progress/$', views.progress_count, name='progress_count'),
 ]
 
 

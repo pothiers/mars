@@ -29,9 +29,6 @@ class Proposal(models.Model):
         return self.propid
 
 
-
-
-
 class Slot(models.Model):
     # These are the only telescopes allowed by the perl script that
     # uses a foreign web service for schedule retrieval.  Since the web

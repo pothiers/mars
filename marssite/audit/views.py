@@ -18,6 +18,7 @@ from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.utils import timezone
 from django.db import connection
+from django.db.models import Count
 
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
@@ -70,8 +71,6 @@ def source(request, format='yaml'):
 EXAMPLE:    
     curl -d '/04202016/tele/img1.fits /04202016/tele/img2.fits' http://localhost:8000/audit/source/
     """
-
-
     if request.method == 'POST':
         for path in request.body.decode('utf-8').strip().split():
             print('DBG: source={}'.format(path))
@@ -113,10 +112,10 @@ def add_ingested():
     cursor.execute('SELECT * FROM refresh_voi_material_views()')
     sql = 'SELECT reference,dtacqnam FROM voi.siap WHERE dtacqnam = %s'
     for sf in SourceFile.objects.all():
-        qs = VoiSiap.objects.raw(sql,[sf.source])
+        qs = VoiSiap.objects.raw(sql,[sf.srcpath])
         #print('pairs={}'.format([(obj.reference, obj.dtacqnam) for obj in qs]))
         for obj in qs:
-            SourceFile.objects.filter(source=obj.dtacqnam).update(
+            SourceFile.objects.filter(srcpath=obj.dtacqnam).update(
                 success=True,
                 archfile=obj.reference)
 
@@ -138,10 +137,48 @@ def failed_ingest(request):
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
 
 def progress_count(request):
-    add_ingested()
-    qs = SourceFile.objects.filter(success=False)    
+    """Counts we want (for each telescope+instrument):
+sent::     Sent from dome
+nosubmit:: Not received at Valley (in transit? lost?) 
+rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
+accepted:: Archive accepted submission (should be in DB)
 
-#!class SourceFilelList(generics.ListAPIView):
+sent = nosubmit + (rejected + accepted))
+"""
+    add_ingested()
+    nosubmitqs = (SourceFile.objects.exclude(success__isnull=False)
+                  .values('telescope','instrument')
+                  .annotate(total=Count('srcpath'))
+                  .order_by('instrument','telescope'))
+    nosubmit = dict([((ob['telescope'],ob['instrument']),ob['total'])
+                     for ob in nosubmitqs])
+
+    rejectedqs = (SourceFile.objects.filter(success__exact=False)
+                  .values('telescope','instrument')
+                  .annotate(total=Count('srcpath'))
+                  .order_by('instrument','telescope'))
+    rejected = dict([((ob['telescope'],ob['instrument']),ob['total'])
+                     for ob in rejectedqs])
+
+    acceptedqs = (SourceFile.objects.filter(success__exact=True)
+                  .values('telescope','instrument')
+                  .annotate(total=Count('srcpath'))
+                  .order_by('instrument','telescope'))
+    accepted = dict([((ob['telescope'],ob['instrument']),ob['total'])
+                     for ob in acceptedqs])
+    sent = SourceFile.objects.count()
+    assert (sent==(sum([n for n in nosubmit.values()])
+                   + sum([n for n in rejected.values()])
+                   + sum([n for n in accepted.values()])))
+    progress = dict() # progress[(tele,instr)] = (nosubmit,rejected,accepted)
+    for k in (SourceFile.objects.order_by('telescope','instrument')
+              .distinct('telescope','instrument')
+              .values_list('telescope','instrument')):
+        progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
+    #return JsonResponse(serializers.serialize(format, qs), safe=False)
+    return HttpResponse('counts: {}'.format(progress))
+
+#!class SourceFileList(generics.ListAPIView):
 #!    model = SourceFile
 #!    queryset = SourceFile.objects.all()
 #!    template_name = 'audit/submittal_list.html'
@@ -149,7 +186,7 @@ def progress_count(request):
 #!    paginate_by = 50
 
 
-class SourceFilelList(ListView):
+class SourceFileList(ListView):
     model = SourceFile
 
     
