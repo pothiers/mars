@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+<!doctype html>
+<html>
+    <head>
+      <link rel="stylesheet" href="{% static "audit/screen.css" %}" />
+    </head>
+    {% block content %}
+    <body>
+      <h2>{{ title|title }}</h2>
+        {% render_table instrum_table %}
+    </body>
+    {% endblock %}
+</html>

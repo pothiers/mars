@@ -9,6 +9,10 @@
 # Bad header? (missing values, fails TADA validation test)
 # Archived rejected it? (error message?)
 # Didn't make it to Valley? Didn't make it to Mountain?
+#
+# Graph using:
+#  django-graphos-3;  bad documentation
+
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
@@ -19,7 +23,10 @@ from django.core import serializers
 from django.utils import timezone
 from django.db import connection
 from django.db.models import Count
+from django.template import Context, Template
+from django.template.loader import get_template
 
+import django_tables2 as tables
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
@@ -136,6 +143,36 @@ def failed_ingest(request):
     qs = SourceFile.objects.filter(success=False)
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
 
+class ProgressTable(tables.Table):
+    instrument = tables.Column()
+    notReceived = tables.Column()
+    rejected =  tables.Column()
+    accepted =  tables.Column()
+    
+
+
+# PLACEHOLDER    
+def matplotlib_bar_image (request, data):
+    pos = arange(10)+ 2 
+    
+    barh(pos,(1,2,3,4,5,6,7,8,9,10),align = 'center')
+    
+    yticks(pos,('#hcsm','#ukmedlibs','#ImmunoChat','#HCLDR','#ICTD2015','#hpmglobal','#BRCA','#BCSM','#BTSM','#OTalk'))
+    
+    xlabel('Popularidad')
+    ylabel('Hashtags')
+    title('Gráfico de Hashtags')
+    subplots_adjust(left=0.21)
+    
+    buffer = io.BytesIO()
+    canvas = pylab.get_current_fig_manager().canvas
+    canvas.draw()
+    graphIMG = PIL.Image.fromstring('RGB', canvas.get_width_height(), canvas.tostring_rgb())
+    graphIMG.save(buffer, "PNG")
+    pylab.close()
+    
+    return HttpResponse (buffer.getvalue(), content_type="Image/png")
+
 def progress_count(request):
     """Counts we want (for each telescope+instrument):
 sent::     Sent from dome
@@ -176,7 +213,19 @@ sent = nosubmit + (rejected + accepted))
               .values_list('telescope','instrument')):
         progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
     #return JsonResponse(serializers.serialize(format, qs), safe=False)
-    return HttpResponse('counts: {}'.format(progress))
+    #return HttpResponse('counts: {}'.format(progress))
+    instrums=[]
+    for (tele,instr) in progress.keys():
+        instrums.append(dict(instrument='{}-{}'.format(tele,instr),
+                             notReceived=progress[(tele,instr)][0],
+                             rejected=progress[(tele,instr)][1],
+                             accepteded=progress[(tele,instr)][2]
+                             ))
+    print('instrums={}'.format(instrums))
+    table = ProgressTable(instrums)
+    c = {"instrum_table": table,
+         "title": 'Progress of Submits from instruments',  }
+    return render(request, 'audit/progress.html', c) 
 
 #!class SourceFileList(generics.ListAPIView):
 #!    model = SourceFile
