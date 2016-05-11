@@ -1,0 +1,16 @@
+{% load static %}
+<link media="all" href="{% static 'audit/nv.d3.css' %}"  type="text/css" rel="stylesheet" />
+<script type="text/javascript" src='{% static 'audit/d3.min.js' %}'></script>
+<script type="text/javascript" src='{% static 'audit/nv.d3.min.js' %}'></script>
+
+{% load nvd3_tags %}
+<head>
+  {# Jquery CDN : Needed when using jquery_on_ready=True #}
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  {% include_chart_jscss %}  
+  {% load_chart charttype chartdata "multibarhorizontalchart_container" %}
+</head>
+<body>
+  <h1>Number of files through Archive system</h1>
+  {% include_container "multibarhorizontalchart_container" 400 600 %}
+</body>

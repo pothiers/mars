@@ -77,7 +77,7 @@ def demo_multibarhorizontalchart(request):
     multibarhorizontalchart page
     """
     import random
-    nb_element = 13
+    nb_element = 10
     xdata = range(nb_element)
     ydata = [i + random.randint(-10, 10) for i in range(nb_element)]
     ydata2 = map(lambda x: x * 2, ydata)
@@ -291,21 +291,37 @@ sent = nosubmit + (rejected + accepted))
               .distinct('telescope','instrument')
               .values_list('telescope','instrument')):
         progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
-    #return JsonResponse(serializers.serialize(format, qs), safe=False) 
-   #return HttpResponse('counts: {}'.format(progress))
-    instrums=[]
-    for (tele,instr) in progress.keys():
-        instrums.append(dict(instrument='{}-{}'.format(tele,instr),
-                             notReceived=progress[(tele,instr)][0],
-                             rejected=progress[(tele,instr)][1],
-                             accepteded=progress[(tele,instr)][2]
-                             ))
-    print('instrums={}'.format(instrums))
-    table = ProgressTable(instrums)
-    c = {"instrum_table": table,
-         "title": 'Progress of Submits from instruments',  }
-    return render(request, 'audit/progress.html', c) 
 
+    instrums = sorted(list(progress.keys()))
+    xdata = ['{}:{}'.format(tele,inst) for tele,inst in sorted(progress.keys())]
+    xdata = list(range(len(instrums)))
+
+    ydata0 = [progress[k][0] for k in instrums]
+    ydata1 = [progress[k][1] for k in instrums]
+    ydata2 = [progress[k][2] for k in instrums]
+
+    extra_serie = {
+        "tooltip": {"y_start": "", "y_end": " mins"},
+        "tooltips": True,
+        "showValues": True,
+        "tickFormat": None,
+        "style": 'stack',
+    }
+
+    chartdata = {
+        'x': xdata,
+        'name0': 'Not Received', 'y0': ydata0, 'extra0': extra_serie,
+        'name1': 'Rejected',     'y1': ydata1, 'extra1': extra_serie,
+        'name2': 'Accepted',     'y2': ydata2, 'extra2': extra_serie,
+    }
+
+    charttype = "multiBarHorizontalChart"
+    data = {
+        'charttype': charttype,
+        'chartdata': chartdata
+    }
+    return render_to_response('audit/progress-bar-chart.html', data)
+    
 #!class SourceFileList(generics.ListAPIView):
 #!    model = SourceFile
 #!    queryset = SourceFile.objects.all()
