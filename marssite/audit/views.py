@@ -71,12 +71,13 @@ def add_submit(request):
 ##############################################################################
 ### Newer version
 ###
+
 def demo_multibarhorizontalchart(request):
     """
     multibarhorizontalchart page
     """
     import random
-    nb_element = 10
+    nb_element = 13
     xdata = range(nb_element)
     ydata = [i + random.randint(-10, 10) for i in range(nb_element)]
     ydata2 = map(lambda x: x * 2, ydata)
@@ -106,7 +107,7 @@ EXAMPLE:
         for path in request.body.decode('utf-8').strip().split():
             print('DBG: source={}'.format(path))
             SourceFile.objects.update_or_create(
-                source=path,
+                srcpath=path,
                 defaults=dict(recorded=timezone.now()
                 ))
         qs = SourceFile.objects.all()
@@ -238,6 +239,60 @@ sent = nosubmit + (rejected + accepted))
         progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
     #return JsonResponse(serializers.serialize(format, qs), safe=False)
     #return HttpResponse('counts: {}'.format(progress))
+    instrums=[]
+    for (tele,instr) in progress.keys():
+        instrums.append(dict(instrument='{}-{}'.format(tele,instr),
+                             notReceived=progress[(tele,instr)][0],
+                             rejected=progress[(tele,instr)][1],
+                             accepteded=progress[(tele,instr)][2]
+                             ))
+    print('instrums={}'.format(instrums))
+    table = ProgressTable(instrums)
+    c = {"instrum_table": table,
+         "title": 'Progress of Submits from instruments',  }
+    return render(request, 'audit/progress.html', c) 
+
+def progress(request):
+    """Bar chart of counts for each telescope+instrument:
+#sent::     Sent from dome
+nosubmit:: Not received at Valley (in transit? lost?) 
+rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
+accepted:: Archive accepted submission (should be in DB)
+
+sent = nosubmit + (rejected + accepted))
+"""
+    add_ingested()
+    nosubmitqs = (SourceFile.objects.exclude(success__isnull=False)
+                  .values('telescope','instrument')
+                  .annotate(total=Count('srcpath'))
+                  .order_by('instrument','telescope'))
+    nosubmit = dict([((ob['telescope'],ob['instrument']),ob['total'])
+                     for ob in nosubmitqs])
+
+    rejectedqs = (SourceFile.objects.filter(success__exact=False)
+                  .values('telescope','instrument')
+                  .annotate(total=Count('srcpath'))
+                  .order_by('instrument','telescope'))
+    rejected = dict([((ob['telescope'],ob['instrument']),ob['total'])
+                     for ob in rejectedqs])
+
+    acceptedqs = (SourceFile.objects.filter(success__exact=True)
+                  .values('telescope','instrument')
+                  .annotate(total=Count('srcpath'))
+                  .order_by('instrument','telescope'))
+    accepted = dict([((ob['telescope'],ob['instrument']),ob['total'])
+                     for ob in acceptedqs])
+    sent = SourceFile.objects.count()
+    assert (sent==(sum([n for n in nosubmit.values()])
+                   + sum([n for n in rejected.values()])
+                   + sum([n for n in accepted.values()])))
+    progress = dict() # progress[(tele,instr)] = (nosubmit,rejected,accepted)
+    for k in (SourceFile.objects.order_by('telescope','instrument')
+              .distinct('telescope','instrument')
+              .values_list('telescope','instrument')):
+        progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
+    #return JsonResponse(serializers.serialize(format, qs), safe=False) 
+   #return HttpResponse('counts: {}'.format(progress))
     instrums=[]
     for (tele,instr) in progress.keys():
         instrums.append(dict(instrument='{}-{}'.format(tele,instr),

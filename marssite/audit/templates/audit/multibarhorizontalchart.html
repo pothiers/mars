@@ -1,23 +1,29 @@
->{% load static %}
-<link media="all" href="{% static 'audit/nv.d3.css' %}"
-      type="text/css" rel="stylesheet" />
+{% load static %}
+<link media="all" href="{% static 'audit/nv.d3.css' %}"  type="text/css" rel="stylesheet" />
 <script type="text/javascript" src='{% static 'audit/d3.min.js' %}'></script>
 <script type="text/javascript" src='{% static 'audit/nv.d3.min.js' %}'></script>
 
 
 {% load nvd3_tags %}
 <head>
-    {% load_chart charttype chartdata "multibarhorizontalchart_container" %}
+  {# Jquery CDN : Needed when using jquery_on_ready=True #}
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  {% include_chart_jscss %}  
+  {% load_chart charttype chartdata "multibarhorizontalchart_container" %}
 </head>
 <body>
-    {% include_container "multibarhorizontalchart_container" 400 600
-    %}
+  <h1>Demo of mulatibarhorizonalchart</h1>
+  {% include_container "multibarhorizontalchart_container" 400 600 %}
 
-    <p>
-script type="text/javascript" src='{% static 'd3/d3.min.js' %}'
-script type="text/javascript" src='{% static 'nvd3/nv.d3.min.js' %}'
-
-script type="text/javascript" src='https://d3js.org/d3.v3.min.js' %}'
-script type="text/javascript" src='https://d3js.org/nv.d3.min.js' %}'
-    </p>    
+  {% comment %}
+  <hr>
+  <p>Stashed HTML stuff</p>
+  <p>
+    script type="text/javascript" src='{% static 'd3/d3.min.js' %}'
+    script type="text/javascript" src='{% static 'nvd3/nv.d3.min.js' %}'
+    
+    script type="text/javascript" src='https://d3js.org/d3.v3.min.js' %}'
+    script type="text/javascript" src='https://d3js.org/nv.d3.min.js' %}'
+  </p>    
+  {% endcomment %}
 </body>
