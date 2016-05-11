@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^missing/$', views.not_ingested, name='not_ingested'),
     url(r'^failed/$', views.failed_ingest, name='failed_ingest'),
     url(r'^progress/$', views.progress_count, name='progress_count'),
+    url(r'^demo1/$', views.demo_multibarhorizontalchart,  name='demo1'),
 ]
 
 

@@ -15,7 +15,7 @@
 
 
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView
 from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
@@ -71,6 +71,30 @@ def add_submit(request):
 ##############################################################################
 ### Newer version
 ###
+def demo_multibarhorizontalchart(request):
+    """
+    multibarhorizontalchart page
+    """
+    import random
+    nb_element = 10
+    xdata = range(nb_element)
+    ydata = [i + random.randint(-10, 10) for i in range(nb_element)]
+    ydata2 = map(lambda x: x * 2, ydata)
+
+    extra_serie = {"tooltip": {"y_start": "", "y_end": " mins"}}
+
+    chartdata = {
+        'x': xdata,
+        'name1': 'series 1', 'y1': ydata, 'extra1': extra_serie,
+        'name2': 'series 2', 'y2': ydata2, 'extra2': extra_serie,
+    }
+
+    charttype = "multiBarHorizontalChart"
+    data = {
+        'charttype': charttype,
+        'chartdata': chartdata
+    }
+    return render_to_response('audit/multibarhorizontalchart.html', data)
 
 @csrf_exempt
 def source(request, format='yaml'):
