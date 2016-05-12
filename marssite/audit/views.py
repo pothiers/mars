@@ -10,9 +10,6 @@
 # Archived rejected it? (error message?)
 # Didn't make it to Valley? Didn't make it to Mountain?
 #
-# Graph using:
-#  django-graphos-3;  bad documentation
-
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, render_to_response
@@ -32,41 +29,42 @@ from rest_framework.parsers import JSONParser
 from rest_framework import generics
 from rest_framework.decorators import  api_view,parser_classes
 
-from .models import Submittal, SourceFile
-from .serializers import SubmittalSerializer, SourceFileSerializer
+from .models import SourceFile
+#from .serializers import SubmittalSerializer, SourceFileSerializer
+from .serializers import SourceFileSerializer
 
 from siap.models import VoiSiap
 
 # curl http://localhost:8000/audit/ > ~/Downloads/list.json
-class SubmittalList(generics.ListAPIView):
-    model = Submittal
-    queryset = Submittal.objects.all().all
-    template_name = 'audit/submittal_list.html'
-
-    serializer_class = SubmittalSerializer
-    paginate_by = 50
-
-class SubmittalDetail(generics.CreateAPIView):
-    model = Submittal
-    queryset = Submittal.objects.all()
-    template_name = 'audit/submittal_detail.html'
-    serializer_class = SubmittalSerializer
-
-
-    #curl -H "Content-Type: application/json" -X POST -d '{"source":"xyz","archive":"xyz","status":"NA1", "metadata":"NA2"}' http://localhost:8000/audit/add
-@csrf_exempt
-@api_view(['POST'])
-@parser_classes((JSONParser,))
-def add_submit(request):
-    """Add a SUBMIT record using JSON data."""
-    #print('DBG: audit/add_submit. Request={}'.format(request))
-    if request.method == 'POST':
-        #!print('Raw Data: "{}"'.format(request.body))
-        #!print('Parsed Data: "{}"'.format(request.data))
-        #!print('source={}'.format(request.data['source']))
-        obj = Submittal(**request.data)
-        obj.save()
-    return redirect(reverse('audit:submittal_list'))
+#!class SubmittalList(generics.ListAPIView):
+#!    model = Submittal
+#!    queryset = Submittal.objects.all().all
+#!    template_name = 'audit/submittal_list.html'
+#!
+#!    serializer_class = SubmittalSerializer
+#!    paginate_by = 50
+#!
+#!class SubmittalDetail(generics.CreateAPIView):
+#!    model = Submittal
+#!    queryset = Submittal.objects.all()
+#!    template_name = 'audit/submittal_detail.html'
+#!    serializer_class = SubmittalSerializer
+#!
+#!
+#!    #curl -H "Content-Type: application/json" -X POST -d '{"source":"xyz","archive":"xyz","status":"NA1", "metadata":"NA2"}' http://localhost:8000/audit/add
+#!@csrf_exempt
+#!@api_view(['POST'])
+#!@parser_classes((JSONParser,))
+#!def add_submit(request):
+#!    """Add a SUBMIT record using JSON data."""
+#!    #print('DBG: audit/add_submit. Request={}'.format(request))
+#!    if request.method == 'POST':
+#!        #!print('Raw Data: "{}"'.format(request.body))
+#!        #!print('Parsed Data: "{}"'.format(request.data))
+#!        #!print('source={}'.format(request.data['source']))
+#!        obj = Submittal(**request.data)
+#!        obj.save()
+#!    return redirect(reverse('audit:submittal_list'))
 
 ##############################################################################
 ### Newer version
@@ -97,8 +95,9 @@ def demo_multibarhorizontalchart(request):
     }
     return render_to_response('audit/multibarhorizontalchart.html', data)
 
+# Just allow source path (which was the only key)
 @csrf_exempt
-def source(request, format='yaml'):
+def ORIG_source(request, format='yaml'):
     """Record list of source paths to be submitted for ingest.
 EXAMPLE:    
     curl -d '/04202016/tele/img1.fits /04202016/tele/img2.fits' http://localhost:8000/audit/source/
@@ -110,6 +109,28 @@ EXAMPLE:
                 srcpath=path,
                 defaults=dict(recorded=timezone.now()
                 ))
+        qs = SourceFile.objects.all()
+        return JsonResponse(serializers.serialize(format, qs), safe=False)
+    else:
+        return HttpResponse('ERROR: expected POST')
+
+#curl -H "Content-Type: application/json" -X POST -d '{ "observations":
+#   [ { "md5sum": "c89350d2f507a883bc6a3e9a6f418a11", "obsday": "20165012", "telescope": "kp09m", "instrument": "whirc", "srcpath": "/data/20165012/foo1.fits" },
+#     { "md5sum": "c89350d2f507a883bc6a3e9a6f418a12", "obsday": "20165012", "telescope": "kp09m", "instrument": "whirc", "srcpath": "/data/20165012/foo2.fits" }
+#   ] }' http://localhost:8000/audit/add
+@csrf_exempt
+@api_view(['POST'])
+@parser_classes((JSONParser,))
+def source(request, format='yaml'):
+    """Record list of observations to be submitted for ingest.
+EXAMPLE:    
+    curl -H "Content-Type: application/json" -d @example-obs.json http://localhost:8000/audit/source/
+    """
+    if request.method == 'POST':
+        for obs in request.data['observations']:
+            print('obs={}'.format(obs))
+            obj = SourceFile(**obs)
+            obj.save()
         qs = SourceFile.objects.all()
         return JsonResponse(serializers.serialize(format, qs), safe=False)
     else:
@@ -302,10 +323,12 @@ sent = nosubmit + (rejected + accepted))
 
     extra_serie = {
         "tooltip": {"y_start": "", "y_end": " mins"},
-        "tooltips": True,
-        "showValues": True,
-        "tickFormat": None,
-        "style": 'stack',
+        #"tooltips": True,
+        #"showValues": True,
+        #"tickFormat": None,
+        #"style": 'stack',
+        "y_axis_format": "",
+        "x_axis_format": "",
     }
 
     chartdata = {

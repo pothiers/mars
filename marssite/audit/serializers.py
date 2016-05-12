@@ -1,10 +1,7 @@
 from rest_framework import serializers
-from .models import Submittal, SourceFile
+from .models import SourceFile
 
 
-class SubmittalSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Submittal
 
 class SourceFileSerializer(serializers.ModelSerializer):
     class Meta:
