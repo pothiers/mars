@@ -115,8 +115,8 @@ EXAMPLE:
         return HttpResponse('ERROR: expected POST')
 
 #curl -H "Content-Type: application/json" -X POST -d '{ "observations":
-#   [ { "md5sum": "c89350d2f507a883bc6a3e9a6f418a11", "obsday": "20165012", "telescope": "kp09m", "instrument": "whirc", "srcpath": "/data/20165012/foo1.fits" },
-#     { "md5sum": "c89350d2f507a883bc6a3e9a6f418a12", "obsday": "20165012", "telescope": "kp09m", "instrument": "whirc", "srcpath": "/data/20165012/foo2.fits" }
+#   [ { "md5sum": "c89350d2f507a883bc6a3e9a6f418a11", "obsday": "2016-05-12", "telescope": "kp09m", "instrument": "whirc", "srcpath": "/data/20165012/foo1.fits" },
+#     { "md5sum": "c89350d2f507a883bc6a3e9a6f418a12", "obsday": "2016-05-12", "telescope": "kp09m", "instrument": "whirc", "srcpath": "/data/20165012/foo2.fits" }
 #   ] }' http://localhost:8000/audit/add
 @csrf_exempt
 @api_view(['POST'])
@@ -127,12 +127,14 @@ EXAMPLE:
     curl -H "Content-Type: application/json" -d @example-obs.json http://localhost:8000/audit/source/
     """
     if request.method == 'POST':
+        addcnt=0
         for obs in request.data['observations']:
-            print('obs={}'.format(obs))
             obj = SourceFile(**obs)
             obj.save()
-        qs = SourceFile.objects.all()
-        return JsonResponse(serializers.serialize(format, qs), safe=False)
+            addcnt+=1
+        #qs = SourceFile.objects.all()
+        #return JsonResponse(serializers.serialize(format, qs), safe=False)
+        return HttpResponse('Added {} audit records.\n'.format(addcnt))
     else:
         return HttpResponse('ERROR: expected POST')
 
@@ -229,43 +231,43 @@ accepted:: Archive accepted submission (should be in DB)
 sent = nosubmit + (rejected + accepted))
 """
     add_ingested()
+    group = ['instrument','telescope','obsday']
     nosubmitqs = (SourceFile.objects.exclude(success__isnull=False)
-                  .values('telescope','instrument')
-                  .annotate(total=Count('srcpath'))
-                  .order_by('instrument','telescope'))
-    nosubmit = dict([((ob['telescope'],ob['instrument']),ob['total'])
+                  .values(*group)
+                  .annotate(total=Count('md5sum'))
+                  .order_by(*group))
+    nosubmit = dict([(tuple([ob[k] for k in group]), ob['total'])
                      for ob in nosubmitqs])
 
     rejectedqs = (SourceFile.objects.filter(success__exact=False)
-                  .values('telescope','instrument')
-                  .annotate(total=Count('srcpath'))
-                  .order_by('instrument','telescope'))
-    rejected = dict([((ob['telescope'],ob['instrument']),ob['total'])
-                     for ob in rejectedqs])
+                  .values(*group)
+                  .annotate(total=Count('md5sum'))
+                  .order_by(*group))
+    rejected = dict([(tuple([ob[k] for k in group]),ob['total'])
+                       for ob in rejectedqs])
 
     acceptedqs = (SourceFile.objects.filter(success__exact=True)
-                  .values('telescope','instrument')
-                  .annotate(total=Count('srcpath'))
-                  .order_by('instrument','telescope'))
-    accepted = dict([((ob['telescope'],ob['instrument']),ob['total'])
-                     for ob in acceptedqs])
+                  .values(*group)
+                  .annotate(total=Count('md5sum'))
+                  .order_by(*group))
+    accepted = dict([(tuple([ob[k] for k in group]), ob['total'])
+                       for ob in acceptedqs])
     sent = SourceFile.objects.count()
     assert (sent==(sum([n for n in nosubmit.values()])
                    + sum([n for n in rejected.values()])
                    + sum([n for n in accepted.values()])))
-    progress = dict() # progress[(tele,instr)] = (nosubmit,rejected,accepted)
-    for k in (SourceFile.objects.order_by('telescope','instrument')
-              .distinct('telescope','instrument')
-              .values_list('telescope','instrument')):
+
+    progress = dict() # progress[(tele,inst,day)] = (nosubmit,rejected,accepted)
+    for k in (SourceFile.objects.order_by('telescope','instrument','obsday')
+              .distinct(*group).values_list(*group)):
         progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
-    #return JsonResponse(serializers.serialize(format, qs), safe=False)
-    #return HttpResponse('counts: {}'.format(progress))
+
     instrums=[]
-    for (tele,instr) in progress.keys():
-        instrums.append(dict(instrument='{}-{}'.format(tele,instr),
-                             notReceived=progress[(tele,instr)][0],
-                             rejected=progress[(tele,instr)][1],
-                             accepteded=progress[(tele,instr)][2]
+    for (tele,instr,day) in progress.keys():
+        instrums.append(dict(instrument='{}-{}-{}'.format(tele,instr,day),
+                             notReceived=progress[(tele,instr,day)][0],
+                             rejected=progress[(tele,instr,day)][1],
+                             accepted=progress[(tele,instr,day)][2]
                              ))
     print('instrums={}'.format(instrums))
     table = ProgressTable(instrums)
@@ -285,21 +287,21 @@ sent = nosubmit + (rejected + accepted))
     add_ingested()
     nosubmitqs = (SourceFile.objects.exclude(success__isnull=False)
                   .values('telescope','instrument')
-                  .annotate(total=Count('srcpath'))
+                  .annotate(total=Count('md5sum'))
                   .order_by('instrument','telescope'))
     nosubmit = dict([((ob['telescope'],ob['instrument']),ob['total'])
                      for ob in nosubmitqs])
 
     rejectedqs = (SourceFile.objects.filter(success__exact=False)
                   .values('telescope','instrument')
-                  .annotate(total=Count('srcpath'))
+                  .annotate(total=Count('md5sum'))
                   .order_by('instrument','telescope'))
     rejected = dict([((ob['telescope'],ob['instrument']),ob['total'])
                      for ob in rejectedqs])
 
     acceptedqs = (SourceFile.objects.filter(success__exact=True)
                   .values('telescope','instrument')
-                  .annotate(total=Count('srcpath'))
+                  .annotate(total=Count('md5sum'))
                   .order_by('instrument','telescope'))
     accepted = dict([((ob['telescope'],ob['instrument']),ob['total'])
                      for ob in acceptedqs])
