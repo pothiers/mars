@@ -32,6 +32,7 @@ from rest_framework.decorators import  api_view,parser_classes
 from .models import SourceFile
 #from .serializers import SubmittalSerializer, SourceFileSerializer
 from .serializers import SourceFileSerializer
+from .plotlib import hbarplot
 
 from siap.models import VoiSiap
 
@@ -161,7 +162,8 @@ EXAMPLE:
         return HttpResponse('ERROR: expected POST')
 
 
-def add_ingested():    
+def add_ingested():
+    "Update Audit records using matching Ingest records from SIAP"
     cursor = connection.cursor()
     # Force material view refresh
     cursor.execute('SELECT * FROM refresh_voi_material_views()')
@@ -218,19 +220,18 @@ def matplotlib_bar_image (request, data):
     graphIMG = PIL.Image.fromstring('RGB', canvas.get_width_height(), canvas.tostring_rgb())
     graphIMG.save(buffer, "PNG")
     pylab.close()
-    
     return HttpResponse (buffer.getvalue(), content_type="Image/png")
 
-def progress_count(request):
-    """Counts we want (for each telescope+instrument):
-sent::     Sent from dome
-nosubmit:: Not received at Valley (in transit? lost?) 
-rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
-accepted:: Archive accepted submission (should be in DB)
+def hbar_svg (request):
+    #counts = dict() # counts[(tele,inst,day)] = (nosubmit,rejected,accepted)
+    counts = get_counts()
 
-sent = nosubmit + (rejected + accepted))
-"""
-    add_ingested()
+    # Convert to XX format
+    #! svg = plotlib.hbarplot(data)
+    svg = hbarplot(counts)
+    return HttpResponse (svg, content_type="Image/svg+xml")
+
+def get_counts():
     group = ['instrument','telescope','obsday']
     nosubmitqs = (SourceFile.objects.exclude(success__isnull=False)
                   .values(*group)
@@ -257,11 +258,25 @@ sent = nosubmit + (rejected + accepted))
                    + sum([n for n in rejected.values()])
                    + sum([n for n in accepted.values()])))
 
-    progress = dict() # progress[(tele,inst,day)] = (nosubmit,rejected,accepted)
+    counts = dict() # counts[(tele,inst,day)] = (nosubmit,rejected,accepted)
     for k in (SourceFile.objects.order_by('telescope','instrument','obsday')
               .distinct(*group).values_list(*group)):
-        progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
+        counts[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
+    return counts
 
+
+
+def progress_count(request):
+    """Counts we want (for each telescope+instrument):
+sent::     Sent from dome
+nosubmit:: Not received at Valley (in transit? lost?) 
+rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
+accepted:: Archive accepted submission (should be in DB)
+
+sent = nosubmit + (rejected + accepted))
+"""
+    add_ingested()
+    progress = get_counts()
     instrums=[]
     for (tele,instr,day) in progress.keys():
         instrums.append(dict(instrument='{}-{}-{}'.format(tele,instr,day),

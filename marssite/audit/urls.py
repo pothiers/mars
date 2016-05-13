@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^progress_table/$', views.progress_count, name='progress_count'),
     url(r'^progress/$', views.progress, name='progress'),
     url(r'^demo1/$', views.demo_multibarhorizontalchart,  name='demo1'),
+    url(r'^hbar/$', views.hbar_svg,  name='hbar_svg'),
 ]
 
 
