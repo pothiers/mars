@@ -34,9 +34,9 @@ audit_data=[
 def hbarplot(countdata):
     #countdata = dict() # data[(tele,inst,day)] = (nosubmit,rejected,accepted)
     daykeys = list(countdata.keys())
-    counts = np.array([ countdata[dk] for dk in daykeys])
-    data = counts.transpose() # N x 3 
-    print('hgbarplot.data={}'.format(data))
+    counts = np.array([ list(reversed(countdata[dk])) for dk in daykeys])
+    data = counts.transpose() # N x 3 (columns X rows)
+    #print('hgbarplot.data={}'.format(data))
     numrows = len(daykeys)
     y_pos = np.arange(numrows)
 
@@ -69,6 +69,7 @@ def hbarplot(countdata):
     ax.set_yticklabels(['{}:{}:{}'.format(tele,inst,day)
                         for (tele,inst,day) in daykeys])
     ax.set_xlabel('Number of files')
+    #! ax.legend()
     plt.tight_layout()
 
     svgbuf = io.StringIO()
