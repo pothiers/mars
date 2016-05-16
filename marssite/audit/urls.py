@@ -14,8 +14,8 @@ urlpatterns = [
     url(r'^update/$', views.update, name='update'),
     url(r'^missing/$', views.not_ingested, name='not_ingested'),
     url(r'^failed/$', views.failed_ingest, name='failed_ingest'),
-    url(r'^progress_table/$', views.progress_count, name='progress_count'),
-    url(r'^progress/$', views.progress, name='progress'),
+    url(r'^progress/$', views.progress_count, name='progress_count'),
+    url(r'^progress_plot/$', views.progress, name='progress'),
     url(r'^demo1/$', views.demo_multibarhorizontalchart,  name='demo1'),
     url(r'^hbar/$', views.hbar_svg,  name='hbar_svg'),
 ]

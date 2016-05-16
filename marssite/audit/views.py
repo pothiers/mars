@@ -173,8 +173,9 @@ def update(request, format='yaml'):
     if request.method == 'POST':    
         rdict = request.data
         defs = rdict.copy
+        print('/audit/update: defaults={}'.format(defaults))
         obj,created = SourceFile.objects.update_or_create(rdict[md5sum],
-                                                       defaults=rdict)
+                                                          defaults=rdict)
         if created:
             pass # warning? Ingest attemp, but no dome record!
             
