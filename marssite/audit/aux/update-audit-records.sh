@@ -10,7 +10,7 @@ SCRIPT=$(readlink -f $0)        # Absolute path to this script
 SCRIPTPATH=$(dirname $SCRIPT)   # Absolute path this script is in
 
 VERBOSE=0
-URI="http://localhost:8000/audit/source/"
+URI="http://localhost:8000/audit/update/"
 DAY=`date '+%Y-%m-%d'`
 INS="unknown"
 TEL="unknown"

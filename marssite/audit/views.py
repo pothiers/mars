@@ -129,13 +129,17 @@ EXAMPLE:
     """
     if request.method == 'POST':
         addcnt=0
+        preexisting = set()
         for obs in request.data['observations']:
-            obj = SourceFile(**obs)
-            obj.save()
-            addcnt+=1
-        #qs = SourceFile.objects.all()
-        #return JsonResponse(serializers.serialize(format, qs), safe=False)
-        return HttpResponse('Added {} audit records.\n'.format(addcnt))
+            print('DBG: obs={}'.format(obs))
+            obj,created = SourceFile.objects.get_or_create(md5sum=obs['md5sum'],
+                                                           defaults=obs)
+            if created:
+                addcnt+=1
+            else:
+                preexisting.add(obs['md5sum'])
+        return HttpResponse('<p>Added {} audit records. {} already existed.\n'
+                            .format(addcnt,len(preexisting)))
     else:
         return HttpResponse('ERROR: expected POST')
 
@@ -161,7 +165,19 @@ EXAMPLE:
     else:
         return HttpResponse('ERROR: expected POST')
 
-
+@csrf_exempt
+@api_view(['POST'])
+@parser_classes((JSONParser,))
+def update(request, format='yaml'):
+    """Update audit record"""
+    if request.method == 'POST':    
+        rdict = request.data
+        defs = rdict.copy
+        obj,created = SourceFile.objects.update_or_create(rdict[md5sum],
+                                                       defaults=rdict)
+        if created:
+            pass # warning? Ingest attemp, but no dome record!
+            
 def add_ingested():
     "Update Audit records using matching Ingest records from SIAP"
     cursor = connection.cursor()
@@ -176,7 +192,7 @@ def add_ingested():
                 success=True,
                 archfile=obj.reference)
 
-def update(request):
+def refresh(request):
     "Query Archive for all SourceFiles"
     add_ingested()
     return redirect('/admin/audit/sourcefile/')
@@ -194,7 +210,9 @@ def failed_ingest(request):
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
 
 class ProgressTable(tables.Table):
-    instrument = tables.Column()
+    Telescope = tables.Column()
+    Instrument = tables.Column()
+    ObsDay = tables.Column()
     notReceived = tables.Column()
     rejected =  tables.Column()
     accepted =  tables.Column()
@@ -222,6 +240,7 @@ def matplotlib_bar_image (request, data):
     pylab.close()
     return HttpResponse (buffer.getvalue(), content_type="Image/png")
 
+# See also: templates/audit/googlechart-hbar.html
 def hbar_svg (request):
     #counts = dict() # counts[(tele,inst,day)] = (nosubmit,rejected,accepted)
     counts = get_counts()
@@ -279,12 +298,14 @@ sent = nosubmit + (rejected + accepted))
     progress = get_counts()
     instrums=[]
     for (tele,instr,day) in progress.keys():
-        instrums.append(dict(instrument='{}-{}-{}'.format(tele,instr,day),
+        instrums.append(dict(Telescope=tele,
+                             Instrument=instr,
+                             ObsDay=day,
                              notReceived=progress[(tele,instr,day)][0],
                              rejected=progress[(tele,instr,day)][1],
                              accepted=progress[(tele,instr,day)][2]
                              ))
-    print('instrums={}'.format(instrums))
+    #!print('instrums={}'.format(instrums))
     table = ProgressTable(instrums)
     c = {"instrum_table": table,
          "title": 'Progress of Submits from instruments',  }

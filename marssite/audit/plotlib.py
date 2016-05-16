@@ -15,7 +15,7 @@ def write_fig(fig):
 #! def fig_response(fig):    
 #!     canvas = FigureCanvas(fig)
 #!     response = HttpResponse(content_type='image/png')
-#!     canvas.print_png(response)
+#!     canvas.print_png(response)v
 #!     matplotlib.pyplot.close(f)
 #!     return response
 
@@ -39,8 +39,8 @@ def hbarplot(countdata):
     #print('hgbarplot.data={}'.format(data))
     numrows = len(daykeys)
     y_pos = np.arange(numrows)
-
-    fig = plt.figure(figsize=(10,8))
+    heightIn = numrows * .5
+    fig = plt.figure(figsize=(10,heightIn))  # w,h (inches)
     ax = fig.add_subplot(111)
 
     plt.title('Observations per Telescope, Instrument, Day')
