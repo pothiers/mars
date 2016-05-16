@@ -1,0 +1,1622 @@
+- model: audit.sourcefile
+  pk: ''
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: templates,
+    recorded: !!timestamp '2016-05-12 22:32:51.857991+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 000288bb18776b72a732b88b86ac1904
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000079.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:39.924547+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 001dcfb0a6a36db0ee436242abe5090a
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000018.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:33.965971+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 012c2281bf1269d01be2c23e78bce7a5
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000266.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:57.330459+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 01a8ca913dbca26906b6f05af2afa337
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000047.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:30.890942+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 0227155e1cef1483e2772136d1237cc0
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000253.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:53.941432+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 02344172462ff350f2743a656545a0cb
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000157.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:05.424174+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 04ae44f2243e1d53a36eaa26d0d3efc3
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000198.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:17.170087+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 050234bd96ca6bf9c2357047a647e6c4
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000257.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:54.580034+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 050c5a415526b1874c9362f6d2689071
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000230.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:46.362310+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 0639da741d66242f9adf1fc694e57ad4
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000132.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:58.779889+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 09737af78c14c69d02cfc7aef8dd710e
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000042.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:30.075497+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 0ac90364a1bd1d103d5f03e526411d81
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000162.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:07.508784+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 0ca8985e8aab879ffcdd45bf922fea7f
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000170.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:09.832984+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 0d0f5d80b59354509cdc59ab8e8f78bb
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000088.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:42.816386+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 0e645b7d20b4d5f71307f4998af9c00c
+  fields: {obsday: 2016-05-12, telescope: unknown, instrument: unknown, srcpath: views.py,
+    recorded: !!timestamp '2016-05-12 22:18:37.283132+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 0e959e296eca67faf2652a8c413e053e
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000009.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:52.808483+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: false, archerr: Fake error from /home/pothiers/sandbox/mars/marssite/audit/aux/update-audit-records.sh,
+    archfile: ''}
+- model: audit.sourcefile
+  pk: 0fa77a8c4f1090245cdceec97650007e
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000085.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:42.336933+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 0febcffb499771c3211c8d4c7ed61ea3
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000288.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:04.453081+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 10c00787201df8bceb725d9b2ba5f225
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000218.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:40.093906+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 11212ae89612e9bb6028dac537a1615a
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000099.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:45.886098+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 113deaab1583bbdf0897ad759b299a9a
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000226.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:43.681918+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 11850bc061ec75b4c820879719b26396
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000056.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:33.639360+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 15b8e91c7fcb283c2f1470fa94954674
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000003.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:52.114352+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: true, archerr: '', archfile: kww_141220_130138_ori_TADASMOKE.fits.fz}
+- model: audit.sourcefile
+  pk: 16369b6d9fd5d7390cc3f16e9ffe2975
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000281.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:03.358048+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 18f42ef49ac68e5df5e99962cb1a0608
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000086.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:42.499150+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 1aaba6f0dceafda5f895dbcb96d1d686
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000131.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:58.613122+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 1b32169f42d88f54c93285eac45148c1
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000267.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:57.496352+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 1b35531cf79255efae48848dc5757d5f
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000095.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:45.251966+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 1ec910505395ef66b2a0c64f9a4b9f17
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000080.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:41.240082+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 1f51fdc443d504ea0f13f702143596cb
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000046.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:30.721509+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2150c1d409c8b69f2bef596c2811232a
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000192.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:16.202652+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 21c6b02bf1781c9eeecdd89e736d63f1
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000272.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:00.612648+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2258c6b7992e2fa96d1c81dfcecdc7ef
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: urls.py,
+    recorded: !!timestamp '2016-05-12 22:32:52.130003+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 22c23124a39fecfa7d9c48baae5ea733
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: tests.py,
+    recorded: !!timestamp '2016-05-12 22:32:51.974342+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 22ed816799609365056d615208d3532c
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000217.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:39.935607+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2429462bdca1eb396676e65b8884f91f
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000251.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:53.633612+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 242bbe607b5bc85bc457c8931d3f58ea
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000268.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:57.657928+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 25634d5468effb75a2d7da6bfca868e3
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000108.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:50.993578+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 261314d2e04aef7513f1e2be7345e06a
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000200.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:34.632077+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2741556f6e31b9d9e9d6f9f61ff94695
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000238.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:47.908825+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2794c42ca5c4021e8e73d770d6303ffe
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000031.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:26.997835+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 27adc02ca041938c84ed8b980cabee34
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000274.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:00.920710+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 283bb39fe72767e33dd3e929abb9b636
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000061.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:35.772419+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 299ca3633291e11350cade7525ccc3d9
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000083.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:42.005389+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 29a61d2a8bea9bbfb292c9c319c27baa
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000064.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:36.250660+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2acd1b2760d8eb4b1727c202e10b5448
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000021.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:48.161927+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2ad7abf87beecb178aa6e73534f9e2a4
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000249.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:51.993492+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2c680573080214a7f08ba6af6994e2c0
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000297.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:07.232643+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2c83f3240c13a7838d9f6f27f62d4e3f
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000113.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:53.134710+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2d2f27b5726b54172e69469ec1c1b31f
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000207.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:36.003492+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2d7bc1a53a6c06f779f769d429c95080
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000246.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:51.516279+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2ef08d676cdd5787d41cb10d979e1848
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000235.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:47.444630+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2f087f2f2b9f8d02443e56f565cd3b36
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: example-obs.json~,
+    recorded: !!timestamp '2016-05-12 22:32:50.113615+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2f81dec2201e4becaf4874de2d65f2f8
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000169.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:08.629012+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2f9b11eefc1152c5b07a1ee809640aff
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000293.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:06.607491+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 2fd93d53f554f2e20762a78f9d7c5ea2
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000199.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:17.326538+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 31322357f2b721c9996ce57a811196d9
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000252.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:53.789533+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 31f8ed715cb76fc0ba472c50d21bd694
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000263.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:56.848268+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 33eab145ae08c393341d0878d3ab9738
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000017.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:33.802056+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 33f2a225a6aa646ba207e554f069d0a8
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000250.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:53.188736+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 34023c8eeb7607eba2a1524082634239
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000225.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:43.524480+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 34169b16fed2521488598da1e2728982
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000179.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:11.513366+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 376cf698aea5fd99916589f6e2e30024
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000174.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:10.739340+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 3781be3071b41074b9933b69c1cf8459
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000133.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:58.935968+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 378e3edad06c8968827c7cd2e0392006
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000082.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:41.846944+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 378f5a9b4bc0106f6cf159582f4175a7
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000110.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:52.360434+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 37db0c6a27a25d1e6a45c1fa931134c3
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000041.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:29.923662+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 385f5816327a18e9e49ad4fcf3f979e5
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: serializers.py,
+    recorded: !!timestamp '2016-05-12 22:32:51.437382+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 397cefeebf3fe36467df7f902aa00e2f
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000184.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:13.615386+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 397f841da427b7e41de11e33d1f61e61
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000030.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:26.482978+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 39f9c9404b42c1c9659e14e457336c57
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000139.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:59.905876+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 3b803135e442f87bbf44d350027170ae
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000029.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:49.437986+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 3d645a2791ada19b87d57274e5440e19
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000280.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:02.906190+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 3eb587bb8d2985688fe5bf81c4f5baad
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000186.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:13.928057+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 3f29e1582a3427c13df1c619129853dc
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000295.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:06.923664+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 404f9890aa5b48b48f7b9c8db027acf8
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000101.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:49.856985+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 40c7fab9b6fa05636110da1b4db286b6
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000019.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:34.129711+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 416584180bfb3c41e5e15caf3e5fbafd
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000135.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:59.260794+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 41ef7ccd84bab636f3f71e05f2c0feaf
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000188.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:14.242067+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 41f460e7a115c578f7c80de7370ae850
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000000.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:51.497389+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: false, archerr: Fake error from /home/pothiers/sandbox/mars/marssite/audit/aux/update-audit-records.sh,
+    archfile: ''}
+- model: audit.sourcefile
+  pk: 421100a45ee5fddd8587d37ac8e3484a
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000090.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:44.172978+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 425f061b57df2677c59f3d51887c317f
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000244.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:51.195350+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 42b77866142a5a02b78699f9225497dd
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000254.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:54.095134+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 43d6389c178df45c8551c47a159c3026
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000087.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:42.657393+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 441fddce23565214bc0f2fcc36e55a8a
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000058.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:33.952359+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 4533eaef39ac0652b07141afabf64d83
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000081.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:41.687070+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 456fb8b7bec1f860ec991bba8a18dffd
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000201.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:35.059487+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 45eed45a0c2458465f2c3aacf158a84b
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000298.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:07.387451+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 470a5207f404e4eed5a44ca7c48bceca
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000016.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:33.602450+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 483946afb0fc2bb4c138dc3e4488470d
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000183.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:13.450530+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 4891bc097278b44e2f3b7027ec932b5d
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000276.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:01.236835+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 4a6ff8a072afda319861c7e8d6e9dea1
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000014.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:31.339847+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 4a7f6559e2d3b7ed476535612fa443e5
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000239.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:48.072893+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 4b6041a465874caf29acb8d14c1c55b0
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000173.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:10.583132+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 4cbec5e11e7d08454404698d3fd6dd67
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000100.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:49.326724+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 52686da39d14f4e5f2ceb2c9b6d9f57e
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000181.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:13.141885+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 532481b3c9db356feced42118e15ad92
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000167.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:08.309191+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 562b0bc7d58d606f3a54355812ff7267
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000278.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:01.552166+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 565e5beca7d31658b64a55ca4302332d
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000015.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:32.210118+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 56c279ec29241aabda617ff584b2ab35
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000269.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:57.817933+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 570037bbb502a6f62342963e1a8a2903
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000072.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:38.824996+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 577596b9ad8d42a3b05890ec3bb586e7
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000055.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:33.480448+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 577b058911ff59451d3215d2c6feaf9f
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000040.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:29.478662+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 57c9e70a3b1ad13fdb75541e04ac6756
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000001.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:51.884060+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: true, archerr: '', archfile: kww_141220_130138_ori_TADASMOKE.fits.fz}
+- model: audit.sourcefile
+  pk: 581d5da201cba0fb2d1daffb006e1274
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000010.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:25.699334+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 597c64921007c14b1bfd16757245370c
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000212.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:39.149322+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 59e4edb17270fe0b2cb1e05128c605f8
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000259.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:54.901891+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 5a6bad82321b75c82600ccb9f646643c
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000243.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:51.034939+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 5af744255ee65b1a05b4658d29dd58c2
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000240.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:50.268701+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 5b03bf1b37319a984f2e0d0c12455f24
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000161.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:07.352876+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 5c727980e37b9e3d4cc662a67ea549b0
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000193.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:16.372172+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 5e9d158c50f7b54f87551a589cf5c851
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000134.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:59.103020+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 5ec9123d34174cfc5ac9534e3d53043b
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000234.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:47.286751+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 5fb8b090da9647bf816ea4d0538354e4
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000265.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:57.164136+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 5fcd5dc9021a252c127e48f0f67671e6
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000039.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:28.275305+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 60ce933e88248aa4b02068911237fdf1
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000211.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:38.988522+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 63330fa092d0db47bb738ce37240858f
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000050.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:32.404364+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 63daec0929aec0ed99148c621e25ecdf
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000163.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:07.675028+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 64ec85f817c03ee32f46aedc28e5fe4f
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000122.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:55.857754+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 65971264151d9fb98356aa003298c278
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000114.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:53.282672+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 65ce29216660815bf13a8cf567eed920
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000178.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:11.361236+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 66cf9351b04da6b217b1e2d168a4b47e
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000264.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:57.006294+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 6727b4c79aaceb7c5a182c7dfd9daebb
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000115.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:53.434521+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 672fd93d5d8de1fe335ea706896d0ece
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000128.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:56.811543+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 67f176aa2cb129fb070f1c858841499f
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000126.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:56.487361+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 69a66946fae6071bedfeb0006de9c869
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000124.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:56.169972+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 6a99f4d159b897abe9170c283b87f485
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000008.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:52.689033+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: false, archerr: Fake error from /home/pothiers/sandbox/mars/marssite/audit/aux/update-audit-records.sh,
+    archfile: ''}
+- model: audit.sourcefile
+  pk: 6cff049baac3141e9b2b899b4476d108
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000279.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:01.708968+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 6d0b67ec6b6245b516c0e8412d2ce65a
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000227.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:43.846623+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 6e31177d27185351a52b26447a15f69f
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000130.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:58.173647+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 6f21570e1d1b2fa45da5c430c0e7a074
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000057.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:33.794524+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 6f43f22e0bc34b41d3fb84ac3130a5f5
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000165.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:07.993285+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 6f471e8f1e97b2627ac47421da4c8346
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000102.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:50.018803+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 6ffef09bf0f89efc9677cce9388925fa
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000294.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:06.765402+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7098abbc2c4f465a43d514829090bbee
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000171.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:10.265419+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 731c75d62c8b41e0ea2612ebf2adfad4
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000045.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:30.553187+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 732697ef4432e6da04a55a1ed5dff7e9
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000141.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:01.555077+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7373a4dfcf5c44bcae42431867ac3e50
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000063.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:36.088438+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7407ec5027122fcc3485505a3c8d9512
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000062.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:35.930488+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7421cfba7c34258a5ec9f0f3a434c3bf
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000260.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:56.089207+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 74fb5ff69ba4fa45250b8d2f03617876
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000152.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:04.645104+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 75381a09945d3bd3bc68da52d030587b
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000146.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:02.349896+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7542b6981f1ee0c1c42ac78ec445da0a
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000242.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:50.876645+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7558dd08b30e7dfd8cad400cea0647a5
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000116.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:53.592707+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 75f7c074978e1e213c8179da4ac2bf70
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000097.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:45.569825+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7622f4cab25dd91174a5245ed17019fa
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000118.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:53.908826+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 767e2e2ff90a860f8ff81f25e6730446
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000091.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:44.619692+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 76aaa87042ee210d9e1fbeb38d764c5c
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000020.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:47.722127+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 76e363ed084efc2fae2385b4b28c171a
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000067.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:36.719214+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 772e6095287e865842a59473ef46bf20
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000270.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:00.016899+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 77a67787355111ae23c1241620c3613a
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000035.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:27.636245+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 77e0def4fea415796e6a7b9931853bdb
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000286.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:04.142825+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 79bb6a459671a614334909323dfc64d2
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000032.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:27.159306+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7a6c72d400ef511a29dd4c594b42174c
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: foo.json,
+    recorded: !!timestamp '2016-05-12 22:32:50.230009+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7bd2d6864d61f41dfd0c3ed2b89f059e
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000078.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:39.766619+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7be6cf77d873de9afb03abcde59b0425
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000148.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:02.668296+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7ce4a57eeb20905b45f34fde963285df
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000166.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:08.150801+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7d05afc4d4ac6c2d85e5954d1f97ce7e
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000068.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:36.879087+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7e059b31523708f9c2b5dd3016bc9750
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000194.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:16.529972+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7e67e56361a29953c3c0a473099fc25e
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000117.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:53.752804+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7f2ba0265dac10704b1a5aeff87c09c5
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000143.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:01.866171+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 7fa43613f602d60fcfe6a8733a05b2d1
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000245.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:51.354993+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 800000ddb80db548b1a885c7008ca2e4
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000287.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:04.298748+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 808447c45f914c54cf9763337865c1f7
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000223.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:43.213621+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 82440fca91a005842ea8b485594899c5
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000037.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:27.963547+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 82f22dbdf01ff5d17da4b628926e856a
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: views.py,
+    recorded: !!timestamp '2016-05-12 22:32:52.288420+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 84c5bda9ef82ec984b7562639cda4249
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000002.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:51.997901+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: false, archerr: Fake error from /home/pothiers/sandbox/mars/marssite/audit/aux/update-audit-records.sh,
+    archfile: ''}
+- model: audit.sourcefile
+  pk: 8518057ced9a911ead7fa7a6a4c5c0a3
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000228.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:44.002200+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8541bce0b39fc0ee0623d75d45b5fbb1
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000028.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:49.280055+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 85cdd241e54c73ebc880a9be127a22d0
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000290.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:05.835361+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8691529b0fe54d71ce9b783e781b29c7
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000292.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:06.447738+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 86e53a4fea7a0c93f16ac89ba43a56f5
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000205.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:35.683214+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 88512b2a9f59f6cf1ef47fb4dd347bcc
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000036.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:27.795114+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 88aabe2036910205668272b25df390b1
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000155.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:05.112339+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 88d691c8f4a0f9e3e8104f77bf61674e
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000044.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:30.397924+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 89bdabfc3cc7baa8954628615450c420
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000283.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:03.666908+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8a170b089cff5d70ca13aebe9df4c510
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000026.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:48.964847+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8a456c71a7f70886726566f2ee3c9962
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000103.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:50.172377+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8abc8802f3fc4bd7ce4f68e26907a962
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000224.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:43.369856+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8aca4e8cef8deefdf3b7852a8c8e5e6c
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000248.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:51.833099+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8aeab19e2f7ddda8ec75c4d2b4b3db5d
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000185.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:13.776078+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8b6ca33f3e4d75d3898a63cd3798c978
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000059.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:34.114257+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8c783b3829d31a429974cb9d31508bd1
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000149.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:02.831162+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8c8e72c113caa64cdc4a7e7d67998365
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000172.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:10.425998+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8ddeee21097a07f6a6197c73a7d9295c
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000216.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:39.779743+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8e22428a1e54a9587ce87da7a8028161
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000219.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:40.255543+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8f7f4097d993ee8f0c21829b01c396c6
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000220.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:42.452085+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 8fc2d500e65a49601b997c4740c35538
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000154.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:04.956624+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9004b7f26f600efbc378f2ef80941c37
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000043.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:30.236105+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 90b3a42f5fb2e2bb9e42005ff31521f0
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000299.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:07.549706+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9166ce57c90cad34f6ac8136e207990f
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000038.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:28.117150+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 916733723eec16efd5f11780fc0afc85
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: models.py,
+    recorded: !!timestamp '2016-05-12 22:32:50.742197+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 918fc32692363f17168243c908520a86
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000052.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:33.004091+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 928373e5030ae0ea624aaff8a1461709
+  fields: {obsday: 2016-05-12, telescope: unknown, instrument: unknown, srcpath: foo-observations.json,
+    recorded: !!timestamp '2016-05-12 22:19:24.148988+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 937b62714faa47c33c18d8dd116f42b0
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000136.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:59.413518+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 938f5f06f1070bb643739547fb03563a
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000176.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:11.051719+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 945a132f109f875042aab5f521a74f4f
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000111.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:52.812719+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 95064f093afcfa3fe62492e5b4a3b3cb
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000214.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:39.463209+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9667791c6a02cb1a15a90948b1c9ab8c
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000231.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:46.810947+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9a176bf72c5c234efc173c13a3371cd9
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000138.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:59.747063+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9ab383017d400ce836b696209558287f
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000160.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:06.926136+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9b4fdfb98cc05305a1872df31b2f3e18
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000258.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:54.739660+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9bb65eee7fe2bb4568da584c2d7ab698
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000098.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:45.730479+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9c0c5f48f26e0e7a14b7fa44dfa98dd5
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000241.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:50.717159+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9c498cc8fc7770785c4a534cd92ea201
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000012.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:29.355467+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9e38d3cdeb390a19768403f826ceb592
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: example-obs.json,
+    recorded: !!timestamp '2016-05-12 22:32:49.996192+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9e787cc668f817069944f7aacce3391c
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000073.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:38.979079+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: 9ef4b296e3af860f5c35ec3b85577b61
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: plot_progress.py~,
+    recorded: !!timestamp '2016-05-12 22:32:51.165886+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a09dfaba20bd8bea27a7c98835acef46
+  fields: {obsday: 2016-05-13, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000137.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:59.576953+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a0b9d212ba1b61dd1bca131eeaaaa92b
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000127.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:56.645342+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a0d2a6e838688f19b500645823f50c36
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000105.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:50.502276+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a1ae59c5020d499518b25d94aaec447a
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000084.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:42.173385+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a294a569c1f431df2f172e879b409026
+  fields: {obsday: 2016-05-08, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000089.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:42.969888+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a31f074812f1ad787a3879ec05987292
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000070.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:38.225565+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a33063991c524a51151c9afa86d48f29
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000187.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:14.085976+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a37e4efde7f482855a7ef1fc7cfa1cf7
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000282.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:03.512902+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a3e996422e3d6b755773179d34ed9b55
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000109.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:51.151983+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a465081b3e782370085163d70e80d37a
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000215.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:39.621299+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a4caf6b63a40e74a806caf8b4fcab08d
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000065.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:36.400070+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a510f0184cd9e31affdb2870e56e11e9
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000237.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:47.760613+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a51a47419177d3d29efb836ea0ac9b32
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000204.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:35.520791+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a526a6cad86b2e25a783aaea50db256e
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000140.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:01.108894+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a72b9929a42ca3c4ae3f552d6e0d8c56
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000027.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:49.125080+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a8c2a44c36a2e23ecae1245a7b4f6689
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000182.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:13.295205+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: a96304e0f125c25bc73a68f2cbe6e678
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000076.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:39.453186+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ab01b81a87ace17f9a7e17f2c623f31b
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000119.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:54.066825+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: abcea6526ac1450420b0db13554ae65d
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000156.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:05.270254+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ac7c9718ff29858ea7f380f3cfceea91
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000071.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:38.670783+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ac9f478a9c93a2c933834dac17a96b51
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000051.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:32.842336+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: acdbacd143ed18486fe42b4f0cc3e444
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000256.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:54.421530+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ad4586bfd2515934ce0cb4673a10266e
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000054.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:33.324380+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ada650f5f0a9d0a8359cb5c141431bfa
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000180.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:12.708693+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: af51076bb7bf5e6fee2d0da45249307b
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000060.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:35.325733+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b09d2c45389a7b1ec6ad6efeedf94111
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000273.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:00.766529+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b1e81fbc380c1c3b6c245f489e0a587a
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000229.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:44.156136+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b25c24aedb82dd21253e0981552e0c91
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000208.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:36.165210+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b2a99896b979fdaf7a5cc1d69676a0d5
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000221.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:42.896356+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b45b8524c5b1347e48856bf7d45820bf
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000147.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:02.509876+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b58806999a4f54c85a562f25ad358523
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000195.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:16.686240+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b66f9b36cfba278db8656bfdfe2cfbaf
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000096.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:45.408978+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b6dd5df7e9403b35f04dfe9fe717222e
+  fields: {obsday: 2016-05-11, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000112.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:52.970848+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b71b1cea5a77755881bb8bbf1005aef5
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000145.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:02.187894+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b7a5b2e4dc6002e4203d4add476f7320
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000168.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:08.468567+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b953957d1b6b5c99676a68e23690dc47
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000093.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:44.938187+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: b9aafe9844705adbe9dd0e7bd59d6f71
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000296.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:07.077061+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ba6f7f1af84d8ce07343da3654d91727
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000034.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:27.481044+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: bb6b9be58f0a97a40a3b41283adb3036
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000203.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:35.369004+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: bbbbcedc12cc57eed40beb903bc0be9d
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000233.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:47.130576+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: bc407f79b16d2cf48e59dc3b3c5efd32
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000196.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:16.852354+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: bd016a769193ece6fa6579fc437642e1
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000023.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:48.486238+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: bd687056a1de79bfbfd07c8ff7a93027
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000151.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:04.480387+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: be4a54758dc2e74a3a4ac4441ef2ed21
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000022.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:48.317990+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: beb520e2c6edcb86c8d378aebc4b7b97
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000261.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:56.530301+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: bf364c3ef7ed4a6d2588e02230e9f38d
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000049.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:31.199348+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: bfc7c4c830768c52bb4840e02808355f
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000004.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:52.228151+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: true, archerr: '', archfile: kww_141220_130138_ori_TADASMOKE.fits.fz}
+- model: audit.sourcefile
+  pk: c03283dff6088c164735260d4c8b1aed
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000284.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:03.826782+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c0d47edfaa47afc998aaf4792dc9037c
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000285.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:03.985147+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c1167e46e9252a2b8f4845537671bb43
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000177.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:11.201602+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c14d3fe33af393e3d5048663cc6d17fe
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000271.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:00.458582+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c2b11150f0805bb79912902427019b0a
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000006.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:52.462185+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: false, archerr: Fake error from /home/pothiers/sandbox/mars/marssite/audit/aux/update-audit-records.sh,
+    archfile: ''}
+- model: audit.sourcefile
+  pk: c2b33c29853a6d89e449d66c2eaa701d
+  fields: {obsday: 2016-05-04, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000048.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:31.049653+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c41c399396bef4bc3ccc304b90f1d032
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000159.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:05.734601+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c4faf900507d000c77630cb018712786
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000024.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:48.647859+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c6c5e570a5e0a278869ad25846e166fd
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000123.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:56.017225+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c760710785f569012d68cc21790753e7
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000144.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:02.026551+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c7daa97c036bc87fa6c802f294674e2b
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000190.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:15.597766+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c89350d2f507a883bc6a3e9a6f418a10
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: whirc, srcpath: /data/whirc/20165012/foo1.fits,
+    recorded: !!timestamp '2016-05-12 21:31:09.056228+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c89350d2f507a883bc6a3e9a6f418a11
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: whirc, srcpath: /data/whirc/20165012/foo2.fits,
+    recorded: !!timestamp '2016-05-12 21:31:14.632110+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c89350d2f507a883bc6a3e9a6f418a12
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: whirc, srcpath: /data/20165012/foo2.fits,
+    recorded: !!timestamp '2016-05-12 23:35:14.968117+00:00', submitted: null, success: true,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c89350d2f507a883bc6a3e9a6f418a13
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: whirc, srcpath: /data/20165012/foo3.fits,
+    recorded: !!timestamp '2016-05-12 23:32:00.859095+00:00', submitted: null, success: true,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c89350d2f507a883bc6a3e9a6f418a14
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: whirc, srcpath: /data/20165012/foo4.fits,
+    recorded: !!timestamp '2016-05-12 23:34:44.265267+00:00', submitted: null, success: false,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c8e390db9c3b81128ba7121367845d99
+  fields: {obsday: 2016-05-14, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000142.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:01.712156+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: c95341617cdb602bfcf87fc12041ac7d
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000129.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:56.974680+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: caefc6a5db4013d924d21e729ee00639
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000158.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:05.580804+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: cd73c81b21762fe3c5c9617955ca7cdc
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000104.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:50.334556+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: cdcff65355ce62595d186cbc6e4ffdd0
+  fields: {obsday: 2016-05-02, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000025.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:48.807704+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d00dac6856b401b6870ba018c4992824
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000153.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:04.800503+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d031fdaf2b6d00e9982e0235134af586
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000275.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:01.086450+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d10f5c4fd5107835d1fd92752c0a8eb8
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: admin.py,
+    recorded: !!timestamp '2016-05-12 22:32:49.286154+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d17e16d3ca976e922c15d938dc9eda85
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000210.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:38.533454+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d41d8cd98f00b204e9800998ecf8427e
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: __init__.py,
+    recorded: !!timestamp '2016-05-12 22:32:50.470139+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d420cf45b1ba38af973f16898c4c56f4
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000236.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:47.602457+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d5608cec49f29c21e55d2f784152af99
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: foo.yaml,
+    recorded: !!timestamp '2016-05-12 22:32:50.351741+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d7e3483b5a900bee08f7093a285466be
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000202.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:35.216735+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d80625d69145334bec69e7e8353334f8
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000075.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:39.294959+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: d8a811e537f38a42df77b363b1b4c713
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: example-observations.yaml~,
+    recorded: !!timestamp '2016-05-12 22:32:49.879616+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: da73a114234a673dcea15c98ab438025
+  fields: {obsday: 2016-05-03, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000033.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:27.319166+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: db3d41888ac96afa21ce7b37bfaee78a
+  fields: {obsday: 2016-05-22, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000222.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:43.055970+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ddb97dde69bd1fca3411e06dbaec7f0e
+  fields: {obsday: 2016-05-05, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000053.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:33.162128+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: defc796b141b24aafba279f6190df60f
+  fields: {obsday: 2016-05-17, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000175.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:10.898860+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: df13614e77e3350bdf1588cd340251a0
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000106.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:50.665073+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: e13b50a6d32299bbc08f9ad238c878d0
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000077.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:39.606847+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: e1cf3a934bed44826768b15fd6212946
+  fields: {obsday: 2016-05-26, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000262.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:56.691819+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: e22f0fe9ecf1d060f00a8c6ce0900392
+  fields: {obsday: 2016-05-29, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000291.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:06.289159+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: e24d1e31f7013b083911c2e439c9a89d
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: plotlib.py,
+    recorded: !!timestamp '2016-05-12 22:32:51.013369+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: e46b06f27ee965feeacba2afb6c0e719
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000121.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:55.695515+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: e75ea27ed6d4eb210757c968167e50cd
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000197.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:17.009740+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: e8a10e4bf5b0a17d6ff14cd5587a81fc
+  fields: {obsday: 2016-05-23, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000232.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:46.968558+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: e8d39c5602d12e59920c4f67faf1ef03
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000066.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:36.562449+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ea50e39ed7dce882f3c75191e2d2d494
+  fields: {obsday: 2016-05-28, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000289.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:04.609039+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: eb0ba19fddba0b18543f6a7fb7cce8c4
+  fields: {obsday: 2016-05-25, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000255.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:54.264155+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ec66ea9007d5cdb00d01481f03e02534
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000092.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:44.780550+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: ec95b5b515298d4c07ee061596cefadd
+  fields: {obsday: 2016-05-24, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000247.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:51.677312+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f1b8f1cf2df3f3ca6b3e55be283781fc
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000005.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:52.346667+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: false, archerr: Fake error from /home/pothiers/sandbox/mars/marssite/audit/aux/update-audit-records.sh,
+    archfile: ''}
+- model: audit.sourcefile
+  pk: f3c63b92b05381aabe4f2a989276a8aa
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000120.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:55.263313+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f56da8ce5d3dc097c21b6f794ebe4efa
+  fields: {obsday: 2016-05-21, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000213.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:39.305482+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f5992c93309ecea1563fa9b249771ff1
+  fields: {obsday: 2016-05-09, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000094.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:45.092115+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f660c7ae1f66b5c732f69961f1df1a2f
+  fields: {obsday: 2016-05-19, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000191.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:16.044251+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f6b45ad19ab839d240808a865aba63af
+  fields: {obsday: 2016-05-10, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000107.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:50.826707+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f70a4d3ec67d7e5781a9dc6987ad3f94
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000013.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:30.440013+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f7ad5f45571aab23ab98194f5ec764f6
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000125.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:06:56.330960+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f7de21ff1d63596712af0b961b19a235
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000209.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:36.325681+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: f8c5b6c1cb8790ab610eedc8ebf3e29a
+  fields: {obsday: 2016-05-06, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000069.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:37.038967+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: fa4af7733112c11d6a1cc10f607e98a2
+  fields: {obsday: 2016-05-15, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000150.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:04.038805+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: fabddb43fc9f4c86b2abc64ad23558e9
+  fields: {obsday: 2016-05-01, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000011.fits.fz,
+    recorded: !!timestamp '2016-05-13 14:58:28.651398+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: fc659afa7d4018318771fc5c223f33cd
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: kosmos, srcpath: tables.py,
+    recorded: !!timestamp '2016-05-12 22:32:51.708004+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: fd0c6e4fc1cabfbc756bd7e5580dc5d1
+  fields: {obsday: 2016-05-20, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000206.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:35.841117+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: fd3e14f34dc88fbda7b2d106f379a75f
+  fields: {obsday: 2016-05-07, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000074.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:01:39.136561+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: fd72f266ca3884dcf5a859da390c393e
+  fields: {obsday: 2016-05-12, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000007.fits.fz,
+    recorded: !!timestamp '2016-05-13 00:05:52+00:00', submitted: !!timestamp '2016-05-13
+      00:05:50+00:00', success: null, archerr: Fake error from /home/pothiers/sandbox/mars/marssite/audit/aux/update-audit-records.sh,
+    archfile: ''}
+- model: audit.sourcefile
+  pk: fddcff3434d27fe3256e7387941d77cd
+  fields: {obsday: 2016-05-16, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000164.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:07.834978+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: fe383430bd9a269b5781ccfb84d5d11e
+  fields: {obsday: 2016-05-27, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000277.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:08:01.397452+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}
+- model: audit.sourcefile
+  pk: fe5a56c0718965a9c40c0a8ff44ba519
+  fields: {obsday: 2016-05-18, telescope: kp09m, instrument: mosaic3, srcpath: /home/pothiers/data/very-many/20141220/wiyn-whirc/f000189.fits.fz,
+    recorded: !!timestamp '2016-05-13 15:07:14.399888+00:00', submitted: null, success: null,
+    archerr: '', archfile: ''}

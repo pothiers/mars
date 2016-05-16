@@ -3,7 +3,6 @@
 <script type="text/javascript" src='{% static 'audit/d3.min.js' %}'></script>
 <script type="text/javascript" src='{% static 'audit/nv.d3.min.js' %}'></script>
 
-
 {% load nvd3_tags %}
 <head>
   {# Jquery CDN : Needed when using jquery_on_ready=True #}
@@ -12,18 +11,6 @@
   {% load_chart charttype chartdata "multibarhorizontalchart_container" %}
 </head>
 <body>
-  <h1>Demo of mulatibarhorizonalchart</h1>
+  <h1>Number of files through Archive system</h1>
   {% include_container "multibarhorizontalchart_container" 400 600 %}
-
-  {% comment %}
-  <hr>
-  <p>Stashed HTML stuff</p>
-  <p>
-    script type="text/javascript" src='{% static 'd3/d3.min.js' %}'
-    script type="text/javascript" src='{% static 'nvd3/nv.d3.min.js' %}'
-    
-    script type="text/javascript" src='https://d3js.org/d3.v3.min.js' %}'
-    script type="text/javascript" src='https://d3js.org/nv.d3.min.js' %}'
-  </p>    
-  {% endcomment %}
 </body>

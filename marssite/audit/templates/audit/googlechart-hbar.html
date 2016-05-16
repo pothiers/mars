@@ -1,0 +1,52 @@
+<!-- Stacked horizontal bar chart -->
+<html>
+    <head>
+	<!--Load the AJAX API-->
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	 
+	 // Load the Visualization API and the corechart package.
+	 google.charts.load('current', {'packages':['corechart']});
+	 
+	 // Set a callback to run when the Google Visualization API is loaded.
+	 google.charts.setOnLoadCallback(drawChart);
+	 
+	 // Callback that creates and populates a data table,
+	 // instantiates the pie chart, passes in the data and
+	 // draws it.
+	 function drawChart() {
+	     
+	     // Create the data table.
+	     var data = google.visualization.arrayToDataTable([
+		 ['Progress', 'Ingested', 'Rejected', 'Not Received',
+		  { role: 'annotation' } ],
+		 ['Mix-1',     9,  2, 8, ''],
+		 ['allval-2',  4,  1, 0, ''],
+		 ['norej-3',   6,  0, 3, ''],
+		 ['noaccep-4', 0,  3, 5, ''],
+		 ['novally-5', 0,  0, 12, ''],
+		 ['onlyrej-6', 0,  7, 0, ''],
+		 ['onlyacc-7', 9,  0, 0, '']
+	     ]);
+	     
+	     var options = {
+		 width: 600,
+		 height: 400,
+		 title: 'Archive Ingest Progress',
+		 colors: ['green', 'yellow', 'red'],
+		 legend: { position: 'top', maxLines: 3 },
+		 bar: { groupWidth: '75%' },
+		 isStacked: true
+	     };
+             // Instantiate and draw our chart, passing in some options.
+             var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+             chart.draw(data, options);
+	 }
+	</script>
+    </head>
+    
+    <body>
+	<!--Div that will hold the pie chart-->
+	<div id="chart_div"></div>
+    </body>
+</html>
