@@ -197,7 +197,9 @@ def update(request, format='yaml'):
         if created:
             print('WARNING: Ingest attempted, '
                   'but there was no previous dome record!')
-
+        else:
+            print('Good, audit file already existed.  Updating it.')
+            
         for key,val in newdefs.items():
             setattr(obj, key, val)
         obj.save
