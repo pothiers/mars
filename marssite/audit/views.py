@@ -199,7 +199,7 @@ def update(request, format='yaml'):
         if created:
             pass # warning? Ingest attempt, but no previous dome record!
 
-        for key,val in updatedefs.iteritems():
+        for key,val in updatedefs.items():
             setattr(obj, key, val)
         obj.save
 
