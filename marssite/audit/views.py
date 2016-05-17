@@ -171,13 +171,18 @@ EXAMPLE:
 def update(request, format='yaml'):
     """Update audit record"""
     if request.method == 'POST':    
-        rdict = request.data
-        defs = rdict.copy
-        print('/audit/update: defaults={}'.format(defaults))
-        obj,created = SourceFile.objects.update_or_create(rdict[md5sum],
-                                                          defaults=rdict)
+        rdict = request.data.copy()
+        #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
+        for k,v in rdict['metadata'].items():
+            rdict['metadata'][k] = str(v) # required for HStoreField
+        print('/audit/update: metadata={}'.format(rdict['metadata']))
+        print('/audit/update: defaults={}'.format(rdict))
+        obj,created = SourceFile.objects.update_or_create(
+            md5sum=rdict['md5sum'],
+            defaults=rdict)
         if created:
             pass # warning? Ingest attemp, but no dome record!
+    return HttpResponse ('Update finished. created={}'.format(created))
             
 def add_ingested():
     "Update Audit records using matching Ingest records from SIAP"
@@ -218,6 +223,8 @@ class ProgressTable(tables.Table):
     rejected =  tables.Column()
     accepted =  tables.Column()
     
+    class Meta:
+        attrs = {'class': 'progress'}
 
 
 # PLACEHOLDER    
@@ -252,6 +259,9 @@ def hbar_svg (request):
     return HttpResponse (svg, content_type="Image/svg+xml")
 
 def get_counts():
+    """Return counts of files grouped by (instrument, telescope, obsday).
+    RETURN: counts[] => (notsubmitted, rejected, accepted)
+    """
     group = ['instrument','telescope','obsday']
     nosubmitqs = (SourceFile.objects.exclude(success__isnull=False)
                   .values(*group)

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.postgres.fields import HStoreField
 
 #!class Submittal(models.Model):
 #!    source = models.CharField(max_length=256,
@@ -34,7 +35,8 @@ class SourceFile(models.Model):
 
     md5sum = models.CharField(max_length=40, primary_key=True,
                               help_text='MD5SUM of FITS file')
-    obsday = models.DateField(help_text='Observation Day' )
+    obsday = models.DateField(null=True, # allow no Dome info, only Submit
+                              help_text='Observation Day')
     telescope = models.CharField(max_length=10, # default='unknown',
                                  choices=[(val,val) for val in telescopes] )
     instrument = models.CharField(max_length=25, # default='unknown',
@@ -53,6 +55,8 @@ class SourceFile(models.Model):
                                  help_text='Archive ingest error message')
     archfile  = models.CharField(max_length=80, blank=True,
                                  help_text='Basename of FITS file in Archive')
+    metadata = HStoreField(null=True,
+                           help_text='FITS metadata changed by ingest')
 
     def __str__(self):
         return '{}-{}-{}: {}'.format(self.telescope,

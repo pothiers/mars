@@ -6,6 +6,6 @@ class SourceFileAdmin(admin.ModelAdmin):
     list_display = (
         'md5sum',
         'obsday', 'telescope', 'instrument', 'srcpath',
-        'recorded', 'submitted', 'success', 'archerr', 'archfile')
+        'recorded', 'submitted', 'success', 'archerr', 'archfile', 'metadata')
     
 admin.site.register(SourceFile, SourceFileAdmin)
