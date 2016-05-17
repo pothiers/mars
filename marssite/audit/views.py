@@ -11,6 +11,8 @@
 # Didn't make it to Valley? Didn't make it to Mountain?
 #
 
+import datetime
+
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView
@@ -130,6 +132,7 @@ EXAMPLE:
     if request.method == 'POST':
         addcnt=0
         preexisting = set()
+        print('DBG: request.data={}'.format(request.data))
         for obs in request.data['observations']:
             print('DBG: obs={}'.format(obs))
             obj,created = SourceFile.objects.get_or_create(md5sum=obs['md5sum'],
@@ -172,17 +175,36 @@ def update(request, format='yaml'):
     """Update audit record"""
     if request.method == 'POST':    
         rdict = request.data.copy()
+        md5 = rdict['md5sum']
         #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
         for k,v in rdict['metadata'].items():
             rdict['metadata'][k] = str(v) # required for HStoreField
         print('/audit/update: metadata={}'.format(rdict['metadata']))
         print('/audit/update: defaults={}'.format(rdict))
-        obj,created = SourceFile.objects.update_or_create(
-            md5sum=rdict['md5sum'],
-            defaults=rdict)
+
+        initdefs = dict(obsday=str(datetime.date.today()),
+                        telescope=rdict['telescope'],
+                        instrument=rdict'instrument'],
+                        srcpath==rdict['srcpath'],
+                        recorded=rdict['recorded'],
+                        )
+        updatedefs = dict(submitted=rdict['submitted'],
+                          archerr=rdict['archerr'],
+                          archfile=rdict['archfile'],
+                          metadata=rdict['metadata'],
+                          )
+
+        obj,created = SourceFile.objects.get_or_create(md5sum=md5,
+                                                       defaults=initdefs)
         if created:
-            pass # warning? Ingest attemp, but no dome record!
-    return HttpResponse ('Update finished. created={}'.format(created))
+            pass # warning? Ingest attempt, but no previous dome record!
+
+        for key,val in updateddefs.iteritems():
+            setattr(obj, key, val)
+        obj.save
+
+    return HttpResponse ('Update finished. created={}, obj={}'
+                         .format(created, obj))
             
 def add_ingested():
     "Update Audit records using matching Ingest records from SIAP"
