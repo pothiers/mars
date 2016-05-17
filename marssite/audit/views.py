@@ -186,20 +186,19 @@ def update(request, format='yaml'):
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
                         srcpath=rdict['srcpath'],
-                        recorded=rdict['recorded'],
-                        )
-        updatedefs = dict(submitted=rdict['submitted'],
-                          archerr=rdict['archerr'],
-                          archfile=rdict['archfile'],
-                          metadata=rdict['metadata'],
-                          )
+                        recorded=rdict['recorded']   )
+        newdefs = dict(submitted=rdict['submitted'],
+                       archerr=rdict['archerr'],
+                       archfile=rdict['archfile'],
+                       metadata=rdict['metadata'])
 
         obj,created = SourceFile.objects.get_or_create(md5sum=md5,
                                                        defaults=initdefs)
         if created:
-            pass # warning? Ingest attempt, but no previous dome record!
+            print('WARNING: Ingest attempted, '
+                  'but there was no previous dome record!')
 
-        for key,val in updatedefs.items():
+        for key,val in newdefs.items():
             setattr(obj, key, val)
         obj.save
 
