@@ -184,8 +184,8 @@ def update(request, format='yaml'):
 
         initdefs = dict(obsday=str(datetime.date.today()),
                         telescope=rdict['telescope'],
-                        instrument=rdict'instrument'],
-                        srcpath==rdict['srcpath'],
+                        instrument=rdict['instrument'],
+                        srcpath=rdict['srcpath'],
                         recorded=rdict['recorded'],
                         )
         updatedefs = dict(submitted=rdict['submitted'],
