@@ -200,18 +200,20 @@ def update(request, format='yaml'):
                   'but there was no previous dome record!')
         else:
             print('Good, audit file already existed.  Updating it.')
-            
+
+        # Update with new values
         for key,val in newdefs.items():
             setattr(obj, key, val)
 
-            for fname in set(['md5sum']
-                             + list(newdefs.keys())
-                             + list(initdefs.keys())
-                             ):
-                print('DBG: changed attr[{}]={}'
-                      .format(fname,getattr(obj,fname)))
+        # DEBUG
+        #!for fname in set(['md5sum']
+        #!                 + list(newdefs.keys())
+        #!                 + list(initdefs.keys())  ):
+        #!    print('DBG: changed attr[{}]={}'
+        #!          .format(fname,getattr(obj,fname)))
         obj.save()
-        print('/audit/update/ saved obj={}, attrs={}'.format(obj,dir(obj)))
+        #!print('/audit/update/ saved obj={}, attrs={}'.format(obj,dir(obj)))
+        print('/audit/update/ saved obj={}'.format(obj))
 
     return HttpResponse ('Update finished. created={}, obj={}'
                          .format(created, obj))
