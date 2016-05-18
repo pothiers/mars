@@ -188,6 +188,7 @@ def update(request, format='yaml'):
                         srcpath=rdict['srcpath'],
                         recorded=rdict['recorded']   )
         newdefs = dict(submitted=rdict['submitted'],
+                       success=rdict['success'],
                        archerr=rdict['archerr'],
                        archfile=rdict['archfile'],
                        metadata=rdict['metadata'])
