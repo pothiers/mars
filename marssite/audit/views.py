@@ -203,6 +203,7 @@ def update(request, format='yaml'):
         for key,val in newdefs.items():
             setattr(obj, key, val)
         obj.save
+        print('/audit/update/ saved obj={}'.format(obj))
 
     return HttpResponse ('Update finished. created={}, obj={}'
                          .format(created, obj))
