@@ -209,7 +209,7 @@ def update(request, format='yaml'):
                              ):
                 print('DBG: changed attr[{}]={}'
                       .format(fname,getattr(obj,fname)))
-        obj.save
+        obj.save()
         print('/audit/update/ saved obj={}, attrs={}'.format(obj,dir(obj)))
 
     return HttpResponse ('Update finished. created={}, obj={}'
