@@ -46,6 +46,9 @@ class SourceFile(models.Model):
 
     recorded  = models.DateTimeField(default=timezone.now,
                                      help_text='When SourceFile recorded')
+
+    ##### Field values added by TADA
+    
     submitted = models.DateTimeField(null=True,
                                      help_text='When submitted to archive')
     success   = models.NullBooleanField(
