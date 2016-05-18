@@ -182,7 +182,7 @@ def update(request, format='yaml'):
         print('/audit/update: metadata={}'.format(rdict['metadata']))
         print('/audit/update: defaults={}'.format(rdict))
 
-        initdefs = dict(obsday=str(datetime.date.today()),
+        initdefs = dict(obsday=rdict['obsday'],
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
                         srcpath=rdict['srcpath'],

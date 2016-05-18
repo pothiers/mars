@@ -17,3 +17,9 @@ class SourceFileAdmin(admin.ModelAdmin):
     
     date_hierarchy = 'obsday'
     list_filter = ('obsday', 'telescope', 'instrument')
+
+    class Media:
+        css = {
+            'all': ('audit/audit-admin.css',)
+        }
+        
