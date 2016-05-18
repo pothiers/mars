@@ -2,10 +2,18 @@ from django.contrib import admin
 
 from .models import SourceFile
 
+@admin.register(SourceFile)
 class SourceFileAdmin(admin.ModelAdmin):
+    def changed_fits_fields(obj):
+        return ', '.join(list(obj.metadata.keys()))
+    
     list_display = (
         'md5sum',
         'obsday', 'telescope', 'instrument', 'srcpath',
-        'recorded', 'submitted', 'success', 'archerr', 'archfile', 'metadata')
+        'recorded', 'submitted', 'success', 'archerr', 'archfile',
+        #'metadata',
+        changed_fits_fields,
+    )
     
-admin.site.register(SourceFile, SourceFileAdmin)
+    date_hierarchy = 'obsday'
+    list_filter = ('obsday', 'telescope', 'instrument')
