@@ -202,7 +202,9 @@ def update(request, format='yaml'):
             
         for key,val in newdefs.items():
             setattr(obj, key, val)
-            print('DBG: /audit/update/ changed attr[{}]={}'.format(key,val))
+
+        for fname in set(newdefs.keys())+set(initdefs.keys()):
+            print('DBG: changed attr[{}]={}'.format(fname,getattr(obj,fname)))
         obj.save
         print('/audit/update/ saved obj={}, attrs={}'.format(obj,dir(obj)))
 
