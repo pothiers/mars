@@ -1,3 +1,5 @@
+django_settings_local_pat.py
+django_settings_local_production.py
 settings_local.py
 env_mars/
 OBSOLETE/

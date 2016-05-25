@@ -11,15 +11,15 @@
 # Didn't make it to Valley? Didn't make it to Mountain?
 #
 
-import datetime
+import dateutil.parser as dp
 
+from django.utils.timezone import make_aware, now
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView
 from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
 from django.core import serializers
-from django.utils import timezone
 from django.db import connection
 from django.db.models import Count
 from django.template import Context, Template
@@ -110,7 +110,7 @@ EXAMPLE:
             print('DBG: source={}'.format(path))
             SourceFile.objects.update_or_create(
                 srcpath=path,
-                defaults=dict(recorded=timezone.now()
+                defaults=dict(recorded=now()
                 ))
         qs = SourceFile.objects.all()
         return JsonResponse(serializers.serialize(format, qs), safe=False)
@@ -140,9 +140,15 @@ EXAMPLE:
             if created:
                 addcnt+=1
             else:
-                preexisting.add(obs['md5sum'])
-        return HttpResponse('<p>Added {} audit records. {} already existed.\n'
-                            .format(addcnt,len(preexisting)))
+                preexisting.add((obj.md5sum, obj.srcpath))
+        html = ('<p>Added {} audit records. '
+                '{} already existed (ignored request to add).</p>\n'
+                '<ul>'
+               ).format(addcnt,len(preexisting))
+        for m,s in preexisting:
+            html += '<li>{}, {}</li>'.format(m,s)
+        html += '</ul>'
+        return HttpResponse(html)
     else:
         return HttpResponse('ERROR: expected POST')
 
@@ -159,7 +165,7 @@ EXAMPLE:
         print('body={}'.format(body))
         SourceFile.objects.update_or_create(
             dict(source=src,
-                 submitted=timezone.now(),
+                 submitted=now(),
                  success=body.get('success',True),
                  archerr=body.get('archerr', ''),
                  archfile=body['archfile']))
@@ -179,15 +185,14 @@ def update(request, format='yaml'):
         #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
         for k,v in rdict['metadata'].items():
             rdict['metadata'][k] = str(v) # required for HStoreField
-        print('/audit/update: metadata={}'.format(rdict['metadata']))
-        print('/audit/update: defaults={}'.format(rdict))
+        #! print('/audit/update: defaults={}'.format(rdict))
 
         initdefs = dict(obsday=rdict['obsday'],
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
                         srcpath=rdict['srcpath'],
                         recorded=rdict['recorded']   )
-        newdefs = dict(submitted=rdict['submitted'],
+        newdefs = dict(submitted=make_aware(dp.parse(rdict['submitted'])),
                        success=rdict['success'],
                        archerr=rdict['archerr'],
                        archfile=rdict['archfile'],
@@ -196,10 +201,12 @@ def update(request, format='yaml'):
         obj,created = SourceFile.objects.get_or_create(md5sum=md5,
                                                        defaults=initdefs)
         if created:
-            print('WARNING: Ingest attempted, '
-                  'but there was no previous dome record!')
+            print(('WARNING: Ingest requested, '
+                   'but there was no previous dome record! '
+                   'Adding: {} {}'.format(md5,rdict['srcpath'])))
         else:
-            print('Good, audit file already existed.  Updating it.')
+            #print('Good, audit file already existed.  Updating it.')
+            pass
 
         # Update with new values
         for key,val in newdefs.items():
@@ -213,7 +220,7 @@ def update(request, format='yaml'):
         #!          .format(fname,getattr(obj,fname)))
         obj.save()
         #!print('/audit/update/ saved obj={}, attrs={}'.format(obj,dir(obj)))
-        print('/audit/update/ saved obj={}'.format(obj))
+        #!print('/audit/update/ saved obj={}'.format(obj))
 
     return HttpResponse ('Update finished. created={}, obj={}'
                          .format(created, obj))

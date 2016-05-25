@@ -5,7 +5,10 @@ from .models import SourceFile
 @admin.register(SourceFile)
 class SourceFileAdmin(admin.ModelAdmin):
     def changed_fits_fields(obj):
-        return ', '.join(list(obj.metadata.keys()))
+        if obj.metadata == None:
+            return ''
+        else:
+            return ', '.join(list(obj.metadata.keys()))
     
     list_display = (
         'md5sum',

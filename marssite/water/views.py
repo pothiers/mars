@@ -9,7 +9,9 @@ from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 
 def home(request):
+    version = 'version 2016.05.25'
     context = RequestContext(request, {
+        'mars_version': version,
         'dbhost': settings.DATABASES['default']['HOST'],
     })
     return render(request, 'water/home.html', context)
