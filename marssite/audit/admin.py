@@ -19,7 +19,7 @@ class SourceFileAdmin(admin.ModelAdmin):
     )
     
     date_hierarchy = 'obsday'
-    list_filter = ('obsday', 'telescope', 'instrument')
+    list_filter = ('submitted', 'obsday', 'telescope', 'instrument')
 
     class Media:
         css = {
