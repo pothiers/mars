@@ -12,6 +12,7 @@
 #
 
 import dateutil.parser as dp
+import re
 
 from django.utils.timezone import make_aware, now
 from django.views.decorators.csrf import csrf_exempt
@@ -174,6 +175,29 @@ EXAMPLE:
     else:
         return HttpResponse('ERROR: expected POST')
 
+exists_re = re.compile(r"has already been stored in the database")    
+
+@csrf_exempt
+def get_rejected_duplicates(request):
+    """Get list of files (by checksum) that were not ingested because they were
+already in the archive DB"""
+    restr=r"has already been stored in the database"
+    qs = (SourceFile.objects.filter(success=False,  archerr__iregex=restr)
+          .values('md5sum','srcpath'))
+    return JsonResponse(list(qs), safe=False)
+    #print('dupes={}'.format(list(serializers.serialize('xml',qs))))
+    #return HttpResponse(list(serializers.serialize('xml',qs)))
+
+@csrf_exempt
+def get_rejected_missing(request):
+    """Get list of files (by checksum) that were not ingested because they were
+missing requires fields"""
+    restr=r"is missing required metadata fields"
+    qs = (SourceFile.objects.filter(success=False,  archerr__iregex=restr)
+          .values('md5sum','srcpath'))
+    return JsonResponse(list(qs), safe=False)
+
+    
 @csrf_exempt
 @api_view(['POST'])
 @parser_classes((JSONParser,))

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.html import format_html
 from django.contrib.postgres.fields import HStoreField
 
 #!class Submittal(models.Model):
@@ -20,6 +21,8 @@ from django.contrib.postgres.fields import HStoreField
 #!    class Meta:
 #!        ordering = ('when',)
 #!     
+
+
 
 class SourceFile(models.Model):
     telescopes = ('aat,ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,gemn,gems,het,'
@@ -61,6 +64,18 @@ class SourceFile(models.Model):
     metadata = HStoreField(null=True,
                            help_text='FITS metadata changed by ingest')
 
+    ##### Field values used for bookkeeping (by DART)
+    staged   = models.BooleanField(
+        default=False,
+        help_text=('Marked for subsequent action.'))
+
+    
+    def narrow_srcpath(self):
+        return format_html(
+            '<span style="color: green; width: 10px;">{}</span>',
+            self.srcpath,
+        )
+            
     def __str__(self):
         return '{}-{}-{}: {}'.format(self.telescope,
                                      self.instrument,
