@@ -13,6 +13,8 @@
 
 import dateutil.parser as dp
 import re
+from datetime import datetime
+
 
 from django.utils.timezone import make_aware, now
 from django.views.decorators.csrf import csrf_exempt
@@ -36,6 +38,8 @@ from .models import SourceFile
 #from .serializers import SubmittalSerializer, SourceFileSerializer
 from .serializers import SourceFileSerializer
 from .plotlib import hbarplot
+
+from schedule.models import Slot
 
 from siap.models import VoiSiap
 
@@ -281,15 +285,26 @@ def failed_ingest(request):
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
 
 class ProgressTable(tables.Table):
+    ObsDay = tables.DateColumn(short=True, verbose_name='CALDAT')
     Telescope = tables.Column()
     Instrument = tables.Column()
-    ObsDay = tables.Column()
+
+    #!Ground_Truth = tables.Column()    
+    #!Database = tables.Column()    
+    #!Delta = tables.Column()    
+    #!Updated = tables.DateTimeColumn(short=True)    
+    Propid = tables.TemplateColumn('<a href="http://www.noao.edu/noaoprop/abstract.mpl?{{record.Propid}}">{{record.Propid}}</a>')
+
     notReceived = tables.Column()
     rejected =  tables.Column()
     accepted =  tables.Column()
     
     class Meta:
         attrs = {'class': 'progress'}
+        row_attrs = {
+            'class': lambda record: 'day-even' if (int(str(record['ObsDay'])[-1]) % 2) == 0 else 'day-odd'
+            #'row-odd': 3
+            }
 
 
 # PLACEHOLDER    
@@ -370,19 +385,33 @@ accepted:: Archive accepted submission (should be in DB)
 
 sent = nosubmit + (rejected + accepted))
 """
+
     add_ingested()
     progress = get_counts()
+    #!print('DBG:progress dict()={}'.format(progress))
     instrums=[]
-    for (tele,instr,day) in progress.keys():
+    for (instr,tele,day) in progress.keys():
+        #print('DBG: day={}'.format(day))
+        try:
+            #obsdate=datetime.strptime(day,'%Y-%m-%d').date()
+            slot=Slot.objects.get(obsdate=day,
+                                  telescope=tele, instrument=instr)
+            propids = slot.propids
+        except Slot.DoesNotExist:
+            propids=''
+        #!print('DBG: propids({},{},{})={}'.format(day,instr,tele,propids))
         instrums.append(dict(Telescope=tele,
                              Instrument=instr,
                              ObsDay=day,
-                             notReceived=progress[(tele,instr,day)][0],
-                             rejected=progress[(tele,instr,day)][1],
-                             accepted=progress[(tele,instr,day)][2]
+                             notReceived=progress[(instr,tele,day)][0],
+                             rejected=progress[(instr,tele,day)][1],
+                             accepted=progress[(instr,tele,day)][2],
+                             Updated=now(),
+                             Propid = propids,
                              ))
     #!print('instrums={}'.format(instrums))
-    table = ProgressTable(instrums)
+    table = ProgressTable(sorted(instrums,
+                                 reverse=True, key=lambda d: d['ObsDay'] ))
     c = {"instrum_table": table,
          "title": 'Progress of Submits from instruments',  }
     return render(request, 'audit/progress.html', c) 
