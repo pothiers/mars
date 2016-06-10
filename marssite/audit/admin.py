@@ -1,6 +1,27 @@
+import datetime
 from django.contrib import admin
 
 from .models import SourceFile
+
+# see: ~/sandbox/mars/env_mars/lib/python3.5/site-packages/django/contrib/admin/filters.py
+class ObsdayListFilter(admin.SimpleListFilter):
+    title = 'date observed'
+    parameter_name = 'obsday'
+
+    def lookups(self, request, model_admin):
+        today = datetime.date.today()
+        yesterday = (today - datetime.timedelta(days=1))
+        return (
+            (yesterday.isoformat(), 'Yesterday'),
+            (today.isoformat(), 'Today'),
+        )
+    def queryset(self, request, queryset):
+        today = datetime.date.today()
+        yesterday = today - datetime.timedelta(days=1)
+        if self.value() == 'Yesterday' :
+            return queryset.filter(obsday__gte=yesterday, obsday__lt=today)
+        if self.value() == 'Today' :
+            return queryset.filter(obsday__gte=today)
 
 
 def stage(modeladmin, request, queryset):
@@ -13,6 +34,7 @@ unstage.short_description = "Unstage selected records (no further actions)"
 
 @admin.register(SourceFile)
 class SourceFileAdmin(admin.ModelAdmin):
+
     def changed_fits_fields(obj):
         if obj.metadata == None:
             return ''
@@ -33,22 +55,31 @@ class SourceFileAdmin(admin.ModelAdmin):
     
     list_display = (
         'staged',
-        'md5sum',
         'obsday', 'telescope', 'instrument',
         #'narrow_srcpath',
         #display_srcpath,
         'srcpath',
-        'recorded', 'submitted',
+        'recorded',
+        'submitted',
         'success',
-        'archerr', 'archfile',
+        'errcode',
+        'archerr',
+        'archfile',
         #'metadata',
-        changed_fits_fields,
+        #changed_fits_fields,
+        'md5sum',
     )
  
     date_hierarchy = 'obsday'
-    list_filter = ('success', 'submitted', 'obsday', 'instrument', 'telescope')
+    list_filter = ('success',
+                   'obsday',
+                   'errcode',
+                   #ObsdayListFilter,
+                   'submitted',
+                   'instrument', 'telescope')
     search_fields = ['telescope', 'instrument','srcpath', 'archerr']
     actions = [stage, unstage]
+    ordering = ['-recorded',]
 
     class Media:
         css = {

@@ -24,17 +24,20 @@ from django.contrib.postgres.fields import HStoreField
 
 
 
+
 class SourceFile(models.Model):
     telescopes = ('aat,ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,gemn,gems,het,'
                   'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
                   'magI,magII,mmt,soar,wiyn,unknown').split(',')
-    instruments = ('mosaic3', 'mop/ice', 'arcon', 'spartan', 'decam',
-                   '90prime', 'falmingos', 'gtcam', 'wildfire', 'chiron',
-                   'osiris', 'arcoiris', 'andicam', 'echelle', 'flamingos',
-                   'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
-                   'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
-                   'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
-                   'cosmos','unknown')
+    instruments = ['90prime',  'ccd_imager', 'mosaic3',] + sorted([
+        'mop/ice', 'arcon', 'spartan', 'decam',
+        'falmingos', 'gtcam', 'wildfire', 'chiron',
+        'osiris', 'arcoiris', 'andicam', 'echelle', 'flamingos',
+        'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
+        'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
+        'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
+        'cosmos',  'unknown'])
+    errcodes = ['DUPFITS', 'BADPROP', 'COLLIDE', 'UNKNOWN', 'NONE']
 
     md5sum = models.CharField(max_length=40, primary_key=True,
                               help_text='MD5SUM of FITS file')
@@ -59,6 +62,12 @@ class SourceFile(models.Model):
                    'Then True iff Archive reported success on ingest'))
     archerr   = models.CharField(max_length=256, blank=True,
                                  help_text='Archive ingest error message')
+    errcode   = models.CharField(max_length=8,
+                                 default='NONE',
+                                 choices=[(val,val) for val in errcodes],
+                                 help_text='Error code for Archive Ingest')
+
+
     archfile  = models.CharField(max_length=80, blank=True,
                                  help_text='Basename of FITS file in Archive')
     metadata = HStoreField(null=True,
