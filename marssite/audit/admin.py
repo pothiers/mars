@@ -32,6 +32,23 @@ def unstage(modeladmin, request, queryset):
     queryset.update(staged=False)
 unstage.short_description = "Unstage selected records (no further actions)"
 
+def clear_submit(modeladmin, request, queryset):
+    queryset.update(submitted=None,
+                    success=None,
+                    archerr='',
+                    errcode='none',
+                    archfile='',
+                    metadata=None,
+                    )
+clear_submit.short_description = "Clear archive submit related fields"
+
+def clear_error(modeladmin, request, queryset):
+    queryset.update(archerr='',
+                    errcode='none',
+                    archfile='',
+                    )
+clear_error.short_description = "Clear archive error related fields"
+
 @admin.register(SourceFile)
 class SourceFileAdmin(admin.ModelAdmin):
 
@@ -78,7 +95,7 @@ class SourceFileAdmin(admin.ModelAdmin):
                    'submitted',
                    'instrument', 'telescope')
     search_fields = ['telescope', 'instrument','srcpath', 'archerr']
-    actions = [stage, unstage]
+    actions = [stage, unstage, clear_submit, clear_error]
     ordering = ['-recorded',]
 
     class Media:

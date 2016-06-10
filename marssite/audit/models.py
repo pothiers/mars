@@ -37,7 +37,8 @@ class SourceFile(models.Model):
         'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
         'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
         'cosmos',  'unknown'])
-    errcodes = ['DUPFITS', 'BADPROP', 'COLLIDE', 'UNKNOWN', 'NONE']
+    errcodes = ['DUPFITS', 'BADPROP', 'COLLIDE', 'NOPROP', 'MISSREQ',
+                'BADDATE', 'NOFITS', 'UNKNOWN', 'none']
 
     md5sum = models.CharField(max_length=40, primary_key=True,
                               help_text='MD5SUM of FITS file')
@@ -63,7 +64,7 @@ class SourceFile(models.Model):
     archerr   = models.CharField(max_length=256, blank=True,
                                  help_text='Archive ingest error message')
     errcode   = models.CharField(max_length=8,
-                                 default='NONE',
+                                 default='none',
                                  choices=[(val,val) for val in errcodes],
                                  help_text='Error code for Archive Ingest')
 
