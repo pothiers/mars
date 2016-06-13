@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 class EmptySlot(models.Model):
     telescope = models.CharField(max_length=80)
@@ -31,8 +32,7 @@ class Proposal(models.Model):
 class Default(models.Model):
     telescope = models.CharField(max_length=10)
     instrument = models.CharField(max_length=20)
-    obsdate = models.DateField()
-    propids = ArrayField( models.CharField(max_length=10) )
+
     
 
 class Slot(models.Model):
