@@ -213,8 +213,7 @@ def update(request, format='yaml'):
         #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
         for k,v in rdict['metadata'].items():
             rdict['metadata'][k] = str(v) # required for HStoreField
-        #! print('/audit/update: defaults={}'.format(rdict))
-
+        #! print('/audit/update: defaults={}'.format(rdict)) 
         initdefs = dict(obsday=rdict['obsday'],
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],

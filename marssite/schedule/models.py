@@ -28,6 +28,12 @@ class Proposal(models.Model):
     def __str__(self):
         return self.propid
 
+class Default(models.Model):
+    telescope = models.CharField(max_length=10)
+    instrument = models.CharField(max_length=20)
+    obsdate = models.DateField()
+    propids = ArrayField( models.CharField(max_length=10) )
+    
 
 class Slot(models.Model):
     # These are the only telescopes allowed by the perl script that
