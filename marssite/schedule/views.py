@@ -165,16 +165,14 @@ def list_full(request, limit=100):
     slots = Slot.objects.all()
     #slots = Slot.objects.all()[:limit]
     #table = SlotTable(Slot.objects.all())
-    return render(request,
-                  'schedule/list.html',
-                  RequestContext(request, {
+    return render(request, 'schedule/list.html',
+                  {
                       'title': 'All',
                       #'limit': limit,
                       'limit': 'NONE',
                       'slot_list': slots,
                       #'table': table,
                   })
-                  )
 
 #!@api_view(['GET'])
 #!def list_full(request, limit=100):
@@ -201,13 +199,9 @@ def list_empty(request):
     """List slots (telescope,date) that were queried but for which there is 
 no PROPID.  These should probably be filled."""
     slots = EmptySlot.objects.all()
-    return render(request,
-                  'schedule/list_empty.html',
-                  RequestContext(request, {
-                                 'limit': 'none',
-                                 'slot_list': slots,
-                  })
-                  )
+    return render(request, 'schedule/list_empty.html',
+                  {'limit': 'none', 'slot_list': slots})
+
 
 #!def list_day(request, date, limit=1000):
 #!    slots = Slot.objects.filter(obsdate=date)[:limit]
