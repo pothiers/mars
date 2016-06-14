@@ -218,7 +218,7 @@ def update(request, format='yaml'):
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
                         srcpath=rdict['srcpath'],
-                        recorded=make_aware(dp.parse(rdict['recored'])))
+                        recorded=make_aware(dp.parse(rdict['recorded'])))
         newdefs = dict(submitted=make_aware(dp.parse(rdict['submitted'])),
                        success=rdict['success'],
                        errcode=rdict['errcode'],
