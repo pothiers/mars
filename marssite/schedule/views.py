@@ -230,16 +230,17 @@ def getpropid(request, tele, instrum, date):
     serializer_class = SlotSerializer
     try:
         slot = Slot.objects.get(obsdate=date, telescope=tele, instrument=instrum)
-        #!propid = slot.propid
-        #propid = slot.proposals.all()[0]
-        #proplist = ','.join(slot.proposals.all())
         proplist = slot.propids
         #! print('DBG-0: getpropid({}, {})=>{}'.format(tele, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except Exception as err:
-        if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
-            es = EmptySlot(obsdate=date, telescope=tele)
-            es.save()
+        #!if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
+        #!    es = EmptySlot(obsdate=date, telescope=tele)
+        #!    es.save()
+        dftpid = DefaultPropid.objects.get(obsdate=date,
+                                           telescope=tele,
+                                           instrument=instrum)
+        return HttpResponse(dftpid.propids, content_type='text/plain')
         return HttpResponse('NA', content_type='text/plain')
 
 class SlotGet(generics.GenericAPIView, DetailView):

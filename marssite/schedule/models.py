@@ -29,10 +29,10 @@ class Proposal(models.Model):
     def __str__(self):
         return self.propid
 
-class Default(models.Model):
+class DefaultPropid(models.Model):
     telescope = models.CharField(max_length=10)
     instrument = models.CharField(max_length=20)
-
+    propids = ArrayField( models.CharField(max_length=10) )
     
 
 class Slot(models.Model):
