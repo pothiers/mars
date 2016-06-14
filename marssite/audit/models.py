@@ -29,10 +29,10 @@ class SourceFile(models.Model):
     telescopes = ('aat,ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,gemn,gems,het,'
                   'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
                   'magI,magII,mmt,soar,wiyn,unknown').split(',')
-    instruments = ['90prime',  'ccd_imager', 'mosaic3',] + sorted([
+    instruments = ['arcoiris', '90prime',  'biw', 'ccd_imager', 'mosaic3'] + sorted([
         'mop/ice', 'arcon', 'spartan', 'decam',
         'falmingos', 'gtcam', 'wildfire', 'chiron',
-        'osiris', 'arcoiris', 'andicam', 'echelle', 'flamingos',
+        'osiris', 'andicam', 'echelle', 'flamingos',
         'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
         'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
         'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',

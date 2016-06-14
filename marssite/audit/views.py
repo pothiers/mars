@@ -139,7 +139,7 @@ EXAMPLE:
         preexisting = set()
         print('DBG: request.data={}'.format(request.data))
         for obs in request.data['observations']:
-            print('DBG: obs={}'.format(obs))
+            #! print('DBG: obs={}'.format(obs))
             obj,created = SourceFile.objects.get_or_create(md5sum=obs['md5sum'],
                                                            defaults=obs)
             if created:

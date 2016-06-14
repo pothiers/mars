@@ -22,7 +22,7 @@ class EmptySlotAdmin(admin.ModelAdmin):
 class SlotAdmin(admin.ModelAdmin):
     list_display = ('obsdate', 'telescope', 'instrument',
                     'propid_list', 'modified', 'frozen')
-    list_filter = ['obsdate', 'telescope','instrument'] # right sidebar filtering
+    list_filter = ['obsdate', 'instrument', 'telescope'] # rt sidebar filtering
     filter_horizontal = ['proposals']
     date_hierarchy = 'obsdate'
     inlines = (PropInline,)

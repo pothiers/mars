@@ -48,12 +48,14 @@ class Slot(models.Model):
                    'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
                    'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
                    'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
-                   'cosmos')
+                   'cosmos', 'biw')
 
     telescope = models.CharField(max_length=10,
-                                 choices=[(val,val) for val in telescopes] )
+                                 choices=[(val,val)
+                                          for val in sorted(telescopes)])
     instrument = models.CharField(max_length=20,
-                                 choices=[(val,val) for val in instruments] )
+                                 choices=[(val,val)
+                                          for val in sorted(instruments)])
     obsdate = models.DateField(help_text='Observation date') # DATE-OBS
 
     proposals = models.ManyToManyField(Proposal)
