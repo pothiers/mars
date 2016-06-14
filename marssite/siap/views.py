@@ -4,7 +4,7 @@ import re
 from django.db import connection
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse, JsonResponse
-from django.template import RequestContext, loader
+from django.template import loader
 from django.views.generic.list import ListView
 from django.template.context_processors import csrf
 from django.core import serializers
@@ -24,11 +24,11 @@ def index(request):
     #!cursor = connection.cursor()
     #!cursor.execute( sql )
     #!total = cursor.fetchone()[0]
-    context = RequestContext(request, {
+    context = {
         #!'total_image_count': total,
         'limit_count': limit,
         'recent_image_list': Image.objects.raw(sql2) ,
-    })
+    }
 
     return render(request, 'siap/index.html', context)
 
@@ -42,10 +42,10 @@ def tada(request):
     #!    print('Image={}'.format(im))
     print('request.content_type={}'.format(request.META.get('CONTENT_TYPE')))
     
-    context = RequestContext(request, {
+    context = {
         'limit_count': limit,
         'tada_images': images, # Image.objects.raw(sql),
-    })
+    }
 
     if request.META.get('CONTENT_TYPE','none') == 'application/json':
         return JsonResponse([im[0] for im in images], safe=False)
@@ -71,10 +71,10 @@ def getacq(request, dtnsanam):
     return HttpResponse(obs[0], content_type='text/plain')
 
 def filenames(request, propid):
-    context = RequestContext(request, {
+    context = {
         'propid': propid,
         'image_list': Image.objects.raw("SELECT * FROM voi.siap  WHERE prop_id = %s",[propid])
-    })
+    }
     return render(request, 'siap/filenames.html', context)
 
 class FileListView(ListView):
@@ -83,18 +83,13 @@ class FileListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(FileListView, self).get_context_data(**kwargs)
         context['image_list'] = Image.objects.raw("SELECT * FROM voi.siap  WHERE prop_id = %s",[propid])
-
-
         return context    
 
 def detail(request, image_id):
     #!im = get_object_or_404(Image, pk=image_id)
     im_list = (Image.objects
                .raw("SELECT * FROM voi.siap WHERE reference = %s", [image_id]))
-    context = RequestContext(request, {
-        #!'dict': im.__dict__,
-        'dict': im_list[0].__dict__,
-    })
+    context = {'dict': im_list[0].__dict__ }
     return render(request, 'siap/detail.html', context)
 
 # NB: raw SQL is string with FORMATTING PARAMETERS so '%' indicates paramter.

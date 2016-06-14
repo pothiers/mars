@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from django.template import RequestContext, loader
+from django.template import loader
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
@@ -31,7 +31,7 @@ from collections import defaultdict
 sched2hdr= {
     # Schedule      Fits Header
     'ARCoIRIS':    'arcoiris',
-    'CFIM+T2K':    None,		# ccd_imager
+    'CFIM+T2K':    'biw',		# ccd_imager
     'COSMOS':     'cosmos',
     'DECam':      'decam',           
     'Goodman':    'goodman',
@@ -174,24 +174,6 @@ def list_full(request, limit=100):
                       #'table': table,
                   })
 
-#!@api_view(['GET'])
-#!def list_full(request, limit=100):
-#!    'List the schedule. This is the full schedule available to TADA.'
-#!    serializer_class = SlotSerializer
-#!    slots = Slot.objects.all()
-#!    #slots = Slot.objects.all()[:limit]
-#!    #table = SlotTable(Slot.objects.all())
-#!    return render(request,
-#!                  'schedule/list.html',
-#!                  RequestContext(request, {
-#!                      'title': 'All',
-#!                      #'limit': limit,
-#!                      'limit': 'NONE',
-#!                      'slot_list': slots,
-#!                      #'table': table,
-#!                  })
-#!                  )
-
 
 @api_view(['GET'])
 @list_route(methods=['get'])
@@ -201,19 +183,6 @@ no PROPID.  These should probably be filled."""
     slots = EmptySlot.objects.all()
     return render(request, 'schedule/list_empty.html',
                   {'limit': 'none', 'slot_list': slots})
-
-
-#!def list_day(request, date, limit=1000):
-#!    slots = Slot.objects.filter(obsdate=date)[:limit]
-#!    return render(request,
-#!                  'schedule/list.html',
-#!                  RequestContext(request, {
-#!                      'title': 'Day: {}'.format(date),
-#!                      'limit': limit,
-#!                      'slot_list': slots,
-#!                  })
-#!                  )
-
 
 ##    request_serializer: ScheduleQuerySerializer
 ##    response_serializer: ScheduleSerializer

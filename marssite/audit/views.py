@@ -246,8 +246,8 @@ def update(request, format='yaml'):
         #!                 + list(initdefs.keys())  ):
         #!    print('DBG: changed attr[{}]={}'
         #!          .format(fname,getattr(obj,fname)))
+        print('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
         obj.save()
-        #!print('/audit/update/ saved obj={}, attrs={}'.format(obj,dir(obj)))
         #!print('/audit/update/ saved obj={}'.format(obj))
 
     return HttpResponse ('Update finished. created={}, obj={}'
