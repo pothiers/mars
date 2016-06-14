@@ -9,7 +9,7 @@ from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 
 def home(request):
-    version = 'version 2016.06.13'
+    version = 'version 2016.06.14'
     context = RequestContext(request, {
         'mars_version': version,
         'dbhost': settings.DATABASES['default']['HOST'],
