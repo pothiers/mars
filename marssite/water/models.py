@@ -1,22 +1,40 @@
 from django.db import models
 
-
-# Will ultimately replace tada/file_naming.py:stiLUT{}
-class FilePrefix(models.Model):
-    "Archive filename prefix coded from Site, Telescope, Instrument"
-
-    site = models.CharField(max_length=10, 
+class Site(models.Model):
+    name = models.CharField(max_length=10, unique=True,
                             help_text='Site (mountain)')
-    telescope = models.CharField(max_length=10, 
-                                 help_text=('Name used in FITS header '
-                                            '(field name TELES'))
-    instrument = models.CharField(max_length=20,
-                                  help_text=('Name used in FITS header '
-                                             '(field name INSTRUME)'))
-    tacinst = models.CharField(max_length=20,
-                           help_text='Name used by Dave Bells TAC Schedule')
+    def __str__(self): return self.name
 
-    prefix = models.CharField(max_length=10,
-                              help_text='Prefix for Archive Filename')
+class Telescope(models.Model):
+    name = models.CharField(max_length=10,  unique=True,
+                            help_text=('Name used in FITS header '
+                                       '(field name TELES'))
+    def __str__(self): return self.name
+class Instrument(models.Model):
+    name = models.CharField(max_length=20, unique=True,
+                            help_text=('Name used in FITS header '
+                                       '(field name INSTRUME)'))
+    def __str__(self): return self.name
+
+class TacIntrument(models.Model):
+    name = models.CharField(max_length=20, unique=True,
+                            help_text='Name used by Dave Bells TAC Schedule')
+    def __str__(self): return self.name
     
+class InstrumentAlias(models.Model):    
+    reason = models.CharField(max_length=80)
+    #!instrument = models.ForeignKey(Instrument)
+    
+    
+# Will ultimately replace tada/file_naming.py:stiLUT{}
+#!class FilePrefix(models.Model):
+#!    "Archive filename prefix coded from Site, Telescope, Instrument"
+#!
+#!    site = models.ForeignKey(Site)
+#!    telescope = models.ForeignKey(Telescope)
+#!    instrument = models.ForeignKey(Instrument)
+#!    
+#!    prefix = models.CharField(max_length=10,
+#!                              help_text='Prefix for Archive Filename')
+#!    
  
