@@ -8,7 +8,7 @@ from django.views.generic import ListView, TodayArchiveView, DayArchiveView, Wee
 from django.db.models import Value
 
 from .forms import SlotSetForm
-from .models import Slot, EmptySlot, Proposal
+from .models import Slot, EmptySlot, Proposal, DefaultPropid
 from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
@@ -29,6 +29,7 @@ from collections import defaultdict
 
 # instrument Mapping from Dave's NOAOPROP service to FITS header fields
 sched2hdr= {
+    # TAC           DMO
     # Schedule      Fits Header
     'ARCoIRIS':    'arcoiris',
     'CFIM+T2K':    'biw',		# ccd_imager
@@ -53,7 +54,7 @@ sched2hdr= {
 
 
 
-def update_from_noaoprop(**query):
+def apply_tac_update(**query):
     """Update/add object unless it already exists and is FROZEN. """
     params = urllib.parse.urlencode(query)
     #print{'DBG: query={}, params={}'.format(query, params))
@@ -61,21 +62,21 @@ def update_from_noaoprop(**query):
     print('DBG: url={}'.format(url))
     try:
         with urllib.request.urlopen(url, timeout=4) as f:
-            #print('DBG: got f={}'.format(f))
             tree = ET.parse(f)
             root = tree.getroot()
     except:
-        logging.error('MARS: Error contacting NOAO PROP service via "{}"'
-                      .format(url))
-        return redirect('/schedule/')
-
-    #update_props = defaultdict(set) # dict[slot] = [prop, ...]
+        logging.error('MARS: Error contacting TAC Schedule at "{}"'.format(url))
+        return None
     slot_pids = defaultdict(set) # dict[slot] = [propid, ...]
     for proposal in root:
         telescope = proposal.get('telescope')
         instrument = sched2hdr.get(proposal.get('instrument'),None)
         if instrument == None:
             continue
+        if telescope == None:
+            continue
+        instrument = instrument.lower()
+        telescope = telescope.lower()
         if telescope not in Slot.telescopes:
             logging.warning('MARS: Telescope "{}" not one of: {}'
                             .format(telescope, Slot.telescopes))
@@ -106,6 +107,10 @@ def update_from_noaoprop(**query):
                 
                 slot_pids[slot].add(propid)                    
                 print('NOT FROZEN: {}; propids={}'.format(msg, slot_pids[slot]))
+    
+    
+def update_from_noaoprop(**query):
+    slot_pids = apply_tac_update(query) # dict[slot] = [propid, ...]
     print('Updating propid lists for {} slots:'.format(len(slot_pids)))
     for index,(slot,propids) in enumerate(slot_pids.items()):
         prop_list = [Proposal.objects.get_or_create(pk=propid)[0]
@@ -114,6 +119,9 @@ def update_from_noaoprop(**query):
         slot.proposals = list(prop_list)
     #return redirect('/schedule/')
     return slot_pids # dict[obsdate:telescope] = set([propid, ...])
+
+
+
 
 def update_date(request, day):
     slot_pids = update_from_noaoprop(date=day) 
@@ -190,28 +198,48 @@ no PROPID.  These should probably be filled."""
 ##    omit_serializer: true
 
 # EXAMPLE in bash:
-#  propid=`curl 'http://127.0.0.1:8000/schedule/getpropid/ct13m/2014-12-25/'`
+#  propid=`curl 'http://127.0.0.1:8000/schedule/propid/ct13m/2014-12-25/'`
 @api_view(['GET'])
 def getpropid(request, tele, instrum, date):
     """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
+    # Default PROPID to use when we don't have one for tele, instrum
+    global_default = '!NEED-DEFAULT!'
     serializer_class = SlotSerializer
     try:
-        slot = Slot.objects.get(obsdate=date, telescope=tele, instrument=instrum)
+        slot = Slot.objects.get(obsdate=date,
+                                telescope=tele,
+                                instrument=instrum)
         proplist = slot.propids
         #! print('DBG-0: getpropid({}, {})=>{}'.format(tele, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
-    except Exception as err:
-        #!if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
-        #!    es = EmptySlot(obsdate=date, telescope=tele)
-        #!    es.save()
-        # 
-        #!dftpid = DefaultPropid.objects.get(obsdate=date,
-        #!                                   telescope=tele,
-        #!                                   instrument=instrum)
-        #!return HttpResponse(dftpid.propids, content_type='text/plain')
-        return HttpResponse('NA', content_type='text/plain')
+    except:
+        pass
+    # MARS schedule slot not found...
+    # ... try updating the date from TAC, and getting Slot again
+    apply_tac_update(date=date) 
+    try:
+        slot = Slot.objects.get(obsdate=date, telescope=tele, instrument=instrum)
+        proplist = slot.propids
+        return HttpResponse(proplist, content_type='text/plain')
+    except:
+        pass
+    # ... use default
+    try:
+        print('Get default propid for tele={}, instrum={}'.format(tele,instrum))
+        obj = DefaultPropid.objects.get(telescope=tele, instrument=instrum)
+        proplist = obj.propids
+    except Exception as ex:
+        proplist = [global_default]
+    return HttpResponse(proplist, content_type='text/plain')    
+        
+    #!if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
+    #!    es = EmptySlot(obsdate=date, telescope=tele)
+    #!    es.save()
+    # 
+    #!return HttpResponse(dftpid.propids, content_type='text/plain')
+    #!return HttpResponse('NA', content_type='text/plain')
 
 class SlotGet(generics.GenericAPIView, DetailView):
     """

@@ -1,0 +1,174 @@
+# mostly from file_naming.py:stiLUT
+-   model: water.fileprefix
+    pk: 1
+    fields: {site: cp, telescope: soar, instrument: goodman, tacinst: None,
+      prefix: psg}
+-   model: water.fileprefix
+    pk: 2
+    fields: {site: cp, telescope: soar, instrument:
+      goodmanspectrograph,
+      tacinst: None, prefix: psg}
+-   model: water.fileprefix
+    pk: 3
+    fields: {site: cp, telescope: soar, instrument: osiris, tacinst:
+      None, prefix: pso}
+-   model: water.fileprefix
+    pk: 4
+    fields: {site: cp, telescope: soar, instrument: soi, tacinst:
+    None, prefix: psi}
+    
+-   model: water.fileprefix
+    pk: 5
+    fields: {site: cp, telescope: soar, instrument: spartan, tacinst:
+    None, prefix: pss}
+    
+-   model: water.fileprefix
+    pk: 6
+    fields: {site: cp, telescope: soar, instrument: spartanircamera,
+    tacinst: None, prefix: pss}
+-   model: water.fileprefix
+    pk: 7
+    fields: {site: cp, telescope: soar, instrument: sam, tacinst:
+    None, prefix: psa}
+    
+-   model: water.fileprefix
+    pk: 8
+    fields: {site: ct, telescope: ct4m, instrument: decam, tacinst:
+    None, prefix: c4d}
+    
+-   model: water.fileprefix
+    pk: 9
+    fields: {site: ct, telescope: ct4m, instrument: cosmos, tacinst:
+    None, prefix: c4c}
+-   model: water.fileprefix
+    pk: 10
+    fields: {site: ct, telescope: ct4m, instrument: ispi, tacinst:
+    None, prefix: c4i}
+-   model: water.fileprefix
+    pk: 11
+    fields: {site: ct, telescope: ct4m, instrument: mosaic,
+    tacinst: None, prefix: c4m}
+-   model: water.fileprefix
+    pk: 12
+    fields: {site: ct, telescope: ct4m, instrument: newfirm,
+    tacinst: None, prefix: c4n}
+-   model: water.fileprefix
+    pk: 13
+    fields: {site: ct, telescope: ct4m, instrument: arcoiris,
+    tacinst: None, prefix: c4ai}
+-   model: water.fileprefix
+    pk: 14
+    fields: {site: ct, telescope: ct15m, instrument: chiron,
+    tacinst: None, prefix: c15e}
+-   model: water.fileprefix
+    pk: 15
+    fields: {site: ct, telescope: ct15m, instrument: echelle,
+    tacinst: None, prefix: c15e}
+-   model: water.fileprefix
+    pk: 16
+    fields: {site: ct, telescope: ct15m, instrument: arcon,
+    tacinst: None, prefix: c15s}
+-   model: water.fileprefix
+    pk: 17
+    fields: {site: ct, telescope: ct13m, instrument: andicam,
+    tacinst: None, prefix: c13a}
+-   model: water.fileprefix
+    pk: 18
+    fields: {site: ct, telescope: ct1m, instrument: y4kcam,
+    tacinst: None, prefix: c1i}
+-   model: water.fileprefix
+    pk: 19
+    fields: {site: ct, telescope: ct09m, instrument: arcon,
+    tacinst: None, prefix: c09i}
+-   model: water.fileprefix
+    pk: 20
+    fields: {site: ct, telescope: ctlab, instrument: cosmos,
+    tacinst: None, prefix: clc}
+-   model: water.fileprefix
+    pk: 21
+    fields: {site: kp, telescope: kp4m, instrument: mosaic,
+    tacinst: None, prefix: k4m}
+-   model: water.fileprefix
+    pk: 22
+    fields: {site: kp, telescope: kp4m, instrument: mosaic3,
+    tacinst: None, prefix: k4m}
+-   model: water.fileprefix
+    pk: 23
+    fields: {site: kp, telescope: kp4m, instrument: newfirm,
+    tacinst: None, prefix: k4n}
+-   model: water.fileprefix
+    pk: 24
+    fields: {site: kp, telescope: kp4m, instrument: kosmos,
+    tacinst: None, prefix: k4k}
+-   model: water.fileprefix
+    pk: 25
+    fields: {site: kp, telescope: kp4m, instrument: cosmos,
+    tacinst: None, prefix: k4k}
+-   model: water.fileprefix
+    pk: 26
+    fields: {site: kp, telescope: kp4m, instrument: ice,
+    tacinst: None, prefix: k4i}
+-   model: water.fileprefix
+    pk: 27
+    fields: {site: kp, telescope: kp4m, instrument: wildfire,
+    tacinst: None, prefix: k4w}
+-   model: water.fileprefix
+    pk: 28
+    fields: {site: kp, telescope: kp4m, instrument: flamingos,
+    tacinst: None, prefix: k4f}
+-   model: water.fileprefix
+    pk: 29
+    fields: {site: kp, telescope: kp35m, instrument: whirc,
+    tacinst: None, prefix: kww}
+-   model: water.fileprefix
+    pk: 30
+    fields: {site: kp, telescope: wiyn, instrument: whirc,
+    tacinst: None, prefix: kww}
+-   model: water.fileprefix
+    pk: 31
+    fields: {site: kp, telescope: kp35m, instrument: bench,
+    tacinst: None, prefix: kwb}
+-   model: water.fileprefix
+    pk: 32
+    fields: {site: kp, telescope: kp35m, instrument: minimo/ice,
+    tacinst: None, prefix: kwi}
+-   model: water.fileprefix
+    pk: 33
+    fields: {site: kp, telescope: kp35m, instrument: (p)odi,
+    tacinst: None, prefix: kwo}
+-   model: water.fileprefix
+    pk: 34
+    fields: {site: kp, telescope: kp21m, instrument: mop/ice,
+    tacinst: None, prefix: k21i}
+-   model: water.fileprefix
+    pk: 35
+    fields: {site: kp, telescope: kp21m, instrument: wildfire,
+    tacinst: None, prefix: k21w}
+-   model: water.fileprefix
+    pk: 36
+    fields: {site: kp, telescope: kp21m, instrument: falmingos,
+    tacinst: None, prefix: k21f}
+-   model: water.fileprefix
+    pk: 37
+    fields: {site: kp, telescope: kp21m, instrument: gtcam,
+    tacinst: None, prefix: k21g}
+-   model: water.fileprefix
+    pk: 38
+    fields: {site: kp, telescope: kpcf, instrument: mop/ice,
+    tacinst: None, prefix: kcfs}
+-   model: water.fileprefix
+    pk: 39
+    fields: {site: kp, telescope: kp09m, instrument: hdi,
+    tacinst: None, prefix: k09h}
+-   model: water.fileprefix
+    pk: 40
+    fields: {site: kp, telescope: kp09m, instrument: mosaic,
+    tacinst: None, prefix: k09m}
+-   model: water.fileprefix
+    pk: 41
+    fields: {site: kp, telescope: kp09m, instrument: ice,
+    tacinst: None, prefix: k09i}
+-   model: water.fileprefix
+    pk: 42
+    fields: {site: kp, telescope: bok23m, instrument: 90prime,
+    tacinst: None, prefix: ksb}

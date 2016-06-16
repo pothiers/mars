@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Slot, EmptySlot, SlotSet, Proposal
+from .models import Slot, EmptySlot, SlotSet, Proposal, DefaultPropid
 
 class PropInline(admin.TabularInline):
 #class PropInline(admin.StackedInline):
@@ -11,12 +11,16 @@ class PropInline(admin.TabularInline):
     raw_id_fields = ('proposal',)
 
     
-@admin.register(EmptySlot)
-class EmptySlotAdmin(admin.ModelAdmin):
-    list_display = ('obsdate', 'telescope', 'instrument')
-    list_filter = ['obsdate', 'telescope', 'instrument'] # right sidebar filter
-    date_hierarchy = 'obsdate'
+#!@admin.register(EmptySlot)
+#!class EmptySlotAdmin(admin.ModelAdmin):
+#!    list_display = ('obsdate', 'telescope', 'instrument')
+#!    list_filter = ['obsdate', 'telescope', 'instrument'] # right sidebar filter
+#!    date_hierarchy = 'obsdate'
 
+@admin.register(DefaultPropid)
+class DefaultPropidAdmin(admin.ModelAdmin):
+    list_display = ('telescope', 'instrument', 'propids')
+    
 
 @admin.register(Slot)
 class SlotAdmin(admin.ModelAdmin):

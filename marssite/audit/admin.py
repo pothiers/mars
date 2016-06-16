@@ -93,7 +93,8 @@ class SourceFileAdmin(admin.ModelAdmin):
                    'errcode',
                    #ObsdayListFilter,
                    'submitted',
-                   'instrument', 'telescope')
+                   'instrument', 'telescope',
+                   'staged')
     search_fields = ['telescope', 'instrument','srcpath', 'archerr']
     actions = [stage, unstage, clear_submit, clear_error]
     ordering = ['-recorded',]

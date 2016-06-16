@@ -63,7 +63,7 @@ class SourceFile(models.Model):
                    'Then True iff Archive reported success on ingest'))
     archerr   = models.CharField(max_length=256, blank=True,
                                  help_text='Archive ingest error message')
-    errcode   = models.CharField(max_length=8,
+    errcode   = models.CharField(max_length=10,
                                  default='none',
                                  choices=[(val,val) for val in errcodes],
                                  help_text='Error code for Archive Ingest')

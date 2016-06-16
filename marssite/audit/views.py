@@ -130,7 +130,8 @@ EXAMPLE:
 @api_view(['POST'])
 @parser_classes((JSONParser,))
 def source(request, format='yaml'):
-    """Record list of observations to be submitted for ingest.
+    """Record list of observations to be submitted for ingest. Intended to be 
+done from dome for all files.
 EXAMPLE:    
     curl -H "Content-Type: application/json" -d @example-obs.json http://localhost:8000/audit/source/
     """
@@ -139,6 +140,8 @@ EXAMPLE:
         preexisting = set()
         print('DBG: request.data={}'.format(request.data))
         for obs in request.data['observations']:
+            obs['telescope'] = obs['telescope'].lower()
+            obs['instrument'] = obs['instrument'].lower()            
             #! print('DBG: obs={}'.format(obs))
             obj,created = SourceFile.objects.get_or_create(md5sum=obs['md5sum'],
                                                            defaults=obs)

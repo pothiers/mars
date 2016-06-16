@@ -16,8 +16,7 @@ class EmptySlot(models.Model):
         return '{}:{}-{}'.format(self.obsdate, self.telescope, self.instrument)
         
 class Proposal(models.Model):
-    propid = models.CharField(primary_key=True,
-                              max_length=10,
+    propid = models.CharField(primary_key=True,  max_length=10,
                               help_text='YYYYs-nnnn (s[emester]:: A|B)')
 
     #!title = models.CharField(max_length=256)

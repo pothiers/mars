@@ -1,0 +1,24 @@
+- model: schedule.defaultpropid
+  pk: 1
+  fields: {telescope: soar, instrument: goodman, propids: '["soar"]'}
+- model: schedule.defaultpropid
+  pk: 2
+  fields: {telescope: soar, instrument: osiris, propids: '["soar"]'}
+- model: schedule.defaultpropid
+  pk: 3
+  fields: {telescope: soar, instrument: spartan, propids: '["soar"]'}
+- model: schedule.defaultpropid
+  pk: 4
+  fields: {telescope: wiyn, instrument: whirc, propids: '["wiyn"]'}
+- model: schedule.defaultpropid
+  pk: 5
+  fields: {telescope: bok23m, instrument: 90prime, propids: '["2015A-0801"]'}
+- model: schedule.defaultpropid
+  pk: 6
+  fields: {telescope: kp4m, instrument: mosaic3, propids: '["2016A-0453"]'}
+- model: schedule.defaultpropid
+  pk: 7
+  fields: {telescope: unknown, instrument: unknown, propids: '["FOOBAR"]'}
+- model: schedule.defaultpropid
+  pk: 8
+  fields: {telescope: nukeme, instrument: multiprop, propids: '["one", "two"]'}

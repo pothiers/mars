@@ -1,0 +1,7 @@
+-   model: water.fileprefix
+    pk: 1
+    fields: {site: mysite, telescope: mytele, instrument: myinst, tacinst: mytac,
+        prefix: myprefix}
+-   model: water.fileprefix
+    pk: 2
+    fields: {site: site1, telescope: tele1, instrument: intrum1, tacinst: tac1, prefix: prefix1}

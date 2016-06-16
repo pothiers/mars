@@ -10,12 +10,13 @@ class FilePrefix(models.Model):
     telescope = models.CharField(max_length=10, 
                                  help_text=('Name used in FITS header '
                                             '(field name TELES'))
-    instrument = models.CharField(max_length=20, unique=True,
+    instrument = models.CharField(max_length=20,
                                   help_text=('Name used in FITS header '
                                              '(field name INSTRUME)'))
-    tacinst = models.CharField(max_length=20, unique=True,
+    tacinst = models.CharField(max_length=20,
                            help_text='Name used by Dave Bells TAC Schedule')
 
-    prefix = models.CharField(max_length=4,
+    prefix = models.CharField(max_length=10,
                               help_text='Prefix for Archive Filename')
     
+ 
