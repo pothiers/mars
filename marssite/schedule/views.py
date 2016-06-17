@@ -200,13 +200,15 @@ no PROPID.  These should probably be filled."""
 # EXAMPLE in bash:
 #  propid=`curl 'http://127.0.0.1:8000/schedule/propid/ct13m/2014-12-25/'`
 @api_view(['GET'])
-def getpropid(request, tele, instrum, date):
+def getpropid(request, telescope, instrument, date):
     """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
     # Default PROPID to use when we don't have one for tele, instrum
     global_default = '!NEED-DEFAULT!'
     serializer_class = SlotSerializer
+    tele = telescope.lower()
+    instrum = instrument.lower()
     try:
         slot = Slot.objects.get(obsdate=date,
                                 telescope=tele,
@@ -231,6 +233,8 @@ def getpropid(request, tele, instrum, date):
         obj = DefaultPropid.objects.get(telescope=tele, instrument=instrum)
         proplist = obj.propids
     except Exception as ex:
+        print('Need default propid for tele={}, instrum={}'
+              .format(tele,instrum))
         proplist = [global_default]
     return HttpResponse(proplist, content_type='text/plain')    
         

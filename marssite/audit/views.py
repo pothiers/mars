@@ -249,7 +249,7 @@ def update(request, format='yaml'):
         #!                 + list(initdefs.keys())  ):
         #!    print('DBG: changed attr[{}]={}'
         #!          .format(fname,getattr(obj,fname)))
-        print('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
+        #!print('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
         obj.save()
         #!print('/audit/update/ saved obj={}'.format(obj))
 
@@ -379,6 +379,7 @@ def get_counts():
 
 
 
+# Eventually a replacement for Sean's CheckNight page
 def progress_count(request):
     """Counts we want (for each telescope+instrument):
 sent::     Sent from dome
