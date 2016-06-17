@@ -17,7 +17,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
-
+from django.views.generic.base import RedirectView
+from django.contrib.staticfiles.storage import staticfiles_storage
 
 from rest_framework import routers, serializers, viewsets
 from django.contrib.auth.models import User # ,Group
@@ -56,6 +57,13 @@ router = routers.DefaultRouter()
 admin.site.site_header = 'MARS Administration'
 
 urlpatterns = [
+    url(
+        r'^favicon.ico$',
+        RedirectView.as_view(
+            url=staticfiles_storage.url('favicon.ico'),
+            permanent=False),
+        name="favicon"
+    ),
     url(r'^', include('water.urls', namespace='water')),
     url(r'^home', include('water.urls', namespace='water')),
     #url(r'^favicon.ico$', 'django.views.static.server',  {'document_root': '/var/mars/Mars_icon.jpg'}),

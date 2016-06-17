@@ -3,7 +3,6 @@ import logging
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.template import RequestContext
 from django.db import transaction
 from django.conf import settings
 
@@ -32,12 +31,12 @@ def index(request, limit=2000):
     fnames = Fitsname.objects.all()
     return render(request,
                   'provisional/index.html',
-                  RequestContext(request, {
+                  {
                       #'limit': limit,
                       'delcnt': delcnt,
                       'dbhost': settings.DATABASES['default']['HOST'],
                       'fitname_list': fnames,
-                  }))
+                  })
 
 def stuff_with_tada(request, limit=1000):
     print('Stuff with TADA')
