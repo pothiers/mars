@@ -205,10 +205,10 @@ def getpropid(request, telescope, instrument, date):
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
     # Default PROPID to use when we don't have one for tele, instrum
-    global_default = '!NEED-DEFAULT!'
     serializer_class = SlotSerializer
     tele = telescope.lower()
     instrum = instrument.lower()
+    global_default = '!NEED-DEFAULT.{}.{}'.format(tele,instrum)
     try:
         slot = Slot.objects.get(obsdate=date,
                                 telescope=tele,
