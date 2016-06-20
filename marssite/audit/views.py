@@ -268,6 +268,7 @@ def add_ingested():
         for obj in qs:
             SourceFile.objects.filter(srcpath=obj.dtacqnam).update(
                 success=True,
+                arcerr = 'From SIAP',
                 archfile=obj.reference)
 
 def refresh(request):
@@ -298,9 +299,9 @@ class ProgressTable(tables.Table):
     #!Updated = tables.DateTimeColumn(short=True)    
     Propid = tables.TemplateColumn('<a href="http://www.noao.edu/noaoprop/abstract.mpl?{{record.Propid}}">{{record.Propid}}</a>')
 
-    notReceived = tables.Column()
-    rejected =  tables.Column()
-    accepted =  tables.Column()
+    notReceived = tables.Column(verbose_name='In Transit')
+    rejected =  tables.Column(verbose_name='Ingest Rejected')
+    accepted =  tables.Column(verbose_name='Ingested')
     
     class Meta:
         attrs = {'class': 'progress'}
@@ -390,7 +391,7 @@ accepted:: Archive accepted submission (should be in DB)
 sent = nosubmit + (rejected + accepted))
 """
 
-    add_ingested()
+    #!add_ingested()
     progress = get_counts()
     #!print('DBG:progress dict()={}'.format(progress))
     instrums=[]
