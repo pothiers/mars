@@ -208,6 +208,7 @@ def getpropid(request, telescope, instrument, date):
     serializer_class = SlotSerializer
     tele = telescope.lower()
     instrum = instrument.lower()
+    ignore_default = ('1' == request.GET.get('ignore_default'))
     global_default = '!NEED-DEFAULT.{}.{}'.format(tele,instrum)
     try:
         slot = Slot.objects.get(obsdate=date,
@@ -226,7 +227,8 @@ def getpropid(request, telescope, instrument, date):
         proplist = slot.propids
         return HttpResponse(proplist, content_type='text/plain')
     except:
-        pass
+        if ignore_default:
+            return HttpResponse('NA', content_type='text/plain')            
     # ... use default
     try:
         print('Get default propid for tele={}, instrum={}'.format(tele,instrum))
