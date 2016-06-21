@@ -379,8 +379,7 @@ sent = nosubmit + (rejected + accepted))
         #print('DBG: day={}'.format(day))
         try:
             #obsdate=datetime.strptime(day,'%Y-%m-%d').date()
-            slot=Slot.objects.get(obsdate=day,
-                                  telescope=tele, instrument=instr)
+            slot=Slot.objects.get(obsdate=day, telescope=tele, instrument=instr)
             propids = slot.propids
         except Slot.DoesNotExist:
             propids=''
