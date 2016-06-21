@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import SourceFile
+from .models import AuditRecord
 
 
 
-class SourceFileSerializer(serializers.ModelSerializer):
+class AuditRecordSerializer(serializers.ModelSerializer):
     class Meta:
-        model = SourceFile
+        model = AuditRecord
         
         

@@ -1,10 +1,10 @@
 import django_tables2 as tables
 
-from .models import SourceFile
+from .models import AuditRecord
 
-class SourceFileTable(tables.Table):
+class AuditRecordTable(tables.Table):
     class Meta:
-        model = SourceFile
+        model = AuditRecord
         fields = ('instrument',
                   'notReceived',
                   'rejected',

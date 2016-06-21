@@ -1,7 +1,7 @@
 import datetime
 from django.contrib import admin
 
-from .models import SourceFile
+from .models import AuditRecord
 
 # see: ~/sandbox/mars/env_mars/lib/python3.5/site-packages/django/contrib/admin/filters.py
 class ObsdayListFilter(admin.SimpleListFilter):
@@ -49,8 +49,8 @@ def clear_error(modeladmin, request, queryset):
                     )
 clear_error.short_description = "Clear archive error related fields"
 
-@admin.register(SourceFile)
-class SourceFileAdmin(admin.ModelAdmin):
+@admin.register(AuditRecord)
+class AuditRecordAdmin(admin.ModelAdmin):
 
     def changed_fits_fields(obj):
         if obj.metadata == None:

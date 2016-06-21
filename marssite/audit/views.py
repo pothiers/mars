@@ -34,9 +34,9 @@ from rest_framework.parsers import JSONParser
 from rest_framework import generics
 from rest_framework.decorators import  api_view,parser_classes
 
-from .models import SourceFile
-#from .serializers import SubmittalSerializer, SourceFileSerializer
-from .serializers import SourceFileSerializer
+from .models import AuditRecord
+#from .serializers import SubmittalSerializer, AuditRecordSerializer
+from .serializers import AuditRecordSerializer
 from .plotlib import hbarplot
 
 from schedule.models import Slot
@@ -113,11 +113,11 @@ EXAMPLE:
     if request.method == 'POST':
         for path in request.body.decode('utf-8').strip().split():
             print('DBG: source={}'.format(path))
-            SourceFile.objects.update_or_create(
+            AuditRecord.objects.update_or_create(
                 srcpath=path,
                 defaults=dict(recorded=now()
                 ))
-        qs = SourceFile.objects.all()
+        qs = AuditRecord.objects.all()
         return JsonResponse(serializers.serialize(format, qs), safe=False)
     else:
         return HttpResponse('ERROR: expected POST')
@@ -143,7 +143,7 @@ EXAMPLE:
             obs['telescope'] = obs['telescope'].lower()
             obs['instrument'] = obs['instrument'].lower()            
             #! print('DBG: obs={}'.format(obs))
-            obj,created = SourceFile.objects.get_or_create(md5sum=obs['md5sum'],
+            obj,created = AuditRecord.objects.get_or_create(md5sum=obs['md5sum'],
                                                            defaults=obs)
             if created:
                 addcnt+=1
@@ -171,7 +171,7 @@ EXAMPLE:
     if request.method == 'POST':
         body = json.loads(request.body.decode('utf-8'))
         print('body={}'.format(body))
-        SourceFile.objects.update_or_create(
+        AuditRecord.objects.update_or_create(
             dict(source=src,
                  submitted=now(),
                  success=body.get('success',True),
@@ -189,7 +189,7 @@ def get_rejected_duplicates(request):
     """Get list of files (by checksum) that were not ingested because they were
 already in the archive DB"""
     restr=r"has already been stored in the database"
-    qs = (SourceFile.objects.filter(success=False,  archerr__iregex=restr)
+    qs = (AuditRecord.objects.filter(success=False,  archerr__iregex=restr)
           .values('md5sum','srcpath'))
     return JsonResponse(list(qs), safe=False)
     #print('dupes={}'.format(list(serializers.serialize('xml',qs))))
@@ -200,7 +200,7 @@ def get_rejected_missing(request):
     """Get list of files (by checksum) that were not ingested because they were
 missing requires fields"""
     restr=r"is missing required metadata fields"
-    qs = (SourceFile.objects.filter(success=False,  archerr__iregex=restr)
+    qs = (AuditRecord.objects.filter(success=False,  archerr__iregex=restr)
           .values('md5sum','srcpath'))
     return JsonResponse(list(qs), safe=False)
 
@@ -229,7 +229,7 @@ def update(request, format='yaml'):
                        archfile=rdict['archfile'],
                        metadata=rdict['metadata'])
 
-        obj,created = SourceFile.objects.get_or_create(md5sum=md5,
+        obj,created = AuditRecord.objects.get_or_create(md5sum=md5,
                                                        defaults=initdefs)
         if created:
             print(('WARNING: Ingest requested, '
@@ -262,30 +262,30 @@ def add_ingested():
     # Force material view refresh
     cursor.execute('SELECT * FROM refresh_voi_material_views()')
     sql = 'SELECT reference,dtacqnam FROM voi.siap WHERE dtacqnam = %s'
-    for sf in SourceFile.objects.all():
+    for sf in AuditRecord.objects.all():
         qs = VoiSiap.objects.raw(sql,[sf.srcpath])
         #print('pairs={}'.format([(obj.reference, obj.dtacqnam) for obj in qs]))
         for obj in qs:
-            SourceFile.objects.filter(srcpath=obj.dtacqnam).update(
+            AuditRecord.objects.filter(srcpath=obj.dtacqnam).update(
                 success=True,
                 arcerr = 'From SIAP',
                 archfile=obj.reference)
 
 def refresh(request):
-    "Query Archive for all SourceFiles"
+    "Query Archive for all AuditRecords"
     add_ingested()
     return redirect('/admin/audit/sourcefile/')
 
 def not_ingested(request):
     "Show source files that have not made it into the Archive"
     add_ingested()
-    qs = SourceFile.objects.filter(success=True)
+    qs = AuditRecord.objects.filter(success=True)
     return render(request, 'audit/not_ingested.html', {"srcfiles": qs})
 
 def failed_ingest(request):
     "Show source files that where submitted Archive but failed to ingest."
     add_ingested()
-    qs = SourceFile.objects.filter(success=False)
+    qs = AuditRecord.objects.filter(success=False)
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
 
 class ProgressTable(tables.Table):
@@ -347,33 +347,33 @@ def get_counts():
     RETURN: counts[] => (notsubmitted, rejected, accepted)
     """
     group = ['instrument','telescope','obsday']
-    nosubmitqs = (SourceFile.objects.exclude(success__isnull=False)
+    nosubmitqs = (AuditRecord.objects.exclude(success__isnull=False)
                   .values(*group)
                   .annotate(total=Count('md5sum'))
                   .order_by(*group))
     nosubmit = dict([(tuple([ob[k] for k in group]), ob['total'])
                      for ob in nosubmitqs])
 
-    rejectedqs = (SourceFile.objects.filter(success__exact=False)
+    rejectedqs = (AuditRecord.objects.filter(success__exact=False)
                   .values(*group)
                   .annotate(total=Count('md5sum'))
                   .order_by(*group))
     rejected = dict([(tuple([ob[k] for k in group]),ob['total'])
                        for ob in rejectedqs])
 
-    acceptedqs = (SourceFile.objects.filter(success__exact=True)
+    acceptedqs = (AuditRecord.objects.filter(success__exact=True)
                   .values(*group)
                   .annotate(total=Count('md5sum'))
                   .order_by(*group))
     accepted = dict([(tuple([ob[k] for k in group]), ob['total'])
                        for ob in acceptedqs])
-    sent = SourceFile.objects.count()
+    sent = AuditRecord.objects.count()
     assert (sent==(sum([n for n in nosubmit.values()])
                    + sum([n for n in rejected.values()])
                    + sum([n for n in accepted.values()])))
 
     counts = dict() # counts[(tele,inst,day)] = (nosubmit,rejected,accepted)
-    for k in (SourceFile.objects.order_by('telescope','instrument','obsday')
+    for k in (AuditRecord.objects.order_by('telescope','instrument','obsday')
               .distinct(*group).values_list(*group)):
         counts[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
     return counts
@@ -431,32 +431,32 @@ accepted:: Archive accepted submission (should be in DB)
 sent = nosubmit + (rejected + accepted))
 """
     add_ingested()
-    nosubmitqs = (SourceFile.objects.exclude(success__isnull=False)
+    nosubmitqs = (AuditRecord.objects.exclude(success__isnull=False)
                   .values('telescope','instrument')
                   .annotate(total=Count('md5sum'))
                   .order_by('instrument','telescope'))
     nosubmit = dict([((ob['telescope'],ob['instrument']),ob['total'])
                      for ob in nosubmitqs])
 
-    rejectedqs = (SourceFile.objects.filter(success__exact=False)
+    rejectedqs = (AuditRecord.objects.filter(success__exact=False)
                   .values('telescope','instrument')
                   .annotate(total=Count('md5sum'))
                   .order_by('instrument','telescope'))
     rejected = dict([((ob['telescope'],ob['instrument']),ob['total'])
                      for ob in rejectedqs])
 
-    acceptedqs = (SourceFile.objects.filter(success__exact=True)
+    acceptedqs = (AuditRecord.objects.filter(success__exact=True)
                   .values('telescope','instrument')
                   .annotate(total=Count('md5sum'))
                   .order_by('instrument','telescope'))
     accepted = dict([((ob['telescope'],ob['instrument']),ob['total'])
                      for ob in acceptedqs])
-    sent = SourceFile.objects.count()
+    sent = AuditRecord.objects.count()
     assert (sent==(sum([n for n in nosubmit.values()])
                    + sum([n for n in rejected.values()])
                    + sum([n for n in accepted.values()])))
     progress = dict() # progress[(tele,instr)] = (nosubmit,rejected,accepted)
-    for k in (SourceFile.objects.order_by('telescope','instrument')
+    for k in (AuditRecord.objects.order_by('telescope','instrument')
               .distinct('telescope','instrument')
               .values_list('telescope','instrument')):
         progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
@@ -493,15 +493,15 @@ sent = nosubmit + (rejected + accepted))
     }
     return render_to_response('audit/progress-bar-chart.html', data)
     
-#!class SourceFileList(generics.ListAPIView):
-#!    model = SourceFile
-#!    queryset = SourceFile.objects.all()
+#!class AuditRecordList(generics.ListAPIView):
+#!    model = AuditRecord
+#!    queryset = AuditRecord.objects.all()
 #!    template_name = 'audit/submittal_list.html'
-#!    serializer_class = SourceFileSerializer
+#!    serializer_class = AuditRecordSerializer
 #!    paginate_by = 50
 
 
-class SourceFileList(ListView):
-    model = SourceFile
+class AuditRecordList(ListView):
+    model = AuditRecord
 
     

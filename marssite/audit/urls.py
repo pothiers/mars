@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     #url(r'^$', views.SubmittalList.as_view(), name='submittal_list'),
-    url(r'^$', views.SourceFileList.as_view(), name='sourcefile_list'),
+    url(r'^$', views.AuditRecordList.as_view(), name='sourcefile_list'),
     #url(r'^(?P<pk>[0-9]+)/$', views.SubmittalDetail.as_view(), name='submittal_detail'),
     #url(r'^add$', views.add_submit, name='submittal_add'),
     url(r'^source/$', views.source, name='source'),
