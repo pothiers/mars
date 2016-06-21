@@ -19,7 +19,7 @@ class ObsdayListFilter(admin.SimpleListFilter):
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
         if self.value() == 'Yesterday' :
-            return queryset.filter(obsday__gte=yesterday, obsday__lt=today)
+            return queryset.filter(obsday__exact=yesterday)
         if self.value() == 'Today' :
             return queryset.filter(obsday__gte=today)
 
@@ -76,11 +76,11 @@ class AuditRecordAdmin(admin.ModelAdmin):
         #'narrow_srcpath',
         #display_srcpath,
         'srcpath',
+        'success',
+        'archerr',
         'recorded',
         'submitted',
-        'success',
         'errcode',
-        'archerr',
         'archfile',
         #'metadata',
         #changed_fits_fields,
@@ -90,8 +90,8 @@ class AuditRecordAdmin(admin.ModelAdmin):
     date_hierarchy = 'obsday'
     list_filter = ('success',
                    'obsday',
-                   'errcode',
                    #ObsdayListFilter,
+                   'errcode',
                    'submitted',
                    'instrument', 'telescope',
                    'staged')

@@ -35,6 +35,7 @@ from rest_framework import generics
 from rest_framework.decorators import  api_view,parser_classes
 
 from .models import AuditRecord
+from .tables import ProgressTable
 #from .serializers import SubmittalSerializer, AuditRecordSerializer
 from .serializers import AuditRecordSerializer
 from .plotlib import hbarplot
@@ -288,27 +289,6 @@ def failed_ingest(request):
     qs = AuditRecord.objects.filter(success=False)
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
 
-class ProgressTable(tables.Table):
-    ObsDay = tables.DateColumn(short=True, verbose_name='CALDAT')
-    Telescope = tables.Column()
-    Instrument = tables.Column()
-
-    #!Ground_Truth = tables.Column()    
-    #!Database = tables.Column()    
-    #!Delta = tables.Column()    
-    #!Updated = tables.DateTimeColumn(short=True)    
-    Propid = tables.TemplateColumn('<a href="http://www.noao.edu/noaoprop/abstract.mpl?{{record.Propid}}">{{record.Propid}}</a>')
-
-    notReceived = tables.Column(verbose_name='In Transit')
-    rejected =  tables.Column(verbose_name='Ingest Rejected')
-    accepted =  tables.Column(verbose_name='Ingested')
-    
-    class Meta:
-        attrs = {'class': 'progress'}
-        row_attrs = {
-            'class': lambda record: 'day-even' if (int(str(record['ObsDay'])[-1]) % 2) == 0 else 'day-odd'
-            #'row-odd': 3
-            }
 
 
 # PLACEHOLDER    
@@ -392,7 +372,7 @@ sent = nosubmit + (rejected + accepted))
 """
 
     #!add_ingested()
-    progress = get_counts()
+    progress = get_counts() # (notsubmitted, rejected, accepted)
     #!print('DBG:progress dict()={}'.format(progress))
     instrums=[]
     for (instr,tele,day) in progress.keys():
@@ -407,7 +387,8 @@ sent = nosubmit + (rejected + accepted))
         #!print('DBG: propids({},{},{})={}'.format(day,instr,tele,propids))
         instrums.append(dict(Telescope=tele,
                              Instrument=instr,
-                             ObsDay=day,
+                             ObsDay=day.isoformat(),
+                             dome=sum(progress[(instr,tele,day)]),
                              notReceived=progress[(instr,tele,day)][0],
                              rejected=progress[(instr,tele,day)][1],
                              accepted=progress[(instr,tele,day)][2],
@@ -418,7 +399,7 @@ sent = nosubmit + (rejected + accepted))
     table = ProgressTable(sorted(instrums,
                                  reverse=True, key=lambda d: d['ObsDay'] ))
     c = {"instrum_table": table,
-         "title": 'Progress of Submits from instruments',  }
+         "title": 'faux DMO CheckNight Monitor',  }
     return render(request, 'audit/progress.html', c) 
 
 def progress(request):
