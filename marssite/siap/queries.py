@@ -23,3 +23,62 @@ def get_tada_references(limit=50):
     #print('TADA select found {} records'.format(total))
     images = cursor.fetchall()
     return images
+
+def get_like_archfile(archfile_substr, refresh=False, limit=150):
+    cursor = connection.cursor()
+    if refresh:
+        #Force material view refresh
+        cursor.execute('SELECT * FROM refresh_voi_material_views()')
+        cursor.fetchall()
+    sql=("SELECT reference FROM voi.siap "
+         "WHERE reference LIKE '%{}%'"
+         "LIMIT {}").format(archfile_substr, limit)
+    print('Executing SQL: {}'.format(sql))
+    cursor.execute( sql )
+    total = cursor.rowcount
+    #print('TADA select found {} records'.format(total))
+    images = cursor.fetchall()
+    return images
+
+# reference            | character varying           | 
+# ra                   | numeric                     | 
+# dec                  | numeric                     | 
+# instrument           | citext                      | 
+# telescope            | citext                      | 
+# date_obs             | timestamp without time zone | 
+# dtacqnam             | citext                      | 
+# dtpropid             | citext                      | 
+# dtsite               | citext                      | 
+# proctype             | citext                      | 
+# prodtype             | citext                      | 
+# start_date           | timestamp without time zone | 
+# release_date         | timestamp without time zone | 
+def get_from_siap(refresh=False, limit=150, **kwargs):
+    """Return list of dictionaries matching column in KWARGS.
+    Each dict represents one row (dict[column]=value)"""
+    cursor = connection.cursor()
+    if refresh:
+        #Force material view refresh
+        cursor.execute('SELECT * FROM refresh_voi_material_views()')
+        cursor.fetchall()
+    where = list()
+    for k,v in kwargs.items():
+        if k == 'reference':
+            where.append("reference LIKE '%{}%'".format(v))
+        else:
+            where.append("{} = '{}'".format(k,v))
+    
+    whereclause = (' WHERE ' + ' AND '.join(where)) if len(where) > 0 else ''
+    #sql=("SELECT reference,dtacqnam,date_obs FROM voi.siap {} LIMIT {}"
+    sql=("SELECT * FROM voi.siap {} LIMIT {}"
+         .format(whereclause, limit))
+    print('Executing SQL: {}'.format(sql))
+    cursor.execute( sql )
+    total = cursor.rowcount
+    #print('TADA select found {} records'.format(total))
+    #! images = cursor.fetchall()
+    #! return images
+    columns = [col[0] for col in cursor.description]
+    results = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    return results
+

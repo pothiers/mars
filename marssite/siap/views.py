@@ -1,3 +1,17 @@
+'''
+Proof of concept download service: 
+1. by archive filename, only for publice release fits
+2. by params on URL: 
+   obsdate
+   ra
+   dec
+   original filename
+   substring of archive filename
+   telescope
+   instrument
+   propid
+   (others)
+'''
 import json
 import re
 
@@ -10,10 +24,14 @@ from django.template.context_processors import csrf
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework.decorators import detail_route, list_route, api_view
 
+from .tables import SiapTable
 from .models import Image, VoiSiap
 from .forms import VoiSiapForm
-from .queries import get_tada_references
+from .queries import get_tada_references, get_like_archfile, get_from_siap
+
+
 
 def index(request):
     'SIAP index of subset of all files.'
@@ -192,7 +210,7 @@ def query_by_str(request, format='json'):
     # curl -H "Content-Type: application/json" -X POST --data-binary @sql/tada-files.sql http://localhost:8000/siap/arch/query 
     print('DBG-0: siap/views.py:query_by_str()')
     if request.method == 'POST':
-        sql = ' '.join(request.body.decode('utf-8').straip().split())
+        sql = ' '.join(request.body.decode('utf-8').strip().split())
         print('DBG-1: siap/views.py:query_by_str(); sql={}'.format(sql))
         cursor = connection.cursor()
         # Force material view refresh
@@ -228,3 +246,60 @@ def query(request):
         form = VoiSiapForm()
 
     return render(request, 'siap/siap.html', {'form': form})        
+
+@api_view(['GET'])
+def lame_query_by_url(request):
+    """Simple query using URL paramaters."""
+    limit = int(request.GET.get('limit','100'))
+    archfile = request.GET.get('archfile')
+    images = get_like_archfile(archfile, limit=limit)
+
+    context = {
+        'limit_count': limit,
+        'tada_images': images, # Image.objects.raw(sql),
+    }
+
+    if request.META.get('CONTENT_TYPE','none') == 'application/json':
+        return JsonResponse([im[0] for im in images], safe=False)
+    if request.META.get('CONTENT_TYPE','none') == 'text/csv':
+        import csv
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="tada.csv"'
+        writer = csv.writer(response)
+        for im in images:
+            writer.writerow(im)
+        return response
+    else:
+        return render(request, 'siap/tada.html', context)
+
+
+
+# http://localhost:8000/siap/query/?date_obs=02/28/2006&reference=k21i
+# curl -H "Content-Type: text/csv" http://localhost:8000/siap/query/?limit=10
+@api_view(['GET'])
+def query_by_url(request):
+    """Simple query using URL paramaters."""
+    getdict = dict(request.GET.items())
+    rows = get_from_siap(**getdict)
+    #print('rows={}'.format(rows))
+
+    table = SiapTable(rows)
+    context = {
+        'query_results_table': table,
+        'limit_count': 99, #!!!
+        'title': 'Results of SIAP query via MARS URL parameters',
+    }
+
+    if request.META.get('CONTENT_TYPE','none') == 'application/json':
+        return JsonResponse([im[0] for im in images], safe=False)
+    if request.META.get('CONTENT_TYPE','none') == 'text/csv':
+        import csv
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="tada.csv"'
+        writer = csv.writer(response)
+        for im in images:
+            writer.writerow(im)
+        return response
+    else:
+        return render(request, 'siap/siap-subset.html', context)
+    

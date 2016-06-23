@@ -23,5 +23,6 @@ urlpatterns = [
 
     url(r'^fquery/$', views.query_by_json, name='query_by_json'),
     url(r'^squery$', views.query_by_sql, name='query_by_sql'),
-    url(r'^query$', views.query, name='query'),
+    #url(r'^query$', views.query, name='query'),
+    url(r'^query/$', views.query_by_url, name='query_by_url'),
 ]
