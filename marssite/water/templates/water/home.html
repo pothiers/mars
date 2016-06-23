@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load django_tables2 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,8 +101,8 @@
 	</a>
       </th>
       <td>
-	Get propid given telescope and observation date.
-	<i>/schedule/propid/TELESCOPE/DATE (2015B-0313)</i>
+	Get propid given telescope, instrument, observation date.
+	<i>(2015B-0313)</i>
       </td>
     </tr>
     <tr>
@@ -182,7 +183,22 @@
       <th><a href="{% url 'siap:index' %}">/siap/</a></th>
       <td>SIAP index of all files.</td>
     </tr>
-
+    <tr  class="prod">
+      <th><a href="{% url 'siap:query_by_url' %}{% querystring 'date_obs'='02-28-2006' 'reference'='k21i' %}">
+	  {% url 'siap:query_by_url' %}{% querystring 'date_obs'='02-28-2006' 'reference'='k21i' %}
+      </a></th>
+      <td>
+	Query SIAP using URL query string. If "reference" column,
+	it is matched as a substring.  All others use exact match.
+	<br />
+	CSV and JSON return values are possible using CURL.  Examples:
+	<br />
+	<pre>
+  curl -H "Content-Type: text/csv" http://localhost:8000/siap/query/?limit=10
+  curl -H "Content-Type: application/json" 'http://localhost:8000/siap/query/?limit=10&date_obs=02-28-2006&reference=k21i' > foo.json
+	</pre>
+      </td>
+    </tr>
     <tr class="inactive">
       <th><a href="/siap/fquery?cols=reference&limit=2">
 	  /siap/fquery?cols=reference&limit=2
@@ -200,10 +216,6 @@
 	<br />For <b>SQL in string</b> use something like: <br />
 	<i>curl --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
       </td>
-    </tr>
-    <tr class="inactive">
-      <th><a href="{% url 'siap:query' %}">{% url 'siap:query' %}</a></th>
-      <td>Query voi.siap using web page.</td>
     </tr>
 
     <tr>

@@ -280,6 +280,7 @@ def lame_query_by_url(request):
 def query_by_url(request):
     """Simple query using URL paramaters."""
     getdict = dict(request.GET.items())
+    sortval = getdict.pop('sort',None)
     rows = get_from_siap(**getdict)
     #print('rows={}'.format(rows))
 
