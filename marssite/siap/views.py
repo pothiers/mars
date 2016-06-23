@@ -291,14 +291,16 @@ def query_by_url(request):
     }
 
     if request.META.get('CONTENT_TYPE','none') == 'application/json':
-        return JsonResponse([im[0] for im in images], safe=False)
+        return JsonResponse([row['reference'] for row in rows], safe=False)
     if request.META.get('CONTENT_TYPE','none') == 'text/csv':
         import csv
         response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="tada.csv"'
-        writer = csv.writer(response)
-        for im in images:
-            writer.writerow(im)
+        response['Content-Disposition'] = 'attachment; filename="siap.csv"'
+        
+        writer = csv.DictWriter(response, fieldnames=rows[0].keys())
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(row)
         return response
     else:
         return render(request, 'siap/siap-subset.html', context)
