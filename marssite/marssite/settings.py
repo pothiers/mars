@@ -33,14 +33,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
     'siap',
     'schedule',
     'provisional',
@@ -61,6 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'django.contrib.admindocs.middleware.XViewMiddleware',
 )
 
 ROOT_URLCONF = 'marssite.urls'

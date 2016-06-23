@@ -46,8 +46,9 @@
     
     <tr>
       <th><a href="{% url 'admin:index' %}">/admin/</a></th>
-      <td>Change data.</td>
+      <td>Change MARS data (not FITS data or Archive metadata).</td>
     </tr>
+    <!--
     <tr>
       <th>
 	<a href="{% url 'admin:index' %}provisional/fitsname/add/">
@@ -55,6 +56,7 @@
       </a></th>
       <td>Record FITS file as provisional.</td>
     </tr>
+    -->
     <tr class="ops">
       <th>
 	<a href="{% url 'admin:index' %}schedule/slot/">
@@ -75,16 +77,15 @@
     <!-- ### Schedule                    -->
     <!-- ###                             -->
     
+    <!--
     <tr>
       <th><a href="{% url 'schedule:list' %}">{% url 'schedule:list' %}</a></th>
       <td>List the schedule.</td>
     </tr>
-    <!--
     <tr>
       <th>/schedule/scrape/BEGIN_YYYYMMDD/END_YYYYMMDD/</th>
       <th>Load schedule for range of dates.</th>
     </tr>
-    -->
     <tr class="ops">
       <th>
 	<a href="{% url 'schedule:list_empty' %}">
@@ -94,6 +95,7 @@
       <td>List slots that have been queried but didn't contain
       anything. </td>
     </tr>
+    -->
     <tr class="prod">
       <th>
 	<a href="{% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}">
@@ -105,6 +107,7 @@
 	<i>(2015B-0313)</i>
       </td>
     </tr>
+    <!--
     <tr>
       <th>
 	<a href="{% url 'schedule:month_list' '2015' 'aug' %}">
@@ -143,6 +146,8 @@
       </th>
       <td>Upload XML file of schedule data and load it.</td>
     </tr>
+    -->
+    <!--  NOT NEEDED since poke at MARS schedule auto updates if not found
     <tr class="ops">
       <th>
 	<a href="{% url 'schedule:update_date' '2015-09-04' %}">
@@ -166,6 +171,7 @@
 	<b>Will take several minutes!</b>
       </td>
     </tr>
+    -->
     <tr class="dev">
       <th>
         <a href="http://www.noao.edu/noaoprop/schedule.mpl?semester=2015B">
@@ -178,11 +184,13 @@
     <!-- ################################################################### -->
     <!-- ### SIAP querying               -->
     <!-- ###                             -->
-    
+
+    <!--
     <tr>
       <th><a href="{% url 'siap:index' %}">/siap/</a></th>
       <td>SIAP index of all files.</td>
     </tr>
+    -->
     <tr  class="prod">
       <th><a href="{% url 'siap:query_by_url' %}{% querystring 'date_obs'='02-28-2006' 'reference'='k21i' %}">
 	  {% url 'siap:query_by_url' %}{% querystring 'date_obs'='02-28-2006' 'reference'='k21i' %}
@@ -218,7 +226,7 @@
       </td>
     </tr>
 
-    <tr>
+    <tr class="dev">
       <th><a href="{% url 'siap:tada' %}">/siap/tada/</a></th>
       <td>List of all Archive files containing substring "TADA". Get
       different renderings based on requested content type. Examples:
@@ -228,7 +236,7 @@
       </pre>
       </td>
     </tr>
-
+    <!-- subsumed by /siap/query/?dtpropid=2011A-0525
     <tr>
       <th>
         <a href="{% url 'siap:filenames' '2011A-0525' %}">
@@ -238,6 +246,7 @@
       </th>
       <td>Filenames associated with PROPID='2011A-0525'</td>
     </tr>
+    -->
 
 
     <!-- #################################################################### -->
@@ -246,14 +255,27 @@
 
     <tr class="ops">
       <th>
+	    <a href="{% url 'audit:progress_count' %}">
+	      {% url 'audit:progress_count' %}
+	    </a>
+      </th>
+      <td>
+	For <b>monitoring progress</b> of ingestion. Similar to Sean's
+	<a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
+      </td>
+    </tr>
+    <!--
+    <tr class="ops">
+      <th>
 	    <a href="{% url 'audit:sourcefile_list' %}">
 	      {% url 'audit:sourcefile_list' %}
 	    </a>
       </th>
       <td>
-	    For <b>monitoring progress</b> ingestion.  List audit records. 
+	    For <b>monitoring progress</b> pf ingestion.  List audit records. 
       </td>
     </tr>
+    -->
     <tr class="ops">
       <th>
 	<a href="{% url 'audit:source' %}">
@@ -268,16 +290,6 @@
 	    <p><b>Example:</b>
 	      <br />
 	      <i>curl -d '/a/b/img1.fits /a/b/img2.fits' http://localhost:8000/audit/source/</i>
-      </td>
-    </tr>
-    <tr class="ops">
-      <th>
-	    <a href="{% url 'audit:progress_count' %}">
-	      {% url 'audit:progress_count' %}
-	    </a>
-      </th>
-      <td>
-	    Show source files that where submitted Archive but failed to ingest.
       </td>
     </tr>
 

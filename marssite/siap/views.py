@@ -274,11 +274,20 @@ def lame_query_by_url(request):
 
 
 
-# http://localhost:8000/siap/query/?date_obs=02/28/2006&reference=k21i
+# http://localhost:8000/siap/query/?date_obs=02-28-2006&reference=k21i
 # curl -H "Content-Type: text/csv" http://localhost:8000/siap/query/?limit=10
 @api_view(['GET'])
 def query_by_url(request):
-    """Simple query using URL paramaters."""
+    """
+    Simple query using URL paramaters.
+    **Context**
+    ``query_results_table``
+        Table of useful SIAP columns as list of dictionaries. 
+    
+    **Template:**
+
+    :tempalate:`siap/siap-subset.html`
+    """
     getdict = dict(request.GET.items())
     sortval = getdict.pop('sort',None)
     rows = get_from_siap(**getdict)
