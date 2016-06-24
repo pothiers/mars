@@ -53,7 +53,7 @@ def get_like_archfile(archfile_substr, refresh=False, limit=150):
 # prodtype             | citext                      | 
 # start_date           | timestamp without time zone | 
 # release_date         | timestamp without time zone | 
-def get_from_siap(refresh=False, limit=150, **kwargs):
+def get_from_siap(refresh=False, limit=999, **kwargs):
     """Return list of dictionaries matching column in KWARGS.
     Each dict represents one row (dict[column]=value)"""
     cursor = connection.cursor()
@@ -61,7 +61,12 @@ def get_from_siap(refresh=False, limit=150, **kwargs):
         #Force material view refresh
         cursor.execute('SELECT * FROM refresh_voi_material_views()')
         cursor.fetchall()
+        
     where = list()
+    # STB added 629 far future observations; all beyond 2080. Yr 193,036!!
+    # http://www.halcyonmaps.com/constellations-throughout-the-ages/
+    where.append("date_obs < '2050-01-01'")
+
     rangecols = ['ra', 'dec','date_obs', 'start_date', 'release_date']
     for k,v in kwargs.items():
         op = k[:4]
@@ -76,16 +81,21 @@ def get_from_siap(refresh=False, limit=150, **kwargs):
             where.append("{} = '{}'".format(k,v))
     
     whereclause = (' WHERE ' + ' AND '.join(where)) if len(where) > 0 else ''
+
+    sql=("SELECT count(*) FROM voi.siap {}".format(whereclause))
+    cursor.execute( sql )
+    total = cursor.fetchone()[0]
+
     #sql=("SELECT reference,dtacqnam,date_obs FROM voi.siap {} LIMIT {}"
     sql=("SELECT * FROM voi.siap {} LIMIT {}"
          .format(whereclause, limit))
     print('Executing SQL: {}'.format(sql))
     cursor.execute( sql )
-    total = cursor.rowcount
-    #print('TADA select found {} records'.format(total))
+    cnt = cursor.rowcount
+    #print('TADA select found {} records'.format(cnt))
     #! images = cursor.fetchall()
     #! return images
     columns = [col[0] for col in cursor.description]
     results = [dict(zip(columns, row)) for row in cursor.fetchall()]
-    return results
+    return results, limit, cnt, total
 

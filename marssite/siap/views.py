@@ -30,7 +30,7 @@ from .tables import SiapTable
 from .models import Image, VoiSiap
 from .forms import VoiSiapForm
 from .queries import get_tada_references, get_like_archfile, get_from_siap
-
+from .fits_storage import fits_path
 
 
 def index(request):
@@ -273,6 +273,10 @@ def lame_query_by_url(request):
         return render(request, 'siap/tada.html', context)
 
 
+##############################################################################
+### Replacement for Archive Web Services
+###
+
 
 # http://localhost:8000/siap/query/?date_obs=02-28-2006&reference=k21i
 # curl -H "Content-Type: text/csv" http://localhost:8000/siap/query/?limit=10
@@ -290,13 +294,15 @@ def query_by_url(request):
     """
     getdict = dict(request.GET.items())
     sortval = getdict.pop('sort',None)
-    rows = get_from_siap(**getdict)
+    rows,lim,cnt,total = get_from_siap(**getdict)
     #print('rows={}'.format(rows))
 
     table = SiapTable(rows)
     context = {
         'query_results_table': table,
-        'limit_count': 99, #!!!
+        'limit_count': lim,
+        'results_count': cnt,
+        'total_count': total,
         'title': 'Results of SIAP query via MARS URL parameters',
     }
 
@@ -315,3 +321,19 @@ def query_by_url(request):
     else:
         return render(request, 'siap/siap-subset.html', context)
     
+def store_fits(request,  dateobs, telescope, propid, basename):
+    return HttpResponse('STUB: siap/views.py: store_fits()')
+
+def retrieve_fits(request, dateobs, telescope, propid, basename):
+    """Get FITS file from archive (by SIAP record)"""
+    fitsblocksize=2880
+    response = HttpResponse(content_type='application/fits')
+    response['Content-Disposition'] = 'attachment; filename={}'.format(basename)
+    fname=fits_path(dateobs, telescope, propid, basename)
+    print('fits fname: {}'.format(fname))
+    with open(fname, 'rb') as infile:
+        for chunk in iter(lambda: infile.read(fitsblocksize), b""):
+            response.write(chunk)
+    return response
+###
+##############################################################################

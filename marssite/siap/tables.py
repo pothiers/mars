@@ -1,8 +1,15 @@
+from django.core.urlresolvers import reverse
+
 import django_tables2 as tables
 from django_tables2.utils import A  # alias for Accessor
 
 class SiapTable(tables.Table):
-    reference     = tables.TemplateColumn('<a href="http://nsaserver.sdm.noao.edu:7003/?fileRef={{record.reference}}">{{record.reference}}</a>')
+    #reference     = tables.TemplateColumn('<a href="http://nsaserver.sdm.noao.edu:7003/?fileRef={{record.reference}}">{{record.reference}}</a>')
+    reference     = tables.TemplateColumn('<a href="http://localhost:8000/siap/get/'
+                                          '{{record.date_obs}}/'
+                                          '{{record.telescope}}/'
+                                          '{{record.dtpropid}}/">{{record.reference}}</a>')
+
     ra            = tables.Column()
     dec           = tables.Column()
     instrument    = tables.Column()
