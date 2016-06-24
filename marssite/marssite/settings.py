@@ -150,4 +150,6 @@ REST_FRAMEWORK = {
 
 MEDIA_ROOT = '/var/mars/'
 
+CONN_MAX_AGE = 7200 # keep DB connections for 2 hours
+
 from .settings_local import *

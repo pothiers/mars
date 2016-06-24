@@ -44,9 +44,17 @@
     <!-- ### Admin                       -->
     <!-- ###                             -->
     
-    <tr>
+    <tr class="ops">
       <th><a href="{% url 'admin:index' %}">/admin/</a></th>
       <td>Change MARS data (not FITS data or Archive metadata).</td>
+    </tr>
+    <tr class="ops">
+      <th>
+        <a href="{% url 'admin:audit_auditrecord_changelist' %}">
+          {% url 'admin:audit_auditrecord_changelist' %}        
+        </a>
+      </th>
+      <td>Audit records.  Filter (and change) them.</td>
     </tr>
     <!--
     <tr>
@@ -353,26 +361,42 @@
     <!-- ### Other                       -->
     <!-- ###                             -->
     
-    <tr>
+    <tr  class="inactive">
       <th><a href="docs">/docs/</a></th>
       <td>
 	Web-service API automatically generated documentation.
       </td>
     </tr>
-    <tr>
+    <tr  class="inactive">
       <th><a href="api">/api/</a></th>
       <td>Django REST framework auto generated API pages</td>
     </tr>
   </table>
 
-  <hr style="height:15px;" />
-  <table>
+  <br />
+
+  <table id="legend">
     <caption><b>Legend</b></caption>
-    <tr class="prod"><td><em>Production</em></td></tr>
-    <tr class="ops"><td><em>Operations:</em> possibly used by DMO staff</td></tr>
-    <tr class="dev"><td><em>Deveolpment:</em> info on interfacing to services via software</td></tr>
-    <tr class="test"><td><em>Testing:</em> used by smoke tests, etc.</td></tr>
-    <tr class="inactive"><td>Inactive or under construction</td></tr>
+    <tr class="prod">
+      <th><em>Production:</em></th>
+      <td>Intended for use in production environent.</td>
+    </tr>
+    <tr class="ops">
+      <th><em>Operations:</em></th>
+      <td>possibly used by DMO staff</td>
+    </tr>
+    <tr class="dev">
+      <th><em>Deveolpment:</em></th>
+      <td>info on interfacing to services via software</td>
+    </tr>
+    <tr class="test">
+      <th><em>Testing:</em></th>
+      <td>used by smoke tests, etc.</td>
+    </tr>
+    <tr class="inactive">
+      <th><em>Inactive:</em></th>
+      <td>Inactive or under construction</td>
+    </tr>
   </table>
 
   

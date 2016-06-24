@@ -62,8 +62,15 @@ def get_from_siap(refresh=False, limit=150, **kwargs):
         cursor.execute('SELECT * FROM refresh_voi_material_views()')
         cursor.fetchall()
     where = list()
+    rangecols = ['ra', 'dec','date_obs', 'start_date', 'release_date']
     for k,v in kwargs.items():
-        if k == 'reference':
+        op = k[:4]
+        #print('DBG: k="{}", op="{}"'.format(k, op))
+        if 'min:' == op and k[4:] in rangecols:
+            where.append("{} >= '{}'".format(k[4:], v))                        
+        elif 'max:' == op and k[4:] in rangecols:
+            where.append("{} <= '{}'".format(k[4:], v))
+        elif k == 'reference':
             where.append("reference LIKE '%{}%'".format(v))
         else:
             where.append("{} = '{}'".format(k,v))
