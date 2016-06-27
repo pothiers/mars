@@ -210,9 +210,15 @@
 	CSV and JSON return values are possible using CURL.  Examples:
 	<br />
 	<pre>
-  curl -H "Content-Type: text/csv" 'http://localhost:8000/siap/query/?limit=10&columns=reference,dtpropid'
-  curl -H "Content-Type: text/csv" 'http://localhost:8000/siap/query/?limit=10&columns=path'
-  curl -H "Content-Type: application/json" 'http://localhost:8000/siap/query/?limit=10&date_obs=02-28-2006&reference=k21i' > foo.json
+  curl -H "Content-Type: text/csv" 'http://localhost:8000/siap/query/?limit=10'
+  curl -H "Content-Type: text/csv" \
+     'http://localhost:8000/siap/query/?limit=10&columns=path'
+  curl -H "Content-Type: text/csv" \
+     'http://localhost:8000/siap/query/?limit=10&columns=reference,dtpropid'
+
+  curl -H "Content-Type: application/json" \
+    'http://localhost:8000/siap/query/?limit=10&date_obs=02-28-2006&reference=k21i' \
+    > foo.json
 	</pre>
       </td>
     </tr>
@@ -226,12 +232,16 @@
     </tr>
     <tr class="ops">
       <th>{% url 'siap:query_by_sql' %}</th>
-      <td>Query voi.siap using SQL string. 
-	<br /> For <b>SQL in file</b> use something like: <br />
-	<i>curl --data-binary @sql/files20.sql http://localhost:8000/siap/squery</i>
-	<br />
-	<br />For <b>SQL in string</b> use something like: <br />
-	<i>curl --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
+      <td>Query voi.siap using SQL string.
+        SQL must be of format:
+        <i>SELECT {field}[,{field}...] FROM voi.siap {something};</i>
+	    <br />
+	    <br />
+        For <b>SQL in file</b> use something like: <br />
+	    <i>curl --data-binary @sql/files20.sql http://localhost:8000/siap/squery</i>
+	    <br />
+	    <br />For <b>SQL in string</b> use something like: <br />
+	    <i>curl --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
       </td>
     </tr>
 
@@ -284,12 +294,11 @@
 	    For <b>monitoring progress</b> pf ingestion.  List audit records. 
       </td>
     </tr>
-    -->
     <tr class="ops">
       <th>
-	<a href="{% url 'audit:source' %}">
-	  {% url 'audit:source' %}
-	</a>
+	    <a href="{% url 'audit:source' %}">
+	      {% url 'audit:source' %}
+	    </a>
       </th>
       <td>
 	    Reconcile files POSTED verses INGESTED into the archive. Compare
@@ -301,6 +310,7 @@
 	      <i>curl -d '/a/b/img1.fits /a/b/img2.fits' http://localhost:8000/audit/source/</i>
       </td>
     </tr>
+    -->
 
     
     

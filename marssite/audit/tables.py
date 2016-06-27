@@ -1,4 +1,7 @@
 import django_tables2 as tables
+from django.utils.safestring import mark_safe
+from django.utils.html import format_html
+
 from django_tables2.utils import A  # alias for Accessor
 
 from .models import AuditRecord
@@ -35,17 +38,22 @@ class ProgressTable(tables.Table):
     # TODO: render negative as red
     # TODO: add jammed at Mountain
     dome = tables.Column(verbose_name='Truth')
-    notReceived = tables.Column(verbose_name='Mtn/Dome Jam') # jammed at dome + jammed at mtn
-    rejected =  tables.Column(verbose_name='Ingest Rejected')
+    notReceived = tables.Column(verbose_name='Mtn Jam') # jammed at dome + jammed at mtn
+    #!rejected =  tables.Column(verbose_name='Ingest Rejected')
     #!rejected =  tables.LinkColumn(verbose_name='Ingest Rejected',
     #!                              viewname='schedule:getpropid',
     #!                              args=[A('Telescope'), A('Instrument'), A('ObsDay')])
-    rejected =  tables.TemplateColumn(verbose_name='Ingest Rejected',
+    rejected =  tables.TemplateColumn(verbose_name='Ingest Fail',
                                      template_code='<a href="http://localhost:8000/admin/audit/auditrecord/?instrument__exact={{record.Instrument}}&obsday__exact={{record.ObsDay}}&success__exact=0">{{record.rejected}}</a>')
-
-    accepted =  tables.Column(verbose_name='Ingested')
+    rejected =  tables.Column(verbose_name='Ingest Fail')
+    accepted =  tables.Column(verbose_name='Ingest Success')
     # TODO: add columns; sent from Dome, received Mtn, received Valley, Submitted to Archive
 
+    def render_rejected(self, value):
+        if value > 0:
+            return format_html('<div class="jam">{}</div>'.format(value))
+        else:
+            return value
     
     class Meta:
         attrs = {'class': 'progress'}
