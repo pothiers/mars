@@ -324,6 +324,7 @@ def query_by_url(request):
 def store_fits(request,  dateobs, telescope, propid, basename):
     return HttpResponse('STUB: siap/views.py: store_fits()')
 
+# irods:///noao-tuc-z1/mtn/20151004/kp4m/2013B-0236/k4n_151005_023255_ori_TADASMOKE.hdr
 def retrieve_fits(request, dateobs, telescope, propid, basename):
     """Get FITS file from archive (by SIAP record)"""
     fitsblocksize=2880
