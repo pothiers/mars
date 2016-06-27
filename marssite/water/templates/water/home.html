@@ -210,7 +210,8 @@
 	CSV and JSON return values are possible using CURL.  Examples:
 	<br />
 	<pre>
-  curl -H "Content-Type: text/csv" http://localhost:8000/siap/query/?limit=10
+  curl -H "Content-Type: text/csv" 'http://localhost:8000/siap/query/?limit=10&columns=reference,dtpropid'
+  curl -H "Content-Type: text/csv" 'http://localhost:8000/siap/query/?limit=10&columns=path'
   curl -H "Content-Type: application/json" 'http://localhost:8000/siap/query/?limit=10&date_obs=02-28-2006&reference=k21i' > foo.json
 	</pre>
       </td>

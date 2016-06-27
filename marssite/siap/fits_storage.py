@@ -1,13 +1,17 @@
 from pathlib import PurePath
 
 def fits_path(dateobs, telescope, propid, basename,
+              relative=False,
               source='mtn', # or "pipe"
               root='/data/noao'):
     """
     dateobs:: YYYY-MM-DD
     basename:: FITS base filename used in Archive (and Mass-Store)
     """
-    return str(PurePath(root, source,
-                    dateobs.replace('-',''), telescope, propid,
-                    basename))
+    path = PurePath(dateobs.replace('-',''), telescope, propid, basename)
+
+    if relative:
+        return str(path)
+    else:
+        return str(PurePath(root,source, path))
 

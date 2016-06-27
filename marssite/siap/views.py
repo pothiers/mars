@@ -281,7 +281,7 @@ def lame_query_by_url(request):
 # http://localhost:8000/siap/query/?date_obs=02-28-2006&reference=k21i
 # curl -H "Content-Type: text/csv" http://localhost:8000/siap/query/?limit=10
 @api_view(['GET'])
-def query_by_url(request):
+def query_by_url(request, returnPath=True):
     """
     Simple query using URL paramaters.
     **Context**
@@ -293,7 +293,8 @@ def query_by_url(request):
     :tempalate:`siap/siap-subset.html`
     """
     getdict = dict(request.GET.items())
-    sortval = getdict.pop('sort',None)
+    getdict.pop('sort',None)
+    cols = getdict.pop('columns',None)
     rows,lim,cnt,total = get_from_siap(**getdict)
     #print('rows={}'.format(rows))
 
@@ -312,11 +313,25 @@ def query_by_url(request):
         import csv
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="siap.csv"'
-        
-        writer = csv.DictWriter(response, fieldnames=rows[0].keys())
+
+        fieldnames = list(rows[0].keys()) if cols == None else cols.split(',')
+        print('fieldnames={}'.format(fieldnames))
+        if returnPath:
+            fieldnames = list(set(fieldnames) | set(['path']))
+
+        writer = csv.DictWriter(response, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:
-            writer.writerow(row)
+            fields = dict([(k,v) for (k,v) in row.items() if k in fieldnames])
+            if returnPath:
+                print('DBG: date_obs={}'
+                      .format(row['date_obs'].date().isoformat()))
+                fname=fits_path(row['date_obs'].date().isoformat(),
+                                row['telescope'],
+                                row['dtpropid'],
+                                row['reference'])
+                fields['path'] = fname
+            writer.writerow(fields)
         return response
     else:
         return render(request, 'siap/siap-subset.html', context)
@@ -325,6 +340,10 @@ def store_fits(request,  dateobs, telescope, propid, basename):
     return HttpResponse('STUB: siap/views.py: store_fits()')
 
 # irods:///noao-tuc-z1/mtn/20151004/kp4m/2013B-0236/k4n_151005_023255_ori_TADASMOKE.hdr
+#
+# The field 'uri' In the table edu_noao_nsa.data_product contains the actual
+# file location.
+#
 def retrieve_fits(request, dateobs, telescope, propid, basename):
     """Get FITS file from archive (by SIAP record)"""
     fitsblocksize=2880
@@ -332,9 +351,14 @@ def retrieve_fits(request, dateobs, telescope, propid, basename):
     response['Content-Disposition'] = 'attachment; filename={}'.format(basename)
     fname=fits_path(dateobs, telescope, propid, basename)
     print('fits fname: {}'.format(fname))
-    with open(fname, 'rb') as infile:
-        for chunk in iter(lambda: infile.read(fitsblocksize), b""):
-            response.write(chunk)
-    return response
+    try:
+        with open(fname, 'rb') as infile:
+            for chunk in iter(lambda: infile.read(fitsblocksize), b""):
+                response.write(chunk)
+        return response
+    except OSError as err:
+        return HttpResponse('Could not retrieve: {}'.format(fname))
+    return HttpResponse('This should never happen! '
+                        'siap/views.py;retrieve_fits()')
 ###
 ##############################################################################
