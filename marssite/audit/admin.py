@@ -67,6 +67,7 @@ class AuditRecordAdmin(admin.ModelAdmin):
     
     list_display = (
         'staged',
+        'fstop',
         'obsday', 'telescope', 'instrument',
         #'narrow_srcpath',
         #display_srcpath,
@@ -80,15 +81,20 @@ class AuditRecordAdmin(admin.ModelAdmin):
         #'metadata',
         #changed_fits_fields,
         'md5sum',
+        'dome_host',
+        'mountain_host',
+        'valley_host',
     )
  
     date_hierarchy = 'obsday'
-    list_filter = ('success',
+    list_filter = ('fstop',
+                   'success',
                    'obsday',
                    #ObsdayListFilter,
                    'errcode',
                    'submitted',
-                   'instrument', 'telescope',
+                   'instrument',
+                   'telescope',
                    'staged')
     search_fields = ['telescope', 'instrument','srcpath', 'archerr']
     actions = [stage, unstage, clear_submit, clear_error]

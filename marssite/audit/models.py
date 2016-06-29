@@ -33,14 +33,23 @@ class AuditRecord(models.Model):
                                  choices=[(val,val) for val in telescopes] )
     instrument = models.CharField(max_length=25, # default='unknown',
                                  choices=[(val,val) for val in instruments] )
-    srcpath    = models.CharField(max_length=256, 
-                                  help_text='Path of file as submitted')
+    srcpath = models.CharField(max_length=256, 
+                               help_text='Path of file as submitted')
+    dome_host =  models.CharField(max_length=40, blank=True,
+                                  help_text='Host name of Dome that created FITS')
+    mountain_host =  models.CharField(max_length=40, blank=True,
+                                 help_text='Host name of Mountain that received FITS')
+    valley_host =  models.CharField(max_length=40, blank=True,
+                                 help_text='Host name of Mountain that received FITS')
     
     # Field values automatically filled in
     recorded  = models.DateTimeField(default=timezone.now,
                                      help_text='When AuditRecord recorded')
 
     ##### Field values added by TADA
+
+    fstop = models.CharField(max_length=25, blank=True,
+                             help_text = 'Most downstream stop of FITS file')
     
     submitted = models.DateTimeField(null=True,
                                      help_text='When submitted to archive')

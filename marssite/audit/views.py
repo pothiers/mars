@@ -143,6 +143,7 @@ EXAMPLE:
         for obs in request.data['observations']:
             obs['telescope'] = obs['telescope'].lower()
             obs['instrument'] = obs['instrument'].lower()
+            obs['fstop'] = 'dome'
             #! print('DBG: obs={}'.format(obs))
             obj,created = AuditRecord.objects.get_or_create(
                 md5sum=obs['md5sum'],
