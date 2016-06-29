@@ -11,7 +11,7 @@ class AuditRecord(models.Model):
     telescopes = ('aat,ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,gemn,gems,het,'
                   'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
                   'magI,magII,mmt,soar,wiyn,unknown').split(',')
-    instruments = ['arcoiris', '90prime',  'biw', 'mosaic3'] + sorted([
+    instruments = ['arcoiris', '90prime',  'mosaic3', 'ccd_imager'] + sorted([
         'mop/ice', 'arcon', 'spartan', 'decam',
         'falmingos', 'gtcam', 'wildfire', 'chiron',
         'osiris', 'andicam', 'echelle', 'flamingos',
