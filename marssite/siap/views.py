@@ -299,6 +299,7 @@ def query_by_url(request, returnPath=True):
     #print('rows={}'.format(rows))
 
     table = SiapTable(rows)
+    table.paginate( page=request.GET.get('page', 1), per_page=50)
     context = {
         'query_results_table': table,
         'limit_count': lim,
@@ -324,8 +325,6 @@ def query_by_url(request, returnPath=True):
         for row in rows:
             fields = dict([(k,v) for (k,v) in row.items() if k in fieldnames])
             if returnPath:
-                print('DBG: date_obs={}'
-                      .format(row['date_obs'].date().isoformat()))
                 fname=fits_path(row['date_obs'].date().isoformat(),
                                 row['telescope'],
                                 row['dtpropid'],

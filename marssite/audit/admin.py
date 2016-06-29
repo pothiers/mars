@@ -12,16 +12,11 @@ class ObsdayListFilter(admin.SimpleListFilter):
         today = datetime.date.today()
         yesterday = (today - datetime.timedelta(days=1))
         return (
-            (yesterday.isoformat(), 'Yesterday'),
-            (today.isoformat(), 'Today'),
+            (str(yesterday.isoformat()), 'Yesterday'),
+            (str(today.isoformat()), 'Today'),
         )
     def queryset(self, request, queryset):
-        today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days=1)
-        if self.value() == 'Yesterday' :
-            return queryset.filter(obsday__exact=yesterday)
-        if self.value() == 'Today' :
-            return queryset.filter(obsday__gte=today)
+        return queryset.filter(obsday__exact=self.value())
 
 
 def stage(modeladmin, request, queryset):

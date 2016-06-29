@@ -24,6 +24,7 @@ class AuditRecord(models.Model):
     errcodes = ['DUPFITS', 'BADPROP', 'COLLIDE', 'NOPROP', 'MISSREQ',
                 'BADDATE', 'NOFITS', 'UNKNOWN', 'none']
 
+    # Field values provided by DOME
     md5sum = models.CharField(max_length=40, primary_key=True,
                               help_text='MD5SUM of FITS file')
     obsday = models.DateField(null=True, # allow no Dome info, only Submit
@@ -34,7 +35,8 @@ class AuditRecord(models.Model):
                                  choices=[(val,val) for val in instruments] )
     srcpath    = models.CharField(max_length=256, 
                                   help_text='Path of file as submitted')
-
+    
+    # Field values automatically filled in
     recorded  = models.DateTimeField(default=timezone.now,
                                      help_text='When AuditRecord recorded')
 
@@ -51,7 +53,6 @@ class AuditRecord(models.Model):
                                  default='none',
                                  choices=[(val,val) for val in errcodes],
                                  help_text='Error code for Archive Ingest')
-
 
     archfile  = models.CharField(max_length=80, blank=True,
                                  help_text='Basename of FITS file in Archive')

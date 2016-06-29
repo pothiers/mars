@@ -142,10 +142,11 @@ EXAMPLE:
         print('DBG: request.data={}'.format(request.data))
         for obs in request.data['observations']:
             obs['telescope'] = obs['telescope'].lower()
-            obs['instrument'] = obs['instrument'].lower()            
+            obs['instrument'] = obs['instrument'].lower()
             #! print('DBG: obs={}'.format(obs))
-            obj,created = AuditRecord.objects.get_or_create(md5sum=obs['md5sum'],
-                                                           defaults=obs)
+            obj,created = AuditRecord.objects.get_or_create(
+                md5sum=obs['md5sum'],
+                defaults=obs)
             if created:
                 addcnt+=1
             else:

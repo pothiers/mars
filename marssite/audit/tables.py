@@ -45,15 +45,32 @@ class ProgressTable(tables.Table):
     #!                              args=[A('Telescope'), A('Instrument'), A('ObsDay')])
     rejected =  tables.TemplateColumn(verbose_name='Ingest Fail',
                                      template_code='<a href="http://localhost:8000/admin/audit/auditrecord/?instrument__exact={{record.Instrument}}&obsday__exact={{record.ObsDay}}&success__exact=0">{{record.rejected}}</a>')
-    rejected =  tables.Column(verbose_name='Ingest Fail')
+    #rejected =  tables.Column(verbose_name='Ingest Fail')
     accepted =  tables.Column(verbose_name='Ingest Success')
     # TODO: add columns; sent from Dome, received Mtn, received Valley, Submitted to Archive
 
-    def render_rejected(self, value):
+    def hilite_non_zero(self, value, instrument, obsday):
         if value > 0:
-            return format_html('<div class="jam">{}</div>'.format(value))
+            #return format_html('<div class="jam">{}</div>'.format(value))
+            aruri = 'http://localhost:8000/admin/audit/auditrecord/'
+            return format_html(('<div class="jam">'
+                                '<a href="{}?instrument__exact={}&obsday__exact={}'
+                                '&success__exact=0">'
+                                '{}</a>')
+                               .format(aruri, instrument, obsday, value))
         else:
             return value
+
+    def render_rejected(self, record):
+        return self.hilite_non_zero(record['rejected'],
+                                    record['Instrument'],
+                                    record['ObsDay'])
+    def render_notReceived(self, record):
+        return self.hilite_non_zero(record['notReceived'],
+                                    record['Instrument'],
+                                    record['ObsDay'])
+        
+
     
     class Meta:
         attrs = {'class': 'progress'}
