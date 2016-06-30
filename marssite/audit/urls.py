@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^source/$', views.source, name='source'),
     url(r'^submit/$', views.submit, name='submit'),
     url(r'^refresh/$', views.refresh, name='refresh'),
+    url(r'^set_fstop/(?P<md5sum>.+)/(?P<fstop>.+)/$',
+        views.set_fstop, name='set_fstop'),
     url(r'^update/$', views.update, name='update'),
     url(r'^missing/$', views.not_ingested, name='not_ingested'),
     url(r'^failed/$', views.failed_ingest, name='failed_ingest'),

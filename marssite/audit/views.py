@@ -207,6 +207,17 @@ missing requires fields"""
           .values('md5sum','srcpath'))
     return JsonResponse(list(qs), safe=False)
 
+@api_view(['GET'])
+def set_fstop(request, md5sum, fstop):
+    #host = request.GET.get('host',None)
+    initdefs = dict(obsday=rdict['obsday'],
+                    telescope=rdict['telescope'],
+                    instrument=rdict['instrument'],
+                    srcpath=rdict['srcpath'],
+                    recorded=make_aware(dp.parse(rdict['recorded'])))
+    obj,created = AuditRecord.objects.get_or_create(md5sum=md5sum,
+                                                    defaults=initdefs)
+    
     
 @csrf_exempt
 @api_view(['POST'])
