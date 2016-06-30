@@ -292,14 +292,16 @@ def query_by_url(request, returnPath=True):
 
     :tempalate:`siap/siap-subset.html`
     """
+    rows_per_page=100
     getdict = dict(request.GET.items())
     getdict.pop('sort',None)
+    getdict.pop('page',None)
     cols = getdict.pop('columns',None)
     rows,lim,cnt,total = get_from_siap(**getdict)
     #print('rows={}'.format(rows))
 
     table = SiapTable(rows)
-    table.paginate( page=request.GET.get('page', 1), per_page=50)
+    table.paginate(page=request.GET.get('page', 1), per_page=rows_per_page)
     context = {
         'query_results_table': table,
         'limit_count': lim,
