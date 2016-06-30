@@ -122,7 +122,7 @@ class AuditRecordAdmin(admin.ModelAdmin):
                    'instrument',
                    'telescope',
                    'staged')
-    search_fields = ['telescope', 'instrument','srcpath', 'archerr']
+    search_fields = ['telescope', 'instrument','srcpath', 'archerr', 'md5sum']
     actions = [stage, unstage, clear_submit, clear_error]
     ordering = ['-recorded',]
 

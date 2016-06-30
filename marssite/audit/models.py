@@ -19,6 +19,11 @@ class AuditRecord(models.Model):
         'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
         'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
         'cosmos',  'unknown'])
+    fstops = [
+        'dome',
+        'mountain:dropbox', 'mountain:queue', 'mountain:cache', 'mountain:anticache',
+        'valley:dropbox',   'valley:queue',   'valley:cache',   'valley:anticache',
+        'archive']
     #telescopes = [obj.name for obj in Telescope.objects.all()]
     #instruments = [obj.name for obj in Instrument.objects.all()]
     errcodes = ['DUPFITS', 'BADPROP', 'COLLIDE', 'NOPROP', 'MISSREQ',
@@ -49,6 +54,7 @@ class AuditRecord(models.Model):
     ##### Field values added by TADA
 
     fstop = models.CharField(max_length=25, blank=True,
+                             choices=[(val,val) for val in fstops],
                              help_text = 'Most downstream stop of FITS file')
     
     submitted = models.DateTimeField(null=True,

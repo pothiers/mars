@@ -217,8 +217,9 @@ def update(request, format='yaml'):
         rdict = request.data.copy()
         md5 = rdict['md5sum']
         #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
-        for k,v in rdict['metadata'].items():
-            rdict['metadata'][k] = str(v) # required for HStoreField
+        if 'metadata' in rdict:
+            for k,v in rdict['metadata'].items():
+                rdict['metadata'][k] = str(v) # required for HStoreField
         #! print('/audit/update: defaults={}'.format(rdict)) 
         initdefs = dict(obsday=rdict['obsday'],
                         telescope=rdict['telescope'],
@@ -359,8 +360,6 @@ def get_counts():
               .distinct(*group).values_list(*group)):
         counts[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
     return counts
-
-
 
 # Eventually a replacement for Sean's CheckNight page
 def progress_count(request):

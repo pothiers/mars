@@ -55,7 +55,9 @@ def get_like_archfile(archfile_substr, refresh=False, limit=150):
 # release_date         | timestamp without time zone | 
 def get_from_siap(refresh=False, limit=999, **kwargs):
     """Return list of dictionaries matching column in KWARGS.
-    Each dict represents one row (dict[column]=value)"""
+    Each dict represents one row (dict[column]=value).
+    This is similar to django query aggregation and should be replaced by such.
+    """
     cursor = connection.cursor()
     if refresh:
         #Force material view refresh
