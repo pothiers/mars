@@ -11,12 +11,38 @@ class ObsdayListFilter(admin.SimpleListFilter):
     def lookups(self, request, model_admin):
         today = datetime.date.today()
         yesterday = (today - datetime.timedelta(days=1))
-        return (
+
+
+        tuples = [
+            (None, 'Any date'),
+            ('recent7', 'Past 7 days'),
             (str(yesterday.isoformat()), 'Yesterday'),
             (str(today.isoformat()), 'Today'),
-        )
+        ]
+        return tuples
+
+    def choices(self, cl):
+        for lookup, title in self.lookup_choices:
+            yield {
+                'selected': self.value() == lookup,
+                'query_string': cl.get_query_string({
+                    self.parameter_name: lookup,
+                }, []),
+                'display': title,
+            }    
+
     def queryset(self, request, queryset):
-        return queryset.filter(obsday__exact=self.value())
+        #self.lookup_kwarg_since: str(today - datetime.timedelta(days=7)),
+        #self.lookup_kwarg_until: str(tomorrow),
+        today = datetime.date.today()
+        recent7 = (today - datetime.timedelta(days=7))
+
+        if self.value() == None:
+            return queryset
+        elif self.value() == 'recent7':
+            return queryset.filter(obsday__gte=recent7, obsday__lt=today)
+        else:
+            return queryset.filter(obsday=self.value())
 
 
 def stage(modeladmin, request, queryset):
@@ -89,8 +115,8 @@ class AuditRecordAdmin(admin.ModelAdmin):
     date_hierarchy = 'obsday'
     list_filter = ('fstop',
                    'success',
-                   'obsday',
-                   #ObsdayListFilter,
+                   #'obsday',
+                   ObsdayListFilter,
                    'errcode',
                    'submitted',
                    'instrument',
