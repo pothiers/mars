@@ -32,25 +32,27 @@ sched2hdr= {
     # TAC           DMO
     # Schedule      Fits Header
     'ARCoIRIS':    'arcoiris',
-    'CFIM+T2K':    'biw',		# ccd_imager
-    'COSMOS':     'cosmos',
-    'DECam':      'decam',           
-    'Goodman':    'goodman',
-    'HDI':        'hdi',
-    'KOSMOS':     'kosmos',
-    'MOSA3':      'mosaic3', #!
-    'NEWFIRM':    'newfirm',
-    #'ODI':        '(p)odi',		# not archived - remove
-    'OSIRIS':     'osiris',
-    'SAM':        'sami',		# should be sami
-    'SOI':        'soi',
-    'Spartan':    'spartan',
-    'WHIRC':      'whirc',
+    'CFIM+T2K':    'ccd_imager',
+    'COSMOS':      'cosmos',
+    'DECam':       'decam',
+    'Goodman':     'goodman',
+    'HDI':         'hdi',
+    'KOSMOS':      'kosmos',
+    'MOSA3':       'mosaic3', #!
+    'NEWFIRM':     'newfirm',
+    'OSIRIS':      'osiris',
+    'SAM':         'sami',		# should be sami
+    'SOI':         'soi',
+    'Spartan':     'spartan',
+    'WHIRC':       'whirc',
     ########################################
-    #(None:         'goodman spectrograph'}	# goodman as above
-    #(None:         'bench'}			# bench
-    #(None:         'spartan ir camera'}	# spartan as above
+    #'ODI':        '(p)odi',		# not archived - remove
+    #(None:        'goodman spectrograph'}	# goodman as above
+    #(None:        'bench'}			# bench
+    #(None:        'spartan ir camera'}	# spartan as above
 }
+
+
 
 
 

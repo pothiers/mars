@@ -356,7 +356,7 @@ def retrieve_fits(request, dateobs, telescope, propid, basename):
                 response.write(chunk)
         return response
     except OSError as err:
-        return HttpResponse('Could not retrieve: {}'.format(fname))
+        return HttpResponse('Could not retrieve "{}";{}'.format(fname,err))
     return HttpResponse('This should never happen! '
                         'siap/views.py;retrieve_fits()')
 ###
