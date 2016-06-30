@@ -39,6 +39,7 @@ def index(request):
     sql = 'SELECT count(*) FROM voi.siap;'
     sql2='SELECT * FROM voi.siap LIMIT {}'.format(limit) #!!! not all
     from django.db import connection
+
     #!cursor = connection.cursor()
     #!cursor.execute( sql )
     #!total = cursor.fetchone()[0]
@@ -292,7 +293,7 @@ def query_by_url(request, returnPath=True):
 
     :tempalate:`siap/siap-subset.html`
     """
-    rows_per_page=100
+    rows_per_page=300
     getdict = dict(request.GET.items())
     getdict.pop('sort',None)
     getdict.pop('page',None)
@@ -302,6 +303,8 @@ def query_by_url(request, returnPath=True):
 
     table = SiapTable(rows)
     table.paginate(page=request.GET.get('page', 1), per_page=rows_per_page)
+    #table.order_by = '-date_obs'
+    table.order_by = 'date_obs'
     context = {
         'query_results_table': table,
         'limit_count': lim,
