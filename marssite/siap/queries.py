@@ -1,3 +1,4 @@
+from pathlib import PurePath
 from django.db import connection
 
 # WARNING: this is querying a materialized view.  It only gets
@@ -109,7 +110,9 @@ def get_fits_location(reference):
     cursor.execute(sql)
     uri = cursor.fetchone()
     if uri != None:
-        return uri[0].replace('irods://','')
+        #return uri[0].replace('irods:///noao-tuc-z1','')
+        ipath =  uri[0]
+        return str(PurePath('/net/archive/',*PurePath(ipath).parts[2:]))
     return uri
 
         
