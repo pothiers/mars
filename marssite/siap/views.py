@@ -185,10 +185,8 @@ def query_by_sql(request, format='json', refresh_view=True):
     # Text mode MIGHT work (depending on whitepace particulars):
     # curl -X POST -d @sql/tada-files.sql http://localhost:8000/siap/squery 
     # curl -X POST -d 'SELECT reference FROM voi.siap LIMIT 2' http://localhost:8000/siap/squery
-    print('DBG-0: siap/views.py:query_by_sql()')
     if request.method == 'POST':
         sql = ' '.join(request.body.decode('utf-8').strip().split())
-        print('DBG-1: siap/views.py:query_by_sql(); sql="{}"'.format(sql))
         validsql, message = validate_sql(sql)
         if validsql:
             cursor = connection.cursor()
@@ -209,10 +207,8 @@ def query_by_str(request, format='json'):
     'POST  payload is string of SQL that does a SELECT against SIAP table.'
     # To test post:
     # curl -H "Content-Type: application/json" -X POST --data-binary @sql/tada-files.sql http://localhost:8000/siap/arch/query 
-    print('DBG-0: siap/views.py:query_by_str()')
     if request.method == 'POST':
         sql = ' '.join(request.body.decode('utf-8').strip().split())
-        print('DBG-1: siap/views.py:query_by_str(); sql={}'.format(sql))
         cursor = connection.cursor()
         # Force material view refresh
         cursor.execute('SELECT * FROM refresh_voi_material_views()') 

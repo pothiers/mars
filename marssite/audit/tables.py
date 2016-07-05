@@ -14,7 +14,17 @@ class AuditRecordTable(tables.Table):
                   'rejected',
                   'accepted' )
 
-
+class AggTable(tables.Table):
+    obsday = tables.DateColumn(short=True, verbose_name='CALDAT')
+    instrument = tables.Column()
+    telescope = tables.Column()
+    fstop = tables.Column()
+    mtnjam = tables.Column(verbose_name='Mountain Jams')
+    valjam = tables.Column(verbose_name='Valley Jams')
+    
+    class Meta:
+        attrs = {'class': 'paleblue'}
+        
 class ProgressTable(tables.Table):
     # TODO: link ObsDay to admin/schedule/slot (date,tele,instrument)
     #!ObsDay = tables.DateColumn(short=True, verbose_name='CALDAT')

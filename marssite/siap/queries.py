@@ -40,8 +40,8 @@ def get_like_archfile(archfile_substr, refresh=False, limit=150):
     images = cursor.fetchall()
     return images
 
-# reference            | character varying           | 
-# ra                   | numeric                     | 
+# Reference            | Character Varying           | 
+# Ra                   | numeric                     | 
 # dec                  | numeric                     | 
 # instrument           | citext                      | 
 # telescope            | citext                      | 

@@ -269,9 +269,41 @@
     -->
 
 
-    <!-- #################################################################### -->
+    <!-- ################################################################### -->
     <!-- ### Audit                       -->
     <!-- ###                             -->
+    
+    <tr class="prod">
+      <th>
+	<a href="{% url 'audit:source' %}">{% url 'audit:source' %}</a>
+      </th>
+      <td>
+	Intended to be used by Dome to record each file submitted
+	to TADA. Later, use
+	<a href="{% url 'audit:progress_count' %}">
+	  {% url 'audit:progress_count' %}
+	</a>
+	to results.
+	    <p><b>Example:</b>
+	      <br />
+	      <i>curl -d '/a/b/img1.fits /a/b/img2.fits' http://localhost:8000/audit/source/</i>
+      </td>
+    </tr>
+    <tr class="prod">
+      <th>
+	{% url 'audit:update_fstop' '1900c5e4e342f293d538507dfd2bff3a' 'valley:cache' 'valley.sdm' %}
+      </th>
+      <td>
+	Record location (tag) of file in its journey from Dome to
+	Archive.
+	<form method="POST">
+	  MD5SUM: <input type="text" name="md5sum"/>
+	  fstop: <input type="text" name="fstop" size="7"/>
+	  host: <input type="text" name="host" size="7"/>
+	  <input type="submit" value="Submit"/>
+	  </form>
+      </td>
+    </tr>
 
     <tr class="ops">
       <th>
@@ -293,22 +325,6 @@
       </th>
       <td>
 	    For <b>monitoring progress</b> pf ingestion.  List audit records. 
-      </td>
-    </tr>
-    <tr class="ops">
-      <th>
-	    <a href="{% url 'audit:source' %}">
-	      {% url 'audit:source' %}
-	    </a>
-      </th>
-      <td>
-	    Reconcile files POSTED verses INGESTED into the archive. Compare
-	    the list of files posted via <code>raw_post</code> from all
-	    domes to the list of files stored in the NOAO Science
-	    Archive.
-	    <p><b>Example:</b>
-	      <br />
-	      <i>curl -d '/a/b/img1.fits /a/b/img2.fits' http://localhost:8000/audit/source/</i>
       </td>
     </tr>
     -->

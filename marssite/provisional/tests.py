@@ -40,14 +40,12 @@ class ProvisionalTest(TestCase):
     #!def test_rollback(self):
     #!    request = self.factory.get(reverse('provisional:rollback'))
     #!    response = provisional.views.rollback(request)
-    #!    print('DBG: response.content={}'.format(response.content.decode()))
     #!    self.assertEqual(200, response.status_code)
     #!    self.assertEqual('FOOBAR ', response.content.decode())
     #!
     #!def test_stuff(self):
     #!    request = self.factory.get(reverse('provisional:stuff'))
     #!    response = provisional.views.stuff_with_tada(request)
-    #!    print('DBG-2: response.content={}'.format(response.content.decode()))
     #!    self.assertEqual(200, response.status_code)
     #!    self.assertEqual('FOOBAR ', response.content.decode())
     

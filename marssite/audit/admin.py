@@ -1,5 +1,6 @@
 import datetime
 from django.contrib import admin
+from django.db.models import Count, Q, Sum, Case, When, IntegerField
 
 from .models import AuditRecord
 
@@ -113,10 +114,10 @@ class AuditRecordAdmin(admin.ModelAdmin):
     )
  
     date_hierarchy = 'obsday'
-    list_filter = ('fstop',
-                   'success',
+    list_filter = ('success',
                    #'obsday',
                    ObsdayListFilter,
+                   'fstop',
                    'errcode',
                    'submitted',
                    'instrument',
@@ -126,6 +127,22 @@ class AuditRecordAdmin(admin.ModelAdmin):
     actions = [stage, unstage, clear_submit, clear_error]
     ordering = ['-recorded',]
 
+    #
+    # This will NOT WORK because an admin queryset must return list of
+    # MODEL INSSTANCES. Thefore this produces an exception:
+    #   'dict' object has no attribute '_meta'
+    #
+    #!def get_queryset(self, request):
+    #!    qs = super(AuditRecordAdmin, self).get_queryset(request)
+    #!    group = ['obsday','instrument','telescope']
+    #!    errcnts = qs.exclude(success=True).values(*group).annotate(
+    #!        mtnjam=Sum(Case(When(success__isnull=True, then=1),
+    #!                        output_field=IntegerField())),
+    #!        valjam=Sum(Case(When(success=False, then=1),
+    #!                        output_field=IntegerField()))
+    #!    )
+    #!    return errcnts
+    
     class Media:
         css = {
             'all': ('audit/audit-admin.css',)

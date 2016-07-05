@@ -20,7 +20,6 @@ class ScheduleTest(TestCase):
                                 telescope=tele,
                                 instrument=instrum)
         propids = slot.propids.split(', ')
-        #!print('DBG: db propids={}'.format(propids))
         expected = '2015B-0254'
         self.assertIn(expected, propids)
     
@@ -46,7 +45,6 @@ class ScheduleTest(TestCase):
     #!    date = '2014-01-01'
     #!    slot = Slot.objects.get(obsdate=date, telescope=tele)
     #!    propid = slot.propid
-    #!    print('DBG: db propid={}'.format(propid))
     #!    expected = '2012B-0001'
     #!    #!self.assertRedirects(response, reverse('schedule:list'))
     #!    self.assertEqual(response.status_code, 302)
@@ -56,5 +54,4 @@ class ScheduleTest(TestCase):
     #!    request = self.factory.get('/schedule/list/')
     #!    response = schedule.views.SlotList.as_view()(request)
     #!    self.assertEqual(200, response.status_code)
-    #!    print('DBG: response.content={}'.format(response.content.decode()))
     #!    self.assertContains(response,'2013B-0142')

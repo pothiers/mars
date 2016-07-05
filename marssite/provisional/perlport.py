@@ -67,7 +67,6 @@ def create_drop_header_sql_stmt(cursor, file_id):
     if get_header_count(cursor, file_id) > 0:
         # build the sql for deleting assocated fits header structures
         for prod_id, header_id in find_assoc_raw_headers(cursor, file_id):
-            #!print('DBG: header_id={}'.format(header_id))
             sql += ("DELETE FROM edu_noao_nsa.processed_fits_header "
                     "WHERE processed_fits_header_id = '{header_id}';\n"
                     "DELETE FROM edu_noao_nsa.fits_header "

@@ -61,7 +61,7 @@ def apply_tac_update(**query):
     params = urllib.parse.urlencode(query)
     #print{'DBG: query={}, params={}'.format(query, params))
     url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
-    print('DBG: url={}'.format(url))
+    #print('DBG: url={}'.format(url))
     try:
         with urllib.request.urlopen(url, timeout=4) as f:
             tree = ET.parse(f)
@@ -153,15 +153,12 @@ def upload_file(request):
     if request.method == 'POST':
         form = SlotSetForm(request.POST, request.FILES)
         if form.is_valid():
-            #!print('DBG-2.1')
             # file is saved
             form.save()
             load_schedule(request.FILES['xmlfile'])
             return HttpResponseRedirect('/schedule/') # on succses
     else:
-        print('DBG-3')
         form = SlotSetForm()
-    print('DBG-4')
     c = {'form': form}
     c.update(csrf(request))
     return render_to_response('schedule/upload.html', c)    
@@ -217,7 +214,6 @@ def getpropid(request, telescope, instrument, date):
                                 telescope=tele,
                                 instrument=instrum)
         proplist = slot.propids
-        #! print('DBG-0: getpropid({}, {})=>{}'.format(tele, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
         pass
@@ -275,7 +271,6 @@ that already have Propid values"""
     #!print('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
     if uploadedfile.size > maxsize:
         return None
-    #print("DBG-1: size={}".format(uploadedfile.size))
     xmlstr = ''
     for line in uploadedfile:
         xmlstr += line.decode()
@@ -284,16 +279,12 @@ that already have Propid values"""
     created = root.get('created')
     begin = root.get('begindate')
     end = root.get('enddate')
-    #!print('DBG-2: created={}, begin={}, end={}'.format(created, begin, end))
-    #!print('DBG-3: contains {} entries'.format(len(root)))
 
     # kinda slow!  Perhaps because doing multi-queries + insert per slot.
     for proposal in root:
         obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         telescope = proposal.get('telescope')
         propid = proposal.get('propid')
-        #print('DBG-4.1: got proposal rec from XML: date={},tele={},propid={}'
-        #      .format(obsdate, telescope, propid))
 
         title=proposal.findtext('title')
         piname=proposal.findtext('piname')
@@ -304,20 +295,21 @@ that already have Propid values"""
         prop, pmade = Proposal.objects.get_or_create(pk=propid, defaults=dd)
         slot, smade = Slot.objects.get_or_create(telescope=telescope,
                                                  obsdate=obsdate)
-        if pmade:
-            print('DBG-4.2a: created proposal record for propid={}'
-                  .format(propid))
-        else:
-            print('DBG-4.2b: Using previous proposal record for propid={}'
-                  .format(propid))
+        #!if pmade:
+        #!    print('DBG-4.2a: created proposal record for propid={}'
+        #!          .format(propid))
+        #!else:
+        #!    print('DBG-4.2b: Using previous proposal record for propid={}'
+        #!          .format(propid))
 
         if smade:
             slot.proposals.add(prop)
-            print('DBG-4.3a: created slot record for tele={}, date={}'
-                  .format(telescope, obsdate))
+            #!print('DBG-4.3a: created slot record for tele={}, date={}'
+            #!      .format(telescope, obsdate))
         else:
-            print('DBG-4.3b: Using previous slot record for tele={}, date={}'
-                  .format(telescope, obsdate))
+            pass
+            #!print('DBG-4.3b: Using previous slot record for tele={}, date={}'
+            #!      .format(telescope, obsdate))
             
     return redirect('/schedule/')
 

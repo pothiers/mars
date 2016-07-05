@@ -24,7 +24,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.db import connection
-from django.db.models import Count
+from django.db.models import Count, Q, Sum, Case, When, IntegerField
 from django.template import Context, Template
 from django.template.loader import get_template
 
@@ -35,7 +35,7 @@ from rest_framework import generics
 from rest_framework.decorators import  api_view,parser_classes
 
 from .models import AuditRecord
-from .tables import ProgressTable
+from .tables import ProgressTable, AggTable
 #from .serializers import SubmittalSerializer, AuditRecordSerializer
 from .serializers import AuditRecordSerializer
 from .plotlib import hbarplot
@@ -113,7 +113,7 @@ EXAMPLE:
     """
     if request.method == 'POST':
         for path in request.body.decode('utf-8').strip().split():
-            print('DBG: source={}'.format(path))
+            #print('DBG: source={}'.format(path))
             AuditRecord.objects.update_or_create(
                 srcpath=path,
                 defaults=dict(recorded=now()
@@ -139,11 +139,26 @@ EXAMPLE:
     if request.method == 'POST':
         addcnt=0
         preexisting = set()
-        print('DBG: request.data={}'.format(request.data))
+
+        #print('DBG: request.data={}'.format(request.data))
         for obs in request.data['observations']:
             obs['telescope'] = obs['telescope'].lower()
             obs['instrument'] = obs['instrument'].lower()
             obs['fstop'] = 'dome'
+            ar = AuditRecord(**obs)
+            try:
+                ar.full_clean()
+            except ValidationError as e:
+                if 'md5sum' in obs:
+                    errmsg = ('Invalid JSON data passed to {}; {}'
+                              .format(reverse('audit:source'), e.message_dict))
+                    obj, created = AuditRecord.objects.update_or_create(
+                        md5sum=obs['md5sum'],
+                        defaults=dict(fstop='dome',
+                                      dome_host=obs.get('dome_host',None),
+                                      archerr=errmsg))
+                    return HttpResponse('ERROR: bad POST data.')
+                
             #! print('DBG: obs={}'.format(obs))
             obj,created = AuditRecord.objects.get_or_create(
                 md5sum=obs['md5sum'],
@@ -207,16 +222,30 @@ missing requires fields"""
           .values('md5sum','srcpath'))
     return JsonResponse(list(qs), safe=False)
 
-@api_view(['GET'])
-def set_fstop(request, md5sum, fstop):
-    #host = request.GET.get('host',None)
-    initdefs = dict(obsday=rdict['obsday'],
-                    telescope=rdict['telescope'],
-                    instrument=rdict['instrument'],
-                    srcpath=rdict['srcpath'],
-                    recorded=make_aware(dp.parse(rdict['recorded'])))
-    obj,created = AuditRecord.objects.get_or_create(md5sum=md5sum,
-                                                    defaults=initdefs)
+@api_view(['POST'])
+@csrf_exempt
+def update_fstop(request, md5sum, fstop, host=None):
+    """Set the fstop (file-stop) tag to indicate a logical system location
+    for the FITS file.  Intent is for fstop to be updated as FITS
+    moves downstream from Dome to Archive. Since the location can be
+    on one of serveral hosts, the host should also be given.
+    """
+    print('Update_fstop: fstop={}, host={}, md5sum={}'
+          .format(fstop, host, md5sum))
+
+    if host == None: host = ''  # make DB happy
+    defaults = dict(fstop=fstop)
+    machine = fstop.split(':')[0]
+    if machine == 'dome':
+        defaults['dome_host'] = host
+    elif machine == 'mountain':
+        defaults['mountain_host'] = host
+    elif machine == 'valley':
+        defaults['valley_host'] = host
+    defaults['submitted'] = now()
+    obj, created = AuditRecord.objects.update_or_create(md5sum=md5sum,
+                                                        defaults=defaults)
+    return HttpResponse('Updated FSTOP; defaults={}'.format(defaults))
     
     
 @csrf_exempt
@@ -228,10 +257,13 @@ def update(request, format='yaml'):
         rdict = request.data.copy()
         md5 = rdict['md5sum']
         #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
-        if 'metadata' in rdict:
-            for k,v in rdict['metadata'].items():
-                rdict['metadata'][k] = str(v) # required for HStoreField
+        for k,v in rdict['metadata'].items():
+            rdict['metadata'][k] = str(v) # required for HStoreField
         #! print('/audit/update: defaults={}'.format(rdict)) 
+        fstop = 'archive' if rdict['success']==True else 'valley:cache'
+        print('Update_fstop2: fstop={}, host={}, md5sum={}'
+              .format(fstop, 'NA', md5))
+
         initdefs = dict(obsday=rdict['obsday'],
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
@@ -239,6 +271,7 @@ def update(request, format='yaml'):
                         recorded=make_aware(dp.parse(rdict['recorded'])))
         newdefs = dict(submitted=make_aware(dp.parse(rdict['submitted'])),
                        success=rdict['success'],
+                       fstop=fstop,
                        errcode=rdict['errcode'],
                        archerr=rdict['archerr'],
                        archfile=rdict['archfile'],
@@ -316,8 +349,7 @@ def matplotlib_bar_image (request, data):
     xlabel('Popularidad')
     ylabel('Hashtags')
     title('Gráfico de Hashtags')
-    subplots_adjust(left=0.21)
-    
+    subplots_adjust(left=0.21)    
     buffer = io.BytesIO()
     canvas = pylab.get_current_fig_manager().canvas
     canvas.draw()
@@ -372,9 +404,38 @@ def get_counts():
         counts[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
     return counts
 
+# do this with materialized view so it can be under admin interface? NO
+# INSTEAD: overwrite get_queryset to get just error aggregates.
+def agg_domeday(request):
+    """Find any aggregation (date,instrum,tele) with errors.
+    Intent is to drill down into these composit rows to find details of 
+    an error.
+    """
+    from pprint import pprint
+    group = ['obsday','instrument','telescope']
+    errors = AuditRecord.objects.exclude(success=True)
+    
+    #!mtnjam = errors.filter(success__isnull=True).values(*group).annotate(
+    #!    mtnjam=Count('md5sum')).order_by()
+    #!valjam = errors.filter(success=False).values(*group).annotate(
+    #!    valjam=Count('md5sum')).order_by()
+    #pprint(list(valjam.order_by('obsday')))
+
+    errcnts = errors.values(*group).annotate(
+        mtnjam=Sum(Case(When(success__isnull=True, then=1),
+                        output_field=IntegerField())),
+        valjam=Sum(Case(When(success=False, then=1),
+                        output_field=IntegerField()))
+    ) # .values('obsday','instrument','telescope','fstop')
+    pprint(list(errcnts.order_by('obsday')))
+    table = AggTable(errcnts.order_by('-obsday'))
+    
+    return render(request, 'audit/agg.html',
+                  {'title': 'Aggregated error counts', 'agg': table})
+
 # Eventually a replacement for Sean's CheckNight page
 def progress_count(request):
-    """Counts we want (for each telescope+instrument):
+    """Counts we want (for each telescope+instrument+obsday):
 sent::     Sent from dome
 nosubmit:: Not received at Valley (in transit? lost?) 
 rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
@@ -385,17 +446,14 @@ sent = nosubmit + (rejected + accepted))
 
     #!add_ingested()
     progress = get_counts() # (notsubmitted, rejected, accepted)
-    #!print('DBG:progress dict()={}'.format(progress))
     instrums=[]
     for (instr,tele,day) in progress.keys():
-        #print('DBG: day={}'.format(day))
         try:
             #obsdate=datetime.strptime(day,'%Y-%m-%d').date()
             slot=Slot.objects.get(obsdate=day, telescope=tele, instrument=instr)
             propids = slot.propids
         except Slot.DoesNotExist:
             propids=''
-        #!print('DBG: propids({},{},{})={}'.format(day,instr,tele,propids))
         instrums.append(dict(Telescope=tele,
                              Instrument=instr,
                              ObsDay=day.isoformat(),

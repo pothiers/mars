@@ -21,8 +21,10 @@ class AuditRecord(models.Model):
         'cosmos',  'unknown'])
     fstops = [
         'dome',
-        'mountain:dropbox', 'mountain:queue', 'mountain:cache', 'mountain:anticache',
-        'valley:dropbox',   'valley:queue',   'valley:cache',   'valley:anticache',
+        'mountain:dropbox', 'mountain:queue',
+        'mountain:cache', 'mountain:anticache`',
+        'valley:dropbox',   'valley:queue',
+        'valley:cache',   'valley:anticache',
         'archive']
     #telescopes = [obj.name for obj in Telescope.objects.all()]
     #instruments = [obj.name for obj in Instrument.objects.all()]

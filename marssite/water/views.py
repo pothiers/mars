@@ -1,3 +1,4 @@
+from os import path
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic.list import ListView
@@ -8,7 +9,11 @@ from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 
 def home(request):
-    version = 'version 2016.06.30b'
+    here = path.abspath(path.dirname(__file__))
+    with open(path.join(here,'VERSION')) as version_file:
+        version = version_file.read().strip()
+
+    #version = 'version 2016.06.30b'
     context = {
         'mars_version': version,
         'dbhost': settings.DATABASES['default']['HOST'],
