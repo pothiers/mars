@@ -426,9 +426,9 @@ def agg_domeday(request):
                         output_field=IntegerField())),
         valjam=Sum(Case(When(success=False, then=1),
                         output_field=IntegerField()))
-    ) # .values('obsday','instrument','telescope','fstop')
+    )
     pprint(list(errcnts.order_by('obsday')))
-    table = AggTable(errcnts.order_by('-obsday'))
+    table = AggTable(errcnts, order_by='obsday')
     
     return render(request, 'audit/agg.html',
                   {'title': 'Aggregated error counts', 'agg': table})

@@ -29,7 +29,7 @@ from rest_framework.decorators import detail_route, list_route, api_view
 from .tables import SiapTable
 from .models import Image, VoiSiap
 from .forms import VoiSiapForm
-from .queries import get_tada_references, get_like_archfile, get_from_siap
+from .queries import get_tada_references, get_like_archfile, get_from_siap, get_fits_location
 from .fits_storage import fits_path
 
 
@@ -349,8 +349,10 @@ def retrieve_fits(request, dateobs, telescope, propid, basename):
     fitsblocksize=2880
     response = HttpResponse(content_type='application/fits')
     response['Content-Disposition'] = 'attachment; filename={}'.format(basename)
-    fname=fits_path(dateobs, telescope, propid, basename)
-    print('fits fname: {}'.format(fname))
+    #fname=fits_path(dateobs, telescope, propid, basename)
+    #print('fits fname: {}'.format(fname))
+    fname=get_fits_location(basename)
+    print('fits fname fullpath: {}'.format(fname))
     try:
         with open(fname, 'rb') as infile:
             for chunk in iter(lambda: infile.read(fitsblocksize), b""):

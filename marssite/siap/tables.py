@@ -19,12 +19,12 @@ class SiapTable(tables.Table):
     telescope     = tables.Column()
     date_obs      = tables.DateColumn(short=True)
     dtacqnam      = tables.Column()
-    dtpropid      = tables.Column(footer='Latest:')
+    dtpropid      = tables.Column() # footer='Latest:')
     dtsite        = tables.Column()
     proctype      = tables.Column()
     prodtype      = tables.Column()
     start_date    = tables.DateColumn(short=True)
-    release_date  = tables.DateColumn(short=True, footer=latest_release)
+    release_date  = tables.DateColumn(short=True)#, footer=latest_release)
 
         
     class Meta:

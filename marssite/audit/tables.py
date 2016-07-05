@@ -18,7 +18,6 @@ class AggTable(tables.Table):
     obsday = tables.DateColumn(short=True, verbose_name='CALDAT')
     instrument = tables.Column()
     telescope = tables.Column()
-    fstop = tables.Column()
     mtnjam = tables.Column(verbose_name='Mountain Jams')
     valjam = tables.Column(verbose_name='Valley Jams')
     

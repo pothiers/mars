@@ -75,7 +75,7 @@ def get_from_siap(refresh=False, limit=999, **kwargs):
         if 'min:' == op and k[4:] in rangecols:
             where.append("{} >= '{}'".format(k[4:], v))
         elif 'max:' == op and k[4:] in rangecols:
-            where.append("{} <= '{}'".format(k[4:], v))
+            where.append("{} < '{}'".format(k[4:], v))
         elif k == 'reference':
             where.append("reference LIKE '%{}%'".format(v))
         else:
@@ -88,7 +88,7 @@ def get_from_siap(refresh=False, limit=999, **kwargs):
     total = cursor.fetchone()[0]
 
     sql = ("SELECT * FROM voi.siap {} LIMIT {}".format(whereclause, limit))
-    #print('Executing SQL: {}'.format(sql))
+    print('Executing SQL: {}'.format(sql))
     cursor.execute(sql)
     cnt = cursor.rowcount
     columns = [col[0] for col in cursor.description]
@@ -103,11 +103,14 @@ def get_fits_location(reference):
     reference:: Archive basename of FITS file"""
     cursor = connection.cursor()
     sql = ("SELECT dp.uri FROM voi.siap as vs, edu_noao_nsa.data_product as dp"
-           " WHERE dp.data_product_id = vs.fits_data_product_id%"
-           " AND vs.reference=?")
-    cursor.execute(sql, reference)
+           " WHERE dp.data_product_id = vs.fits_data_product_id"
+           " AND vs.reference= '{}'").format(reference)
+    print('sql={}'.format(sql))
+    cursor.execute(sql)
     uri = cursor.fetchone()
     if uri != None:
-        return uri[0]
+        return uri[0].replace('irods://','')
     return uri
+
+        
     
