@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -e
 # PURPOSE: Build RPM for MARS and copy to SDM repo
 #
 
@@ -9,7 +9,7 @@ marsrpm="${marsdir}/dist/mars-*.noarch.rpm"
 
 # Get new version number
 pushd $marsdir > /dev/null
-vers=`cat marssite/VERSION`
+vers=`cat marssite/water/VERSION`
 echo -n "Current version of MARS  is $vers ; "
 read -i "$vers" -p "What is the new version? " newvers rem
 echo $newvers > marssite/VERSION

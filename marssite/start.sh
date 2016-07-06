@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #LOG=$HOME/mars.log
-LOG=/etc/mars/mars.log
+LOG=/var/mars/mars.log
 
 pushd ~/sandbox/mars/marssite
 # NB: "unbuffer" is a small script that comes with the "excpect" package
