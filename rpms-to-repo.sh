@@ -10,7 +10,7 @@ marsrpm="${marsdir}/dist/mars-*.noarch.rpm"
 # Get new version number
 pushd $marsdir > /dev/null
 vers=`cat marssite/water/VERSION`
-echo -n "Current version of MARS  is $vers ; "
+echo -n "Current version of MARS is $vers ; "
 read -i "$vers" -p "What is the new version? " newvers rem
 echo $newvers > marssite/VERSION
 marsvers=$newvers

@@ -150,16 +150,9 @@ EXAMPLE:
             try:
                 ar.full_clean()
             except ValidationError as e:
-                if 'md5sum' in obs:
-                    errmsg = ('Invalid JSON data passed to {}; {}'
-                              .format(reverse('audit:source'), e.message_dict))
-                    obj, created = AuditRecord.objects.update_or_create(
-                        md5sum=obs['md5sum'],
-                        defaults=dict(fstop='dome',
-                                      dome_host=obs.get('dome_host',None),
-                                      archerr=errmsg))
-                    return HttpResponse('ERROR: bad POST data.')
-                
+                errmsg = ('Invalid JSON data passed to {}; {}'
+                          .format(reverse('audit:source'), e.message_dict))
+                return HttpResponse('ERROR: Bad POST data; {}'.format(errmsg))
             #! print('DBG: obs={}'.format(obs))
             obj,created = AuditRecord.objects.get_or_create(
                 md5sum=obs['md5sum'],
