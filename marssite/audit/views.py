@@ -412,6 +412,7 @@ def agg_domeday(request):
     from pprint import pprint
     group = ['obsday','instrument','telescope']
     errors = AuditRecord.objects.exclude(success=True)
+    #errors = AuditRecord.objects
 
     # Following works, but why bother seperating error types here?  Do
     # it on drill down instead. Because we cannot do OR or NEGATION in
@@ -428,7 +429,7 @@ def agg_domeday(request):
     pprint(list(errcnts.order_by('obsday')))
     #table = AggTable(errcnts, order_by='obsday')
     table = AggTable(errcnts.order_by('-obsday'))
-    RequestConfig(request).configure(table)    
+    RequestConfig(request, paginate={'per_page': 100}).configure(table)    
     return render(request, 'audit/agg.html',
                   {'title': 'Aggregated error counts', 'agg': table})
 
