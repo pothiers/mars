@@ -9,8 +9,7 @@ def latest_release(table):
 class SiapTable(tables.Table):
     #reference     = tables.TemplateColumn('<a href="http://nsaserver.sdm.noao.edu:7003/?fileRef={{record.reference}}">{{record.reference}}</a>')
     reference     = tables.TemplateColumn(
-        '<a href="{% url \'siap:retrieve_fits\' '
-        'record.date_obs|date:"Y-m-d" record.telescope record.dtpropid record.reference%}">'
+        '<a href="{% url \'siap:retrieve_fits\' record.reference%}">'
         '{{record.reference}}</a>')
 
     ra            = tables.Column()

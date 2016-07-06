@@ -27,7 +27,9 @@ urlpatterns = [
     url(r'^query/$', views.query_by_url, name='query_by_url'),
     url(r'^add/(?P<dateobs>\d{4}-\d{2}-\d{2})/(?P<telescope>.+)/(?P<propid>.+)/(?P<basename>.+)/$',
         views.store_fits, name='store_fits'),
-    url(r'^get/(?P<dateobs>\d{4}-\d{2}-\d{2})/(?P<telescope>.+)/(?P<propid>.+)/(?P<basename>.+)/$',
+    #!url(r'^get/(?P<dateobs>\d{4}-\d{2}-\d{2})/(?P<telescope>.+)/(?P<propid>.+)/(?P<basename>.+)/$',
+    #!    views.retrieve_fits, name='retrieve_fits'),
+    url(r'^fullpath/(?P<basename>.+)/$',
         views.retrieve_fits, name='retrieve_fits'),
 
 ]

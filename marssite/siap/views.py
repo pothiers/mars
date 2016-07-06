@@ -344,7 +344,8 @@ def store_fits(request,  dateobs, telescope, propid, basename):
 # The field 'uri' In the table edu_noao_nsa.data_product contains the actual
 # file location.
 #
-def retrieve_fits(request, dateobs, telescope, propid, basename):
+#def retrieve_fits(request, dateobs, telescope, propid, basename):
+def retrieve_fits(request, basename):
     """Get FITS file from archive (by SIAP record)"""
     fitsblocksize=2880
     response = HttpResponse(content_type='application/fits')
@@ -352,7 +353,7 @@ def retrieve_fits(request, dateobs, telescope, propid, basename):
     #fname=fits_path(dateobs, telescope, propid, basename)
     #print('fits fname: {}'.format(fname))
     fname=get_fits_location(basename)
-    print('fits fname fullpath: {}'.format(fname))
+    #print('fits fname fullpath: {}'.format(fname))
     try:
         with open(fname, 'rb') as infile:
             for chunk in iter(lambda: infile.read(fitsblocksize), b""):
@@ -362,5 +363,6 @@ def retrieve_fits(request, dateobs, telescope, propid, basename):
         return HttpResponse('Could not retrieve "{}";{}'.format(fname,err))
     return HttpResponse('This should never happen! '
                         'siap/views.py;retrieve_fits()')
+
 ###
 ##############################################################################
