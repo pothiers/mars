@@ -27,6 +27,7 @@ from django.db import connection
 from django.db.models import Count, Q, Sum, Case, When, IntegerField
 from django.template import Context, Template
 from django.template.loader import get_template
+from django.core.exceptions import ValidationError
 
 import django_tables2 as tables
 from rest_framework.renderers import JSONRenderer
