@@ -30,6 +30,7 @@ from django.template.loader import get_template
 from django.core.exceptions import ValidationError
 
 import django_tables2 as tables
+from django_tables2 import RequestConfig
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import generics
@@ -398,8 +399,11 @@ def get_counts():
         counts[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
     return counts
 
-# do this with materialized view so it can be under admin interface? NO
-# INSTEAD: overwrite get_queryset to get just error aggregates.
+# Q1: So this with materialized view so it can be under admin interface?
+# A1: NO. Would make maintenance very complciated since mat-view outside
+#     of MARS sphere.
+# Q2: Overwrite admin get_queryset to get just error aggregates?
+# A2: NO. Admin rows must represent OBJECTS.
 def agg_domeday(request):
     """Find any aggregation (date,instrum,tele) with errors.
     Intent is to drill down into these composit rows to find details of 
@@ -408,22 +412,23 @@ def agg_domeday(request):
     from pprint import pprint
     group = ['obsday','instrument','telescope']
     errors = AuditRecord.objects.exclude(success=True)
-    
-    #!mtnjam = errors.filter(success__isnull=True).values(*group).annotate(
-    #!    mtnjam=Count('md5sum')).order_by()
-    #!valjam = errors.filter(success=False).values(*group).annotate(
-    #!    valjam=Count('md5sum')).order_by()
-    #pprint(list(valjam.order_by('obsday')))
 
+    # Following works, but why bother seperating error types here?  Do
+    # it on drill down instead. Because we cannot do OR or NEGATION in
+    # URL querystring used in drill down!
+    #
     errcnts = errors.values(*group).annotate(
         mtnjam=Sum(Case(When(success__isnull=True, then=1),
                         output_field=IntegerField())),
         valjam=Sum(Case(When(success=False, then=1),
-                        output_field=IntegerField()))
-    )
+                        output_field=IntegerField())),
+        total=Count('md5sum')
+    ).order_by()
+    #errcnts = errors.values(*group).annotate(jams=Count('md5sum'))
     pprint(list(errcnts.order_by('obsday')))
-    table = AggTable(errcnts, order_by='obsday')
-    
+    #table = AggTable(errcnts, order_by='obsday')
+    table = AggTable(errcnts.order_by('-obsday'))
+    RequestConfig(request).configure(table)    
     return render(request, 'audit/agg.html',
                   {'title': 'Aggregated error counts', 'agg': table})
 

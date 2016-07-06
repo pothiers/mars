@@ -12,18 +12,44 @@ class AuditRecordTable(tables.Table):
         fields = ('instrument',
                   'notReceived',
                   'rejected',
-                  'accepted' )
+                  'accepted')
 
 class AggTable(tables.Table):
-    obsday = tables.DateColumn(short=True, verbose_name='CALDAT')
-    instrument = tables.Column()
-    telescope = tables.Column()
-    mtnjam = tables.Column(verbose_name='Mountain Jams')
-    valjam = tables.Column(verbose_name='Valley Jams')
+    obsday = tables.DateColumn(verbose_name='Observed Day',short=True)
+    instrument = tables.Column(verbose_name='Instrument')
+    telescope = tables.Column(verbose_name='Telescope')
+    mtnjam = tables.TemplateColumn(
+        verbose_name='Mountain Jams',
+        template_code=('<a'
+        ' href="{% url \'admin:audit_auditrecord_changelist\' %}'
+        '?instrument={{record.instrument}}'
+                       '&obsday={{record.obsday|date:\"Y-m-d\"}}'
+        '&success__isnull=True">{{record.mtnjam}}</a>')
+    )
+    valjam = tables.TemplateColumn(
+        verbose_name='Valley Jams',
+        template_code=('<a'
+        ' href="{% url \'admin:audit_auditrecord_changelist\' %}'
+        '?instrument={{record.instrument}}'
+        '&obsday={{record.obsday|date:\"Y-m-d\"}}'
+                       '&success=0">{{record.valjam}}</a>')
+    )
+    total = tables.Column(verbose_name='Total Jams')
+
+    #jams = tables.Column(verbose_name='FITS Jam Count')
+    #!jams = tables.TemplateColumn(
+    #!    verbose_name='FITS Jam Count',
+    #!    template_code='<a'
+    #!    ' href="{% url \'admin:audit_auditrecord_changelist\' %}'
+    #!    '?instrument={{record.Instrument}}'
+    #!    '&obsday={{record.ObsDay}}'
+    #!    '&success__exact=0">{{record.rejected}}</a>') )
+
+        
     
     class Meta:
         attrs = {'class': 'paleblue'}
-        
+
 class ProgressTable(tables.Table):
     # TODO: link ObsDay to admin/schedule/slot (date,tele,instrument)
     #!ObsDay = tables.DateColumn(short=True, verbose_name='CALDAT')

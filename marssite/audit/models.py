@@ -94,7 +94,7 @@ class AuditRecord(models.Model):
                                      self.obsday,
                                      self.srcpath)
  
-    class Meta:
-        ordering = ('telescope','instrument','srcpath')
+    #!class Meta:
+    #!    ordering = ('telescope','instrument','srcpath')
         
         

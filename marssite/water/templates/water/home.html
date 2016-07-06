@@ -275,15 +275,15 @@
     
     <tr class="prod">
       <th>
-	<a href="{% url 'audit:source' %}">{% url 'audit:source' %}</a>
+	    <a href="{% url 'audit:source' %}">{% url 'audit:source' %}</a>
       </th>
       <td>
-	Intended to be used by Dome to record each file submitted
-	to TADA. Later, use
-	<a href="{% url 'audit:progress_count' %}">
-	  {% url 'audit:progress_count' %}
-	</a>
-	to results.
+	    Intended to be used by Dome to record each file submitted
+	    to TADA. Later, use
+	    <a href="{% url 'audit:progress_count' %}">
+	      {% url 'audit:progress_count' %}
+	    </a>
+	    to results.
 	    <p><b>Example:</b>
 	      <br />
 	      <i>curl -d '/a/b/img1.fits /a/b/img2.fits' http://localhost:8000/audit/source/</i>
@@ -291,20 +291,20 @@
     </tr>
     <tr class="prod">
       <th>
-	{% url 'audit:update_fstop' '1900c5e4e342f293d538507dfd2bff3a' 'valley:cache' 'valley.sdm' %}
+	    {% url 'audit:update_fstop' '1900c5e4e342f293d538507dfd2bff3a' 'valley:cache' 'valley.sdm' %}
       </th>
       <td>
-	Record location (tag) of file in its journey from Dome to
-	Archive.
-	<form method="POST">
-	  MD5SUM: <input type="text" name="md5sum"/>
-	  fstop: <input type="text" name="fstop" size="7"/>
-	  host: <input type="text" name="host" size="7"/>
-	  <input type="submit" value="Submit"/>
-	  </form>
+	    Record location (tag) of file in its journey from Dome to
+	    Archive.
+	    <form method="POST">
+	      MD5SUM: <input type="text" name="md5sum"/>
+	      fstop: <input type="text" name="fstop" size="7"/>
+	      host: <input type="text" name="host" size="7"/>
+	      <input type="submit" value="Submit"/>
+	    </form>
       </td>
     </tr>
-
+    
     <tr class="ops">
       <th>
 	    <a href="{% url 'audit:progress_count' %}">
@@ -312,8 +312,19 @@
 	    </a>
       </th>
       <td>
-	For <b>monitoring progress</b> of ingestion. Similar to Sean's
-	<a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
+	    For <b>monitoring progress</b> of ingestion. Similar to Sean's
+	    <a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'audit:agg' %}">
+	      {% url 'audit:agg' %}
+	    </a>
+      </th>
+      <td>
+	    For <b>monitoring progress</b> of ingestion. Similar to Sean's
+	    <a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
       </td>
     </tr>
     <!--
