@@ -423,6 +423,8 @@ def agg_domeday(request):
                         output_field=IntegerField())),
         valjam=Sum(Case(When(success=False, then=1),
                         output_field=IntegerField())),
+        #!good=Sum(Case(When(success=True, then=1),
+        #!                output_field=IntegerField())),
         total=Count('md5sum')
     ).order_by()
     #errcnts = errors.values(*group).annotate(jams=Count('md5sum'))

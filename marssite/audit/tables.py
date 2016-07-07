@@ -15,7 +15,14 @@ class AuditRecordTable(tables.Table):
                   'accepted')
 
 class AggTable(tables.Table):
-    obsday = tables.DateColumn(verbose_name='Observed Day',short=True)
+    #obsday = tables.DateColumn(verbose_name='Observed Day',short=True)
+    obsday = tables.TemplateColumn(
+        verbose_name='Observed Day',
+        template_code=('<a'
+                       ' href="{% url \'admin:audit_auditrecord_changelist\' %}'
+                       '?obsday={{record.obsday|date:\"Y-m-d\"}}">'
+                       '{{record.obsday|date:\"m/d/Y\"}}</a>')
+    )
     instrument = tables.Column(verbose_name='Instrument')
     telescope = tables.Column(verbose_name='Telescope')
     mtnjam = tables.TemplateColumn(
@@ -35,6 +42,7 @@ class AggTable(tables.Table):
                        '&success=0">{{record.valjam}}</a>')
     )
     total = tables.Column(verbose_name='Total Jams')
+    #!good = tables.Column(verbose_name='Archived Count')
 
     #jams = tables.Column(verbose_name='FITS Jam Count')
     #!jams = tables.TemplateColumn(
