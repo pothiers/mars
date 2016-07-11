@@ -89,10 +89,8 @@ class AuditRecord(models.Model):
         )
             
     def __str__(self):
-        return '{}-{}-{}: {}'.format(self.telescope,
-                                     self.instrument,
-                                     self.obsday,
-                                     self.srcpath)
+        return '{}-{}'.format(self.obsday, self.instrument)
+
  
     #!class Meta:
     #!    ordering = ('telescope','instrument','srcpath')

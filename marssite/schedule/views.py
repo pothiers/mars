@@ -214,6 +214,8 @@ def getpropid(request, telescope, instrument, date):
                                 telescope=tele,
                                 instrument=instrum)
         proplist = slot.propids
+        print('schedule/propid/{}/{}/{} = {}'
+              .format(tele, instrum, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
         pass
@@ -223,9 +225,13 @@ def getpropid(request, telescope, instrument, date):
     try:
         slot = Slot.objects.get(obsdate=date, telescope=tele, instrument=instrum)
         proplist = slot.propids
+        print('schedule/propid/{}/{}/{} = {}'
+              .format(tele, instrum, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
         if ignore_default:
+            print('schedule/propid/{}/{}/{} = {}'
+                  .format(tele, instrum, date, 'NA'))
             return HttpResponse('NA', content_type='text/plain')            
     # ... use default
     try:
@@ -236,14 +242,10 @@ def getpropid(request, telescope, instrument, date):
         print('Need default propid for tele={}, instrum={}'
               .format(tele,instrum))
         proplist = [global_default]
+
+    print('schedule/propid/{}/{}/{} = {}'.format(tele, instrum, date, proplist))
     return HttpResponse(proplist, content_type='text/plain')    
         
-    #!if EmptySlot.objects.filter(obsdate=date, telescope=tele).count() == 0:
-    #!    es = EmptySlot(obsdate=date, telescope=tele)
-    #!    es.save()
-    # 
-    #!return HttpResponse(dftpid.propids, content_type='text/plain')
-    #!return HttpResponse('NA', content_type='text/plain')
 
 class SlotGet(generics.GenericAPIView, DetailView):
     """

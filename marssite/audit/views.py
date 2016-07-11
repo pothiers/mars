@@ -238,8 +238,10 @@ def update_fstop(request, md5sum, fstop, host=None):
     elif machine == 'valley':
         defaults['valley_host'] = host
     defaults['submitted'] = now()
+    defaults['obsday'] = now().date()
     obj, created = AuditRecord.objects.update_or_create(md5sum=md5sum,
                                                         defaults=defaults)
+    print('update_fstop: obsday={}, md5sum={}'.format(obj.obsday, md5sum))
     return HttpResponse('Updated FSTOP; defaults={}'.format(defaults))
     
     
@@ -259,7 +261,7 @@ def update(request, format='yaml'):
         print('Update_fstop2: fstop={}, host={}, md5sum={}'
               .format(fstop, 'NA', md5))
 
-        initdefs = dict(obsday=rdict['obsday'],
+        initdefs = dict(obsday=rdict.get('obsday',now().date()),
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
                         srcpath=rdict['srcpath'],
@@ -293,6 +295,7 @@ def update(request, format='yaml'):
         #!    print('DBG: changed attr[{}]={}'
         #!          .format(fname,getattr(obj,fname)))
         #!print('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
+        print('update fstop:obsday={}, md5sum={}'.format(obj.obsday, obj.md5sum))
         obj.save()
         #!print('/audit/update/ saved obj={}'.format(obj))
 
@@ -428,7 +431,7 @@ def agg_domeday(request):
         total=Count('md5sum')
     ).order_by()
     #errcnts = errors.values(*group).annotate(jams=Count('md5sum'))
-    pprint(list(errcnts.order_by('obsday')))
+    #pprint(list(errcnts.order_by('obsday')))
     #table = AggTable(errcnts, order_by='obsday')
     table = AggTable(errcnts.order_by('-obsday'))
     RequestConfig(request, paginate={'per_page': 100}).configure(table)    
