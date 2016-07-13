@@ -1,18 +1,25 @@
+#! /usr/bin/env python3
+"""Install MARS web services."""
+# See: https://packaging.python.org/en/latest/distributing/
+
 from setuptools import setup, find_packages 
 from codecs import open  # To use a consistent encoding
 from os import path
 from glob import glob
 
 here = path.abspath(path.dirname(__file__))
-print('here={}'.format(here))
+#!print('here={}'.format(here))
 
 # Get the long description from the relevant file
 #!with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 #!    long_description = f.read()
-long_description="Collect telescope data from mountain tops, deliver to far-away archives."
+long_description="Provide webservices to access Archive related info."
 
-with open(path.join(here,'marssite','VERSION')) as version_file:
-    version = version_file.read().strip()
+with open(path.join(here,'marssite', 'water', 'VERSION')) as f:
+    version = f.read().strip()
+with open(path.join(here,'marssite', 'water', 'UPDATED')) as f:
+    updated = f.read().strip()
+
 
 setup(
     name='mars',
@@ -59,7 +66,7 @@ setup(
     ],
 
     # What does your project relate to?
-    keywords='webservices big-data astonomy archive',
+    keywords='webservices big-data astronomy archive',
 
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
@@ -77,7 +84,7 @@ setup(
     #!package_data={
     #!    'tada_support': ['personalities/*', 'scripts/*', 'dev-scripts/*',],
     #!},
-    package_data={'marssite': ['VERSION',]},
+    package_data={'marssite': ['water/VERSION','water/UPDATED']},
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages.
@@ -85,6 +92,9 @@ setup(
     # In this case, 'data_file' will be installed into '<sys.prefix>/my_data'
     #!data_files=[('my_data', ['data/data_file'])],
                     
+    data_files=[('/etc/mars', glob('RELEASE-*.txt')),
+    ],
+
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
