@@ -7,7 +7,7 @@ pushd ~/sandbox/mars/marssite
 # NB: "unbuffer" is a small script that comes with the "excpect" package
 nohup unbuffer python3 -u manage.py runserver 0.0.0.0:8000 >  $LOG &
 # gunicorn --bind 0.0.0.0:8000 marssite.wsgi:application
-# gunicorn --pythonpath /usr/local/lib/python3.5/site-packages/marssite --bind 0.0.0.0:8000 marssite.wsgi:application
+# gunicorn --pythonpath /usr/lib/python3.4/site-packages/marssite --bind 0.0.0.0:8000 marssite.wsgi:application
 tail -F $LOG &
 
 
