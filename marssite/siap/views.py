@@ -289,6 +289,7 @@ def query_by_url(request, returnPath=True):
 
     :tempalate:`siap/siap-subset.html`
     """
+    print('DBG-0: siap/views.py; query_by_url')
     rows_per_page=300
     getdict = dict(request.GET.items())
     getdict.pop('sort',None)

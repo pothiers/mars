@@ -104,6 +104,7 @@ STATICFILES_DIRS = (
     #'/static/',
     '/var/www/static/',
     )
+STATIC_ROOT = '/var/www/mars/static/'
 
 SWAGGER_SETTINGS = {
 #!    'exclude_namespaces': [],
