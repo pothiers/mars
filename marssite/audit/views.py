@@ -459,6 +459,7 @@ sent = nosubmit + (rejected + accepted))
             propids = slot.propids
         except Slot.DoesNotExist:
             propids=''
+        if day == None: continue
         instrums.append(dict(Telescope=tele,
                              Instrument=instr,
                              ObsDay=day.isoformat(),
