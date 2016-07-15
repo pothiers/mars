@@ -84,7 +84,7 @@ setup(
     #!package_data={
     #!    'tada_support': ['personalities/*', 'scripts/*', 'dev-scripts/*',],
     #!},
-    package_data={'marssite': ['water/VERSION','water/UPDATED']},
+    package_data={'marssite': ['water/VERSION','water/UPDATED', 'static', '*/static']},
 
     # Although 'package_data' is the preferred approach, in some case you may
     # need to place data files outside of your packages.
