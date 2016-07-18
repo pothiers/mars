@@ -28,6 +28,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = ['.sdm.noao.edu']
+#MEDIA_ROOT = '/var/mars/'
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.8/howto/static-files/
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    #'/static/',
+    '/var/www/static/',
+    )
+STATIC_ROOT = '/var/www/mars/static/'
 
 # Application definition
 
@@ -94,16 +105,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    #'/static/',
-    '/var/www/static/',
-    )
-STATIC_ROOT = '/var/www/mars/static/'
 
 SWAGGER_SETTINGS = {
 #!    'exclude_namespaces': [],
@@ -148,8 +149,8 @@ REST_FRAMEWORK = {
     #!]
 }
 
-MEDIA_ROOT = '/var/mars/'
 
 CONN_MAX_AGE = 7200 # keep DB connections for 2 hours
 
-from .settings_local import *
+#from .settings_local import *
+exec(open('/etc/mars/django_local_settings.py').read())
