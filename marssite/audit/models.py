@@ -32,7 +32,7 @@ class AuditRecord(models.Model):
                 'BADDATE', 'NOFITS', 'UNKNOWN', 'none']
 
     # Field values provided by DOME
-    md5sum = models.CharField(max_length=40, primary_key=True,
+    md5sum = models.CharField(max_length=40, primary_key=True, db_index=True,
                               help_text='MD5SUM of FITS file')
     obsday = models.DateField(null=True, # allow no Dome info, only Submit
                               help_text='Observation Day')
