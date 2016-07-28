@@ -219,16 +219,15 @@ missing requires fields"""
 
 @api_view(['POST'])
 @csrf_exempt
-def update_fstop(request, md5sum, fstop, host=None):
+def update_fstop(request, md5sum, fstop, host):
     """Set the fstop (file-stop) tag to indicate a logical system location
     for the FITS file.  Intent is for fstop to be updated as FITS
     moves downstream from Dome to Archive. Since the location can be
     on one of serveral hosts, the host should also be given.
     """
-    print('Update_fstop: fstop={}, host={}, md5sum={}'
+    print('START pdate_fstop: fstop={}, host={}, md5sum={}'
           .format(fstop, host, md5sum))
 
-    if host == None: host = ''  # make DB happy
     defaults = dict(fstop=fstop)
     machine = fstop.split(':')[0]
     if machine == 'dome':
@@ -237,12 +236,15 @@ def update_fstop(request, md5sum, fstop, host=None):
         defaults['mountain_host'] = host
     elif machine == 'valley':
         defaults['valley_host'] = host
+    else:
+        defaults['mountain_host'] = host
     defaults['submitted'] = now()
     defaults['obsday'] = now().date()
     obj, created = AuditRecord.objects.update_or_create(md5sum=md5sum,
                                                         defaults=defaults)
-    print('update_fstop: obsday={}, md5sum={}'.format(obj.obsday, md5sum))
-    return HttpResponse('Updated FSTOP; defaults={}'.format(defaults))
+    print('END update_fstop: obsday={}, md5sum={}, defaults={}'
+          .format(obj.obsday, md5sum, defaults))
+    return HttpResponse('Updated FSTOP; {}'.format(md5sum))
     
     
 @csrf_exempt
@@ -258,9 +260,6 @@ def update(request, format='yaml'):
             rdict['metadata'][k] = str(v) # required for HStoreField
         #! print('/audit/update: defaults={}'.format(rdict)) 
         fstop = 'archive' if rdict['success']==True else 'valley:cache'
-        print('Update_fstop2: fstop={}, host={}, md5sum={}'
-              .format(fstop, 'NA', md5))
-
         initdefs = dict(obsday=rdict.get('obsday',now().date()),
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
