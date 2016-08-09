@@ -53,15 +53,13 @@ sched2hdr= {
 }
 
 
-
-
-
 def apply_tac_update(**query):
     """Update/add object unless it already exists and is FROZEN. """
+    print('apply tac update for query={}'.format(query))
     params = urllib.parse.urlencode(query)
-    #print{'DBG: query={}, params={}'.format(query, params))
+    print('DBG: query={}, params={}'.format(query, params))
     url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
-    #print('DBG: url={}'.format(url))
+    print('DBG: url={}'.format(url))
     try:
         with urllib.request.urlopen(url, timeout=4) as f:
             tree = ET.parse(f)
@@ -96,7 +94,7 @@ def apply_tac_update(**query):
         msg = 'slot={}'.format(slot)
         if smade:
             # did NOT exist
-            print('ADDED: {}'.format(msg))
+            print('ADDED: {}, propid="{}"'.format(msg,propid))
             slot_pids[slot].add(propid)                    
         else:
             if slot.frozen:
@@ -109,10 +107,12 @@ def apply_tac_update(**query):
                 
                 slot_pids[slot].add(propid)                    
                 print('NOT FROZEN: {}; propids={}'.format(msg, slot_pids[slot]))
-    
+    print('slot_pids={}'.format(slot_pids))
+    return(slot_pids)
     
 def update_from_noaoprop(**query):
-    slot_pids = apply_tac_update(query) # dict[slot] = [propid, ...]
+    slot_pids = apply_tac_update(**query) # dict[slot] = [propid, ...]
+    print('update_from_noaoprop({}); slot_pids={}'.format(query,slot_pids))
     print('Updating propid lists for {} slots:'.format(len(slot_pids)))
     for index,(slot,propids) in enumerate(slot_pids.items()):
         prop_list = [Proposal.objects.get_or_create(pk=propid)[0]
@@ -214,23 +214,23 @@ def getpropid(request, telescope, instrument, date):
                                 telescope=tele,
                                 instrument=instrum)
         proplist = slot.propids
-        print('schedule/propid/{}/{}/{} = {}'
+        print('(mars) schedule/propid/{}/{}/{} = "{}"'
               .format(tele, instrum, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
         pass
     # MARS schedule slot not found...
     # ... try updating the date from TAC, and getting Slot again
-    apply_tac_update(date=date) 
+    update_from_noaoprop(date=date) 
     try:
         slot = Slot.objects.get(obsdate=date, telescope=tele, instrument=instrum)
         proplist = slot.propids
-        print('schedule/propid/{}/{}/{} = {}'
+        print('(post tac update) schedule/propid/{}/{}/{} = "{}"'
               .format(tele, instrum, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
         if ignore_default:
-            print('schedule/propid/{}/{}/{} = {}'
+            print('(ignore default) schedule/propid/{}/{}/{} = "{}"'
                   .format(tele, instrum, date, 'NA'))
             return HttpResponse('NA', content_type='text/plain')            
     # ... use default
