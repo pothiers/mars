@@ -27,7 +27,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['.sdm.noao.edu', '.tuc.noao.edu']
 #MEDIA_ROOT = '/var/mars/'
 
 # Static files (CSS, JavaScript, Images)

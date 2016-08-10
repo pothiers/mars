@@ -101,7 +101,7 @@ class AuditRecordAdmin(admin.ModelAdmin):
         'srcpath',
         'success',
         'archerr',
-        'recorded',
+        'updated',
         'submitted',
         'errcode',
         'archfile',
@@ -125,7 +125,7 @@ class AuditRecordAdmin(admin.ModelAdmin):
                    'staged')
     search_fields = ['telescope', 'instrument','srcpath', 'archerr', 'md5sum']
     actions = [stage, unstage, clear_submit, clear_error]
-    ordering = ['-recorded',]
+    ordering = ['-updated',]
 
     #
     # This will NOT WORK because an admin queryset must return list of

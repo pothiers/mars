@@ -13,3 +13,6 @@ tail -F $LOG &
 
 # To find where mars is installed:
 #   python3 -m inspect -d marssite
+
+# For development
+# python3 manage.py runserver --insecure 0.0.0.0:8000

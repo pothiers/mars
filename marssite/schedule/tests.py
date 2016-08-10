@@ -1,5 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, Client, RequestFactory
 #from rest_framework.test import APIRequestFactory
 
 from .models import Slot, EmptySlot
@@ -9,8 +9,11 @@ class ScheduleTest(TestCase):
     # Load (special test) DB with data
     fixtures = ['schedule.yaml']
     
+
+
     def setUp(self):
-        self.factory = RequestFactory()
+        #self.factory = RequestFactory()
+        self.client = Client()
 
     def test_fixture(self):
         tele = 'kp4m'
@@ -27,13 +30,23 @@ class ScheduleTest(TestCase):
         tele = 'kp4m'
         instrum = 'y4kcam'
         date = '2016-01-01'
-        request = self.factory.get('/schedule/propid/{}/{}/{}/'
+        #!request = self.factory.get('/schedule/propid/{}/{}/{}/'
+        #!                           .format(tele, instrum, date))
+        #!response = schedule.views.getpropid(request, tele, instrum, date)
+        response = self.client.get('/schedule/propid/{}/{}/{}/'
                                    .format(tele, instrum, date))
-        response = schedule.views.getpropid(request, tele, instrum, date)
         self.assertEqual(200, response.status_code)
         expected = '2015B-0254'
         self.assertEqual(expected, response.content.decode())
-    
+
+    # needed after Dave's schedule gets udpated when we've already
+    # cached a value in the mars schedule
+    def test_update(self):
+        self.assertFalse()
+        response = self.client.get('/schedule/udpate/2015B/')
+        self.assertEqual(200, response.status_code)
+
+        
     #!def test_upload(self):
     #!    test_file = '/var/mars/small.xml'
     #!    with open(test_file, 'rb') as fp:

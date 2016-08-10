@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="{% static "water/style.css" %}" />
+    <link rel="stylesheet" href="{% static 'water/style.css' %}" />
     <link rel="icon" type="image/jpg" href="{% static "water/favicon.ico" %}" /> 
     <title>MARS Home</title>
     <style>
@@ -157,7 +157,6 @@
       <td>Upload XML file of schedule data and load it.</td>
     </tr>
     -->
-    <!--  NOT NEEDED since poke at MARS schedule auto updates if not found
     <tr class="ops">
       <th>
 	<a href="{% url 'schedule:update_date' '2015-09-04' %}">
@@ -181,7 +180,6 @@
 	<b>Will take several minutes!</b>
       </td>
     </tr>
-    -->
     <tr class="dev">
       <th>
         <a href="http://www.noao.edu/noaoprop/schedule.mpl?semester=2015B">

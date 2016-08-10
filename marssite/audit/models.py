@@ -49,9 +49,9 @@ class AuditRecord(models.Model):
     valley_host =  models.CharField(max_length=40, blank=True,
                                  help_text='Host name of Mountain that received FITS')
     
-    # Field values automatically filled in
-    recorded  = models.DateTimeField(default=timezone.now,
-                                     help_text='When AuditRecord recorded')
+    # Field values automatically filled in (was called "recorded")
+    updated  = models.DateTimeField(default=timezone.now,
+                                     help_text='When AuditRecord updated')
 
     ##### Field values added by TADA
 
@@ -59,7 +59,7 @@ class AuditRecord(models.Model):
                              choices=[(val,val) for val in fstops],
                              help_text = 'Most downstream stop of FITS file')
     
-    submitted = models.DateTimeField(null=True,
+    submitted = models.DateTimeField(blank=True, null=True,
                                      help_text='When submitted to archive')
     success   = models.NullBooleanField(
         help_text=('Null until ingest attempted.'
@@ -73,7 +73,7 @@ class AuditRecord(models.Model):
 
     archfile  = models.CharField(max_length=80, blank=True,
                                  help_text='Basename of FITS file in Archive')
-    metadata = HStoreField(null=True,
+    metadata = HStoreField(blank=True, null=True,
                            help_text='FITS metadata changed by ingest')
 
     ##### Field values used for bookkeeping (by DART)

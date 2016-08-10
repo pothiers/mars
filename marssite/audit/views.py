@@ -118,7 +118,7 @@ EXAMPLE:
             #print('DBG: source={}'.format(path))
             AuditRecord.objects.update_or_create(
                 srcpath=path,
-                defaults=dict(recorded=now()
+                defaults=dict(updated=now()
                 ))
         qs = AuditRecord.objects.all()
         return JsonResponse(serializers.serialize(format, qs), safe=False)
@@ -264,7 +264,7 @@ def update(request, format='yaml'):
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
                         srcpath=rdict['srcpath'],
-                        recorded=make_aware(dp.parse(rdict['recorded'])))
+                        updated=make_aware(dp.parse(rdict['updated'])))
         newdefs = dict(submitted=make_aware(dp.parse(rdict['submitted'])),
                        success=rdict['success'],
                        fstop=fstop,
