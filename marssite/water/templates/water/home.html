@@ -157,7 +157,7 @@
       <td>Upload XML file of schedule data and load it.</td>
     </tr>
     -->
-    <tr class="ops">
+    <tr class="prod">
       <th>
 	<a href="{% url 'schedule:update_date' '2015-09-04' %}">
 	  {% url 'schedule:update_date' '2015-09-04' %}
@@ -166,9 +166,14 @@
       <td>
 	Update DMO telescope DATE (all telescopes) schedule using
 	www.noao.edu./noaoprop service.
+	<i><b>
+	    If a "schedule/update" service is not done after each
+	    update to the TAC schedule, files may be ingested with the
+	    wrong Propid!
+	</b></i>
       </td>
     </tr>
-    <tr class="ops">
+    <tr class="prod">
       <th>
 	<a href="{% url 'schedule:update_semester' '2015B'%}">
 	  {% url 'schedule:update_semester' '2015B'%}
@@ -178,6 +183,11 @@
 	Update DMO telescope SEMESTER schedule using
 	www.noao.edu./noaoprop service.
 	<b>Will take several minutes!</b>
+	<i><b>
+	    If a "schedule/update" service is not done after each
+	    update to the TAC schedule, files may be ingested with the
+	    wrong Propid!
+	  </b></i>
       </td>
     </tr>
     <tr class="dev">
@@ -186,7 +196,10 @@
           http://www.noao.edu/noaoprop/schedule.mpl?semester=2015B
         </a>
       </th>
-      <td>The schedule from Dave Bell's DB (one semester)</td>
+      <td>
+	A semester of the schedule from Dave Bell's DB. aka:
+	<i>"The TAC schedule"</i>
+      </td>
     </tr>
 
     <!-- ################################################################### -->
@@ -199,7 +212,7 @@
       <td>SIAP index of all files.</td>
     </tr>
     -->
-    <tr  class="prod">
+    <tr  class="test">
       <th><a href="{% url 'siap:query_by_url' %}{% querystring 'min:date_obs'='05-28-2016' 'reference'='c13a' %}">
 	  {% url 'siap:query_by_url' %}{% querystring 'min:date_obs'='05-28-2016' 'reference'='c13a' %}
       </a></th>
@@ -230,7 +243,7 @@
 	is available via: {% url 'siap:query_by_sql' %}
       </td>
     </tr>
-    <tr class="ops">
+    <tr class="test">
       <th>{% url 'siap:query_by_sql' %}</th>
       <td>Query voi.siap using SQL string.
         SQL must be of format:
@@ -436,6 +449,14 @@
       <td>Inactive or under construction</td>
     </tr>
   </table>
+  <p>
+    The types given in the legend are also used to distinquish
+    different sets of MARS unit tests.  So, for instance, one can test
+    all the "Production" related web-services without testing
+    "Development" related ones.  Generally, more and better unit
+    testing is done for types at the top of the legend. Types at the
+    bottom may have no unit testing done at all.
+  </p>
 
   
 </body>

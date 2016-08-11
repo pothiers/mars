@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase, Client, RequestFactory
 #from rest_framework.test import APIRequestFactory
 
-from .models import Slot, EmptySlot
+from .models import Slot
 import schedule.views
 
 class ScheduleTest(TestCase):
@@ -10,40 +10,53 @@ class ScheduleTest(TestCase):
     fixtures = ['schedule.yaml']
     
 
-
     def setUp(self):
         #self.factory = RequestFactory()
         self.client = Client()
 
-    def test_fixture(self):
+    # Should test for:
+    #   1. found in Slots
+    #   2. not found in Slots, found in TAC
+    #      - return propid from TAC
+    #      - add to Slots
+    #   3. Not found in Slots, not found in TAC
+    #      - return propid from Defaults
+    #      - no change to Slots
+    def test_getpropid1(self):
+        "Found in slots"
         tele = 'kp4m'
-        instrum = 'y4kcam'
-        date = '2016-01-01'
-        slot = Slot.objects.get(obsdate=date,
-                                telescope=tele,
-                                instrument=instrum)
-        propids = slot.propids.split(', ')
-        expected = '2015B-0254'
-        self.assertIn(expected, propids)
-    
-    def test_getpropid(self):
-        tele = 'kp4m'
-        instrum = 'y4kcam'
-        date = '2016-01-01'
-        #!request = self.factory.get('/schedule/propid/{}/{}/{}/'
-        #!                           .format(tele, instrum, date))
-        #!response = schedule.views.getpropid(request, tele, instrum, date)
+        instrum = 'kosmos'
+        date = '2016-02-01'
         response = self.client.get('/schedule/propid/{}/{}/{}/'
                                    .format(tele, instrum, date))
         self.assertEqual(200, response.status_code)
-        expected = '2015B-0254'
+        expected = '2015B-0313'
         self.assertEqual(expected, response.content.decode())
 
-    # needed after Dave's schedule gets udpated when we've already
+    #!def test_getpropid2(self):
+    #!    tele = 'kp4m'
+    #!    instrum = 'kosmos'
+    #!    date = '2015-09-04'
+    #!    #!request = self.factory.get('/schedule/propid/{}/{}/{}/'
+    #!    #!                           .format(tele, instrum, date))
+    #!    #!response = schedule.views.getpropid(request, tele, instrum, date)
+    #!    response = self.client.get('/schedule/propid/{}/{}/{}/'
+    #!                               .format(tele, instrum, date))
+    #!    self.assertEqual(200, response.status_code)
+    #!    expected = '2015B-0267'
+    #!    self.assertEqual(expected, response.content.decode())
+
+
+    # needed after Dave's schedule gets updated when we've already
     # cached a value in the mars schedule
-    def test_update(self):
-        self.assertFalse()
-        response = self.client.get('/schedule/udpate/2015B/')
+    def test_update_date(self):
+        response = self.client.get('/schedule/update/2015-09-04/')
+        #print('response={}'.format(response.content))
+        self.assertEqual(200, response.status_code)
+
+    def test_update_semester(self):
+        response = self.client.get('/schedule/update/2015B/')
+        #print('response={}'.format(response.content))
         self.assertEqual(200, response.status_code)
 
         

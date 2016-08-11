@@ -225,7 +225,7 @@ def update_fstop(request, md5sum, fstop, host):
     moves downstream from Dome to Archive. Since the location can be
     on one of serveral hosts, the host should also be given.
     """
-    print('START pdate_fstop: fstop={}, host={}, md5sum={}'
+    print('START update_fstop: fstop={}, host={}, md5sum={}'
           .format(fstop, host, md5sum))
 
     defaults = dict(fstop=fstop)

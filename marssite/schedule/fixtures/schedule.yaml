@@ -1,12 +1,24 @@
-- model: schedule.proposal
-  pk: 2015B-0254
-  fields: {modified: !!timestamp '2015-12-02 21:28:05.893065+00:00'}
-- model: schedule.slot
-  pk: 31686
-  fields:
-    telescope: kp4m
-    instrument: y4kcam
-    obsdate: 2016-01-01
-    modified: 2015-12-02 21:23:40.890296+00:00
-    frozen: false
-    proposals: [2015B-0254]
+-  model: schedule.proposal
+   pk: 2015B-0313
+   fields: {modified: !!timestamp '2015-12-02 21:29:33.188271+00:00'}
+-  model: schedule.proposal
+   pk: 2015B-0267
+   fields: {modified: !!timestamp '2015-12-02 21:30:13.039948+00:00'}
+-  model: schedule.slot
+   pk: 35755
+   fields:
+      telescope: kp4m
+      instrument: kosmos
+      obsdate: 2016-02-01
+      modified: 2016-04-21 00:18:16.481267+00:00
+      frozen: false
+      proposals: [2015B-0313]
+-  model: schedule.slot
+   pk: 35299
+   fields:
+      telescope: kp4m
+      instrument: kosmos
+      obsdate: 2015-09-04
+      modified: 2016-04-21 00:06:41.286689+00:00
+      frozen: false
+      proposals: [2015B-0267]

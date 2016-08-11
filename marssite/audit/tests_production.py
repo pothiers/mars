@@ -4,17 +4,11 @@ from django.test import TestCase, Client
 # python3 manage.py test audit.tests
 
 class AuditTest(TestCase):
-
-
-    @classmethod
-    def setUpClass(cls):
-        #!super(AuditTest, cls).setUpClass()
-        #!cls.client = Client()
-        print('DOME setup')
+    def setUp(self):
+        #self.factory = RequestFactory()
         self.client = Client()
 
-    def dome_test1(self):
-        print('DOME test')
+    def test_dome(self):
         req =  '''{ "observations": [
             {
                 "md5sum": "dc45a997e9c4e2b13a4518bbf24338ff",
@@ -35,10 +29,23 @@ class AuditTest(TestCase):
                 "srcpath": "/data4/observer/mos396218.fits"
             }
         ] }'''
-        print('input json={}'.format(req))
+        #print('input json={}'.format(req))
         resp = self.client.post('/audit/source/',
                                 content_type='application/json',
                                 data=req  )
-        print('response={}'.format(resp.content))
-        #self.assert
+        #print('response={}'.format(resp.content))
+        self.assertContains(resp, 'Added ',
+                            msg_prefix=('Unexpected output from webservice'
+                            ' intended for use by DOME'))
+
+
+    def test_fstop(self):
+        md5sum = 'faux-md5sum'
+        tag = 'archive'
+        host = 'localhost'
+        resp = self.client.post('/audit/fstop/{}/{}/{}/'
+                                .format(md5sum, tag, host))
+        #print('response={}'.format(resp.content))
+        self.assertContains(resp, 'Updated FSTOP;')
+        
         

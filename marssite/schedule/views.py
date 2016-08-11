@@ -122,29 +122,25 @@ def update_from_noaoprop(**query):
     #return redirect('/schedule/')
     return slot_pids # dict[obsdate:telescope] = set([propid, ...])
 
-
-
-
 def update_date(request, day):
     slot_pids = update_from_noaoprop(date=day) 
-    # slot_pits:: dict[obsdate:telescope] = set([propid, ...])
- 
     d1 = datetime.strptime(day, '%Y-%m-%d').date()
     d2 = d1 + timedelta(days=1)
-    return redirect('/schedule/empty/')
+    return HttpResponse('Slots updated for day ({})= {}'
+                        .format(day, ', '.join([str(s) for s in slot_pids])),
+                        content_type='text/plain')
 
 def update_semester(request, semester):
-    update_from_noaoprop(semester=semester)
-    d1 = date(int(semester[:4]),12,1)
-    d2 = d1 + timedelta(days=1)
-    #redirect('/admin/schedule/slot/?obsdate__gte={}&obsdate__lt={}'
-    #.format(d1, d2))
-    return redirect('/schedule/empty/')
+    slot_pids = update_from_noaoprop(semester=semester)
+    return HttpResponse('Slots updated for semester ({})= {}'
+                        .format(semester, ', '.join([str(s) for s in slot_pids])),
+                        content_type='text/plain')
+
 
 def delete_schedule(request):
     slots = Slot.objects.all().delete()
     slots = EmptySlot.objects.all().delete()
-    return redirect('/schedule/')
+    return HttpResponse('DELETED', content_type='text/plain')
     
 @api_view(['GET', 'POST'])
 def upload_file(request):
@@ -219,6 +215,7 @@ def getpropid(request, telescope, instrument, date):
         return HttpResponse(proplist, content_type='text/plain')
     except:
         pass
+    
     # MARS schedule slot not found...
     # ... try updating the date from TAC, and getting Slot again
     update_from_noaoprop(date=date) 
