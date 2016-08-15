@@ -33,7 +33,8 @@ class AuditTest(TestCase):
         resp = self.client.post('/audit/source/',
                                 content_type='application/json',
                                 data=req  )
-        #print('response={}'.format(resp.content))
+        # response=b'<p>Added 2 audit records. 0 already existed (ignored request to add).</p>\n<ul></ul>'
+        print('response={}'.format(resp.content))
         self.assertContains(resp, 'Added ',
                             msg_prefix=('Unexpected output from webservice'
                             ' intended for use by DOME'))
