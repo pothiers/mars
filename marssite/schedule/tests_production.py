@@ -27,24 +27,28 @@ class ScheduleTest(TestCase):
         tele = 'kp4m'
         instrum = 'kosmos'
         date = '2016-02-01'
+        expected = '2015B-0313'
         response = self.client.get('/schedule/propid/{}/{}/{}/'
                                    .format(tele, instrum, date))
         self.assertEqual(200, response.status_code)
-        expected = '2015B-0313'
         self.assertEqual(expected, response.content.decode())
 
-    #!def test_getpropid2(self):
-    #!    tele = 'kp4m'
-    #!    instrum = 'kosmos'
-    #!    date = '2015-09-04'
-    #!    #!request = self.factory.get('/schedule/propid/{}/{}/{}/'
-    #!    #!                           .format(tele, instrum, date))
-    #!    #!response = schedule.views.getpropid(request, tele, instrum, date)
-    #!    response = self.client.get('/schedule/propid/{}/{}/{}/'
-    #!                               .format(tele, instrum, date))
-    #!    self.assertEqual(200, response.status_code)
-    #!    expected = '2015B-0267'
-    #!    self.assertEqual(expected, response.content.decode())
+    def test_getpropid2(self):
+        "Not found in Slots, found in TAC. (update Slots from TAC)"
+        tele = 'kp4m'
+        instrum = 'mosaic3'
+        date = '2016-02-02'
+        expected = '2015B-0453'
+        response = self.client.get('/schedule/propid/{}/{}/{}/'
+                                   .format(tele, instrum, date))
+        tr:y
+            slot = Slot.objects.exists(obsdate=date,
+                                telescope=tele,
+                                instrument=instrum)
+        except:
+            pass
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(expected, response.content.decode())
 
 
     # needed after Dave's schedule gets updated when we've already
