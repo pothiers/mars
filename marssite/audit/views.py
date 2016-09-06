@@ -229,15 +229,16 @@ def update_fstop(request, md5sum, fstop, host):
           .format(fstop, host, md5sum))
 
     defaults = dict(fstop=fstop)
+    defaults['fstop_host'] = host
     machine = fstop.split(':')[0]
-    if machine == 'dome':
-        defaults['dome_host'] = host
-    elif machine == 'mountain':
-        defaults['mountain_host'] = host
-    elif machine == 'valley':
-        defaults['valley_host'] = host
-    else:
-        defaults['mountain_host'] = host
+    #!if machine == 'dome':
+    #!    defaults['dome_host'] = host
+    #!elif machine == 'mountain':
+    #!    defaults['mountain_host'] = host
+    #!elif machine == 'valley':
+    #!    defaults['valley_host'] = host
+    #!else:
+    #!    defaults['mountain_host'] = host
     defaults['submitted'] = now()
     defaults['obsday'] = now().date()
     obj, created = AuditRecord.objects.update_or_create(md5sum=md5sum,
@@ -294,7 +295,8 @@ def update(request, format='yaml'):
         #!    print('DBG: changed attr[{}]={}'
         #!          .format(fname,getattr(obj,fname)))
         #!print('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
-        print('update fstop:obsday={}, md5sum={}'.format(obj.obsday, obj.md5sum))
+        print('update fstop:obsday={}, md5sum={}'
+              .format(obj.obsday, obj.md5sum))
         obj.save()
         #!print('/audit/update/ saved obj={}'.format(obj))
 

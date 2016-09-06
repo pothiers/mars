@@ -42,6 +42,8 @@ class AuditRecord(models.Model):
                                  choices=[(val,val) for val in instruments] )
     srcpath = models.CharField(max_length=256, 
                                help_text='Path of file as submitted')
+    fstop_host =  models.CharField(max_length=40, blank=True,
+                                  help_text='Host name of more recent fstop')
     dome_host =  models.CharField(max_length=40, blank=True,
                                   help_text='Host name of Dome that created FITS')
     mountain_host =  models.CharField(max_length=40, blank=True,
@@ -80,6 +82,9 @@ class AuditRecord(models.Model):
     staged   = models.BooleanField(
         default=False,
         help_text=('Marked for subsequent action.'))
+    hide   = models.BooleanField(
+        default=False,
+        help_text=('Exclude these records in audit reports.'))
 
     
     def narrow_srcpath(self):
