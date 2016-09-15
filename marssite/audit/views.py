@@ -147,6 +147,9 @@ EXAMPLE:
             obs['telescope'] = obs['telescope'].lower()
             obs['instrument'] = obs['instrument'].lower()
             obs['fstop'] = 'dome'
+            if 'fstop_host' not in obs:
+                obs['fstop_host'] = '<dome-host>'
+
             ar = AuditRecord(**obs)
             try:
                 ar.full_clean()
@@ -228,19 +231,11 @@ def update_fstop(request, md5sum, fstop, host):
     print('START update_fstop: fstop={}, host={}, md5sum={}'
           .format(fstop, host, md5sum))
 
-    defaults = dict(fstop=fstop)
-    defaults['fstop_host'] = host
     machine = fstop.split(':')[0]
-    #!if machine == 'dome':
-    #!    defaults['dome_host'] = host
-    #!elif machine == 'mountain':
-    #!    defaults['mountain_host'] = host
-    #!elif machine == 'valley':
-    #!    defaults['valley_host'] = host
-    #!else:
-    #!    defaults['mountain_host'] = host
-    defaults['submitted'] = now()
-    defaults['obsday'] = now().date()
+    defaults = dict(fstop=fstop,
+                    fstop_host=host,
+                    updated=now(),
+                    )
     obj, created = AuditRecord.objects.update_or_create(md5sum=md5sum,
                                                         defaults=defaults)
     print('END update_fstop: obsday={}, md5sum={}, defaults={}'

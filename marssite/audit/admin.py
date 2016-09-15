@@ -50,9 +50,18 @@ def stage(modeladmin, request, queryset):
     queryset.update(staged=True)
 stage.short_description = "Stage selected records for further actions"
 
+
 def unstage(modeladmin, request, queryset):
     queryset.update(staged=False)
 unstage.short_description = "Unstage selected records (no further actions)"
+
+def hide(modeladmin, request, queryset):
+    queryset.update(hide=True)
+hide.short_description = "Hide selected records"
+
+def unhide(modeladmin, request, queryset):
+    queryset.update(hide=False)
+unhide.short_description = "Unhide selected records"
 
 def clear_submit(modeladmin, request, queryset):
     queryset.update(submitted=None,
@@ -74,6 +83,7 @@ clear_error.short_description = "Clear archive error related fields"
 @admin.register(AuditRecord)
 class AuditRecordAdmin(admin.ModelAdmin):
 
+
     def changed_fits_fields(obj):
         if obj.metadata == None:
             return ''
@@ -83,33 +93,64 @@ class AuditRecordAdmin(admin.ModelAdmin):
                 return strval[:10] + '...'
             else:
                 return strval
+
+    def display_fstop(obj):
+        return obj.fstop
+    display_fstop.short_description = "FStop"
+
     def display_srcpath(obj):
-        maxlen=30
+        maxlen=20
         strval = obj.srcpath
         if len(strval) > maxlen:
             return '...' + strval[-maxlen:]
         else:
             return strval
+    display_srcpath.short_description = "SrcPath"
+    
+    def display_archerr(obj):
+        maxlen=20
+        sub='REASON: '
+        strval = obj.archerr
+        index = strval.find(sub)
+        if index < 0:
+            return strval
+        else:
+            return strval[len(sub) + index:]
 
+    def display_updated(obj):
+        return obj.updated.strftime('%x %X')
+    display_updated.short_description = "Updated"
+
+    def display_obsday(obj):
+        return obj.obsday.strftime('%x')
+    display_obsday.short_description = "Obsday"
+
+    def display_fstop_host(obj):
+        return obj.fstop_host
+    display_fstop_host.short_description = "host"
+    
     
     list_display = (
         'staged',
         'hide',
-        'fstop',
-        'obsday', 'telescope', 'instrument',
-        #'narrow_srcpath',
-        #display_srcpath,
-        'srcpath',
-        'updated',
+        display_fstop, #'fstop',
+        
+        display_updated, #'updated',
         'success',
+        display_obsday, #'obsday',
+        'telescope', 'instrument',
+        #'narrow_srcpath',
+        
+        display_srcpath, #'srcpath',
         'archerr',
+        #display_archerr,
         #'submitted',
         'errcode',
         'archfile',
         #'metadata',
         #changed_fits_fields,
         'md5sum',
-        'fstop_host',
+        display_fstop_host, #'fstop_host',
         #!'dome_host',
         #!'mountain_host',
         #!'valley_host',
@@ -127,7 +168,12 @@ class AuditRecordAdmin(admin.ModelAdmin):
                    'telescope',
                    'staged')
     search_fields = ['telescope', 'instrument','srcpath', 'archerr', 'md5sum']
-    actions = [stage, unstage, clear_submit, clear_error]
+    actions = [stage,
+               unstage,
+               hide,
+               unhide,
+               #clear_submit,
+               clear_error ]
     ordering = ['-updated',]
 
     #
