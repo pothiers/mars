@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #LOG=$HOME/mars.log
-LOG=/var/log/mars/mars.log
+LOG=/var/log/mars/server.log
 
 pushd ~/sandbox/mars/marssite
 

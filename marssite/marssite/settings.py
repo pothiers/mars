@@ -151,5 +151,33 @@ REST_FRAMEWORK = {
 
 CONN_MAX_AGE = 7200 # keep DB connections for 2 hours
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class' : 'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/mars/mars.log',
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
+        'debugfile': {
+            'level': 'DEBUG',
+            'class' : 'logging.handlers.RotatingFileHandler',
+            'filename': '/var/log/mars/mars-detail.log',
+            'maxBytes': 10000000,
+            'backupCount': 5,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'debugfile'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 #from .settings_local import *
 exec(open('/etc/mars/django_local_settings.py').read())

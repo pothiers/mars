@@ -1,0 +1,9 @@
+* Release 1.5
+- Added logging config to settings for full python logging
+  + /var/log/mars/mars.log
+  + /var/log/mars/mars-detail.log
+
+
+// Local variables:
+// mode: org
+// end:

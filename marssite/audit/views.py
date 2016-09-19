@@ -149,6 +149,8 @@ EXAMPLE:
             obs['fstop'] = 'dome'
             if 'fstop_host' not in obs:
                 obs['fstop_host'] = '<dome-host>'
+            if obs['fstop_host'] == '':
+                obs['fstop_host'] = '<dome-host>'
 
             ar = AuditRecord(**obs)
             try:
