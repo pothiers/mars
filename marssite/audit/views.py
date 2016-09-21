@@ -37,10 +37,11 @@ from rest_framework import generics
 from rest_framework.decorators import  api_view,parser_classes
 
 from .models import AuditRecord
-from .tables import ProgressTable, AggTable
+from .tables import AggTable
 #from .serializers import SubmittalSerializer, AuditRecordSerializer
 from .serializers import AuditRecordSerializer
-from .plotlib import hbarplot
+#!from .plotlib import hbarplot
+import audit.errcodes as ec
 
 from schedule.models import Slot
 
@@ -266,7 +267,7 @@ def update(request, format='yaml'):
         newdefs = dict(submitted=make_aware(dp.parse(rdict['submitted'])),
                        success=rdict['success'],
                        fstop=fstop,
-                       errcode=rdict['errcode'],
+                       errcode=ec.errcode(rdict['archerr']), # rdict['errcode'],
                        archerr=rdict['archerr'],
                        archfile=rdict['archfile'],
                        metadata=rdict['metadata'])
@@ -291,15 +292,13 @@ def update(request, format='yaml'):
         #!                 + list(initdefs.keys())  ):
         #!    print('DBG: changed attr[{}]={}'
         #!          .format(fname,getattr(obj,fname)))
-        #!print('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
-        print('update fstop:obsday={}, md5sum={}'
-              .format(obj.obsday, obj.md5sum))
+        print('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
         obj.save()
         #!print('/audit/update/ saved obj={}'.format(obj))
 
     return HttpResponse ('Update finished. created={}, obj={}'
                          .format(created, obj))
-            
+
 def add_ingested():
     "Update Audit records using matching Ingest records from SIAP"
     cursor = connection.cursor()
@@ -334,35 +333,35 @@ def failed_ingest(request):
 
 
 
-# PLACEHOLDER    
-def matplotlib_bar_image (request, data):
-    pos = arange(10)+ 2 
-    
-    barh(pos,(1,2,3,4,5,6,7,8,9,10),align = 'center')
-    
-    yticks(pos,('#hcsm','#ukmedlibs','#ImmunoChat','#HCLDR','#ICTD2015','#hpmglobal','#BRCA','#BCSM','#BTSM','#OTalk'))
-    
-    xlabel('Popularidad')
-    ylabel('Hashtags')
-    title('Gráfico de Hashtags')
-    subplots_adjust(left=0.21)    
-    buffer = io.BytesIO()
-    canvas = pylab.get_current_fig_manager().canvas
-    canvas.draw()
-    graphIMG = PIL.Image.fromstring('RGB', canvas.get_width_height(), canvas.tostring_rgb())
-    graphIMG.save(buffer, "PNG")
-    pylab.close()
-    return HttpResponse (buffer.getvalue(), content_type="Image/png")
-
-# See also: templates/audit/googlechart-hbar.html
-def hbar_svg (request):
-    #counts = dict() # counts[(tele,inst,day)] = (nosubmit,rejected,accepted)
-    counts = get_counts()
-
-    # Convert to XX format
-    #! svg = plotlib.hbarplot(data)
-    svg = hbarplot(counts)
-    return HttpResponse (svg, content_type="Image/svg+xml")
+#!# PLACEHOLDER    
+#!def matplotlib_bar_image (request, data):
+#!    pos = arange(10)+ 2 
+#!    
+#!    barh(pos,(1,2,3,4,5,6,7,8,9,10),align = 'center')
+#!    
+#!    yticks(pos,('#hcsm','#ukmedlibs','#ImmunoChat','#HCLDR','#ICTD2015','#hpmglobal','#BRCA','#BCSM','#BTSM','#OTalk'))
+#!    
+#!    xlabel('Popularidad')
+#!    ylabel('Hashtags')
+#!    title('Gráfico de Hashtags')
+#!    subplots_adjust(left=0.21)    
+#!    buffer = io.BytesIO()
+#!    canvas = pylab.get_current_fig_manager().canvas
+#!    canvas.draw()
+#!    graphIMG = PIL.Image.fromstring('RGB', canvas.get_width_height(), canvas.tostring_rgb())
+#!    graphIMG.save(buffer, "PNG")
+#!    pylab.close()
+#!    return HttpResponse (buffer.getvalue(), content_type="Image/png")
+#!
+#!# See also: templates/audit/googlechart-hbar.html
+#!def hbar_svg (request):
+#!    #counts = dict() # counts[(tele,inst,day)] = (nosubmit,rejected,accepted)
+#!    counts = get_counts()
+#!
+#!    # Convert to XX format
+#!    #! svg = plotlib.hbarplot(data)
+#!    svg = hbarplot(counts)
+#!    return HttpResponse (svg, content_type="Image/svg+xml")
 
 def get_counts():
     """Return counts of files grouped by (instrument, telescope, obsday).
@@ -406,20 +405,23 @@ def get_counts():
 # Q2: Overwrite admin get_queryset to get just error aggregates?
 # A2: NO. Admin rows must represent OBJECTS.
 def agg_domeday(request):
-    """Find any aggregation (date,instrum,tele) with errors.
+    """Find any aggregation (date,instrum,tele) with errors ordered by obsday.
     Intent is to drill down into these composit rows to find details of 
     an error.
     """
-    from pprint import pprint
+    #! from pprint import pprint
     group = ['obsday','instrument','telescope']
-    errors = AuditRecord.objects.exclude(success=True)
-    #errors = AuditRecord.objects
+    ingesterrs = AuditRecord.objects.exclude(success=True)
+    #!if ingesterrs.count() == 0:
+    #!    table = AggTable(AuditRecords.objects.none())
+    #!    return render(request, 'audit/agg.html',
+    #!                  {'title': 'Aggregated error counts', 'agg': table})
 
     # Following works, but why bother seperating error types here?  Do
     # it on drill down instead. Because we cannot do OR or NEGATION in
     # URL querystring used in drill down!
     #
-    errcnts = errors.values(*group).annotate(
+    errcnts = ingesterrs.values(*group).annotate(
         mtnjam=Sum(Case(When(success__isnull=True, then=1),
                         output_field=IntegerField())),
         valjam=Sum(Case(When(success=False, then=1),
@@ -428,7 +430,7 @@ def agg_domeday(request):
         #!                output_field=IntegerField())),
         total=Count('md5sum')
     ).order_by()
-    #errcnts = errors.values(*group).annotate(jams=Count('md5sum'))
+    #errcnts = ingesterrs.values(*group).annotate(jams=Count('md5sum'))
     #pprint(list(errcnts.order_by('obsday')))
     #table = AggTable(errcnts, order_by='obsday')
     table = AggTable(errcnts.order_by('-obsday'))
@@ -436,116 +438,116 @@ def agg_domeday(request):
     return render(request, 'audit/agg.html',
                   {'title': 'Aggregated error counts', 'agg': table})
 
-# Eventually a replacement for Sean's CheckNight page
-def progress_count(request):
-    """Counts we want (for each telescope+instrument+obsday):
-sent::     Sent from dome
-nosubmit:: Not received at Valley (in transit? lost?) 
-rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
-accepted:: Archive accepted submission (should be in DB)
-
-sent = nosubmit + (rejected + accepted))
-"""
-
-    #!add_ingested()
-    progress = get_counts() # (notsubmitted, rejected, accepted)
-    instrums=[]
-    for (instr,tele,day) in progress.keys():
-        try:
-            #obsdate=datetime.strptime(day,'%Y-%m-%d').date()
-            slot=Slot.objects.get(obsdate=day, telescope=tele, instrument=instr)
-            propids = slot.propids
-        except Slot.DoesNotExist:
-            propids=''
-        if day == None: continue
-        instrums.append(dict(Telescope=tele,
-                             Instrument=instr,
-                             ObsDay=day.isoformat(),
-                             dome=sum(progress[(instr,tele,day)]),
-                             notReceived=progress[(instr,tele,day)][0],
-                             rejected=progress[(instr,tele,day)][1],
-                             accepted=progress[(instr,tele,day)][2],
-                             Updated=now(),
-                             Propid = propids,
-                             ))
-    #!print('instrums={}'.format(instrums))
-    table = ProgressTable(sorted(instrums,
-                                 reverse=True, key=lambda d: d['ObsDay'] ))
-    c = {"instrum_table": table,
-         "title": 'faux DMO CheckNight Monitor',  }
-    return render(request, 'audit/progress.html', c) 
-
-def progress(request):
-    """Bar chart of counts for each telescope+instrument:
-#sent::     Sent from dome
-nosubmit:: Not received at Valley (in transit? lost?) 
-rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
-accepted:: Archive accepted submission (should be in DB)
-
-sent = nosubmit + (rejected + accepted))
-"""
-    add_ingested()
-    nosubmitqs = (AuditRecord.objects.exclude(success__isnull=False)
-                  .values('telescope','instrument')
-                  .annotate(total=Count('md5sum'))
-                  .order_by('instrument','telescope'))
-    nosubmit = dict([((ob['telescope'],ob['instrument']),ob['total'])
-                     for ob in nosubmitqs])
-
-    rejectedqs = (AuditRecord.objects.filter(success__exact=False)
-                  .values('telescope','instrument')
-                  .annotate(total=Count('md5sum'))
-                  .order_by('instrument','telescope'))
-    rejected = dict([((ob['telescope'],ob['instrument']),ob['total'])
-                     for ob in rejectedqs])
-
-    acceptedqs = (AuditRecord.objects.filter(success__exact=True)
-                  .values('telescope','instrument')
-                  .annotate(total=Count('md5sum'))
-                  .order_by('instrument','telescope'))
-    accepted = dict([((ob['telescope'],ob['instrument']),ob['total'])
-                     for ob in acceptedqs])
-    sent = AuditRecord.objects.count()
-    assert (sent==(sum([n for n in nosubmit.values()])
-                   + sum([n for n in rejected.values()])
-                   + sum([n for n in accepted.values()])))
-    progress = dict() # progress[(tele,instr)] = (nosubmit,rejected,accepted)
-    for k in (AuditRecord.objects.order_by('telescope','instrument')
-              .distinct('telescope','instrument')
-              .values_list('telescope','instrument')):
-        progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
-
-    instrums = sorted(list(progress.keys()))
-    xdata = ['{}:{}'.format(tele,inst) for tele,inst in sorted(progress.keys())]
-    xdata = list(range(len(instrums)))
-
-    ydata0 = [progress[k][0] for k in instrums]
-    ydata1 = [progress[k][1] for k in instrums]
-    ydata2 = [progress[k][2] for k in instrums]
-
-    extra_serie = {
-        "tooltip": {"y_start": "", "y_end": " mins"},
-        #"tooltips": True,
-        #"showValues": True,
-        #"tickFormat": None,
-        #"style": 'stack',
-        "y_axis_format": "",
-        "x_axis_format": "",
-    }
-
-    chartdata = {
-        'x': xdata,
-        'name0': 'Not Received', 'y0': ydata0, 'extra0': extra_serie,
-        'name1': 'Rejected',     'y1': ydata1, 'extra1': extra_serie,
-        'name2': 'Accepted',     'y2': ydata2, 'extra2': extra_serie,
-    }
-
-    charttype = "multiBarHorizontalChart"
-    data = {
-        'charttype': charttype,
-        'chartdata': chartdata
-    }
-    return render_to_response('audit/progress-bar-chart.html', data)
+#!!# Eventually a replacement for Sean's CheckNight page
+#!!def progress_count(request):
+#!!    """Counts we want (for each telescope+instrument+obsday):
+#!!sent::     Sent from dome
+#!!nosubmit:: Not received at Valley (in transit? lost?) 
+#!!rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
+#!!accepted:: Archive accepted submission (should be in DB)
+#!!
+#!!sent = nosubmit + (rejected + accepted))
+#!!"""
+#!!
+#!!    #!add_ingested()
+#!!    progress = get_counts() # (notsubmitted, rejected, accepted)
+#!!    instrums=[]
+#!!    for (instr,tele,day) in progress.keys():
+#!!        try:
+#!!            #obsdate=datetime.strptime(day,'%Y-%m-%d').date()
+#!!            slot=Slot.objects.get(obsdate=day, telescope=tele, instrument=instr)
+#!!            propids = slot.propids
+#!!        except Slot.DoesNotExist:
+#!!            propids=''
+#!!        if day == None: continue
+#!!        instrums.append(dict(Telescope=tele,
+#!!                             Instrument=instr,
+#!!                             ObsDay=day.isoformat(),
+#!!                             dome=sum(progress[(instr,tele,day)]),
+#!!                             notReceived=progress[(instr,tele,day)][0],
+#!!                             rejected=progress[(instr,tele,day)][1],
+#!!                             accepted=progress[(instr,tele,day)][2],
+#!!                             Updated=now(),
+#!!                             Propid = propids,
+#!!                             ))
+#!!    #!print('instrums={}'.format(instrums))
+#!!    table = ProgressTable(sorted(instrums,
+#!!                                 reverse=True, key=lambda d: d['ObsDay'] ))
+#!!    c = {"instrum_table": table,
+#!!         "title": 'faux DMO CheckNight Monitor',  }
+#!!    return render(request, 'audit/progress.html', c) 
+#!!
+#!!def progress(request):
+#!!    """Bar chart of counts for each telescope+instrument:
+#!!#sent::     Sent from dome
+#!!nosubmit:: Not received at Valley (in transit? lost?) 
+#!!rejected:: Archive rejected submission (not in DB but is in Inactive Queue)
+#!!accepted:: Archive accepted submission (should be in DB)
+#!!
+#!!sent = nosubmit + (rejected + accepted))
+#!!"""
+#!!    add_ingested()
+#!!    nosubmitqs = (AuditRecord.objects.exclude(success__isnull=False)
+#!!                  .values('telescope','instrument')
+#!!                  .annotate(total=Count('md5sum'))
+#!!                  .order_by('instrument','telescope'))
+#!!    nosubmit = dict([((ob['telescope'],ob['instrument']),ob['total'])
+#!!                     for ob in nosubmitqs])
+#!!
+#!!    rejectedqs = (AuditRecord.objects.filter(success__exact=False)
+#!!                  .values('telescope','instrument')
+#!!                  .annotate(total=Count('md5sum'))
+#!!                  .order_by('instrument','telescope'))
+#!!    rejected = dict([((ob['telescope'],ob['instrument']),ob['total'])
+#!!                     for ob in rejectedqs])
+#!!
+#!!    acceptedqs = (AuditRecord.objects.filter(success__exact=True)
+#!!                  .values('telescope','instrument')
+#!!                  .annotate(total=Count('md5sum'))
+#!!                  .order_by('instrument','telescope'))
+#!!    accepted = dict([((ob['telescope'],ob['instrument']),ob['total'])
+#!!                     for ob in acceptedqs])
+#!!    sent = AuditRecord.objects.count()
+#!!    assert (sent==(sum([n for n in nosubmit.values()])
+#!!                   + sum([n for n in rejected.values()])
+#!!                   + sum([n for n in accepted.values()])))
+#!!    progress = dict() # progress[(tele,instr)] = (nosubmit,rejected,accepted)
+#!!    for k in (AuditRecord.objects.order_by('telescope','instrument')
+#!!              .distinct('telescope','instrument')
+#!!              .values_list('telescope','instrument')):
+#!!        progress[k] = (nosubmit.get(k,0), rejected.get(k,0), accepted.get(k,0))
+#!!
+#!!    instrums = sorted(list(progress.keys()))
+#!!    xdata = ['{}:{}'.format(tele,inst) for tele,inst in sorted(progress.keys())]
+#!!    xdata = list(range(len(instrums)))
+#!!
+#!!    ydata0 = [progress[k][0] for k in instrums]
+#!!    ydata1 = [progress[k][1] for k in instrums]
+#!!    ydata2 = [progress[k][2] for k in instrums]
+#!!
+#!!    extra_serie = {
+#!!        "tooltip": {"y_start": "", "y_end": " mins"},
+#!!        #"tooltips": True,
+#!!        #"showValues": True,
+#!!        #"tickFormat": None,
+#!!        #"style": 'stack',
+#!!        "y_axis_format": "",
+#!!        "x_axis_format": "",
+#!!    }
+#!!
+#!!    chartdata = {
+#!!        'x': xdata,
+#!!        'name0': 'Not Received', 'y0': ydata0, 'extra0': extra_serie,
+#!!        'name1': 'Rejected',     'y1': ydata1, 'extra1': extra_serie,
+#!!        'name2': 'Accepted',     'y2': ydata2, 'extra2': extra_serie,
+#!!    }
+#!!
+#!!    charttype = "multiBarHorizontalChart"
+#!!    data = {
+#!!        'charttype': charttype,
+#!!        'chartdata': chartdata
+#!!    }
+#!!    return render_to_response('audit/progress-bar-chart.html', data)
     
 #!class AuditRecordList(generics.ListAPIView):
 #!    model = AuditRecord

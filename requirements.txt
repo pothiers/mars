@@ -1,5 +1,6 @@
 cycler==0.10.0
-Django==1.9.7
+#Django==1.9.7
+Django==1.9.9
 django-filter==0.13.0
 django-graphos-3==0.1.1
 django-nvd3==0.9.7

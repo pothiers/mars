@@ -5,6 +5,14 @@ from django.contrib.postgres.fields import HStoreField
 #!from water.models import Telescope,Instrument
 
 
+fstops = [
+    'dome',
+    'mountain:dropbox', 'mountain:queue',
+    'mountain:cache', 'mountain:anticache`',
+    'valley:dropbox',   'valley:queue',
+    'valley:cache',   'valley:anticache',
+    'archive']
+
 
 
 class AuditRecord(models.Model):
@@ -19,13 +27,6 @@ class AuditRecord(models.Model):
         'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
         'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
         'cosmos',  'unknown'])
-    fstops = [
-        'dome',
-        'mountain:dropbox', 'mountain:queue',
-        'mountain:cache', 'mountain:anticache`',
-        'valley:dropbox',   'valley:queue',
-        'valley:cache',   'valley:anticache',
-        'archive']
     #telescopes = [obj.name for obj in Telescope.objects.all()]
     #instruments = [obj.name for obj in Instrument.objects.all()]
     errcodes = ['DUPFITS', 'BADPROP', 'COLLIDE', 'NOPROP', 'MISSREQ',
@@ -44,12 +45,12 @@ class AuditRecord(models.Model):
                                help_text='Path of file as submitted')
     fstop_host =  models.CharField(max_length=40, blank=True,
                                   help_text='Host name of more recent fstop')
-    dome_host =  models.CharField(max_length=40, blank=True,
-                                  help_text='Host name of Dome that created FITS')
-    mountain_host =  models.CharField(max_length=40, blank=True,
-                                 help_text='Host name of Mountain that received FITS')
-    valley_host =  models.CharField(max_length=40, blank=True,
-                                 help_text='Host name of Mountain that received FITS')
+    #!dome_host =  models.CharField(max_length=40, blank=True,
+    #!                              help_text='Host name of Dome that created FITS')
+    #!mountain_host =  models.CharField(max_length=40, blank=True,
+    #!                             help_text='Host name of Mountain that received FITS')
+    #!valley_host =  models.CharField(max_length=40, blank=True,
+    #!                             help_text='Host name of Mountain that received FITS')
     
     # Field values automatically filled in (was called "recorded")
     updated  = models.DateTimeField(default=timezone.now,
@@ -58,7 +59,7 @@ class AuditRecord(models.Model):
     ##### Field values added by TADA
 
     fstop = models.CharField(max_length=25, blank=True,
-                             choices=[(val,val) for val in fstops],
+                             #choices=[(val,val) for val in fstops],
                              help_text = 'Most downstream stop of FITS file')
     
     submitted = models.DateTimeField(blank=True, null=True,
@@ -68,10 +69,12 @@ class AuditRecord(models.Model):
                    'Then True iff Archive reported success on ingest'))
     archerr   = models.CharField(max_length=256, blank=True,
                                  help_text='Archive ingest error message')
-    errcode   = models.CharField(max_length=10,
-                                 default='none',
-                                 choices=[(val,val) for val in errcodes],
-                                 help_text='Error code for Archive Ingest')
+    errcode   = models.CharField(max_length=10, blank=True,
+                                 default='',
+                                 #choices=[(val,val) for val in errcodes],
+                                 help_text=(
+                                     'Error code for error reported from'
+                                     ' dataq, tada, archive'))
 
     archfile  = models.CharField(max_length=80, blank=True,
                                  help_text='Basename of FITS file in Archive')

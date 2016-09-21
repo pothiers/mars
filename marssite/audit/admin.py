@@ -63,26 +63,28 @@ def unhide(modeladmin, request, queryset):
     queryset.update(hide=False)
 unhide.short_description = "Unhide selected records"
 
-def clear_submit(modeladmin, request, queryset):
-    queryset.update(submitted=None,
-                    success=None,
-                    archerr='',
-                    errcode='none',
-                    archfile='',
-                    metadata=None,
-                    )
-clear_submit.short_description = "Clear archive submit related fields"
-
-def clear_error(modeladmin, request, queryset):
-    queryset.update(archerr='',
-                    errcode='none',
-                    archfile='',
-                    )
-clear_error.short_description = "Clear archive error related fields"
+#!def clear_submit(modeladmin, request, queryset):
+#!    queryset.update(submitted=None,
+#!                    success=None,
+#!                    archerr='',
+#!                    errcode='none',
+#!                    archfile='',
+#!                    metadata=None,
+#!                    )
+#!clear_submit.short_description = "Clear archive submit related fields"
+#!
+#!def clear_error(modeladmin, request, queryset):
+#!    queryset.update(archerr='',
+#!                    errcode='none',
+#!                    archfile='',
+#!                    )
+#!clear_error.short_description = "Clear archive error related fields"
 
 @admin.register(AuditRecord)
+#!class AuditRecordAdmin(admin.ModelAdmin):
+#!    pass 
+#!
 class AuditRecordAdmin(admin.ModelAdmin):
-
 
     def changed_fits_fields(obj):
         if obj.metadata == None:
@@ -122,7 +124,11 @@ class AuditRecordAdmin(admin.ModelAdmin):
     display_updated.short_description = "Updated"
 
     def display_obsday(obj):
-        return obj.obsday.strftime('%x')
+        if obj.obsday == None:
+            # Should only happen after connection troubles
+            return obj.obsday
+        else:
+            return obj.obsday.strftime('%x')
     display_obsday.short_description = "Obsday"
 
     def display_fstop_host(obj):
@@ -135,32 +141,29 @@ class AuditRecordAdmin(admin.ModelAdmin):
         'hide',
         display_fstop, #'fstop',
         
-        display_updated, #'updated',
+        #display_updated, #'updated',
+        'updated',
         'success',
         display_obsday, #'obsday',
-        'telescope', 'instrument',
+        'telescope',
+        'instrument',
         #'narrow_srcpath',
         
         display_srcpath, #'srcpath',
-        'archerr',
-        #display_archerr,
-        #'submitted',
+        display_archerr, #'archerr',
         'errcode',
         'archfile',
         #'metadata',
         #changed_fits_fields,
         'md5sum',
         display_fstop_host, #'fstop_host',
-        #!'dome_host',
-        #!'mountain_host',
-        #!'valley_host',
     )
  
     date_hierarchy = 'obsday'
     list_filter = ('success',
                    'hide',
                    #'obsday',
-                   ObsdayListFilter,
+                   #! ObsdayListFilter,
                    'fstop',
                    'errcode',
                    'submitted',
@@ -173,7 +176,8 @@ class AuditRecordAdmin(admin.ModelAdmin):
                hide,
                unhide,
                #clear_submit,
-               clear_error ]
+               #clear_error,
+    ]
     ordering = ['-updated',]
 
     #

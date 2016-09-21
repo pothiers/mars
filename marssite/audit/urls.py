@@ -21,10 +21,10 @@ urlpatterns = [
     url(r'^missing/$', views.not_ingested, name='not_ingested'),
     url(r'^failed/$', views.failed_ingest, name='failed_ingest'),
     url(r'^agg/$', views.agg_domeday, name='agg'),
-    url(r'^notchecknight/$', views.progress_count, name='progress_count'),
-    url(r'^progress_plot/$', views.progress, name='progress'),
+    #!url(r'^notchecknight/$', views.progress_count, name='progress_count'),
+    #!url(r'^progress_plot/$', views.progress, name='progress'),
     url(r'^demo1/$', views.demo_multibarhorizontalchart,  name='demo1'),
-    url(r'^hbar/$', views.hbar_svg,  name='hbar_svg'),
+    #!url(r'^hbar/$', views.hbar_svg,  name='hbar_svg'),
     url(r'^dupes/$', views.get_rejected_duplicates,  name='get_rejected_duplicates'),
     url(r'^miss/$', views.get_rejected_missing,  name='get_rejected_missing'),
 ]
