@@ -14,7 +14,7 @@
 import dateutil.parser as dp
 import re
 from datetime import datetime
-
+import logging
 
 from django.utils.timezone import make_aware, now
 from django.views.decorators.csrf import csrf_exempt
@@ -142,8 +142,13 @@ EXAMPLE:
     if request.method == 'POST':
         addcnt=0
         preexisting = set()
+        if 'observations' not in request.data:
+            logging.error(('data in POST to audit/source does not contain'
+                           ' "observations"; {}')
+                          .format(list(request.data)))
 
-        #print('DBG: request.data={}'.format(request.data))
+        print('DBG-audit/source: request.data.observations={}'
+              .format(list(request.data['observations'])))
         for obs in request.data['observations']:
             obs['telescope'] = obs['telescope'].lower()
             obs['instrument'] = obs['instrument'].lower()

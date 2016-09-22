@@ -141,7 +141,7 @@ class AuditRecordAdmin(admin.ModelAdmin):
         'hide',
         display_fstop, #'fstop',
         
-        #display_updated, #'updated',
+        #display_updated, # makes sort by column stop working
         'updated',
         'success',
         display_obsday, #'obsday',
