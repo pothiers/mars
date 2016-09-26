@@ -164,7 +164,7 @@ EXAMPLE:
             except ValidationError as e:
                 errmsg = ('Invalid JSON data passed to {}; {}'
                           .format(reverse('audit:source'), e.message_dict))
-                return HttpResponse('ERROR: Bad POST data; {}'.format(errmsg))
+                return HttpResponse('ERROR: Bad POST data; {}\n'.format(errmsg))
             #! print('DBG: obs={}'.format(obs))
             obj,created = AuditRecord.objects.get_or_create(
                 md5sum=obs['md5sum'],
