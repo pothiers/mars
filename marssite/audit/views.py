@@ -173,9 +173,8 @@ EXAMPLE:
                 addcnt+=1
             else:
                 preexisting.add((obj.md5sum, obj.srcpath))
-        html = ('<p>Added {} audit records. '
-                '{} already existed (ignored request to add).</p>\n'
-                '<ul>'
+        html = ('Added {} audit records.'
+                ' {} already existed (ignored request to add).\n'
                ).format(addcnt,len(preexisting))
         for m,s in preexisting:
             html += '<li>{}, {}</li>'.format(m,s)
@@ -246,8 +245,8 @@ def update_fstop(request, md5sum, fstop, host):
                     )
     obj, created = AuditRecord.objects.update_or_create(md5sum=md5sum,
                                                         defaults=defaults)
-    print('END update_fstop: obsday={}, md5sum={}, defaults={}'
-          .format(obj.obsday, md5sum, defaults))
+    print('END update_fstop: obsday={}, md5sum={}, defaults={}, created={}'
+          .format(obj.obsday, md5sum, defaults, created))
     return HttpResponse('Updated FSTOP; {}'.format(md5sum))
     
     

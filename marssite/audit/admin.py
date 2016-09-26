@@ -149,7 +149,8 @@ class AuditRecordAdmin(admin.ModelAdmin):
         'instrument',
         #'narrow_srcpath',
         
-        display_srcpath, #'srcpath',
+        #display_srcpath, #'srcpath',
+        'srcpath',
         display_archerr, #'archerr',
         'errcode',
         'archfile',
