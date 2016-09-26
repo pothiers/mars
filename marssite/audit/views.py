@@ -177,8 +177,8 @@ EXAMPLE:
                 ' {} already existed (ignored request to add).\n'
                ).format(addcnt,len(preexisting))
         for m,s in preexisting:
-            html += '<li>{}, {}</li>'.format(m,s)
-        html += '</ul>'
+            html += '{}, {}\n'.format(m,s)
+        html += ''
         return HttpResponse(html)
     else:
         return HttpResponse('ERROR: expected POST')
