@@ -140,7 +140,7 @@ EXAMPLE:
     curl -H "Content-Type: application/json" -d @example-obs.json http://localhost:8000/audit/source/
     """
     if request.method == 'POST':
-        addcnt=0
+        addcnt=0 
         preexisting = set()
         if 'observations' not in request.data:
             logging.error(('data in POST to audit/source does not contain'
@@ -162,9 +162,12 @@ EXAMPLE:
             try:
                 ar.full_clean()
             except ValidationError as e:
-                errmsg = ('Invalid JSON data passed to {}; {}'
-                          .format(reverse('audit:source'), e.message_dict))
-                return HttpResponse('ERROR: Bad POST data; {}\n'.format(errmsg))
+                logging.warning(('Invalid JSON data passed to {}.'
+                                '  Ignoring record for key {} and trying rest.'
+                                '; {}')
+                                .format(reverse('audit:source'),
+                                        e.message_dict))
+                continue
             #! print('DBG: obs={}'.format(obs))
             obj,created = AuditRecord.objects.get_or_create(
                 md5sum=obs['md5sum'],
@@ -173,6 +176,7 @@ EXAMPLE:
                 addcnt+=1
             else:
                 preexisting.add((obj.md5sum, obj.srcpath))
+        # END for
         html = ('Added {} audit records.'
                 ' {} already existed (ignored request to add).\n'
                ).format(addcnt,len(preexisting))
