@@ -141,6 +141,7 @@ EXAMPLE:
     """
     if request.method == 'POST':
         addcnt=0 
+        errcnt=0 
         preexisting = set()
         if 'observations' not in request.data:
             logging.error(('data in POST to audit/source does not contain'
@@ -162,10 +163,12 @@ EXAMPLE:
             try:
                 ar.full_clean()
             except ValidationError as e:
+                errcnt += 1
                 logging.warning(('Invalid JSON data passed to {}.'
                                 '  Ignoring record for key {} and trying rest.'
                                 '; {}')
                                 .format(reverse('audit:source'),
+                                        obs.get('md5sum','UNKNOWN'),
                                         e.message_dict))
                 continue
             #! print('DBG: obs={}'.format(obs))
@@ -173,17 +176,17 @@ EXAMPLE:
                 md5sum=obs['md5sum'],
                 defaults=obs)
             if created:
-                addcnt+=1
+                addcnt += 1
             else:
                 preexisting.add((obj.md5sum, obj.srcpath))
         # END for
-        html = ('Added {} audit records.'
+        msg = ('Added {} audit records. Got {} errors.'
                 ' {} already existed (ignored request to add).\n'
-               ).format(addcnt,len(preexisting))
+               ).format(addcnt,errcnt, len(preexisting))
         for m,s in preexisting:
-            html += '{}, {}\n'.format(m,s)
-        html += ''
-        return HttpResponse(html)
+            msg += '{}, {}\n'.format(m,s)
+        logging.error(msg)
+        return HttpResponse(msg)
     else:
         return HttpResponse('ERROR: expected POST')
 
