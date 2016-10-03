@@ -1,8 +1,13 @@
-* Release 1.5
+* Release 1.4
 - Added logging config to settings for full python logging
   + /var/log/mars/mars.log
   + /var/log/mars/mars-detail.log
-    - Among other things, this logs all the SQL issued to the DB.
+    - Among other things, this logs all the SQL used to talk to the DB.
+- mars: admin/audit/auditrecord is much more consistent. All columns
+  are filled in and accurate. (If not, submit bug report.) In
+  particular, the "fstop" column indicates the current resting place
+  of the fits file. You want it to be "archive" for a complete ingest
+  success.
 
 * COMMENT POSTSCRIPT
 /(this section here to keep Document Comments out of the way)/

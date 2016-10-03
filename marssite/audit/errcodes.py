@@ -77,15 +77,16 @@ ERRMAP = [
 ]
 
 def errcode(detailed_error_message):
-    if detailed_error_message == '':
-        return 'NONE'
+    ecode = ''
 
-    ecode = None
+    if detailed_error_message == '':
+        return ''
+
     for name, regex, desc in ERRMAP:
         if regex.search(detailed_error_message):
             ecode = name
             break
-    if ecode == None:
+    if ecode == '':
         logging.error('errcode cannot code for error message: {}'
                       .format(detailed_error_message))
     return ecode

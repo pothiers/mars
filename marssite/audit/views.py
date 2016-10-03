@@ -164,12 +164,13 @@ EXAMPLE:
                 ar.full_clean()
             except ValidationError as e:
                 errcnt += 1
-                logging.warning(('Invalid JSON data passed to {}.'
-                                '  Ignoring record for key {} and trying rest.'
-                                '; {}')
-                                .format(reverse('audit:source'),
-                                        obs.get('md5sum','UNKNOWN'),
-                                        e.message_dict))
+                logging.warning((
+                    'Invalid JSON data passed to {url}. '
+                    + 'Ignoring record for key {md5} and trying rest.; {valerr}'
+                ).format(url=reverse('audit:source'),
+                         md5=obs.get('md5sum','UNKNOWN'),
+                         valerr=e.message_dict
+                ))
                 continue
             #! print('DBG: obs={}'.format(obs))
             obj,created = AuditRecord.objects.get_or_create(
@@ -181,7 +182,7 @@ EXAMPLE:
                 preexisting.add((obj.md5sum, obj.srcpath))
         # END for
         msg = ('Added {} audit records. Got {} errors.'
-                ' {} already existed (ignored request to add).\n'
+                ' {} already existed (ignored request to add on error).\n'
                ).format(addcnt,errcnt, len(preexisting))
         for m,s in preexisting:
             msg += '{}, {}\n'.format(m,s)
