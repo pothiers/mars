@@ -152,6 +152,7 @@ EXAMPLE:
               .format(list(request.data['observations'])))
         for obs in request.data['observations']:
             auditrec = dict(md5sum = obs['md5sum'],
+                            obsday = obs['obsday'],
                             telescope = obs['telescope'].lower(),
                             instrument = obs['instrument'].lower(),
                             srcpath = obs['srcpath'],
