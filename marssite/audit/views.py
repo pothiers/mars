@@ -181,12 +181,15 @@ EXAMPLE:
             else:
                 preexisting.add((obj.md5sum, obj.srcpath))
         # END for
-        msg = ('Added {} audit records. Got {} errors.'
-                ' {} already existed (ignored request to add on error).\n'
-               ).format(addcnt,errcnt, len(preexisting))
-        for m,s in preexisting:
-            msg += '{}, {}\n'.format(m,s)
-        logging.error(msg)
+        if errcnt > 0:
+            msg = ('ERROR: Added {} audit records. Got {} errors.'
+                   ' {} already existed so ignored request to add.\n'
+            ).format(addcnt, errcnt, len(preexisting))
+            for m,s in preexisting:
+                msg += '{}, {}\n'.format(m,s)
+            logging.error(msg)
+        else:
+            msg = 'SUCCESS: added {} records'.format(addcnt)
         return HttpResponse(msg)
     else:
         return HttpResponse('ERROR: expected POST')
