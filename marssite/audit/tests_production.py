@@ -15,8 +15,7 @@ class AuditTest(TestCase):
                 "obsday": "2016-08-05",
                 "telescope": "kp4m",
                 "instrument": "mosaic3",
-                "dome_host": "mosaic3",
-                "mountain_host": "mtnkp1.sdm.noao.edu",
+                "dome_host": "dome1",
                 "srcpath": "/data4/observer/mos396217.fits"
             },
             {
@@ -24,8 +23,7 @@ class AuditTest(TestCase):
                 "obsday": "2016-08-05",
                 "telescope": "kp4m",
                 "instrument": "mosaic3",
-                "dome_host": "mosaic3",
-                "mountain_host": "mtnkp1.sdm.noao.edu",
+                "dome_host": "dome1",
                 "srcpath": "/data4/observer/mos396218.fits"
             }
         ] }'''

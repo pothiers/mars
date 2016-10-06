@@ -151,15 +151,14 @@ EXAMPLE:
         print('DBG-audit/source: request.data.observations={}'
               .format(list(request.data['observations'])))
         for obs in request.data['observations']:
-            obs['telescope'] = obs['telescope'].lower()
-            obs['instrument'] = obs['instrument'].lower()
-            obs['fstop'] = 'dome'
-            if 'fstop_host' not in obs:
-                obs['fstop_host'] = '<dome-host>'
-            if obs['fstop_host'] == '':
-                obs['fstop_host'] = '<dome-host>'
+            auditrec = dict(md5sum = obs['md5sum'],
+                            telescope = obs['telescope'].lower(),
+                            instrument = obs['instrument'].lower(),
+                            srcpath = obs['srcpath'],
+                            fstop_host = obs.get('dome_host','<dome-host>'),
+                            )
 
-            ar = AuditRecord(**obs)
+            ar = AuditRecord(**auditrec)
             try:
                 ar.full_clean()
             except ValidationError as e:
@@ -175,7 +174,7 @@ EXAMPLE:
             #! print('DBG: obs={}'.format(obs))
             obj,created = AuditRecord.objects.get_or_create(
                 md5sum=obs['md5sum'],
-                defaults=obs)
+                defaults=auditrec)
             if created:
                 addcnt += 1
             else:
