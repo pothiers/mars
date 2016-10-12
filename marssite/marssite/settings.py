@@ -123,7 +123,7 @@ SWAGGER_SETTINGS = {
 #!    'resource_access_handler': None,
 #!    'base_path':'localhost:8000/docs',
     'info': {
-        'title': 'MARS prototype API documentation',
+        'title': 'MARS Prototype API Documentation',
         'description': ('This is documentation for the '
                         'MARS (Metadata Archive Retrival Services) '
                         'prototype server.  '
@@ -154,6 +154,12 @@ CONN_MAX_AGE = 7200 # keep DB connections for 2 hours
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    #!'formatters': {
+    #!    'django.server': {
+    #!        '()': 'django.utils.log.ServerFormatter',
+    #!        'format': '[%(server_time)s] %(message)s',
+    #!    }
+    #!},
     'handlers': {
         'file': {
             'level': 'INFO',
@@ -169,6 +175,11 @@ LOGGING = {
             'maxBytes': 10000000,
             'backupCount': 5,
         },
+        #!'django.server': {
+        #!    'level': 'INFO',
+        #!    'class': 'logging.StreamHandler',
+        #!    'formatter': 'django.server',
+        #!},        
     },
     'loggers': {
         'django': {
@@ -176,6 +187,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        #!'django.server': {
+        #!    'handlers': ['django.server'],
+        #!    'level': 'INFO',
+        #!    'propagate': False,
+        #!}
     },
 }
 
