@@ -266,7 +266,7 @@ def update_fstop(request, md5sum, fstop, host):
 @parser_classes((JSONParser,))
 def update(request, format='yaml'):
     """Update audit record"""
-    if request.method == 'POST':    
+    if request.method == 'POST':  
         rdict = request.data.copy()
         md5 = rdict['md5sum']
         #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
