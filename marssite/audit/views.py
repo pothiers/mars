@@ -148,18 +148,18 @@ EXAMPLE:
                            ' "observations"; {}')
                           .format(list(request.data)))
 
-        print('DBG-audit/source: request.data.observations={}'
+        logging.debug('DBG-audit/source: request.data.observations={}'
               .format(list(request.data['observations'])))
         for obs in request.data['observations']:
-            obs['telescope'] = obs['telescope'].lower()
-            obs['instrument'] = obs['instrument'].lower()
-            obs['fstop'] = 'dome'
-            if 'fstop_host' not in obs:
-                obs['fstop_host'] = '<dome-host>'
-            if obs['fstop_host'] == '':
-                obs['fstop_host'] = '<dome-host>'
+            auditrec = dict(md5sum = obs['md5sum'],
+                            obsday = obs['obsday'],
+                            telescope = obs['telescope'].lower(),
+                            instrument = obs['instrument'].lower(),
+                            srcpath = obs['srcpath'],
+                            fstop_host = obs.get('dome_host','<dome-host>'),
+                            )
 
-            ar = AuditRecord(**obs)
+            ar = AuditRecord(**auditrec)
             try:
                 ar.full_clean()
             except ValidationError as e:
@@ -175,18 +175,21 @@ EXAMPLE:
             #! print('DBG: obs={}'.format(obs))
             obj,created = AuditRecord.objects.get_or_create(
                 md5sum=obs['md5sum'],
-                defaults=obs)
+                defaults=auditrec)
             if created:
                 addcnt += 1
             else:
                 preexisting.add((obj.md5sum, obj.srcpath))
         # END for
-        msg = ('Added {} audit records. Got {} errors.'
-                ' {} already existed (ignored request to add on error).\n'
-               ).format(addcnt,errcnt, len(preexisting))
-        for m,s in preexisting:
-            msg += '{}, {}\n'.format(m,s)
-        logging.error(msg)
+        if errcnt > 0:
+            msg = ('ERROR: Added {} audit records. Got {} errors.'
+                   ' {} already existed so ignored request to add.\n'
+            ).format(addcnt, errcnt, len(preexisting))
+            for m,s in preexisting:
+                msg += '{}, {}\n'.format(m,s)
+            logging.error(msg)
+        else:
+            msg = 'SUCCESS: added {} records'.format(addcnt)
         return HttpResponse(msg)
     else:
         return HttpResponse('ERROR: expected POST')
@@ -201,7 +204,7 @@ EXAMPLE:
     """
     if request.method == 'POST':
         body = json.loads(request.body.decode('utf-8'))
-        print('body={}'.format(body))
+        logging.debug('body={}'.format(body))
         AuditRecord.objects.update_or_create(
             dict(source=src,
                  submitted=now(),
@@ -243,7 +246,7 @@ def update_fstop(request, md5sum, fstop, host):
     moves downstream from Dome to Archive. Since the location can be
     on one of serveral hosts, the host should also be given.
     """
-    print('START update_fstop: fstop={}, host={}, md5sum={}'
+    logging.debug('START update_fstop: fstop={}, host={}, md5sum={}'
           .format(fstop, host, md5sum))
 
     machine = fstop.split(':')[0]
@@ -253,7 +256,7 @@ def update_fstop(request, md5sum, fstop, host):
                     )
     obj, created = AuditRecord.objects.update_or_create(md5sum=md5sum,
                                                         defaults=defaults)
-    print('END update_fstop: obsday={}, md5sum={}, defaults={}, created={}'
+    logging.debug('END update_fstop: obsday={}, md5sum={}, defaults={}, created={}'
           .format(obj.obsday, md5sum, defaults, created))
     return HttpResponse('Updated FSTOP; {}'.format(md5sum))
     
@@ -263,7 +266,7 @@ def update_fstop(request, md5sum, fstop, host):
 @parser_classes((JSONParser,))
 def update(request, format='yaml'):
     """Update audit record"""
-    if request.method == 'POST':    
+    if request.method == 'POST':  
         rdict = request.data.copy()
         md5 = rdict['md5sum']
         #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
@@ -287,7 +290,7 @@ def update(request, format='yaml'):
         obj,created = AuditRecord.objects.get_or_create(md5sum=md5,
                                                        defaults=initdefs)
         if created:
-            print(('WARNING: Ingest requested, '
+            logging.warning(('WARNING: Ingest requested, '
                    'but there was no previous dome record! '
                    'Adding: {} {}'.format(md5,rdict['srcpath'])))
         else:
@@ -304,7 +307,7 @@ def update(request, format='yaml'):
         #!                 + list(initdefs.keys())  ):
         #!    print('DBG: changed attr[{}]={}'
         #!          .format(fname,getattr(obj,fname)))
-        print('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
+        logging.debug('/audit/update/ saving obj={}, attrs={}'.format(obj,dir(obj)))
         obj.save()
         #!print('/audit/update/ saved obj={}'.format(obj))
 

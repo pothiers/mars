@@ -38,10 +38,10 @@ class ScheduleTest(TestCase):
         tele = 'kp4m'
         instrum = 'mosaic3'
         date = '2016-02-02'
-        expected = '2015B-0453'
+        expected = '2016A-0453'
         response = self.client.get('/schedule/propid/{}/{}/{}/'
                                    .format(tele, instrum, date))
-        tr:y
+        try:
             slot = Slot.objects.exists(obsdate=date,
                                 telescope=tele,
                                 instrument=instrum)

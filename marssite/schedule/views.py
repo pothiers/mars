@@ -55,11 +55,11 @@ sched2hdr= {
 
 def apply_tac_update(**query):
     """Update/add object unless it already exists and is FROZEN. """
-    print('apply tac update for query={}'.format(query))
+    logging.debug('apply tac update for query={}'.format(query))
     params = urllib.parse.urlencode(query)
-    print('DBG: query={}, params={}'.format(query, params))
+    logging.debug('DBG: query={}, params={}'.format(query, params))
     url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
-    print('DBG: url={}'.format(url))
+    logging.debug('DBG: url={}'.format(url))
     try:
         with urllib.request.urlopen(url, timeout=4) as f:
             tree = ET.parse(f)
@@ -94,30 +94,30 @@ def apply_tac_update(**query):
         msg = 'slot={}'.format(slot)
         if smade:
             # did NOT exist
-            print('ADDED: {}, propid="{}"'.format(msg,propid))
+            logging.debug('ADDED: {}, propid="{}"'.format(msg,propid))
             slot_pids[slot].add(propid)                    
         else:
             if slot.frozen:
                 # already existed but FROZEN
-                print('IGNORED FROZEN: {}'.format(msg))
+                logging.debug('IGNORED FROZEN: {}'.format(msg))
             else:
                 # already existed and NOT FROZEN
                 if propid in slot_pids[slot]:
                     continue
                 
                 slot_pids[slot].add(propid)                    
-                print('NOT FROZEN: {}; propids={}'.format(msg, slot_pids[slot]))
-    print('slot_pids={}'.format(slot_pids))
+                logging.debug('NOT FROZEN: {}; propids={}'.format(msg, slot_pids[slot]))
+    logging.debug('slot_pids={}'.format(slot_pids))
     return(slot_pids)
     
 def update_from_noaoprop(**query):
     slot_pids = apply_tac_update(**query) # dict[slot] = [propid, ...]
-    print('update_from_noaoprop({}); slot_pids={}'.format(query,slot_pids))
-    print('Updating propid lists for {} slots:'.format(len(slot_pids)))
+    logging.debug('update_from_noaoprop({}); slot_pids={}'.format(query,slot_pids))
+    logging.debug('Updating propid lists for {} slots:'.format(len(slot_pids)))
     for index,(slot,propids) in enumerate(slot_pids.items()):
         prop_list = [Proposal.objects.get_or_create(pk=propid)[0]
                      for propid in propids]
-        print('UPDATED[{}]: {}={}'.format(index, slot, prop_list))
+        logging.debug('UPDATED[{}]: {}={}'.format(index, slot, prop_list))
         slot.proposals = list(prop_list)
     #return redirect('/schedule/')
     return slot_pids # dict[obsdate:telescope] = set([propid, ...])
@@ -145,7 +145,7 @@ def delete_schedule(request):
 @api_view(['GET', 'POST'])
 def upload_file(request):
     'Upload and XML file of schedule info and load into DB.'
-    print('EXECUTING: views<schedule>:uploaded_file')
+    logging.debug('EXECUTING: views<schedule>:uploaded_file')
     if request.method == 'POST':
         form = SlotSetForm(request.POST, request.FILES)
         if form.is_valid():
@@ -210,7 +210,7 @@ def getpropid(request, telescope, instrument, date):
                                 telescope=tele,
                                 instrument=instrum)
         proplist = slot.propids
-        print('(mars) schedule/propid/{}/{}/{} = "{}"'
+        logging.debug('(mars) schedule/propid/{}/{}/{} = "{}"'
               .format(tele, instrum, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
@@ -222,25 +222,25 @@ def getpropid(request, telescope, instrument, date):
     try:
         slot = Slot.objects.get(obsdate=date, telescope=tele, instrument=instrum)
         proplist = slot.propids
-        print('(post tac update) schedule/propid/{}/{}/{} = "{}"'
+        logging.debug('(post tac update) schedule/propid/{}/{}/{} = "{}"'
               .format(tele, instrum, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
         if ignore_default:
-            print('(ignore default) schedule/propid/{}/{}/{} = "{}"'
+            logging.debug('(ignore default) schedule/propid/{}/{}/{} = "{}"'
                   .format(tele, instrum, date, 'NA'))
             return HttpResponse('NA', content_type='text/plain')            
     # ... use default
     try:
-        print('Get default propid for tele={}, instrum={}'.format(tele,instrum))
+        logging.debug('Get default propid for tele={}, instrum={}'.format(tele,instrum))
         obj = DefaultPropid.objects.get(telescope=tele, instrument=instrum)
         proplist = obj.propids
     except Exception as ex:
-        print('Need default propid for tele={}, instrum={}'
+        logging.debug('Need default propid for tele={}, instrum={}'
               .format(tele,instrum))
         proplist = [global_default]
 
-    print('schedule/propid/{}/{}/{} = {}'.format(tele, instrum, date, proplist))
+    logging.debug('schedule/propid/{}/{}/{} = {}'.format(tele, instrum, date, proplist))
     return HttpResponse(proplist, content_type='text/plain')    
         
 
@@ -267,7 +267,7 @@ class SlotGet(generics.GenericAPIView, DetailView):
 def load_schedule(uploadedfile, maxsize=1e6):
     """Load schedule slots from XML file. Skip any slots (date,telescope)
 that already have Propid values"""
-    #!print('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
+    #!logging.debug('EXECUTING: load_schedule; name={}'.format(uploadedfile.name))
     if uploadedfile.size > maxsize:
         return None
     xmlstr = ''
@@ -295,19 +295,19 @@ that already have Propid values"""
         slot, smade = Slot.objects.get_or_create(telescope=telescope,
                                                  obsdate=obsdate)
         #!if pmade:
-        #!    print('DBG-4.2a: created proposal record for propid={}'
+        #!    logging.debug('DBG-4.2a: created proposal record for propid={}'
         #!          .format(propid))
         #!else:
-        #!    print('DBG-4.2b: Using previous proposal record for propid={}'
+        #!    logging.debug('DBG-4.2b: Using previous proposal record for propid={}'
         #!          .format(propid))
 
         if smade:
             slot.proposals.add(prop)
-            #!print('DBG-4.3a: created slot record for tele={}, date={}'
+            #!logging.debug('DBG-4.3a: created slot record for tele={}, date={}'
             #!      .format(telescope, obsdate))
         else:
             pass
-            #!print('DBG-4.3b: Using previous slot record for tele={}, date={}'
+            #!logging.debug('DBG-4.3b: Using previous slot record for tele={}, date={}'
             #!      .format(telescope, obsdate))
             
     return redirect('/schedule/')
@@ -359,7 +359,7 @@ class SlotList(generics.ListAPIView, ArchiveIndexView):
 
     serializer_class = SlotSerializer
     paginate_by = 200
-    #!print('DBG: serializer={}'.format(repr(SlotSerializer())))
+    #!logging.debug('DBG: serializer={}'.format(repr(SlotSerializer())))
 
     def get_context_data(self, **kwargs):
         context = super(ArchiveIndexView, self).get_context_data(**kwargs)

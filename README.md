@@ -1,3 +1,3 @@
 # mars
-Metadata Archive Retrival Services
+Metadata Archive Retrieval Services
 

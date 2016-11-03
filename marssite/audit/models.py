@@ -45,12 +45,6 @@ class AuditRecord(models.Model):
                                help_text='Path of file as submitted')
     fstop_host =  models.CharField(max_length=40, blank=True,
                                   help_text='Host name of more recent fstop')
-    #!dome_host =  models.CharField(max_length=40, blank=True,
-    #!                              help_text='Host name of Dome that created FITS')
-    #!mountain_host =  models.CharField(max_length=40, blank=True,
-    #!                             help_text='Host name of Mountain that received FITS')
-    #!valley_host =  models.CharField(max_length=40, blank=True,
-    #!                             help_text='Host name of Mountain that received FITS')
     
     # Field values automatically filled in (was called "recorded")
     updated  = models.DateTimeField(default=timezone.now,

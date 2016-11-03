@@ -27,7 +27,7 @@ proposal. Query: select distinct o from ObservationEntity o join fetch
 o.proposalSet p where p.proposalId = ?1 and o.calibrationDate between
 ?2 and ?3 and o.publicDataReleaseDate < ?4'''
 
-hdr_existsRE = re.compile(r"iRODS HDR file already exists at")
+hdr_existsRE = re.compile(r"iRODS HDR file already exists")
 '''iRODS HDR file already exists at
 /noao-tuc-z1/mtn/20160608/ct4m/NA/c4ai_160609_151943_ori.hdr on submit
 of
@@ -64,6 +64,7 @@ etlkeyRE = re.compile(r"ETL failed to parse bad keyword value")
 ERRMAP = [
     # ERRCODE,  MatchREGEX,       ShortDesc
     ('DUPFITS', existsRE,         'Already stored in Archive'),
+    ('HDREXIST',hdr_existsRE,     'HDR file already exists in iRODS'),
     ('BADPROP', dup_propRE,       'Unique propid not found' ),
     ('COLLIDE', dup_obspropRE,    'Multi-files match date + propid'),
     ('NOPROP',  prop_not_foundRE, 'Propid not in Archive DB'),

@@ -15,8 +15,7 @@ class AuditTest(TestCase):
                 "obsday": "2016-08-05",
                 "telescope": "kp4m",
                 "instrument": "mosaic3",
-                "dome_host": "mosaic3",
-                "mountain_host": "mtnkp1.sdm.noao.edu",
+                "dome_host": "dome1",
                 "srcpath": "/data4/observer/mos396217.fits"
             },
             {
@@ -24,8 +23,7 @@ class AuditTest(TestCase):
                 "obsday": "2016-08-05",
                 "telescope": "kp4m",
                 "instrument": "mosaic3",
-                "dome_host": "mosaic3",
-                "mountain_host": "mtnkp1.sdm.noao.edu",
+                "dome_host": "dome1",
                 "srcpath": "/data4/observer/mos396218.fits"
             }
         ] }'''
@@ -34,8 +32,8 @@ class AuditTest(TestCase):
                                 content_type='application/json',
                                 data=req  )
         # response=b'<p>Added 2 audit records. 0 already existed (ignored request to add).</p>\n<ul></ul>'
-        print('response={}'.format(resp.content))
-        self.assertContains(resp, 'Added ',
+        #! print('response={}'.format(resp.content))
+        self.assertContains(resp, 'SUCCESS: added',
                             msg_prefix=('Unexpected output from webservice'
                             ' intended for use by DOME'))
 
@@ -48,5 +46,3 @@ class AuditTest(TestCase):
                                 .format(md5sum, tag, host))
         #print('response={}'.format(resp.content))
         self.assertContains(resp, 'Updated FSTOP;')
-        
-        
