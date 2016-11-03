@@ -274,15 +274,15 @@ def update(request, format='yaml'):
         initdefs = dict(obsday=rdict.get('obsday',now().date()),
                         telescope=rdict['telescope'],
                         instrument=rdict['instrument'],
-                        srcpath=rdict['srcpath'],
-                        updated=make_aware(dp.parse(rdict['updated'])))
+                        srcpath=rdict['srcpath'] )
         newdefs = dict(submitted=make_aware(dp.parse(rdict['submitted'])),
                        success=rdict['success'],
                        fstop=fstop,
                        errcode=ec.errcode(rdict['archerr']), # rdict['errcode'],
                        archerr=rdict['archerr'],
                        archfile=rdict['archfile'],
-                       metadata=rdict['metadata'])
+                       metadata=rdict['metadata'],
+                       updated=make_aware(dp.parse(rdict['updated'])) )
 
         obj,created = AuditRecord.objects.get_or_create(md5sum=md5,
                                                        defaults=initdefs)
