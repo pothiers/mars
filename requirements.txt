@@ -1,9 +1,8 @@
 cycler==0.10.0
-#Django==1.9.7
 Django==1.9.9
 django-filter==0.13.0
 django-graphos-3==0.1.1
-django-nvd3==0.9.7
+#django-nvd3==0.9.7
 django-rest-swagger==0.3.5
 django-tables2==1.2.2
 djangorestframework==3.3.3
@@ -21,7 +20,7 @@ pycha==0.7.0
 Pygments==2.0.2
 pyparsing==2.1.1
 python-dateutil==2.5.3
-python-nvd3==0.14.2
+#python-nvd3==0.14.2
 python-slugify==1.1.4
 pytz==2016.4
 PyYAML==3.11
