@@ -56,7 +56,7 @@ INSTALLED_APPS = (
     'water',
     'rest_framework',
     'rest_framework_swagger',
-    'django_nvd3',
+    #!'django_nvd3',
     'django_tables2',
     'audit',  # tada audit/status REST API
 )
