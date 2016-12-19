@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
 from django.test import TestCase, Client, RequestFactory
-#from rest_framework.test import APIRequestFactory
 
 from .models import Slot
 import schedule.views
@@ -19,9 +18,14 @@ class ScheduleTest(TestCase):
     #   2. not found in Slots, found in TAC
     #      - return propid from TAC
     #      - add to Slots
-    #   3. Not found in Slots, not found in TAC
+    #   3. Not found in Slots, not found in TAC, use DEFAULT
     #      - return propid from Defaults
     #      - no change to Slots
+    #   4. Not found in Slots, not found in TAC, no DEFAULT found
+    #      - return propid generated from tele,instrum ("NEED-DEFAULT.*")
+    #      - no change to Slots
+    
+    
     def test_getpropid1(self):
         "Found in slots"
         tele = 'kp4m'
@@ -43,13 +47,47 @@ class ScheduleTest(TestCase):
                                    .format(tele, instrum, date))
         try:
             slot = Slot.objects.exists(obsdate=date,
-                                telescope=tele,
-                                instrument=instrum)
+                                       telescope=tele,
+                                       instrument=instrum)
         except:
             pass
         self.assertEqual(200, response.status_code)
         self.assertEqual(expected, response.content.decode())
 
+    def test_getpropid3(self):
+        "Not found in Slots, not found in TAC, use DEFAULT. No SLOT change"
+        tele = 'kp4m'
+        instrum = 'kosmos'
+        date = '1816-02-01'
+        expected = '1816A-0247'
+        response = self.client.get('/schedule/propid/{}/{}/{}/'
+                                   .format(tele, instrum, date))
+        try:
+            slot = Slot.objects.exists(obsdate=date,
+                                       telescope=tele,
+                                       instrument=instrum)
+        except:
+            pass
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(expected, response.content.decode())
+
+        
+    def test_getpropid4(self):
+        "Not found in Slots, not found in TAC, no DEFAULT found. No SLOT change"
+        tele = 'kp4m'
+        instrum = 'no_instrument'
+        date = '1816-02-01'
+        expected = 'NEED-DEFAULT.{}.{}'.format(tele, instrum)
+        response = self.client.get('/schedule/propid/{}/{}/{}/'
+                                   .format(tele, instrum, date))
+        try:
+            slot = Slot.objects.exists(obsdate=date,
+                                       telescope=tele,
+                                       instrument=instrum)
+        except:
+            pass
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(expected, response.content.decode())
 
     # needed after Dave's schedule gets updated when we've already
     # cached a value in the mars schedule

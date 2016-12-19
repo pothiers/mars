@@ -22,3 +22,6 @@
       modified: 2016-04-21 00:06:41.286689+00:00
       frozen: false
       proposals: [2015B-0267]
+- model: schedule.defaultpropid
+  pk: 16
+  fields: {telescope: kp4m, instrument: kosmos, propids: '["1816A-0247"]'}

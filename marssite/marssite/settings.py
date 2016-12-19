@@ -160,26 +160,40 @@ LOGGING = {
     #!        'format': '[%(server_time)s] %(message)s',
     #!    }
     #!},
+    'formatters': {
+        'brief': {
+            'format': '%(levelname)-8s: %(filename)-17s: %(message)s',
+        },
+        'precise': {
+            'format': '%(asctime)s %(filename)-17s %(levelname)-8s %(message)s',
+        },
+    },
     'handlers': {
         'file': {
+            'class' : 'logging.FileHandler',
             'level': 'INFO',
-            'class' : 'logging.handlers.RotatingFileHandler',
+            'formatter': 'precise',
             'filename': '/var/log/mars/mars.log',
-            'maxBytes': 10000000,
-            'backupCount': 5,
+            #! 'maxBytes': 10000000,
+            #! 'backupCount': 5,
         },
         'debugfile': {
+            'class' : 'logging.FileHandler',
             'level': 'DEBUG',
-            'class' : 'logging.handlers.RotatingFileHandler',
+            'formatter': 'precise',
             'filename': '/var/log/mars/mars-detail.log',
-            'maxBytes': 10000000,
-            'backupCount': 5,
+            #! 'maxBytes': 10000000,
+            #! 'backupCount': 5,
         },
         #!'django.server': {
         #!    'level': 'INFO',
         #!    'class': 'logging.StreamHandler',
         #!    'formatter': 'django.server',
-        #!},        
+        #!},
+    },
+    'root': {
+        'handlers': ['file', 'debugfile'],
+        'level': 'DEBUG',
     },
     'loggers': {
         'django': {
@@ -195,5 +209,7 @@ LOGGING = {
     },
 }
 
+# Get DB connection info
 #from .settings_local import *
 exec(open('/etc/mars/django_local_settings.py').read())
+
