@@ -25,7 +25,7 @@ import xml.etree.ElementTree as ET
 import urllib.parse
 import urllib.request
 from collections import defaultdict
-import pytz
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -213,7 +213,6 @@ def getpropid(request, telescope, instrument, date):
     logger.debug('DBG-1: schedule/propid/{}/{}/{}; ignore_default={}'
                  .format(tele, instrum, date, ignore_default))
     global_default = 'NEED-DEFAULT.{}.{}'.format(tele, instrum)
-    date = pytz.utc.localize(date)
 
     # Lookup up propids for given (date,telescope,instrument) tuple
     try:
