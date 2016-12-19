@@ -14,7 +14,6 @@ from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from rest_framework.decorators import detail_route, list_route, api_view
 from rest_framework.reverse import reverse
-from rest_framework.views import APIView
 from .serializers import SlotSerializer
 from .tables import SlotTable
 
@@ -199,18 +198,22 @@ def getpropid(request, telescope, instrument, date):
     """
     Retrieve a **propid** from the schedule given `telescope` and `date`.
     """
+    print('DBG: schedule/views.py:getpropid')
+    logging.debug('DBG-0: schedule/views.py:getpropid')
     # Default PROPID to use when we don't have one for tele, instrum
     serializer_class = SlotSerializer
     tele = telescope.lower()
     instrum = instrument.lower()
     ignore_default = ('1' == request.GET.get('ignore_default'))
-    global_default = '!NEED-DEFAULT.{}.{}'.format(tele,instrum)
+    print('DBG-1: schedule/propid/{}/{}/{}; ignore_default={}'
+                  .format(tele, instrum, date, ignore_default))
+    global_default = 'NEED-DEFAULT.{}.{}'.format(tele,instrum)
     try:
         slot = Slot.objects.get(obsdate=date,
                                 telescope=tele,
                                 instrument=instrum)
         proplist = slot.propids
-        logging.debug('(mars) schedule/propid/{}/{}/{} = "{}"'
+        print('DBG-2: schedule/propid/{}/{}/{} = "{}"'
               .format(tele, instrum, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
@@ -222,25 +225,25 @@ def getpropid(request, telescope, instrument, date):
     try:
         slot = Slot.objects.get(obsdate=date, telescope=tele, instrument=instrum)
         proplist = slot.propids
-        logging.debug('(post tac update) schedule/propid/{}/{}/{} = "{}"'
+        print('DBG-3: (post tac update) schedule/propid/{}/{}/{} = "{}"'
               .format(tele, instrum, date, proplist))
         return HttpResponse(proplist, content_type='text/plain')
     except:
         if ignore_default:
-            logging.debug('(ignore default) schedule/propid/{}/{}/{} = "{}"'
+            print('DBG-4: (ignore default) schedule/propid/{}/{}/{} = "{}"'
                   .format(tele, instrum, date, 'NA'))
             return HttpResponse('NA', content_type='text/plain')            
     # ... use default
     try:
-        logging.debug('Get default propid for tele={}, instrum={}'.format(tele,instrum))
+        print('DBG-5: Get default propid for tele={}, instrum={}'.format(tele,instrum))
         obj = DefaultPropid.objects.get(telescope=tele, instrument=instrum)
         proplist = obj.propids
     except Exception as ex:
-        logging.debug('Need default propid for tele={}, instrum={}'
+        print('DBG-6: Need default propid for tele={}, instrum={}'
               .format(tele,instrum))
         proplist = [global_default]
 
-    logging.debug('schedule/propid/{}/{}/{} = {}'.format(tele, instrum, date, proplist))
+    print('DBG-7: schedule/propid/{}/{}/{} = {}'.format(tele, instrum, date, proplist))
     return HttpResponse(proplist, content_type='text/plain')    
         
 
