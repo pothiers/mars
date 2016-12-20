@@ -13,7 +13,7 @@ cd $dir
 
 source smoke-lib.sh
 return_code=0
-SMOKEOUT="README-smoke-results.txt"
+SMOKEOUT="$sto/README-smoke-results.txt"
 
 
 echo ""
@@ -23,7 +23,7 @@ echo ""
 
 
 #testOutput out tests.out '^\#' n
-testCommand mars1_1 "./manage.py test 2>/dev/null" "^\#" y 1
+testCommand mars1_1 "../../marssite/manage.py test 2>/dev/null" "^\#" n 0
 
 
 ###########################################

@@ -7,7 +7,7 @@
 #   make sure that some particular output is "right".  In this
 #   context,  "output" can be one or more of the following:
 #      - Output from a command: (stdout)
-#      - Error from a command: (stderr, should be empty)
+#      - Error from a command: (stderr, generally should be empty)
 #      - Data files written by a command.
 #      - Modifications that a command makes to a DB. (compare results of
 #        query run after command)
@@ -17,7 +17,7 @@
 ########################################################################
 
 sto="$HOME/.smoke-test-output"
-mkdir $sto > /dev/null
+mkdir -p $sto > /dev/null
 
 # Default counters if something didn't previously set them
 x=${failcnt:=0} # TADA smoke tests
@@ -164,10 +164,8 @@ function testCommand () {
 
   #! echo "EXECUTING: $cmd"
   tn="1/3"
-  #! cmd="${CMD} 2> $sto/$err | tee $actual"
-  #! echo "CMD=$CMD"
   if [ "y" = "$displayOutputP" ]; then
-    eval ${CMD} 2> $sto/$err | tee $actual
+    eval ${CMD} 2> $sto/$err | tee $sto/$actual
   else
     eval ${CMD} 2> $sto/$err > $sto/$actual
   fi
@@ -178,11 +176,9 @@ function testCommand () {
     failcnt=$((failcnt + 1))
     return_code=1
   else
-    echo "*** $proc PASSED [$testName] ($tn; Command correctly returned zero status ***"
+    echo "*** $proc PASSED [$testName] ($tn; Command correctly returned status = $expectedStatus ***"
   fi
   
-
-
   ## Make sure we didn't get errors (output to stderr).
   tn="2/3"
   if [ -s $err ]; then
@@ -192,17 +188,17 @@ function testCommand () {
     return_code=1
   else
     echo "*** $proc PASSED [$testName] ($tn; no STDERR output) ***"
-    rm $err
+    #!rm $err
   fi
 
   # filter out diagnostic output (if any)
   #! echo "DEBUG: COMMENT=${COMMENT}"
-  egrep -v ${COMMENT} $actual > $sto/$actual.clean
+  egrep -v ${COMMENT} $sto/$actual > $sto/$actual.clean
   egrep -v ${COMMENT} $GOLD > $sto/$GOLD.clean
 
   tn="3/3"
-  if ! diff $GOLD.clean $actual.clean > $sto/$diff;  then
-      cat $diff
+  if ! diff $sto/$GOLD.clean $sto/$actual.clean > $sto/$diff;  then
+      cat $sto/$diff
       pwd=`pwd`
       echo ""
       echo "To accept current results: cp $sto/$actual $pwd/$GOLD"
@@ -211,7 +207,7 @@ function testCommand () {
       return_code=1
   else
       echo "*** $proc PASSED [$testName] ($tn; got expected STDOUT) ***"
-      rm $diff $GOLD.clean $actual.clean
+      #!rm $sto/$diff $sto/$GOLD.clean $sto/$actual.clean
   fi
 }  # END testCommand
 
@@ -242,9 +238,9 @@ function testOutput () {
   egrep -v "${VARIANT}" $output > $sto/$output.clean
   egrep -v "${VARIANT}" $GOLD > $sto/$GOLD.clean
 
-  if ! diff $GOLD.clean $output.clean > $sto/$diff;  then
+  if ! diff $sto/$GOLD.clean $sto/$output.clean > $sto/$diff;  then
       if [ "y" = "$displayOutputP" ]; then
-          cat $diff
+          cat $sto/$diff
       else
           echo ""
           echo "[$testName] DIFF between ACTUAL and EXPECTED output is in: "
@@ -259,7 +255,7 @@ function testOutput () {
       return_code=1
   else
       echo "*** $proc  PASSED [$testName] (got expected output in: $output) ***"
-      rm $diff $GOLD.clean $output.clean
+      #!rm $sto/$diff $sto/$GOLD.clean $sto/$output.clean
   fi
 }
 
