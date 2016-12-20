@@ -1,3 +1,8 @@
+* Release 1.7
+- This is a stabalizing release intended to follow new release process.
+- Constructed "propid" used when schedule lookup finds no instrument
+  default no longer contains "!".
+
 * Release 1.4
 - Added logging config to settings for full python logging
   + /var/log/mars/mars.log

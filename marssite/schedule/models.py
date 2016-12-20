@@ -17,7 +17,7 @@ class EmptySlot(models.Model):
         
 class Proposal(models.Model):
     propid = models.CharField(primary_key=True,  max_length=10,
-                              help_text='YYYYs-nnnn (s[emester]:: A|B) ')
+                              help_text='YYYYs-nnnn (s[emester]:: A|B)')
 
     #!title = models.CharField(max_length=256)
     #!pi_name = models.CharField(max_length=80,
