@@ -211,5 +211,17 @@ LOGGING = {
 
 # Get DB connection info
 #from .settings_local import *
-exec(open('/etc/mars/django_local_settings.py').read())
+if 'TRAVIS' in os.eviron:
+    DATABASES = {
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql_psycopg2',
+            'NAME':     'travisci',
+            'USER':     'postgres',
+            'PASSWORD': '',
+            'HOST':     'localhost',
+            'PORT':     '',
+        }
+    }
+else:
+    exec(open('/etc/mars/django_local_settings.py').read())
 
