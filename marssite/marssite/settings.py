@@ -211,7 +211,7 @@ LOGGING = {
 
 # Get DB connection info
 #from .settings_local import *
-if 'TRAVIS' in os.eviron:
+if 'TRAVIS' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE':   'django.db.backends.postgresql_psycopg2',
