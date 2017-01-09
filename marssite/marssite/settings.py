@@ -212,6 +212,8 @@ LOGGING = {
 # Get DB connection info
 #from .settings_local import *
 if 'TRAVIS' in os.environ:
+    DEBUG=True
+    SECRET_KEY = 'z9z^f+lzkzt3#9iq-0p_ufigb(4oqbtk@(okc#bjdb_cottx0)'
     DATABASES = {
         'default': {
             'ENGINE':   'django.db.backends.postgresql_psycopg2',
