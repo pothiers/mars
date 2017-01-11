@@ -38,6 +38,7 @@ STATICFILES_DIRS = (
     '/var/www/static/',
     )
 STATIC_ROOT = '/var/www/mars/static/'
+#!STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Application definition
 
