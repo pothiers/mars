@@ -90,4 +90,5 @@ def errcode(detailed_error_message):
     if ecode == '':
         logging.error('errcode cannot code for error message: {}'
                       .format(detailed_error_message))
+        return 'UNKNOWN'
     return ecode
