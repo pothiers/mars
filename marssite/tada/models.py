@@ -21,20 +21,17 @@ class TacIntrument(models.Model):
     name = models.CharField(max_length=20, unique=True,
                             help_text='Name used by Dave Bells TAC Schedule')
     def __str__(self): return self.name
-    
-class InstrumentAlias(models.Model):    
+
+class InstrumentAlias(models.Model):
     reason = models.CharField(max_length=80)
     #!instrument = models.ForeignKey(Instrument)
-    
-    
+
 # Will ultimately replace tada/file_naming.py:stiLUT{}
-#!class FilePrefix(models.Model):
-#!    "Archive filename prefix coded from Site, Telescope, Instrument"
-#!
-#!    site = models.ForeignKey(Site)
-#!    telescope = models.ForeignKey(Telescope)
-#!    instrument = models.ForeignKey(Instrument)
-#!    
-#!    prefix = models.CharField(max_length=10,
-#!                              help_text='Prefix for Archive Filename')
-#!    
+class FilePrefix(models.Model):
+    "Archive filename prefix coded from Site, Telescope, Instrument"
+
+    site = models.ForeignKey(Site)
+    telescope = models.ForeignKey(Telescope)
+    instrument = models.ForeignKey(Instrument)
+    prefix = models.CharField(max_length=10,
+                              help_text='Prefix for Archive Filename')
