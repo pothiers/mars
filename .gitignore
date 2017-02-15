@@ -11,6 +11,7 @@ marssite/schedule/OBSOLETE-views.py
 # smoke test leavings
 *.out
 *.clean
+*~
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
