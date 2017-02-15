@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.html import format_html
 from django.contrib.postgres.fields import HStoreField
-#!from water.models import Telescope,Instrument
+from tada.models import Telescope,Instrument
 
 
 fstops = [
@@ -16,19 +16,21 @@ fstops = [
 
 
 class AuditRecord(models.Model):
-    telescopes = ('bok23m,aat,ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,gemn,gems,het,'
-                  'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
-                  'magI,magII,mmt,soar,wiyn,unknown').split(',')
-    instruments = ['arcoiris', '90prime',  'mosaic3', 'ccd_imager'] + sorted([
-        'mop/ice', 'arcon', 'spartan', 'decam',
-        'falmingos', 'gtcam', 'wildfire', 'chiron',
-        'osiris', 'andicam', 'echelle', 'flamingos',
-        'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
-        'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
-        'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
-        'cosmos',  'unknown'])
-    #telescopes = [obj.name for obj in Telescope.objects.all()]
-    #instruments = [obj.name for obj in Instrument.objects.all()]
+    #!telescopes = ('bok23m,aat,ct09m,ct13m,ct15m,ct1m,ct4m,gem_n,gem_s,gemn,gems,het,'
+    #!              'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
+    #!              'magI,magII,mmt,soar,wiyn,unknown').split(',')
+    #!instruments = ['arcoiris', '90prime',  'mosaic3', 'ccd_imager'] + sorted([
+    #!    'mop/ice', 'arcon', 'spartan', 'decam',
+    #!    'falmingos', 'gtcam', 'wildfire', 'chiron',
+    #!    'osiris', 'andicam', 'echelle', 'flamingos',
+    #!    'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
+    #!    'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
+    #!    'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
+    #!    'cosmos',  'unknown'])
+
+    # THESE ONLY GET UPDATED when django is started.
+    telescopes = [obj.name for obj in Telescope.objects.all()]
+    instruments = [obj.name for obj in Instrument.objects.all()]
     errcodes = ['DUPFITS', 'BADPROP', 'COLLIDE', 'NOPROP', 'MISSREQ',
                 'BADDATE', 'NOFITS', 'UNKNOWN', 'none']
 
@@ -51,7 +53,6 @@ class AuditRecord(models.Model):
                                      help_text='When AuditRecord updated')
 
     ##### Field values added by TADA
-
     fstop = models.CharField(max_length=25, blank=True,
                              #choices=[(val,val) for val in fstops],
                              help_text = 'Most downstream stop of FITS file')
