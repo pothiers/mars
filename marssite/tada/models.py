@@ -17,7 +17,7 @@ class Instrument(models.Model):
                                        '(field name INSTRUME)'))
     def __str__(self): return self.name
 
-class TacIntrument(models.Model):
+class TacInstrument(models.Model):
     name = models.CharField(max_length=20, unique=True,
                             help_text='Name used by Dave Bells TAC Schedule')
     def __str__(self): return self.name
@@ -35,3 +35,22 @@ class FilePrefix(models.Model):
     instrument = models.ForeignKey(Instrument)
     prefix = models.CharField(max_length=10,
                               help_text='Prefix for Archive Filename')
+    comment = models.CharField(max_length=80, blank=True, default='')
+
+class ObsType(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    code = models.CharField(max_length=1, unique=False)
+    comment = models.CharField(max_length=80, blank=True, default='')
+
+class ProcType(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    code = models.CharField(max_length=1, unique=False)
+    comment = models.CharField(max_length=80, blank=True, default='')
+
+class ProdType(models.Model):
+    name = models.CharField(max_length=30, unique=True)
+    code = models.CharField(max_length=1, unique=False)
+    comment = models.CharField(max_length=80, blank=True, default='')
+
+
+    

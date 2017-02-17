@@ -7,3 +7,7 @@ from .models import Fitsname
 #!!    
 #!!admin.site.register(Fitsname, FitsnameAdmin)
 
+@admin.register(Fitsname)
+class FitsnameAdmin(admin.ModelAdmin):
+    list_display = ('id', 'source')
+
