@@ -64,7 +64,8 @@ class Slot(models.Model):
                                             'slot during a bulk operation.'))
     
     def propid_list(self):
-        return ', '.join([p.propid for p in self.proposals.all()[:4]])
+        #! return ', '.join([p.propid for p in self.proposals.all()[:4]])
+        return ', '.join([p.propid for p in self.proposals.all()])
 
     propids = property(propid_list)
     

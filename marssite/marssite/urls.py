@@ -71,15 +71,15 @@ urlpatterns = [
     url(r'^siap/', include('siap.urls', namespace='siap')),
     url(r'^schedule/', include('schedule.urls', namespace='schedule')),
     url(r'^provisional/', include('provisional.urls', namespace='provisional')),
+    url(r'^tada/', include('tada.urls')),
     url(r'^audit/', include('audit.urls', namespace='audit')),
 
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^api-auth/',
-        include('rest_framework.urls', namespace='rest_framework')),
+    #!url(r'^api-auth/',  include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^api/', include(router.urls)),
     url(r'^api/', api_root, name='api_root'),
-    url(r'^docs/', include('rest_framework_swagger.urls', namespace='docs')),
+    #!url(r'^docs/', include('rest_framework_swagger.urls', namespace='docs')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

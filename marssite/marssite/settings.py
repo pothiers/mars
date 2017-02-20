@@ -38,6 +38,7 @@ STATICFILES_DIRS = (
     '/var/www/static/',
     )
 STATIC_ROOT = '/var/www/mars/static/'
+#!STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Application definition
 
@@ -54,9 +55,9 @@ INSTALLED_APPS = (
     'schedule',
     'provisional',
     'water',
+    'tada',
     'rest_framework',
     'rest_framework_swagger',
-    #!'django_nvd3',
     'django_tables2',
     'audit',  # tada audit/status REST API
 )
@@ -151,65 +152,80 @@ REST_FRAMEWORK = {
 
 CONN_MAX_AGE = 7200 # keep DB connections for 2 hours
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    #!'formatters': {
-    #!    'django.server': {
-    #!        '()': 'django.utils.log.ServerFormatter',
-    #!        'format': '[%(server_time)s] %(message)s',
-    #!    }
-    #!},
-    'formatters': {
-        'brief': {
-            'format': '%(levelname)-8s: %(filename)-17s: %(message)s',
-        },
-        'precise': {
-            'format': '%(asctime)s %(filename)-17s %(levelname)-8s %(message)s',
-        },
-    },
-    'handlers': {
-        'file': {
-            'class' : 'logging.FileHandler',
-            'level': 'INFO',
-            'formatter': 'precise',
-            'filename': '/var/log/mars/mars.log',
-            #! 'maxBytes': 10000000,
-            #! 'backupCount': 5,
-        },
-        'debugfile': {
-            'class' : 'logging.FileHandler',
-            'level': 'DEBUG',
-            'formatter': 'precise',
-            'filename': '/var/log/mars/mars-detail.log',
-            #! 'maxBytes': 10000000,
-            #! 'backupCount': 5,
-        },
-        #!'django.server': {
-        #!    'level': 'INFO',
-        #!    'class': 'logging.StreamHandler',
-        #!    'formatter': 'django.server',
+if 'TRAVIS' not in os.environ:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        #!'formatters': {
+        #!    'django.server': {
+        #!        '()': 'django.utils.log.ServerFormatter',
+        #!        'format': '[%(server_time)s] %(message)s',
+        #!    }
         #!},
-    },
-    'root': {
-        'handlers': ['file', 'debugfile'],
-        'level': 'DEBUG',
-    },
-    'loggers': {
-        'django': {
+        'formatters': {
+            'brief': {
+                'format': '%(levelname)-8s: %(filename)-17s: %(message)s',
+            },
+            'precise': {
+                'format': '%(asctime)s %(filename)-17s %(levelname)-8s %(message)s',
+            },
+        },
+        'handlers': {
+            'file': {
+                'class' : 'logging.FileHandler',
+                'level': 'INFO',
+                'formatter': 'precise',
+                'filename': '/var/log/mars/mars.log',
+                #! 'maxBytes': 10000000,
+                #! 'backupCount': 5,
+            },
+            'debugfile': {
+                'class' : 'logging.FileHandler',
+                'level': 'DEBUG',
+                'formatter': 'precise',
+                'filename': '/var/log/mars/mars-detail.log',
+                #! 'maxBytes': 10000000,
+                #! 'backupCount': 5,
+            },
+            #!'django.server': {
+            #!    'level': 'INFO',
+            #!    'class': 'logging.StreamHandler',
+            #!    'formatter': 'django.server',
+            #!},
+        },
+        'root': {
             'handlers': ['file', 'debugfile'],
             'level': 'DEBUG',
-            'propagate': True,
         },
-        #!'django.server': {
-        #!    'handlers': ['django.server'],
-        #!    'level': 'INFO',
-        #!    'propagate': False,
-        #!}
-    },
-}
+        'loggers': {
+            'django': {
+                'handlers': ['file', 'debugfile'],
+                'level': 'DEBUG',
+                'propagate': True,
+            },
+            #!'django.server': {
+            #!    'handlers': ['django.server'],
+            #!    'level': 'INFO',
+            #!    'propagate': False,
+            #!}
+        },
+    }
 
 # Get DB connection info
 #from .settings_local import *
-exec(open('/etc/mars/django_local_settings.py').read())
+if 'TRAVIS' in os.environ:
+    DEBUG=True
+    SECRET_KEY = 'z9z^f+lzkzt3#9iq-0p_ufigb(4oqbtk@(okc#bjdb_cottx0)'
+    DATABASES = {
+        'default': {
+            'ENGINE':   'django.db.backends.postgresql_psycopg2',
+            'NAME':     'travisci',
+            'USER':     'postgres',
+            'PASSWORD': '',
+            'HOST':     'localhost',
+            'PORT':     '',
+        }
+    }
+else:
+    exec(open('/etc/mars/django_local_settings.py').read())
 
