@@ -152,6 +152,7 @@ REST_FRAMEWORK = {
 
 CONN_MAX_AGE = 7200 # keep DB connections for 2 hours
 
+
 if 'TRAVIS' not in os.environ:
     LOGGING = {
         'version': 1,
