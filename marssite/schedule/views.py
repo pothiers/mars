@@ -195,12 +195,33 @@ no PROPID.  These should probably be filled."""
 ##    ---
 ##    omit_serializer: true
 
+def setpropid(request, telescope, instrument, date, propid):
+    """
+    Set a **propid** in the schedule for given `instrument` and `date`.
+    """
+    try:
+        prop = Proposal.objects.get(propid=propid)
+        slot,created = Slot.objects.get_or_create(
+            telescope=telescope,
+            instrument=instrument,
+            obsdate=date,
+            frozen=True)
+        slot.proposals.add(prop)
+    except Exception as err:
+        return HttpResponse('ERROR\nCOULD NOT ADD: ({}, {} ,{}, {})\n{}'
+                            .format(telescope, instrument, date, propid, err),
+                            content_type='text/plain')
+        
+    return HttpResponse('SUCCESS\nADDED: ({},{},{},{})'
+                        .format(telescope, instrument, date, propid),
+                        content_type='text/plain')
+
 # EXAMPLE in bash:
 #  propid=`curl 'http://127.0.0.1:8000/schedule/propid/ct13m/2014-12-25/'`
 @api_view(['GET'])
 def getpropid(request, telescope, instrument, date):
     """
-    Retrieve a **propid** from the schedule given `telescope` and `date`.
+    Retrieve a **propid** from the schedule given `instrument` and `date`.
     """
     logger.debug('EXECUTE: getpropid({},{},{})'
                  .format(telescope, instrument, date))

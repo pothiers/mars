@@ -3,7 +3,9 @@ from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from .models import Site, Telescope, Instrument, FilePrefix
 from .models import ObsType, ProcType, ProdType
-
+from .models import RawKeywords, FilenameKeywords
+from .models import IngestKeywords, IngestRecommendedKeywords
+from .models import SupportKeywords, FloatKeywords
 
 # stilut=`curl 'http://localhost:8000/tada/'`
 def prefix(request):
@@ -25,3 +27,28 @@ def prodtype(request):
     qs = ProdType.objects.all().values('name','code')
     return JsonResponse(list(qs), safe=False)
 
+##############################################################################
+
+def rawreq(request):
+    qs = RawKeywords.objects.all().values('name','comment')
+    return JsonResponse(list(qs), safe=False)
+
+def filenamereq(request):
+    qs = FilenameKeywords.objects.all().values('name','comment')
+    return JsonResponse(list(qs), safe=False)
+
+def ingestreq(request):
+    qs = IngestKeywords.objects.all().values('name','comment')
+    return JsonResponse(list(qs), safe=False)
+
+def ingestrec(request):
+    qs = IngestRecommendedKeywords.objects.all().values('name','comment')
+    return JsonResponse(list(qs), safe=False)
+
+def supportreq(request):
+    qs = SupportKeywords.objects.all().values('name','comment')
+    return JsonResponse(list(qs), safe=False)
+
+def floatreq(request):
+    qs = FloatKeywords.objects.all().values('name','comment')
+    return JsonResponse(list(qs), safe=False)
