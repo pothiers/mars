@@ -4,16 +4,21 @@ All other FITS fields (less common) go into MDATA.
 from django.contrib.postgres.fields import HStoreField
 from django.db import models
 
+#!    telescopes = ['kp09m', 'ct1m', 'kp21m', 'ct15m', 'ctlab', 'kp4m', 'ct09m',
+#!                  'ct4m',  'bok23m', 'ct13m', 'wiyn', 'kp35m', 'soar', 'kpcf']
+#!    instruments = ['ispi', 'spartan', 'wildfire', 'mop/ice', '90prime', 'hdi',
+#!                   'falmingos', 'ice', 'bench', 'arcoiris', 'goodman',
+#!                   'echelle', 'spartan ir camera', 'decam', 'arcon',
+#!                   'minimo/ice', 'chiron', 'y4kcam', 'kosmos', 'mosaic3',
+#!                   'newfirm', 'whirc', 'osiris', 'sam', 'cosmos', 'soi',
+#!                   'andicam', 'goodman spectrograph', 'gtcam', 'flamingos',
+#!                   'mosaic', '(p)odi']
+
 class FitsMetadata(models.Model):
-    telescopes = ['kp09m', 'ct1m', 'kp21m', 'ct15m', 'ctlab', 'kp4m', 'ct09m',
-                  'ct4m',  'bok23m', 'ct13m', 'wiyn', 'kp35m', 'soar', 'kpcf']
-    instruments = ['ispi', 'spartan', 'wildfire', 'mop/ice', '90prime', 'hdi',
-                   'falmingos', 'ice', 'bench', 'arcoiris', 'goodman',
-                   'echelle', 'spartan ir camera', 'decam', 'arcon',
-                   'minimo/ice', 'chiron', 'y4kcam', 'kosmos', 'mosaic3',
-                   'newfirm', 'whirc', 'osiris', 'sam', 'cosmos', 'soi',
-                   'andicam', 'goodman spectrograph', 'gtcam', 'flamingos',
-                   'mosaic', '(p)odi']
+    # THESE ONLY GET UPDATED when django is started.
+    telescopes = [obj.name for obj in Telescope.objects.all()]
+    instruments = [obj.name for obj in Instrument.objects.all()]
+
 
     # id       = models.AutoField(primary_key=True)  # this happens by default
     mdata      = HStoreField()

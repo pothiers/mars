@@ -9,6 +9,7 @@ from django.db.models import Value
 
 from .forms import SlotSetForm
 from .models import Slot, EmptySlot, Proposal, DefaultPropid
+from tada.models import Telescope,Instrument
 from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
@@ -63,6 +64,10 @@ def apply_tac_update(**query):
     logger.debug('DBG: query={}, params={}'.format(query, params))
     url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
     logger.debug('DBG: url={}'.format(url))
+
+    telescopes = [obj.name for obj in Telescope.objects.all()]
+    instruments = [obj.name for obj in Instrument.objects.all()]
+
     try:
         with urllib.request.urlopen(url, timeout=4) as f:
             tree = ET.parse(f)
@@ -80,13 +85,13 @@ def apply_tac_update(**query):
             continue
         instrument = instrument.lower()
         telescope = telescope.lower()
-        if telescope not in Slot.telescopes:
+        if telescope not in telescopes:
             logger.warning('MARS: Telescope "{}" not one of: {}'
-                            .format(telescope, Slot.telescopes))
+                            .format(telescope, telescopes))
             continue
-        if instrument not in Slot.instruments:
+        if instrument not in instruments:
             logger.warning('MARS: Instrument "{}" not one of: {}'
-                            .format(instrument, Slot.instruments))
+                            .format(instrument, instruments))
             continue
         #!obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         obsdate = proposal.get('date')
@@ -208,7 +213,7 @@ def setpropid(request, telescope, instrument, date, propid):
             frozen=True)
         slot.proposals.add(prop)
     except Exception as err:
-        return HttpResponse('ERROR\nCOULD NOT ADD: ({}, {} ,{}, {})\n{}'
+        return HttpResponse('ERROR\nCOULD NOT ADD: ({}, {}, {}, {})\n{}'
                             .format(telescope, instrument, date, propid, err),
                             content_type='text/plain')
         
