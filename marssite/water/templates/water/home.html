@@ -89,10 +89,115 @@
       </td>
     </tr>
     
-    <!-- #################################################################### -->
+    <!-- ################################################################### -->
+    <!-- ### TADA                       -->
+    <!-- ###                             -->
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:prefix' %}">
+	      {% url 'tada:prefix' %}
+	    </a>
+      </th>
+      <td>
+	    Return table mapping Site,Telescope,Instrument to filename prefix.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:obstype' %}">
+	      {% url 'tada:obstype' %}
+	    </a>
+      </th>
+      <td>
+	    Return Observation type table.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:proctype' %}">
+	      {% url 'tada:proctype' %}
+	    </a>
+      </th>
+      <td>
+	    Return Processing type table.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:prodtype' %}">
+	      {% url 'tada:prodtype' %}
+	    </a>
+      </th>
+      <td>
+	    Return Product type table.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:rawreq' %}">
+	      {% url 'tada:rawreq' %}
+	    </a>
+      </th>
+      <td>
+	    Return Raw keywords table.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:filenamereq' %}">
+	      {% url 'tada:filenamereq' %}
+	    </a>
+      </th>
+      <td>
+	    Return Filename keywords table.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:ingestreq' %}">
+	      {% url 'tada:ingestreq' %}
+	    </a>
+      </th>
+      <td>
+	    Return Ingest keywords table.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:ingestrec' %}">
+	      {% url 'tada:ingestrec' %}
+	    </a>
+      </th>
+      <td>
+	    Return Ingest Recommended keywords table.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:supportreq' %}">
+	      {% url 'tada:supportreq' %}
+	    </a>
+      </th>
+      <td>
+	    Return keywords used in hdr_cacl_funcs table.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+	    <a href="{% url 'tada:floatreq' %}">
+	      {% url 'tada:floatreq' %}
+	    </a>
+      </th>
+      <td>
+	    Return keywords that will be scrubbed to float values (or error).
+      </td>
+    </tr>
+
+
+    <!-- ################################################################### -->
     <!-- ### Schedule                    -->
     <!-- ###                             -->
-    
+
     <!--
     <tr>
       <th><a href="{% url 'schedule:list' %}">{% url 'schedule:list' %}</a></th>
@@ -112,15 +217,25 @@
       anything. </td>
     </tr>
     -->
-    <tr class="prod">
+    <tr class="ops">
       <th>
-	<a href="{% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}">
-	  {% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}
-	</a>
+	    <a href="{% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}">
+	      {% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}
+	    </a>
       </th>
       <td>
-	Get propid given telescope, instrument, observation date.
-	<i>(2015B-0313)</i>
+	    Set propid given telescope, instrument, observation date.
+      </td>
+    </tr>
+    <tr class="prod">
+      <th>
+	    <a href="{% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}">
+	      {% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}
+	    </a>
+      </th>
+      <td>
+	    Get propid given telescope, instrument, observation date.
+	    <i>(2015B-0313)</i>
       </td>
     </tr>
     <!--
@@ -387,7 +502,7 @@
       </td>
     </tr>
 
-    <!-- #################################################################### -->
+    <!-- ################################################################### -->
     <!-- ### Other                       -->
     <!-- ###                             -->
     

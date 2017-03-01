@@ -38,6 +38,8 @@ urlpatterns = [
     #  kp4m/2014-01-01 =>  2013B-0142 
     url(r'^propid/(?P<telescope>.+)/(?P<instrument>.+)/(?P<date>.+)/$',
         views.getpropid, name='getpropid'),
+    url(r'^setpropid/(?P<telescope>.+)/(?P<instrument>.+)/(?P<date>.+)/(?P<propid>.+)/$',
+        views.setpropid, name='setpropid'),
     url(r'^slot/(?P<tele>.+)/(?P<date>.+)/$',
         views.SlotGet.as_view(), name='getslot'),
     url(r'^slot_detail/(?P<pk>[0-9]+)/$',

@@ -2,6 +2,9 @@ from django.contrib import admin
 
 from .models import Site, Telescope, Instrument, FilePrefix
 from .models import ObsType, ProcType, ProdType
+from .models import RawKeywords, FilenameKeywords
+from .models import IngestKeywords, IngestRecommendedKeywords
+from .models import SupportKeywords, FloatKeywords
 
 
 @admin.register(Site)
@@ -31,3 +34,15 @@ class ProcTypeAdmin(admin.ModelAdmin):
 @admin.register(ProdType)
 class ProdTypeAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(IngestRecommendedKeywords)
+class IngestRecommendedKeywordsAdmin(admin.ModelAdmin):
+    list_display = ('name', 'comment')
+
+
+admin.site.register(RawKeywords)
+admin.site.register(FilenameKeywords)
+admin.site.register(IngestKeywords)
+admin.site.register(SupportKeywords)
+admin.site.register(FloatKeywords)
+

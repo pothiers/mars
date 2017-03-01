@@ -2,8 +2,52 @@ import datetime
 from django.contrib import admin
 from django.db.models import Count, Q, Sum, Case, When, IntegerField
 
+from tada.models import Telescope,Instrument
 from .models import AuditRecord
 
+class ErrcodeFilter(admin.SimpleListFilter):
+    title = 'errcode'
+    parameter_name = 'errcode'
+    
+    def lookups(self, request, model_admin):
+        qs = AuditRecord.objects.order_by('errcode').distinct('errcode')
+        return [(rec.errcode, rec.errcode) for rec in qs]
+
+    def queryset(self, request, queryset):
+        if self.value() == None:
+            return queryset
+        else:
+            return queryset.filter(errcode=self.value())
+
+class InstrumFilter(admin.SimpleListFilter):
+    title = 'instrument'
+    parameter_name = 'instrument'
+    
+    def lookups(self, request, model_admin):
+        qs = AuditRecord.objects.order_by('instrument').distinct('instrument')
+        return [(rec.instrument, rec.instrument) for rec in qs]
+
+    def queryset(self, request, queryset):
+        if self.value() == None:
+            return queryset
+        else:
+            return queryset.filter(instrument=self.value())
+
+class TeleFilter(admin.SimpleListFilter):
+    title = 'telescope'
+    parameter_name = 'telescope'
+    
+    def lookups(self, request, model_admin):
+        qs = AuditRecord.objects.order_by('telescope').distinct('telescope')
+        return [(rec.telescope, rec.telescope) for rec in qs]
+
+    def queryset(self, request, queryset):
+        if self.value() == None:
+            return queryset
+        else:
+            return queryset.filter(telescope=self.value())
+
+    
 # see: ~/sandbox/mars/env_mars/lib/python3.5/site-packages/django/contrib/admin/filters.py
 class ObsdayListFilter(admin.SimpleListFilter):
     title = 'date observed'
@@ -166,10 +210,13 @@ class AuditRecordAdmin(admin.ModelAdmin):
                    #'obsday',
                    #! ObsdayListFilter,
                    'fstop',
-                   'errcode',
+                   #'errcode',
+                   ErrcodeFilter,
                    'submitted',
-                   'instrument',
-                   'telescope',
+                   #'instrument',
+                   #'telescope',
+                   InstrumFilter,
+                   TeleFilter,
                    'staged')
     search_fields = ['telescope', 'instrument','srcpath', 'archerr', 'md5sum']
     actions = [stage,
