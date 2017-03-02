@@ -8,10 +8,10 @@
     <title>MARS Home</title>
     <style>
       .prod {
-      background-color: rgba(255,255,0,0.3);
+      background-color: rgba(0,255,0,0.3);
       }
       .ops {
-      background-color: rgba(0,255,0,0.3);
+      background-color: rgba(255,255,0,0.3);
       }
       .dev {
       background-color: rgba(255,0,0,0.3);
@@ -21,6 +21,13 @@
       }
       .inactive {
       background-color: rgba(0,0,0,0.2);
+      }
+      .header {
+      background-color: rgba(0,0,0,0.8);
+      color: rgb(255,255,255);
+      }
+      .spacer {
+      background-color: rgba(0,0,0,0.4);
       }
 </style>
 </head>
@@ -42,20 +49,77 @@
   </p>
 
   <table>
-    <tr class="inactive">
-      <th>Example URI</th>
-      <th>Description</th>
+    <tr class="header"><th>Example URI</th><th>Description</th></tr>
+
+    <!-- #################################################################### -->
+    <!-- ### Production                       -->
+    <!-- ###                                  -->
+    <tr class="spacer"><th>PRODUCTION</th><th><br /></th></tr>
+    <tr class="prod">
+      <th>
+	    <a href="{% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}">
+	      {% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}
+	    </a>
+      </th>
+      <td>
+	    Get propid given telescope, instrument, observation date.
+	    <i>(2015B-0313)</i>
+      </td>
+    </tr>
+    <tr class="prod">
+      <th>
+	<a href="{% url 'schedule:update_date' '2015-09-04' %}">
+	  {% url 'schedule:update_date' '2015-09-04' %}
+	</a>
+      </th>
+      <td>
+	Update DMO telescope DATE (all telescopes) schedule using
+	www.noao.edu./noaoprop service.
+	<i><b>
+	    If a "schedule/update" service is not done after each
+	    update to the TAC schedule, files may be ingested with the
+	    wrong Propid!
+	</b></i>
+      </td>
+    </tr>
+    <tr class="prod">
+      <th>
+	<a href="{% url 'schedule:update_semester' '2015B'%}">
+	  {% url 'schedule:update_semester' '2015B'%}
+	</a>
+      </th>
+      <td>
+	Update DMO telescope SEMESTER schedule using
+	TAC service at www.noao.edu./noaoprop.
+	<b>Will take several minutes!</b>
+	<i><b>
+	    If a "schedule/update" service is not done after each
+	    update to the TAC schedule, files may be ingested with the
+	    wrong Propid!
+	  </b></i>
+      </td>
+    </tr>
+    <!-- ##### Audit ##### -->
+    <tr class="prod">
+      <th>
+	    {% url 'audit:update_fstop' '1900c5e4e342f293d538507dfd2bff3a' 'valley:cache' 'valley.sdm' %}
+      </th>
+      <td>
+	    Record location (tag) of file in its journey from Dome to
+	    Archive.
+	    <form method="POST">
+	      MD5SUM: <input type="text" name="md5sum"/>
+	      fstop: <input type="text" name="fstop" size="7"/>
+	      host: <input type="text" name="host" size="7"/>
+	      <input type="submit" value="Submit"/>
+	    </form>
+      </td>
     </tr>
 
     <!-- #################################################################### -->
-    <!-- ### Admin                       -->
-    <!-- ###                             -->
-    <!--
-    <tr class="ops">
-      <th><a href="{% url 'admin:index' %}">/admin/</a></th>
-      <td>Change MARS data (not FITS data or Archive metadata).</td>
-    </tr>
-    -->
+    <!-- ### Operations                       -->
+    <!-- ###                                  -->
+    <tr class="spacer"><th>OPERATIONS</th><th><br /></th></tr>
     <tr class="ops">
       <th>
         <a href="{% url 'admin:audit_auditrecord_changelist' %}">
@@ -64,15 +128,6 @@
       </th>
       <td>Audit records.  Filter (and change) them.</td>
     </tr>
-    <!--
-    <tr>
-      <th>
-	<a href="{% url 'admin:index' %}provisional/fitsname/add/">
-	  /admin/provisional/fitsname/add/
-      </a></th>
-      <td>Record FITS file as provisional.</td>
-    </tr>
-    -->
     <tr class="ops">
       <th>
 	<a href="{% url 'admin:index' %}schedule/slot/">
@@ -90,17 +145,7 @@
       <td>Edit data affecting TADA behavior.</td>
     </tr>
 
-    <tr class="dev">
-      <th><a href="{% url 'admin:index' %}doc/">/admin/doc/</a></th>
-      <td>Documentation (for developers) automatically generated from
-	docstrings of code.  Includes: template
-	tags, template filters, models, views, bookmarklets
-      </td>
-    </tr>
-    
-    <!-- ################################################################### -->
-    <!-- ### TADA                       -->
-    <!-- ###                             -->
+    <!-- #####  TADA  ######################################## -->
     <tr class="ops">
       <th>
 	    <a href="{% url 'tada:prefix' %}">
@@ -202,30 +247,7 @@
       </td>
     </tr>
 
-
-    <!-- ################################################################### -->
-    <!-- ### Schedule                    -->
-    <!-- ###                             -->
-
-    <!--
-    <tr>
-      <th><a href="{% url 'schedule:list' %}">{% url 'schedule:list' %}</a></th>
-      <td>List the schedule.</td>
-    </tr>
-    <tr>
-      <th>/schedule/scrape/BEGIN_YYYYMMDD/END_YYYYMMDD/</th>
-      <th>Load schedule for range of dates.</th>
-    </tr>
-    <tr class="ops">
-      <th>
-	<a href="{% url 'schedule:list_empty' %}">
-	  {% url 'schedule:list_empty' %}
-	</a>
-      </th>
-      <td>List slots that have been queried but didn't contain
-      anything. </td>
-    </tr>
-    -->
+    <!-- ##### Schedule ##### -->
     <tr class="ops">
       <th>
 	    <a href="{% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}">
@@ -236,90 +258,24 @@
 	    Set propid given telescope, instrument, observation date.
       </td>
     </tr>
-    <tr class="prod">
+    <!-- ##### Audit ##### -->
+    <tr class="ops">
       <th>
-	    <a href="{% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}">
-	      {% url 'schedule:getpropid' 'kp4m' 'kosmos' '2016-02-01' %}
+	    <a href="{% url 'audit:agg' %}">
+	      {% url 'audit:agg' %}
 	    </a>
       </th>
       <td>
-	    Get propid given telescope, instrument, observation date.
-	    <i>(2015B-0313)</i>
+	    For <b>monitoring progress</b> of ingestion. Similar to Sean's
+	    <a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
       </td>
     </tr>
-    <!--
-    <tr>
-      <th>
-	<a href="{% url 'schedule:month_list' '2015' 'aug' %}">
-	  {% url 'schedule:month_list' '2015' 'aug' %}
-	</a>
-      </th>
-      <td>Get a months worth.</td>
-    </tr>
-    {% comment %}
-    <tr>
-      <th><a href="{% url 'schedule:week_list' '2015' '23' %}">/schedule/2015/week/23/</a></th>
-      <td>Get a weeks worth.</td>
-    </tr>
-    <tr>
-      <th>
-	<a href="{% url 'schedule:day_list' '2015' 'aug' '23' %}">
-	  {% url 'schedule:day_list' '2015' 'aug' '23' %}
-	</a>
-      </th>
-      <td>Get a days worth.</td>
-    </tr>
-    {% endcomment %}
-    <tr>
-      <th>
-	<a href="{% url 'schedule:today_list' %}">
-	  {% url 'schedule:today_list' %}
-	</a>
-      </th>
-      <td>Get todays schedule.</td>
-    </tr>
-    <tr>
-      <th>
-	<a href="{% url 'schedule:upload_file' %}">
-	  {% url 'schedule:upload_file' %}
-	</a>
-      </th>
-      <td>Upload XML file of schedule data and load it.</td>
-    </tr>
-    -->
-    <tr class="prod">
-      <th>
-	<a href="{% url 'schedule:update_date' '2015-09-04' %}">
-	  {% url 'schedule:update_date' '2015-09-04' %}
-	</a>
-      </th>
-      <td>
-	Update DMO telescope DATE (all telescopes) schedule using
-	www.noao.edu./noaoprop service.
-	<i><b>
-	    If a "schedule/update" service is not done after each
-	    update to the TAC schedule, files may be ingested with the
-	    wrong Propid!
-	</b></i>
-      </td>
-    </tr>
-    <tr class="prod">
-      <th>
-	<a href="{% url 'schedule:update_semester' '2015B'%}">
-	  {% url 'schedule:update_semester' '2015B'%}
-	</a>
-      </th>
-      <td>
-	Update DMO telescope SEMESTER schedule using
-	TAC service at www.noao.edu./noaoprop.
-	<b>Will take several minutes!</b>
-	<i><b>
-	    If a "schedule/update" service is not done after each
-	    update to the TAC schedule, files may be ingested with the
-	    wrong Propid!
-	  </b></i>
-      </td>
-    </tr>
+    
+
+    <!-- ################################################################### -->
+    <!-- ### Development         -->
+    <!-- ###                     -->
+    <tr class="spacer"><th>DEVELOPMENT</th><th><br /></th></tr>
     <tr class="dev">
       <th>
         <a href="http://www.noao.edu/noaoprop/schedule.mpl?semester=2015B">
@@ -331,17 +287,30 @@
 	<i>"The TAC schedule"</i>
       </td>
     </tr>
-
-    <!-- ################################################################### -->
-    <!-- ### SIAP querying               -->
-    <!-- ###                             -->
-
-    <!--
-    <tr>
-      <th><a href="{% url 'siap:index' %}">/siap/</a></th>
-      <td>SIAP index of all files.</td>
+    <tr class="dev">
+      <th><a href="{% url 'admin:index' %}doc/">/admin/doc/</a></th>
+      <td>Documentation (for developers) automatically generated from
+	docstrings of code.  Includes: template
+	tags, template filters, models, views, bookmarklets
+      </td>
     </tr>
-    -->
+    <tr class="dev">
+      <th><a href="{% url 'siap:tada' %}">/siap/tada/</a></th>
+      <td>List of all Archive files containing substring "TADA". Get
+      different renderings based on requested content type. Examples:
+      <pre>
+  curl -H "Content-type: application/json" 'http://localhost:8000/siap/tada/'
+  curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
+      </pre>
+      </td>
+    </tr>
+    
+
+    
+    <!-- ################################################################### -->
+    <!-- ### Testing             -->
+    <!-- ###                     -->
+    <tr class="spacer"><th>TESTING</th><th><br /></th></tr>
     <tr  class="test">
       <th><a href="{% url 'siap:query_by_url' %}{% querystring 'min:date_obs'='05-28-2016' 'reference'='c13a' %}">
 	  {% url 'siap:query_by_url' %}{% querystring 'min:date_obs'='05-28-2016' 'reference'='c13a' %}
@@ -365,14 +334,6 @@
 	</pre>
       </td>
     </tr>
-    <tr class="inactive">
-      <th><a href="/siap/fquery?cols=reference&limit=2">
-	  /siap/fquery?cols=reference&limit=2
-      </a></th>
-      <td>Query voi.siap using form or URL parameter. Direct query using a string payload
-	is available via: {% url 'siap:query_by_sql' %}
-      </td>
-    </tr>
     <tr class="test">
       <th>{% url 'siap:query_by_sql' %}</th>
       <td>Query voi.siap using SQL string.
@@ -387,80 +348,7 @@
 	    <i>curl --data-binary "select reference,dtacqnam from voi.siap limit 5" http://localhost:8000/siap/squery </i>
       </td>
     </tr>
-
-    <tr class="dev">
-      <th><a href="{% url 'siap:tada' %}">/siap/tada/</a></th>
-      <td>List of all Archive files containing substring "TADA". Get
-      different renderings based on requested content type. Examples:
-      <pre>
-  curl -H "Content-type: application/json" 'http://localhost:8000/siap/tada/'
-  curl -H "Content-type: text/csv" 'http://localhost:8000/siap/tada/' >x.csv
-      </pre>
-      </td>
-    </tr>
-    <!-- subsumed by /siap/query/?dtpropid=2011A-0525
-    <tr>
-      <th>
-        <a href="{% url 'siap:filenames' '2011A-0525' %}">
-	  {% url 'siap:filenames' '2011A-0525' %}
-	  (<i>/siap/prop/PROPID</i>)
-	</a>
-      </th>
-      <td>Filenames associated with PROPID='2011A-0525'</td>
-    </tr>
-    -->
-
-
-    <!-- ################################################################### -->
-    <!-- ### Audit                       -->
-    <!-- ###                             -->
-    <tr class="prod">
-      <th>
-	    {% url 'audit:update_fstop' '1900c5e4e342f293d538507dfd2bff3a' 'valley:cache' 'valley.sdm' %}
-      </th>
-      <td>
-	    Record location (tag) of file in its journey from Dome to
-	    Archive.
-	    <form method="POST">
-	      MD5SUM: <input type="text" name="md5sum"/>
-	      fstop: <input type="text" name="fstop" size="7"/>
-	      host: <input type="text" name="host" size="7"/>
-	      <input type="submit" value="Submit"/>
-	    </form>
-      </td>
-    </tr>
-    
-    
-    <tr class="ops">
-      <th>
-	    <a href="{% url 'audit:agg' %}">
-	      {% url 'audit:agg' %}
-	    </a>
-      </th>
-      <td>
-	    For <b>monitoring progress</b> of ingestion. Similar to Sean's
-	    <a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
-      </td>
-    </tr>
-    <!--
-    <tr class="ops">
-      <th>
-	    <a href="{% url 'audit:sourcefile_list' %}">
-	      {% url 'audit:sourcefile_list' %}
-	    </a>
-      </th>
-      <td>
-	    For <b>monitoring progress</b> pf ingestion.  List audit records. 
-      </td>
-    </tr>
-    -->
-
-    
-    
-    <!-- #################################################################### -->
-    <!-- ### Provisional                 -->
-    <!-- ###                             -->
-
+    <!-- ##### Provisional ##### -->
     <tr class="test">
       <th><a href="{% url 'provisional:index' %}">/provisional/</a></th>
 
@@ -511,11 +399,20 @@
       </td>
     </tr>
 
+
     <!-- ################################################################### -->
-    <!-- ### Other                       -->
-    <!-- ###                             -->
-    
-    <tr  class="inactive">
+    <!-- ### Inactive            -->
+    <!-- ###                     -->
+    <tr class="spacer"><th>INACTIVE</th><th><br /></th></tr>
+    <tr class="inactive">
+      <th><a href="/siap/fquery?cols=reference&limit=2">
+	  /siap/fquery?cols=reference&limit=2
+      </a></th>
+      <td>Query voi.siap using form or URL parameter. Direct query using a string payload
+	is available via: {% url 'siap:query_by_sql' %}
+      </td>
+    </tr>
+    <tr class="inactive">
       <th><a href="docs">/docs/</a></th>
       <td>
 	Web-service API automatically generated documentation.
@@ -525,6 +422,7 @@
       <th><a href="api">/api/</a></th>
       <td>Django REST framework auto generated API pages</td>
     </tr>
+
   </table>
 
   <br />
