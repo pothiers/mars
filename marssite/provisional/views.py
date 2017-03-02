@@ -66,7 +66,6 @@ def add(request, reference):
 @transaction.atomic
 def rollback(request):
     'Remove all provisionaly added files from DB'
-    from . import perlport
     from django.db import connection
 
     logging.debug('EXECUTING: mars:provisional/rollback()')
@@ -86,7 +85,6 @@ def rollback(request):
 @transaction.atomic
 def dbdelete(request, reference=None):
     '''Delete a fits file from the archive DB (all tables).'''
-    from . import perlport
     from django.db import connection
 
     cursor = connection.cursor()

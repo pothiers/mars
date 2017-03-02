@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 
 class Site(models.Model):
     name = models.CharField(max_length=10, unique=True,
@@ -11,22 +12,27 @@ class Telescope(models.Model):
                                        '(field name TELES'))
     def __str__(self): return self.name
 
+
+
+class TacInstrumentAlias(models.Model):
+    tac = models.CharField(max_length=20, unique=True,
+                           help_text='Name used by Dave Bells TAC Schedule')
+    hdr = models.CharField(max_length=20, unique=True,
+                           help_text='Name used in FITS header')
+
+    
 class Instrument(models.Model):
-    name = models.CharField(max_length=20, unique=True,
-                            help_text=('Name used in FITS header '
-                                       '(field name INSTRUME)'))
+    name = models.CharField(
+        max_length=20, unique=True,
+        help_text=('Name used in FITS header (field name INSTRUME)'))
+
     def __str__(self): return self.name
 
-class TacInstrument(models.Model):
-    name = models.CharField(max_length=20, unique=True,
-                            help_text='Name used by Dave Bells TAC Schedule')
-    def __str__(self): return self.name
+#!class InstrumentAlias(models.Model):
+#!    reason = models.CharField(max_length=80)
+#!    #!instrument = models.ForeignKey(Instrument)
 
-class InstrumentAlias(models.Model):
-    reason = models.CharField(max_length=80)
-    #!instrument = models.ForeignKey(Instrument)
-
-# Will ultimately replace tada/file_naming.py:stiLUT{}
+# Replaces tada/file_naming.py:stiLUT{}
 class FilePrefix(models.Model):
     """Archive filename prefix coded from Site, Telescope, Instrument"""
 
@@ -110,4 +116,28 @@ requirements.
     """
     name = models.CharField(max_length=8, unique=True)
     comment = models.CharField(max_length=80, blank=True, default='')
+    
+##################################################################
+
+class HdrFunc(models.Model):
+    """Definition of FITS header Mapping Functions previously in
+hdr_calc_funcs.py  Each function has a signature of: 
+FUNC(orig, **kwargs): return NEW
+where 'orig' is orginal header as a dictionary. Returns NEW defined as dictionary used to update the header.
+    """
+    name = models.CharField(max_length=40, unique=True,
+                            help_text='Function name as used in personality.')
+    documentation = models.TextField(max_length=120, blank=True, 
+                                     help_text='Function description.')
+    definition = models.TextField(help_text='Python function BODY' )
+    inkeywords = ArrayField(
+        models.CharField(max_length=8,
+                         help_text='FITS keywords needed by func'),
+        default=list)
+    outkeywords = ArrayField(
+        models.CharField(
+            max_length=8,
+            help_text='FITS keywords added or modified by func'),
+        default=list )
+
     

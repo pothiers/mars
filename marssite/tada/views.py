@@ -5,7 +5,7 @@ from .models import Site, Telescope, Instrument, FilePrefix
 from .models import ObsType, ProcType, ProdType
 from .models import RawKeywords, FilenameKeywords
 from .models import IngestKeywords, IngestRecommendedKeywords
-from .models import SupportKeywords, FloatKeywords
+from .models import SupportKeywords, FloatKeywords, HdrFunc, TacInstrumentAlias
 
 # stilut=`curl 'http://localhost:8000/tada/'`
 def prefix(request):
@@ -52,3 +52,15 @@ def supportreq(request):
 def floatreq(request):
     qs = FloatKeywords.objects.all().values('name','comment')
     return JsonResponse(list(qs), safe=False)
+
+##############################################################################
+
+def hdrfuncs(request):
+    qs = HdrFunc.objects.all().values('name',
+                                      'documentation',
+                                      'definition',
+                                      'inkeywords',
+                                      'outkeywords' )
+    return JsonResponse(list(qs), safe=False)
+    
+

@@ -9,7 +9,7 @@ from django.db.models import Value
 
 from .forms import SlotSetForm
 from .models import Slot, EmptySlot, Proposal, DefaultPropid
-from tada.models import Telescope,Instrument
+from tada.models import Telescope,Instrument,TacInstrumentAlias
 from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
@@ -32,29 +32,30 @@ from collections import defaultdict
 logger = logging.getLogger(__name__)
 
 # instrument Mapping from Dave's NOAOPROP service to FITS header fields
-sched2hdr= {
-    # TAC           DMO
-    # Schedule      Fits Header
-    'ARCoIRIS':    'arcoiris',
-    'CFIM+T2K':    'ccd_imager',
-    'COSMOS':      'cosmos',
-    'DECam':       'decam',
-    'Goodman':     'goodman',
-    'HDI':         'hdi',
-    'KOSMOS':      'kosmos',
-    'MOSA3':       'mosaic3', #!
-    'NEWFIRM':     'newfirm',
-    'OSIRIS':      'osiris',
-    'SAM':         'sami',		# should be sami
-    'SOI':         'soi',
-    'Spartan':     'spartan',
-    'WHIRC':       'whirc',
-    ########################################
-    #'ODI':        '(p)odi',		# not archived - remove
-    #(None:        'goodman spectrograph'}	# goodman as above
-    #(None:        'bench'}			# bench
-    #(None:        'spartan ir camera'}	# spartan as above
-}
+#!sched2hdr= {
+#!    # TAC           DMO
+#!    # Schedule      Fits Header
+#!    'ARCoIRIS':    'arcoiris',
+#!    'CFIM+T2K':    'ccd_imager',
+#!    'COSMOS':      'cosmos',
+#!    'DECam':       'decam',
+#!    'Goodman':     'goodman',
+#!    'HDI':         'hdi',
+#!    'KOSMOS':      'kosmos',
+#!    'MOSA3':       'mosaic3', #!
+#!    'NEWFIRM':     'newfirm',
+#!    'OSIRIS':      'osiris',
+#!    'SAM':         'sami',		# should be sami
+#!    'SOI':         'soi',
+#!    'Spartan':     'spartan',
+#!    'WHIRC':       'whirc',
+#!
+#!    ########################################
+#!    #'ODI':        '(p)odi',		# not archived - remove
+#!    #(None:        'goodman spectrograph'}	# goodman as above
+#!    #(None:        'bench'}			# bench
+#!    #(None:        'spartan ir camera'}	# spartan as above
+#!}
 
 
 def apply_tac_update(**query):
@@ -62,20 +63,22 @@ def apply_tac_update(**query):
     logger.debug('apply tac update for query={}'.format(query))
     params = urllib.parse.urlencode(query)
     logger.debug('DBG: query={}, params={}'.format(query, params))
-    url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
-    logger.debug('DBG: url={}'.format(url))
+    tac_url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
+    tac_timeout=6
+    logger.debug('DBG: url={}'.format(tac_url))
 
     telescopes = [obj.name for obj in Telescope.objects.all()]
     instruments = [obj.name for obj in Instrument.objects.all()]
 
     try:
-        with urllib.request.urlopen(url, timeout=4) as f:
+        with urllib.request.urlopen(tac_url, timeout=tac_timeout) as f:
             tree = ET.parse(f)
             root = tree.getroot()
     except:
-        logger.error('MARS: Error contacting TAC Schedule at "{}"'.format(url))
+        logger.error('MARS: Error contacting TAC Schedule at "{}"'.format(tac_url))
         return None
     slot_pids = defaultdict(set) # dict[slot] = [propid, ...]
+    sched2hdr = dict([(obj.tac, obj.hdr) for obj in TacInstrumentAlias.objects.all()])
     for proposal in root:
         telescope = proposal.get('telescope')
         instrument = sched2hdr.get(proposal.get('instrument'),None)

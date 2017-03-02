@@ -4,7 +4,8 @@ from .models import Site, Telescope, Instrument, FilePrefix
 from .models import ObsType, ProcType, ProdType
 from .models import RawKeywords, FilenameKeywords
 from .models import IngestKeywords, IngestRecommendedKeywords
-from .models import SupportKeywords, FloatKeywords
+from .models import SupportKeywords, FloatKeywords, HdrFunc, TacInstrumentAlias
+
 
 
 @admin.register(Site)
@@ -17,11 +18,13 @@ class TelescopeAdmin(admin.ModelAdmin):
 
 @admin.register(Instrument)
 class InstrumentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name',)    
+
 
 @admin.register(FilePrefix)
 class FilePrefixAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('site', 'telescope', 'instrument', 'prefix', 'comment')
+
 
 @admin.register(ObsType)
 class ObsTypeAdmin(admin.ModelAdmin):
@@ -46,3 +49,12 @@ admin.site.register(IngestKeywords)
 admin.site.register(SupportKeywords)
 admin.site.register(FloatKeywords)
 
+@admin.register(HdrFunc)
+class HdrFuncAdmin(admin.ModelAdmin):
+    list_display = ('name', 'documentation', 'inkeywords', 'outkeywords')
+
+@admin.register(TacInstrumentAlias)
+class TacInstrumentAliasAdmin(admin.ModelAdmin):
+    list_display = ('tac','hdr')
+
+    
