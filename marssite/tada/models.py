@@ -127,17 +127,16 @@ where 'orig' is orginal header as a dictionary. Returns NEW defined as dictionar
     """
     name = models.CharField(max_length=40, unique=True,
                             help_text='Function name as used in personality.')
-    documentation = models.TextField(max_length=120, blank=True, 
+    documentation = models.TextField(blank=True, 
                                      help_text='Function description.')
     definition = models.TextField(help_text='Python function BODY' )
     inkeywords = ArrayField(
-        models.CharField(max_length=8,
-                         help_text='FITS keywords needed by func'),
+        models.CharField(max_length=8),
+        help_text='FITS keywords used by func',
         default=list)
     outkeywords = ArrayField(
-        models.CharField(
-            max_length=8,
-            help_text='FITS keywords added or modified by func'),
+        models.CharField(max_length=8),
+        help_text='FITS keywords added or modified by func',
         default=list )
 
     
