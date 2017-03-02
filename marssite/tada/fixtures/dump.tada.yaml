@@ -1,0 +1,634 @@
+-   model: tada.site
+    pk: 1
+    fields: {name: kp}
+-   model: tada.site
+    pk: 2
+    fields: {name: cp}
+-   model: tada.site
+    pk: 3
+    fields: {name: ct}
+-   model: tada.telescope
+    pk: 1
+    fields: {name: kp09m}
+-   model: tada.telescope
+    pk: 2
+    fields: {name: soar}
+-   model: tada.telescope
+    pk: 3
+    fields: {name: ctlab}
+-   model: tada.telescope
+    pk: 4
+    fields: {name: ct4m}
+-   model: tada.telescope
+    pk: 5
+    fields: {name: kp4m}
+-   model: tada.telescope
+    pk: 6
+    fields: {name: kp21m}
+-   model: tada.telescope
+    pk: 7
+    fields: {name: kp35m}
+-   model: tada.telescope
+    pk: 8
+    fields: {name: ct15m}
+-   model: tada.telescope
+    pk: 9
+    fields: {name: kpcf}
+-   model: tada.telescope
+    pk: 10
+    fields: {name: ct13m}
+-   model: tada.telescope
+    pk: 11
+    fields: {name: wiyn}
+-   model: tada.telescope
+    pk: 12
+    fields: {name: bok23m}
+-   model: tada.telescope
+    pk: 13
+    fields: {name: ct1m}
+-   model: tada.telescope
+    pk: 14
+    fields: {name: ct09m}
+-   model: tada.telescope
+    pk: 15
+    fields: {name: TESTtele}
+-   model: tada.tacinstrumentalias
+    pk: 1
+    fields: {tac: ARCoIRIS, hdr: arcoiris}
+-   model: tada.tacinstrumentalias
+    pk: 2
+    fields: {tac: CFIM+T2K, hdr: ccd_imager}
+-   model: tada.tacinstrumentalias
+    pk: 3
+    fields: {tac: COSMOS, hdr: cosmos}
+-   model: tada.tacinstrumentalias
+    pk: 4
+    fields: {tac: DECam, hdr: decam}
+-   model: tada.tacinstrumentalias
+    pk: 5
+    fields: {tac: Goodman, hdr: goodman}
+-   model: tada.tacinstrumentalias
+    pk: 6
+    fields: {tac: HDI, hdr: hdi}
+-   model: tada.tacinstrumentalias
+    pk: 7
+    fields: {tac: KOSMOS, hdr: kosmos}
+-   model: tada.tacinstrumentalias
+    pk: 8
+    fields: {tac: MOSA3, hdr: mosaic3}
+-   model: tada.tacinstrumentalias
+    pk: 9
+    fields: {tac: NEWFIRM, hdr: newfirm}
+-   model: tada.tacinstrumentalias
+    pk: 10
+    fields: {tac: OSIRIS, hdr: osiris}
+-   model: tada.tacinstrumentalias
+    pk: 11
+    fields: {tac: SAMI, hdr: sami}
+-   model: tada.tacinstrumentalias
+    pk: 12
+    fields: {tac: SOI, hdr: soi}
+-   model: tada.tacinstrumentalias
+    pk: 13
+    fields: {tac: Spartan, hdr: spartan}
+-   model: tada.tacinstrumentalias
+    pk: 14
+    fields: {tac: WHIRC, hdr: whirc}
+-   model: tada.instrument
+    pk: 1
+    fields: {name: mosaic}
+-   model: tada.instrument
+    pk: 2
+    fields: {name: goodman spectrograph}
+-   model: tada.instrument
+    pk: 3
+    fields: {name: cosmos}
+-   model: tada.instrument
+    pk: 4
+    fields: {name: ispi}
+-   model: tada.instrument
+    pk: 5
+    fields: {name: osiris}
+-   model: tada.instrument
+    pk: 6
+    fields: {name: flamingos}
+-   model: tada.instrument
+    pk: 7
+    fields: {name: wildfire}
+-   model: tada.instrument
+    pk: 8
+    fields: {name: arcoiris}
+-   model: tada.instrument
+    pk: 9
+    fields: {name: ice}
+-   model: tada.instrument
+    pk: 10
+    fields: {name: mosaic3}
+-   model: tada.instrument
+    pk: 11
+    fields: {name: minimo/ice}
+-   model: tada.instrument
+    pk: 12
+    fields: {name: arcon}
+-   model: tada.instrument
+    pk: 13
+    fields: {name: mop/ice}
+-   model: tada.instrument
+    pk: 14
+    fields: {name: andicam}
+-   model: tada.instrument
+    pk: 15
+    fields: {name: kosmos}
+-   model: tada.instrument
+    pk: 16
+    fields: {name: spartan}
+-   model: tada.instrument
+    pk: 17
+    fields: {name: newfirm}
+-   model: tada.instrument
+    pk: 18
+    fields: {name: echelle}
+-   model: tada.instrument
+    pk: 19
+    fields: {name: bench}
+-   model: tada.instrument
+    pk: 20
+    fields: {name: goodman}
+-   model: tada.instrument
+    pk: 21
+    fields: {name: hdi}
+-   model: tada.instrument
+    pk: 22
+    fields: {name: 90prime}
+-   model: tada.instrument
+    pk: 23
+    fields: {name: (p)odi}
+-   model: tada.instrument
+    pk: 24
+    fields: {name: sami}
+-   model: tada.instrument
+    pk: 25
+    fields: {name: soi}
+-   model: tada.instrument
+    pk: 26
+    fields: {name: spartan ir camera}
+-   model: tada.instrument
+    pk: 27
+    fields: {name: falmingos}
+-   model: tada.instrument
+    pk: 28
+    fields: {name: chiron}
+-   model: tada.instrument
+    pk: 29
+    fields: {name: whirc}
+-   model: tada.instrument
+    pk: 30
+    fields: {name: decam}
+-   model: tada.instrument
+    pk: 31
+    fields: {name: y4kcam}
+-   model: tada.instrument
+    pk: 32
+    fields: {name: ccd_imager}
+-   model: tada.instrument
+    pk: 33
+    fields: {name: gtcam}
+-   model: tada.fileprefix
+    pk: 1
+    fields: {site: 1, telescope: 1, instrument: 1, prefix: k09m, comment: ''}
+-   model: tada.fileprefix
+    pk: 2
+    fields: {site: 2, telescope: 2, instrument: 2, prefix: psg, comment: ''}
+-   model: tada.fileprefix
+    pk: 3
+    fields: {site: 3, telescope: 3, instrument: 3, prefix: clc, comment: ''}
+-   model: tada.fileprefix
+    pk: 4
+    fields: {site: 3, telescope: 4, instrument: 4, prefix: c4i, comment: ''}
+-   model: tada.fileprefix
+    pk: 5
+    fields: {site: 2, telescope: 2, instrument: 5, prefix: pso, comment: ''}
+-   model: tada.fileprefix
+    pk: 6
+    fields: {site: 1, telescope: 5, instrument: 6, prefix: k4f, comment: ''}
+-   model: tada.fileprefix
+    pk: 7
+    fields: {site: 1, telescope: 6, instrument: 7, prefix: k21w, comment: ''}
+-   model: tada.fileprefix
+    pk: 8
+    fields: {site: 3, telescope: 4, instrument: 8, prefix: c4ai, comment: ''}
+-   model: tada.fileprefix
+    pk: 9
+    fields: {site: 1, telescope: 1, instrument: 9, prefix: k09i, comment: ''}
+-   model: tada.fileprefix
+    pk: 10
+    fields: {site: 1, telescope: 5, instrument: 10, prefix: k4m, comment: ''}
+-   model: tada.fileprefix
+    pk: 11
+    fields: {site: 1, telescope: 5, instrument: 7, prefix: k4w, comment: ''}
+-   model: tada.fileprefix
+    pk: 12
+    fields: {site: 1, telescope: 7, instrument: 11, prefix: kwi, comment: ''}
+-   model: tada.fileprefix
+    pk: 13
+    fields: {site: 3, telescope: 8, instrument: 12, prefix: c15s, comment: ''}
+-   model: tada.fileprefix
+    pk: 14
+    fields: {site: 1, telescope: 9, instrument: 13, prefix: kcfs, comment: ''}
+-   model: tada.fileprefix
+    pk: 15
+    fields: {site: 3, telescope: 10, instrument: 14, prefix: c13a, comment: ''}
+-   model: tada.fileprefix
+    pk: 16
+    fields: {site: 1, telescope: 5, instrument: 15, prefix: k4k, comment: ''}
+-   model: tada.fileprefix
+    pk: 17
+    fields: {site: 2, telescope: 2, instrument: 16, prefix: pss, comment: ''}
+-   model: tada.fileprefix
+    pk: 18
+    fields: {site: 3, telescope: 4, instrument: 17, prefix: c4n, comment: ''}
+-   model: tada.fileprefix
+    pk: 19
+    fields: {site: 3, telescope: 8, instrument: 18, prefix: c15e, comment: ''}
+-   model: tada.fileprefix
+    pk: 20
+    fields: {site: 1, telescope: 11, instrument: 19, prefix: kwb, comment: ''}
+-   model: tada.fileprefix
+    pk: 21
+    fields: {site: 3, telescope: 4, instrument: 1, prefix: c4m, comment: ''}
+-   model: tada.fileprefix
+    pk: 22
+    fields: {site: 1, telescope: 5, instrument: 17, prefix: k4n, comment: ''}
+-   model: tada.fileprefix
+    pk: 23
+    fields: {site: 2, telescope: 2, instrument: 20, prefix: psg, comment: ''}
+-   model: tada.fileprefix
+    pk: 24
+    fields: {site: 1, telescope: 1, instrument: 21, prefix: k09h, comment: ''}
+-   model: tada.fileprefix
+    pk: 25
+    fields: {site: 1, telescope: 12, instrument: 22, prefix: ksb, comment: ''}
+-   model: tada.fileprefix
+    pk: 26
+    fields: {site: 1, telescope: 7, instrument: 23, prefix: kwo, comment: ''}
+-   model: tada.fileprefix
+    pk: 27
+    fields: {site: 2, telescope: 2, instrument: 24, prefix: psa, comment: ''}
+-   model: tada.fileprefix
+    pk: 28
+    fields: {site: 2, telescope: 2, instrument: 25, prefix: psi, comment: ''}
+-   model: tada.fileprefix
+    pk: 29
+    fields: {site: 1, telescope: 5, instrument: 3, prefix: k4k, comment: ''}
+-   model: tada.fileprefix
+    pk: 30
+    fields: {site: 2, telescope: 2, instrument: 26, prefix: pss, comment: ''}
+-   model: tada.fileprefix
+    pk: 31
+    fields: {site: 1, telescope: 6, instrument: 27, prefix: k21f, comment: ''}
+-   model: tada.fileprefix
+    pk: 32
+    fields: {site: 3, telescope: 8, instrument: 28, prefix: c15e, comment: ''}
+-   model: tada.fileprefix
+    pk: 33
+    fields: {site: 1, telescope: 7, instrument: 29, prefix: kww, comment: ''}
+-   model: tada.fileprefix
+    pk: 34
+    fields: {site: 3, telescope: 4, instrument: 30, prefix: c4d, comment: ''}
+-   model: tada.fileprefix
+    pk: 35
+    fields: {site: 1, telescope: 11, instrument: 29, prefix: kww, comment: ''}
+-   model: tada.fileprefix
+    pk: 36
+    fields: {site: 3, telescope: 13, instrument: 31, prefix: c1i, comment: ''}
+-   model: tada.fileprefix
+    pk: 37
+    fields: {site: 3, telescope: 4, instrument: 3, prefix: c4c, comment: ''}
+-   model: tada.fileprefix
+    pk: 38
+    fields: {site: 1, telescope: 6, instrument: 13, prefix: k21i, comment: ''}
+-   model: tada.fileprefix
+    pk: 39
+    fields: {site: 3, telescope: 12, instrument: 15, prefix: ksb, comment: ''}
+-   model: tada.fileprefix
+    pk: 40
+    fields: {site: 1, telescope: 5, instrument: 9, prefix: k4i, comment: ''}
+-   model: tada.fileprefix
+    pk: 41
+    fields: {site: 1, telescope: 5, instrument: 1, prefix: k4m, comment: ''}
+-   model: tada.fileprefix
+    pk: 42
+    fields: {site: 3, telescope: 14, instrument: 32, prefix: c09i, comment: ''}
+-   model: tada.fileprefix
+    pk: 43
+    fields: {site: 1, telescope: 6, instrument: 33, prefix: k21g, comment: ''}
+-   model: tada.obstype
+    pk: 1
+    fields: {name: zero, code: z, comment: added 5/8/15 for bok}
+-   model: tada.obstype
+    pk: 2
+    fields: {name: object, code: o, comment: ''}
+-   model: tada.obstype
+    pk: 3
+    fields: {name: photometric standard, code: p, comment: ''}
+-   model: tada.obstype
+    pk: 4
+    fields: {name: bias, code: z, comment: ''}
+-   model: tada.obstype
+    pk: 5
+    fields: {name: dome or projector flat, code: f, comment: ''}
+-   model: tada.obstype
+    pk: 6
+    fields: {name: dome flat, code: f, comment: added 1/8/16 for mosaic3}
+-   model: tada.obstype
+    pk: 7
+    fields: {name: dflat, code: f, comment: added 10/23/15 (per dsid.c)}
+-   model: tada.obstype
+    pk: 8
+    fields: {name: flat, code: f, comment: ''}
+-   model: tada.obstype
+    pk: 9
+    fields: {name: projector, code: f, comment: added 10/23/15 (per dsid.c)}
+-   model: tada.obstype
+    pk: 10
+    fields: {name: sky, code: s, comment: ''}
+-   model: tada.obstype
+    pk: 11
+    fields: {name: skyflat, code: s, comment: added 10/23/15 (per dsid.c)}
+-   model: tada.obstype
+    pk: 12
+    fields: {name: dark, code: d, comment: ''}
+-   model: tada.obstype
+    pk: 13
+    fields: {name: calibration, code: c, comment: added 2/1/16 for ct15m-echelle}
+-   model: tada.obstype
+    pk: 14
+    fields: {name: calibration or comparison, code: c, comment: ''}
+-   model: tada.obstype
+    pk: 15
+    fields: {name: comp, code: c, comment: added 10/23/15 (per dsid.c)}
+-   model: tada.obstype
+    pk: 16
+    fields: {name: comparison, code: c, comment: added 10/23/15 (per dsid.c)}
+-   model: tada.obstype
+    pk: 17
+    fields: {name: illumination calibration, code: i, comment: ''}
+-   model: tada.obstype
+    pk: 18
+    fields: {name: focus, code: g, comment: ''}
+-   model: tada.obstype
+    pk: 19
+    fields: {name: fringe, code: h, comment: ''}
+-   model: tada.obstype
+    pk: 20
+    fields: {name: pupil, code: r, comment: ''}
+-   model: tada.obstype
+    pk: 21
+    fields: {name: nota, code: u, comment: ''}
+-   model: tada.proctype
+    pk: 1
+    fields: {name: raw, code: r, comment: ''}
+-   model: tada.proctype
+    pk: 2
+    fields: {name: instcal, code: o, comment: ''}
+-   model: tada.proctype
+    pk: 3
+    fields: {name: mastercal, code: c, comment: ''}
+-   model: tada.proctype
+    pk: 4
+    fields: {name: projected, code: p, comment: ''}
+-   model: tada.proctype
+    pk: 5
+    fields: {name: stacked, code: s, comment: ''}
+-   model: tada.proctype
+    pk: 6
+    fields: {name: skysub, code: k, comment: ''}
+-   model: tada.proctype
+    pk: 7
+    fields: {name: nota, code: u, comment: ''}
+-   model: tada.prodtype
+    pk: 1
+    fields: {name: image, code: i, comment: ''}
+-   model: tada.prodtype
+    pk: 2
+    fields: {name: image 2nd version 1, code: j, comment: ''}
+-   model: tada.prodtype
+    pk: 3
+    fields: {name: dqmask, code: d, comment: ''}
+-   model: tada.prodtype
+    pk: 4
+    fields: {name: expmap, code: e, comment: ''}
+-   model: tada.prodtype
+    pk: 5
+    fields: {name: graphics (size), code: g, comment: ''}
+-   model: tada.prodtype
+    pk: 6
+    fields: {name: weight, code: w, comment: ''}
+-   model: tada.prodtype
+    pk: 7
+    fields: {name: nota, code: u, comment: ''}
+-   model: tada.prodtype
+    pk: 8
+    fields: {name: wtmap, code: '-', comment: 'Found in pipeline, not used for name'}
+-   model: tada.prodtype
+    pk: 9
+    fields: {name: resampled, code: '-', comment: 'Found in pipeline, not used for
+            name'}
+-   model: tada.rawkeywords
+    pk: 1
+    fields: {name: TELESCOP, comment: ''}
+-   model: tada.filenamekeywords
+    pk: 1
+    fields: {name: DATE-OBS, comment: triplespec doesn't have it; comes from other
+            field}
+-   model: tada.filenamekeywords
+    pk: 2
+    fields: {name: DTSITE, comment: for BASENAME}
+-   model: tada.filenamekeywords
+    pk: 3
+    fields: {name: DTTELESC, comment: for BASENAME}
+-   model: tada.filenamekeywords
+    pk: 4
+    fields: {name: DTINSTRU, comment: for BASENAME}
+-   model: tada.filenamekeywords
+    pk: 5
+    fields: {name: OBSTYPE, comment: for BASENAME}
+-   model: tada.filenamekeywords
+    pk: 6
+    fields: {name: PROCTYPE, comment: for BASENAME}
+-   model: tada.filenamekeywords
+    pk: 7
+    fields: {name: PRODTYPE, comment: for BASENAME}
+-   model: tada.filenamekeywords
+    pk: 8
+    fields: {name: DTCALDAT, comment: for PATH (dome)}
+-   model: tada.filenamekeywords
+    pk: 9
+    fields: {name: DTPROPID, comment: for PATH (dome)}
+-   model: tada.ingestkeywords
+    pk: 1
+    fields: {name: SIMPLE, comment: ''}
+-   model: tada.ingestkeywords
+    pk: 2
+    fields: {name: OBSERVAT, comment: needed for std filename}
+-   model: tada.ingestkeywords
+    pk: 3
+    fields: {name: DTPROPID, comment: observing proposal ID}
+-   model: tada.ingestkeywords
+    pk: 4
+    fields: {name: DTCALDAT, comment: calendar date from observing schedule}
+-   model: tada.ingestkeywords
+    pk: 5
+    fields: {name: DTACQNAM, comment: file name supplied at telescope; User knows
+            on THIS name.}
+-   model: tada.ingestkeywords
+    pk: 6
+    fields: {name: DTNSANAM, comment: file name in archive (renamed from user supplied)}
+-   model: tada.ingestkeywords
+    pk: 7
+    fields: {name: DTTELESC, comment: ''}
+-   model: tada.ingestkeywords
+    pk: 8
+    fields: {name: DTSITE, comment: ''}
+-   model: tada.ingestkeywords
+    pk: 9
+    fields: {name: DTINSTRU, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 1
+    fields: {name: INSTRUME, comment: 'moved from RAW_REQUIRED to statisfy: /scraped/mtn_raw/ct15m-echelle/chi150724.10'}
+-   model: tada.ingestrecommendedkeywords
+    pk: 2
+    fields: {name: DTCOPYRI, comment: coypright holder of data}
+-   model: tada.ingestrecommendedkeywords
+    pk: 3
+    fields: {name: DTOBSERV, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 4
+    fields: {name: DTPI, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 5
+    fields: {name: DTPIAFFL, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 6
+    fields: {name: DTTITLE, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 7
+    fields: {name: OBSID, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 12
+    fields: {name: DTACQNAM, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 13
+    fields: {name: DTCALDAT, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 14
+    fields: {name: DTINSTRU, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 15
+    fields: {name: DTNSANAM, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 16
+    fields: {name: DTPROPID, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 17
+    fields: {name: DTSITE, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 18
+    fields: {name: DTTELESC, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 19
+    fields: {name: PROCTYPE, comment: ''}
+-   model: tada.ingestrecommendedkeywords
+    pk: 20
+    fields: {name: PRODTYPE, comment: ''}
+-   model: tada.supportkeywords
+    pk: 1
+    fields: {name: IMAGETYP, comment: ''}
+-   model: tada.supportkeywords
+    pk: 2
+    fields: {name: DATE-OBS, comment: ''}
+-   model: tada.supportkeywords
+    pk: 3
+    fields: {name: TIME-OBS, comment: ''}
+-   model: tada.supportkeywords
+    pk: 4
+    fields: {name: DATE, comment: ''}
+-   model: tada.supportkeywords
+    pk: 5
+    fields: {name: PROPID, comment: ''}
+-   model: tada.hdrfunc
+    pk: 1
+    fields: {name: DETSERNOtoDTSERNO, documentation: Intended for soar-spartan FITS
+            files. Allow DETSERNO to be missing., definition: "if 'DETSERNO' in orig:\r\
+            \n        return {'DTSERNO': orig['DETSERNO'].strip()}\r\n    return dict()",
+        inkeywords: '["SIMPLE"]', outkeywords: '["DTSERNO"]'}
+-   model: tada.hdrfunc
+    pk: 2
+    fields: {name: fixTriplespec, documentation: Fix triplespec DATE-OBS using UTSHUT
+            (Universal Time SHUTter), definition: "new = {'DATE-OBS': orig['UTSHUT'],\r\
+            \n           #'INSTRUME': orig['INSTRUM'],\r\n    }\r\n    logging.debug('fixTriplespec:\
+            \ fields DATE-OBS ({})'\r\n                  #', INSTRUME ({})'\r\n  \
+            \                #.format(new['DATE-OBS'], new['INSTRUME']))\r\n     \
+            \             .format(new['DATE-OBS']))\r\n    return  new", inkeywords: '["UTSHUT"]',
+        outkeywords: '["DATE-OBS"]'}
+-   model: tada.hdrfunc
+    pk: 3
+    fields: {name: addTimeToDATEOBS, documentation: Use TIME-OBS for time portion
+            of DATEOBS., definition: "if ('T' in orig['DATE-OBS']):\r\n        new\
+            \ = dict()\r\n    else:\r\n        if 'ODATEOBS' in orig:\r\n        \
+            \    logging.warning('Overwriting existing ODATEOBS!')\r\n        new\
+            \ = {'ODATEOBS': orig['DATE-OBS'],            # save original\r\n    \
+            \           'DATE-OBS': orig['DATE-OBS'] + 'T' + orig['TIME-OBS']\r\n\
+            \           }\r\n    return new", inkeywords: '["DATE-OBS", "TIME-OBS"]',
+        outkeywords: '["ODATEOBS", "DATE-OBS"]'}
+-   model: tada.hdrfunc
+    pk: 4
+    fields: {name: DATEOBSfromDATE, documentation: '', definition: "if 'ODATEOBS'\
+            \ in orig:\r\n        logging.warning('Overwriting existing ODATEOBS!')\r\
+            \n    return {'ODATEOBS': orig['DATE-OBS'],            # save original\r\
+            \n            'DATE-OBS': orig['DATE']+'.0' }", inkeywords: '["DATE-OBS",
+            "DATE"]', outkeywords: '["ODATEOBS", "DATE-OBS"]'}
+-   model: tada.hdrfunc
+    pk: 5
+    fields: {name: DTCALDATfromDATEOBStus, documentation: '', definition: "from dateutil\
+            \ import tz\r\n    import datetime as dt\r\n\r\n    local_zone = tz.gettz('America/Phoenix')\r\
+            \n    utc = dt.datetime.strptime(orig['DATE-OBS'], '%Y-%m-%dT%H:%M:%S.%f')\r\
+            \n    utc = utc.replace(tzinfo=tz.tzutc()) # set UTC zone\r\n    localdt\
+            \ = utc.astimezone(local_zone)\r\n    if localdt.time().hour > 9:\r\n\
+            \        caldate = localdt.date()\r\n    else:\r\n        caldate = localdt.date()\
+            \ - dt.timedelta(days=1)\r\n    #!logging.debug('localdt={}, DATE-OBS={},\
+            \ caldate={}'\r\n    #!              .format(localdt, orig['DATE-OBS'],\
+            \ caldate))\r\n    new = {'DTCALDAT': caldate.isoformat()}\r\n    return\
+            \ new", inkeywords: '["DATE-OBS"]', outkeywords: '["DTCALDAT"]'}
+-   model: tada.hdrfunc
+    pk: 6
+    fields: {name: DTCALDATfromDATEOBSchile, documentation: '', definition: "from\
+            \ dateutil import tz\r\n    import datetime as dt\r\n\r\n    local_zone\
+            \ = tz.gettz('Chile/Continental')\r\n    utc = dt.datetime.strptime(orig['DATE-OBS'],\
+            \ '%Y-%m-%dT%H:%M:%S.%f')\r\n    utc = utc.replace(tzinfo=tz.tzutc())\
+            \ # set UTC zone\r\n    localdt = utc.astimezone(local_zone)\r\n    if\
+            \ localdt.time().hour > 12:\r\n        caldate = localdt.date()\r\n  \
+            \  else:\r\n        caldate = localdt.date() - dt.timedelta(days=1)\r\n\
+            \    logging.debug('localdt={}, DATE-OBS={}, caldate={}'\r\n         \
+            \         .format(localdt, orig['DATE-OBS'], caldate))\r\n    new = {'DTCALDAT':\
+            \ caldate.isoformat()}\r\n    return new", inkeywords: '["DATE-OBS"]',
+        outkeywords: '["DTCALDAT"]'}
+-   model: tada.hdrfunc
+    pk: 7
+    fields: {name: PROPIDplusCentury, documentation: Add missing century, definition: 'return
+            {''DTPROPID'': ''20'' + orig.get(''PROPID'',''NA'').strip(''"'') }', inkeywords: '["PROPID"]',
+        outkeywords: '["DTPROPID"]'}
+-   model: tada.hdrfunc
+    pk: 8
+    fields: {name: INSTRUMEtoDT, documentation: '', definition: "if 'DTINSTRU' in\
+            \ orig:\r\n        return {'DTINSTRU': orig['DTINSTRU'] }\r\n    else:\r\
+            \n        return {'DTINSTRU': orig['INSTRUME'] }", inkeywords: '["INSTRUME"]',
+        outkeywords: '["DTINSTRU"]'}
+-   model: tada.hdrfunc
+    pk: 9
+    fields: {name: IMAGTYPEtoOBSTYPE, documentation: '', definition: 'return {''OBSTYPE'':
+            orig[''IMAGETYP'']  }', inkeywords: '["IMAGETYP"]', outkeywords: '["OBSTYPE"]'}
+-   model: tada.hdrfunc
+    pk: 10
+    fields: {name: bokOBSID, documentation: '', definition: 'return {''OBSID'': ''bok23m.''+orig[''DATE-OBS'']
+            }', inkeywords: '["DATE-OBS"]', outkeywords: '["OBSID"]'}
