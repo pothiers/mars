@@ -1,13 +1,15 @@
+# EXAMPLES:
+# ./manage.py test 
+# ./manage.py test schedule.tests_production.ScheduleTest.test_getpropid2 
+
 from django.core.urlresolvers import reverse
 from django.test import TestCase, Client, RequestFactory
-
-
 from .models import Slot
 import schedule.views
 
 class ScheduleTest(TestCase):
     # Load (special test) DB with data
-    fixtures = ['schedule.yaml']
+    fixtures = ['schedule.yaml', 'dump.tada.yaml']
     
 
     def setUp(self):

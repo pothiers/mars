@@ -65,7 +65,7 @@ def apply_tac_update(**query):
     logger.debug('DBG: query={}, params={}'.format(query, params))
     tac_url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
     tac_timeout=6
-    logger.debug('DBG: url={}'.format(tac_url))
+    logger.debug('DBG: tac_url={}'.format(tac_url))
 
     telescopes = [obj.name for obj in Telescope.objects.all()]
     instruments = [obj.name for obj in Instrument.objects.all()]
@@ -77,17 +77,31 @@ def apply_tac_update(**query):
     except:
         logger.error('MARS: Error contacting TAC Schedule at "{}"'.format(tac_url))
         return None
+    logger.debug('DBG-1')
     slot_pids = defaultdict(set) # dict[slot] = [propid, ...]
-    sched2hdr = dict([(obj.tac, obj.hdr) for obj in TacInstrumentAlias.objects.all()])
+    sched2hdr = dict([(obj.tac, obj.hdr)
+                      for obj in TacInstrumentAlias.objects.all()])
+    logger.debug('DBG-2')
     for proposal in root:
         telescope = proposal.get('telescope')
-        instrument = sched2hdr.get(proposal.get('instrument'),None)
+        instrument = proposal.get('instrument')
+        logger.debug('DBG-2.1')
+ 
+        if instrument not in sched2hdr:
+            logger.error('No TAC alias found for {}. Use MARS to add one.'
+                         .format(instrument))
+            continue
+        instrument = sched2hdr.get(instrument)
+        logger.debug('DBG-2.2')
         if instrument == None:
             continue
         if telescope == None:
             continue
-        instrument = instrument.lower()
-        telescope = telescope.lower()
+        #!instrument = instrument.lower()
+        #!telescope = telescope.lower()
+        logger.debug('DBG-2.3: TAC instrument={}, telescope={}, date={}, pid={}'
+                     .format(instrument, telescope,
+                             proposal.get('date'), proposal.get('propid')))
         if telescope not in telescopes:
             logger.warning('MARS: Telescope "{}" not one of: {}'
                             .format(telescope, telescopes))
@@ -117,13 +131,15 @@ def apply_tac_update(**query):
                     continue
                 
                 slot_pids[slot].add(propid)                    
-                logger.debug('NOT FROZEN: {}; propids={}'.format(msg, slot_pids[slot]))
+                logger.debug('NOT FROZEN: {}; propids={}'
+                             .format(msg, slot_pids[slot]))
     logger.debug('slot_pids={}'.format(slot_pids))
     return(slot_pids)
     
 def update_from_noaoprop(**query):
     slot_pids = apply_tac_update(**query) # dict[slot] = [propid, ...]
-    logger.debug('update_from_noaoprop({}); slot_pids={}'.format(query,slot_pids))
+    logger.debug('update_from_noaoprop({}); => slot_pids={}'
+                 .format(query, slot_pids))
     logger.debug('Updating propid lists for {} slots:'.format(len(slot_pids)))
     for index,(slot,propids) in enumerate(slot_pids.items()):
         prop_list = [Proposal.objects.get_or_create(pk=propid)[0]

@@ -81,6 +81,15 @@
       </th>
       <td>Edit schedule.</td>
     </tr>
+    <tr class="ops">
+      <th>
+	<a href="{% url 'admin:index' %}tada/">
+	  /admin/tada/
+	</a>
+      </th>
+      <td>Edit data affecting TADA behavior.</td>
+    </tr>
+
     <tr class="dev">
       <th><a href="{% url 'admin:index' %}doc/">/admin/doc/</a></th>
       <td>Documentation (for developers) automatically generated from
@@ -302,7 +311,7 @@
       </th>
       <td>
 	Update DMO telescope SEMESTER schedule using
-	www.noao.edu./noaoprop service.
+	TAC service at www.noao.edu./noaoprop.
 	<b>Will take several minutes!</b>
 	<i><b>
 	    If a "schedule/update" service is not done after each
