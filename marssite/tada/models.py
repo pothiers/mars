@@ -54,13 +54,14 @@ class ProcType(models.Model):
     name = models.CharField(max_length=30, unique=True)
     code = models.CharField(max_length=1, unique=False)
     comment = models.CharField(max_length=80, blank=True, default='')
-
+    def __str__(self): return self.name
+    
 class ProdType(models.Model):
     """PRODuct type: used archive filename prefix"""
     name = models.CharField(max_length=30, unique=True)
     code = models.CharField(max_length=1, unique=False)
     comment = models.CharField(max_length=80, blank=True, default='')
-
+    def __str__(self): return self.name
 ###########
 
 class RawKeywords(models.Model):
@@ -69,7 +70,8 @@ class RawKeywords(models.Model):
     """
     name = models.CharField(max_length=8, unique=True)
     comment = models.CharField(max_length=80, blank=True, default='')
-
+    def __str__(self): return self.name
+    
 class FilenameKeywords(models.Model):
     """These fields are required to construct the Archive filename and path.
 Some may be common with INGEST_REQUIRED.
@@ -77,7 +79,8 @@ Some may be common with INGEST_REQUIRED.
 """
     name = models.CharField(max_length=8, unique=True)
     comment = models.CharField(max_length=80, blank=True, default='')
-
+    def __str__(self): return self.name
+    
 class IngestKeywords(models.Model):
     """To be able to ingest a fits file into the (NOAO Science) archive,
 all of these must be present in the header.
@@ -87,6 +90,7 @@ all of these must be present in the header.
     """
     name = models.CharField(max_length=8, unique=True)
     comment = models.CharField(max_length=80, blank=True, default='')
+    def __str__(self): return self.name
 
 class IngestRecommendedKeywords(models.Model):
     """We should try to fill these fields were practical. They are used
@@ -97,6 +101,7 @@ before ingest, a warning will be logged indicating the missing fields.
     """
     name = models.CharField(max_length=8, unique=True)
     comment = models.CharField(max_length=80, blank=True, default='')
+    def __str__(self): return self.name
 
 ###########
 
@@ -106,6 +111,7 @@ class SupportKeywords(models.Model):
     """
     name = models.CharField(max_length=8, unique=True)
     comment = models.CharField(max_length=80, blank=True, default='')
+    def __str__(self): return self.name
 
 class FloatKeywords(models.Model):
     """Fields to force into FLOAT format during FITS scrub. The FITS
@@ -116,6 +122,7 @@ requirements.
     """
     name = models.CharField(max_length=8, unique=True)
     comment = models.CharField(max_length=80, blank=True, default='')
+    def __str__(self): return self.name
     
 ##################################################################
 
@@ -139,4 +146,17 @@ where 'orig' is orginal header as a dictionary. Returns NEW defined as dictionar
         help_text='FITS keywords added or modified by func',
         default=list )
 
+    
+
+class ErrorCode(models.Model):
+    """Previously ERRMAP in ingest_decoder.py.  Converts error string to
+errcode (short word) suitable for filtering of audit records."""
+    name = models.CharField(max_length=8, unique=True)
+    regexp = models.CharField(
+        max_length=80,
+        help_text='Regular expression to match against long error string.'
+    )
+    shortdesc = models.CharField(max_length=40, blank=True)
+    example = models.TextField(blank=True,
+                               help_text='Example full error message.')
     

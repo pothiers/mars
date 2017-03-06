@@ -55,7 +55,6 @@ class AuditRecord(models.Model):
 
     ##### Field values added by TADA
     fstop = models.CharField(max_length=25, blank=True,
-                             #choices=[(val,val) for val in fstops],
                              help_text = 'Most downstream stop of FITS file')
     
     submitted = models.DateTimeField(blank=True, null=True,
@@ -67,7 +66,6 @@ class AuditRecord(models.Model):
                                  help_text='Archive ingest error message')
     errcode   = models.CharField(max_length=10, blank=True,
                                  default='',
-                                 #choices=[(val,val) for val in errcodes],
                                  help_text=(
                                      'Error code for error reported from'
                                      ' dataq, tada, archive'))

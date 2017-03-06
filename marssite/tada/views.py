@@ -6,6 +6,7 @@ from .models import ObsType, ProcType, ProdType
 from .models import RawKeywords, FilenameKeywords
 from .models import IngestKeywords, IngestRecommendedKeywords
 from .models import SupportKeywords, FloatKeywords, HdrFunc, TacInstrumentAlias
+from .models import ErrorCode
 
 # stilut=`curl 'http://localhost:8000/tada/'`
 def prefix(request):
@@ -62,5 +63,7 @@ def hdrfuncs(request):
                                       'inkeywords',
                                       'outkeywords' )
     return JsonResponse(list(qs), safe=False)
-    
 
+def errcodes(request):
+    qs = ErrorCode.objects.all().values('name','regexp')
+    return JsonResponse(list(qs), safe=False)

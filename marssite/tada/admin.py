@@ -5,7 +5,7 @@ from .models import ObsType, ProcType, ProdType
 from .models import RawKeywords, FilenameKeywords
 from .models import IngestKeywords, IngestRecommendedKeywords
 from .models import SupportKeywords, FloatKeywords, HdrFunc, TacInstrumentAlias
-
+from .models import ErrorCode
 
 
 @admin.register(Site)
@@ -57,4 +57,7 @@ class HdrFuncAdmin(admin.ModelAdmin):
 class TacInstrumentAliasAdmin(admin.ModelAdmin):
     list_display = ('tac','hdr')
 
+@admin.register(ErrorCode)
+class ErrorCodeAdmin(admin.ModelAdmin):
+    list_display = ('name','regexp', 'shortdesc')
     

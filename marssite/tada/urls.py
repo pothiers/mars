@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^supportreq/$', views.supportreq, name='supportreq'),
     url(r'^floatreq/$', views.floatreq, name='floatreq'),
     url(r'^hdrfuncs/$', views.hdrfuncs, name='hdrfuncs'),
+    url(r'^errcodes/$', views.errcodes, name='errcodes'),
 ]
