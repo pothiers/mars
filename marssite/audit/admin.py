@@ -1,5 +1,7 @@
 import datetime
 from django.contrib import admin
+from django.contrib.contenttypes.models import ContentType
+from django.http import HttpResponseRedirect
 from django.db.models import Count, Q, Sum, Case, When, IntegerField
 
 from tada.models import Telescope,Instrument
@@ -107,6 +109,14 @@ def unhide(modeladmin, request, queryset):
     queryset.update(hide=False)
 unhide.short_description = "Unhide selected records"
 
+def change_archived_FITS(modeladmin, request, queryset):
+    """Change subset of selected audit records corresponding to archived
+FITS files (success=True)."""
+    selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+    ct = ContentType.objects.get_for_model(queryset.model)
+    return HttpResponseRedirect("/dart/?ct=%s&ids=%s" % (ct.pk, ",".join(selected)))
+change_archived_FITS.short_description = "Change FITS files that are selected and archived"
+    
 #!def clear_submit(modeladmin, request, queryset):
 #!    queryset.update(submitted=None,
 #!                    success=None,
@@ -223,6 +233,7 @@ class AuditRecordAdmin(admin.ModelAdmin):
                unstage,
                hide,
                unhide,
+               change_archived_FITS,
                #clear_submit,
                #clear_error,
     ]

@@ -15,6 +15,7 @@ import dateutil.parser as dp
 import re
 from datetime import datetime
 import logging
+from pathlib import PurePath
 
 from django.utils.timezone import make_aware, now
 from django.views.decorators.csrf import csrf_exempt
@@ -346,7 +347,33 @@ def failed_ingest(request):
     qs = AuditRecord.objects.filter(success=False)
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
 
+# The field 'uri' In the table edu_noao_nsa.data_product contains the actual
+# file location.
+def get_fits_location(reference, root='/net/archive/PAT/'):
+    """RETURN: absolute path to FITS file
+    reference:: Archive basename of FITS file"""
+    cursor = connection.cursor()
+    sql = ("SELECT dp.uri FROM voi.siap as vs, edu_noao_nsa.data_product as dp"
+           " WHERE dp.data_product_id = vs.fits_data_product_id"
+           " AND vs.reference= '{}'").format(reference)
+    print('sql={}'.format(sql))
+    cursor.execute(sql)
+    uri = cursor.fetchone()
+    if uri != None:
+        ipath =  uri[0]
+        #return str(PurePath(root, *PurePath(ipath).parts[2:]))
+        return str(PurePath('/',*PurePath(ipath).parts[1:]))
+        #return ipath
+    return uri
 
+
+def staged_files(request):
+    root = request.GET.get('root','/net/archive/')
+    qs = AuditRecord.objects.filter(staged=True)
+    fitslist = [get_fits_location(obj.archfile, root=root) for obj in qs]
+    print('DBG: fitslist={}'.format(fitslist))
+    #return JsonResponse(fitslist, safe=False)
+    return HttpResponse(' '.join((f for f in fitslist if f)))
 
 #!# PLACEHOLDER    
 #!def matplotlib_bar_image (request, data):
