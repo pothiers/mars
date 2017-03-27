@@ -131,6 +131,40 @@
     <tr class="spacer"><th>OPERATIONS</th><th><br /></th></tr>
     <tr class="ops">
       <th>
+        <a href="{% url 'audit:staged_archived_files' %}">
+          {% url 'audit:staged_archived_files' %}        
+        </a>
+      </th>
+      <td>Get list of audit records marked as STAGED for ingested FITS.</td>
+    </tr>
+    <tr class="ops">
+      <th>
+        <a href="{% url 'audit:staged_noarchived_files' %}">
+          {% url 'audit:staged_noarchived_files' %}        
+        </a>
+      </th>
+      <td>Get list of audit records marked as STAGED for files NOT
+        ingested.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+        <a href="{% url 'audit:re_audit' 'old-checksum' 'new-checksum'%}">
+          {% url 'audit:re_audit' 'old-checksum' 'new-checksum' %}        
+        </a>
+      </th>
+      <td>Replace previous audit record with new (initialized) one.</td>
+    </tr>
+    <tr class="ops">
+      <th>
+        <a href="{% url 'audit:delete' 'big-long-checksum-string' %}">
+          {% url 'audit:delete' 'big-long-checksum-string' %}        
+        </a>
+      </th>
+      <td>Delete one audit record by md5sum.</td>
+    </tr>
+    <tr class="ops">
+      <th>
         <a href="{% url 'admin:audit_auditrecord_changelist' %}">
           {% url 'admin:audit_auditrecord_changelist' %}        
         </a>

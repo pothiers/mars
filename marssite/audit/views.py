@@ -239,6 +239,12 @@ missing requires fields"""
           .values('md5sum','srcpath'))
     return JsonResponse(list(qs), safe=False)
 
+def delete(request, md5sum):
+    "Delete one audit record"
+    AuditRecord.objects.filter(md5sum=md5sum).delete()
+    return HttpResponse('Deleted audit record for md5sum: {}'.format(md5sum))
+
+
 @api_view(['POST'])
 @csrf_exempt
 def update_fstop(request, md5sum, fstop, host):
@@ -261,7 +267,29 @@ def update_fstop(request, md5sum, fstop, host):
           .format(obj.obsday, md5sum, defaults, created))
     return HttpResponse('Updated FSTOP; {}'.format(md5sum))
     
+
+def re_audit(request, orig_md5sum, new_md5sum):
+    """Replace previous audit record with new (initialized) one."""
+    try:
+        obj = AuditRecord.objects.get(pk=orig_md5sum)
+    except:
+        return HttpResponse('Audit record for md5sum {} does not exist. Ignored'
+                            .format(orig_md5sum))
+    auditrec = dict(md5sum = new_md5sum,
+                    obsday = obj.obsday,
+                    telescope = obj.telescope,
+                    instrument = obj.instrument,
+                    srcpath = obj.srcpath,
+                    fstop_host = obj.fstop_host,
+    )
+    ar = AuditRecord(**auditrec)
+    ar.save()
+    AuditRecord.objects.filter(md5sum=orig_md5sum).delete()
     
+    return HttpResponse('Replaced audit record {} with {}'
+                        .format(orig_md5sum, new_md5sum))
+    
+
 @csrf_exempt
 @api_view(['POST'])
 @parser_classes((JSONParser,))
@@ -330,6 +358,7 @@ def add_ingested():
                 arcerr = 'From SIAP',
                 archfile=obj.reference)
 
+
 def refresh(request):
     "Query Archive for all AuditRecords"
     add_ingested()
@@ -367,13 +396,25 @@ def get_fits_location(reference, root='/net/archive/PAT/'):
     return uri
 
 
-def staged_files(request):
+def staged_archived_files(request):
     root = request.GET.get('root','/net/archive/')
     qs = AuditRecord.objects.filter(staged=True)
-    fitslist = [get_fits_location(obj.archfile, root=root) for obj in qs]
-    print('DBG: fitslist={}'.format(fitslist))
+    arch_list = (obj  for obj in qs
+                 if get_fits_location(obj.archfile, root=root))
+
+    fitslist = [get_fits_location(obj.archfile, root=root) for obj in arch_list]
+    print('DBG: fitslist({})={}'.format(len(fitslist), fitslist))
     #return JsonResponse(fitslist, safe=False)
     return HttpResponse(' '.join((f for f in fitslist if f)))
+
+def staged_noarchived_files(request):
+    root = request.GET.get('root','/net/archive/')
+    qs = AuditRecord.objects.filter(staged=True)
+    noarch_list = (obj  for obj in qs
+                   if not get_fits_location(obj.archfile, root=root))
+    cachelist = [obj.srcpath for obj in noarch_list]
+    print('DBG: cachelist({})={}'.format(len(cachelist), cachelist))
+    return HttpResponse(' '.join((f for f in cachelist if f)))
 
 #!# PLACEHOLDER    
 #!def matplotlib_bar_image (request, data):
