@@ -34,5 +34,6 @@ urlpatterns = [
     #!url(r'^hbar/$', views.hbar_svg,  name='hbar_svg'),
     url(r'^dupes/$', views.get_rejected_duplicates,  name='get_rejected_duplicates'),
     url(r'^miss/$', views.get_rejected_missing,  name='get_rejected_missing'),
+    url(r'^recent/$', views.get_recent, name='get_recent'),
 ]
 urlpatterns = format_suffix_patterns(urlpatterns)

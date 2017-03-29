@@ -13,10 +13,11 @@
 
 import dateutil.parser as dp
 import re
-from datetime import datetime
+import datetime
 import logging
 from pathlib import PurePath
 
+import csv
 from django.utils.timezone import make_aware, now
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, render_to_response
@@ -644,3 +645,24 @@ class AuditRecordList(ListView):
     model = AuditRecord
 
     
+def get_recent(request):
+    #today = datetime.date.today()
+    today = now()
+    yesterday = (today - datetime.timedelta(days=1))
+
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="audit_recs.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['STAGED', 'HIDE',
+                     'FSTOP', 'UPDATED', 'SUCCESS',
+                     'OBSDAY', 'TELESCOPE', 'INSTRUMENT',
+                     'SRCPATH', 'ERRCODE', 'ARCHFILE'])
+    for ar in (AuditRecord.objects
+               .filter(updated__gte=yesterday).order_by('-updated')):
+        writer.writerow([ar.staged, ar.hide,
+                         ar.fstop, ar.updated, ar.success,
+                         ar.obsday, ar.telescope, ar.instrument,
+                         ar.srcpath, ar.errcode, ar.archfile,
+                         ])
+    return response
