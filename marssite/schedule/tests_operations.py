@@ -7,13 +7,26 @@ import schedule.views
 class ScheduleTest(TestCase):
     pass
 
-    # Load (special test) DB with data
-    #fixtures = ['schedule.yaml']
-
-    #!def setUp(self):
-    #!    self.client = Client()
-
-
+#!    # Load (special test) DB with data
+#!    fixtures = ['schedule.yaml']
+#!
+#!    def setUp(self):
+#!        self.client = Client()
+#!
+#!    def test_setpropid1(self):
+#!        "Attempt to override existing entry"
+#!        tele = 'kp4m'
+#!        instrum = 'kosmos'
+#!        date = '2016-02-01'
+#!        propid = 'Mine'
+#!        response = self.client.get('/schedule/setpropid/{}/{}/{}/{}/'
+#!                                   .format(tele, instrum, date, propid))
+#!        expected = '''
+#!ERROR
+#!COULD NOT ADD: (kp4m, kosmos, 2016-02-01, Mine)
+#!duplicate key value violates unique constraint "schedule_slot_telescope_f1e499ac_uniq"
+#!DETAIL:  Key (telescope, instrument, obsdate)=(kp4m, kosmos, 2016-02-01) already exists.'''
+#!        self.assertEqual(expected, response.content.decode())
         
     #!def test_upload(self):
     #!    test_file = '/var/mars/small.xml'
