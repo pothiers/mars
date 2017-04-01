@@ -30,7 +30,7 @@ class Instrument(models.Model):
 
 #!class InstrumentAlias(models.Model):
 #!    reason = models.CharField(max_length=80)
-#!    #!instrument = models.ForeignKey(Instrument)
+#!    #!instrument = models.ForeignKey(Instrument
 
 # Replaces tada/file_naming.py:stiLUT{}
 class FilePrefix(models.Model):

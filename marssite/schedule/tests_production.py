@@ -9,7 +9,8 @@ import schedule.views
 
 class ScheduleTest(TestCase):
     # Load (special test) DB with data
-    fixtures = ['schedule.yaml', 'dump.tada.yaml']
+    #fixtures = ['schedule.yaml', 'dump.tada.yaml']
+    fixtures = ['schedule.yaml']
     
 
     def setUp(self):
