@@ -13,6 +13,7 @@ env:
 #   - export DJANGO_SETTINGS_MODULE=your_project.settings
 #   - export PYTHONPATH=$HOME/builds/your_github_username/your_repo
 #   - export PIP_USE_MIRRORS=true
+services: postgresql
 
 install:
   - pip install -r requirements.txt
