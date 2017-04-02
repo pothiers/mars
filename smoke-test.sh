@@ -18,7 +18,11 @@ cd $SCRIPTDIR/marssite
 
 #!./manage.py test --parallel 4 schedule.tests_production schedule.tests_operations tada.tests provisional.tests audit.tests_production audit.tests_operations
 
-source venv/bin/activate
+if [ ! $TRAVIS ]; then
+    source venv/bin/activate
+fi
+    
+   
 ./manage.py test --keepdb schedule.tests_production schedule.tests_operations tada.tests provisional.tests audit.tests_production audit.tests_operations
 
 #./manage.py test schedule.tests_production
