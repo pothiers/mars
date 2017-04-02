@@ -19,4 +19,4 @@ install:
   - python3 setup.py install
 
 # command to run tests
-script: python3 smoke-test.sh
+script: smoke-test.sh
