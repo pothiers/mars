@@ -10,7 +10,7 @@ env:
   - DJANGO=1.10.5
 
 before_install:
-  - export DJANGO_SETTINGS_MODULE=$HOME/mars/marssite/marssite/settings.py
+  - export DJANGO_SETTINGS_MODULE=`pwd`/marssite/marssite/settings.py
   #- export PYTHONPATH=$HOME/builds/your_github_username/your_repo
   - export PIP_USE_MIRRORS=true
 
