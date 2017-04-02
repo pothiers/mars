@@ -8,10 +8,12 @@ class AuditTest(TestCase):
         #self.factory = RequestFactory()
         self.client = Client()
 
+        
     def test_dome(self):
+        "Created initial audit record(s).  Used in Domes."
         req =  '''{ "observations": [
             {
-                "md5sum": "dc45a997e9c4e2b13a4518bbf24338ff",
+                "md5sum": "faux-checksum-1",
                 "obsday": "2016-08-05",
                 "telescope": "kp4m",
                 "instrument": "mosaic3",
@@ -19,7 +21,7 @@ class AuditTest(TestCase):
                 "srcpath": "/data4/observer/mos396217.fits"
             },
             {
-                "md5sum": "1095128e0660fa8cfc6c7972936252f7",
+                "md5sum": "faux-checksum-2",
                 "obsday": "2016-08-05",
                 "telescope": "kp4m",
                 "instrument": "mosaic3",
@@ -39,7 +41,7 @@ class AuditTest(TestCase):
 
 
     def test_fstop(self):
-        md5sum = 'faux-md5sum'
+        md5sum = 'faux-checksum-1'
         tag = 'archive'
         host = 'localhost'
         resp = self.client.post('/audit/fstop/{}/{}/{}/'

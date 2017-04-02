@@ -8,7 +8,17 @@ cd $SCRIPTDIR/marssite
 # Stack track doesn't point to mars at all.
 #!./manage.py test 
 
-./manage.py test schedule.tests_production schedule.tests_operations tada.tests provisional.tests audit.tests_production audit.tests_operations
+
+#
+# Using --keepdb over "--parallel 4" is about 3x faster after first time.
+#
+# There are cons to using keepdb and maybe higher parallel would be
+# reasonable, but test speed is very important to DEV so trumps other aspects.
+#
+
+#!./manage.py test --parallel 4 schedule.tests_production schedule.tests_operations tada.tests provisional.tests audit.tests_production audit.tests_operations
+
+./manage.py test --keepdb schedule.tests_production schedule.tests_operations tada.tests provisional.tests audit.tests_production audit.tests_operations
 
 #./manage.py test schedule.tests_production
 #./manage.py test schedule.tests_operations

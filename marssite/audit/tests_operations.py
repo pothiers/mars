@@ -7,3 +7,9 @@ class AuditTest(TestCase):
     def test_agg(self):
         resp = self.client.get('/audit/agg/')
         self.assertContains(resp, 'Aggregated Error Counts')
+
+#!    def test_stagedarc(self):
+#!        resp = self.client.get('/audit/stagedarc/')
+#!        self.assertContains(resp, 'no expected value available')
+        
+        
