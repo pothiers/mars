@@ -19,4 +19,5 @@ install:
   - python3 setup.py install
 
 # command to run tests
-script: ./smoke-test.sh
+#script: ./smoke-test.sh
+script: python3 marssite/manage.py test schedule_production
