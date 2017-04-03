@@ -129,6 +129,39 @@
     <!-- ### Operations                       -->
     <!-- ###                                  -->
     <tr class="spacer"><th>OPERATIONS</th><th><br /></th></tr>
+    <!-- ##### Admin ##### -->
+    <tr class="ops">
+      <th>
+	<a href="{% url 'admin:index' %}tada/">
+	  /admin/tada/
+	</a>
+      </th>
+      <td>Edit data affecting TADA behavior.</td>
+    </tr>
+    <tr class="ops">
+      <th>
+        <a href="{% url 'admin:audit_auditrecord_changelist' %}">
+          {% url 'admin:audit_auditrecord_changelist' %}        
+        </a>
+      </th>
+      <td>Audit records.  Filter (and change) them.</td>
+    </tr>
+    <tr class="ops">
+      <th>
+	<a href="{% url 'admin:index' %}schedule/slot/">
+	  /admin/schedule/slot/
+	</a>
+      </th>
+      <td>Edit schedule.</td>
+    </tr>
+    <!-- ##### Audit ##### -->
+    <tr class="ops">
+      <th><a href="{% url 'audit:agg' %}">{% url 'audit:agg' %}</a></th>
+      <td>
+	For <b>monitoring progress</b> of ingestion. Similar to Sean's
+	<a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
+      </td>
+    </tr>
     <tr class="ops">
       <th>
         <a href="{% url 'audit:staged_archived_files' %}">
@@ -149,46 +182,13 @@
     </tr>
     <tr class="ops">
       <th>
-        <a href="{% url 'audit:re_audit' 'old-checksum' 'new-checksum'%}">
-          {% url 'audit:re_audit' 'old-checksum' 'new-checksum' %}        
+        <a href="{% url 'audit:re_audit' 'old-md5' 'new-md5'%}">
+          {% url 'audit:re_audit' 'old-md5' 'new-md5' %}        
         </a>
       </th>
       <td>Replace previous audit record with new (initialized) one.</td>
     </tr>
-    <tr class="ops">
-      <th>
-        <a href="{% url 'audit:delete' 'big-long-checksum-string' %}">
-          {% url 'audit:delete' 'big-long-checksum-string' %}        
-        </a>
-      </th>
-      <td>Delete one audit record by md5sum.</td>
-    </tr>
-    <tr class="ops">
-      <th>
-        <a href="{% url 'admin:audit_auditrecord_changelist' %}">
-          {% url 'admin:audit_auditrecord_changelist' %}        
-        </a>
-      </th>
-      <td>Audit records.  Filter (and change) them.</td>
-    </tr>
-    <tr class="ops">
-      <th>
-	<a href="{% url 'admin:index' %}schedule/slot/">
-	  /admin/schedule/slot/
-	</a>
-      </th>
-      <td>Edit schedule.</td>
-    </tr>
-    <tr class="ops">
-      <th>
-	<a href="{% url 'admin:index' %}tada/">
-	  /admin/tada/
-	</a>
-      </th>
-      <td>Edit data affecting TADA behavior.</td>
-    </tr>
-
-    <!-- #####  TADA  ######################################## -->
+    <!-- #####  TADA  ##### -->
     <tr class="ops">
       <th>
 	    <a href="{% url 'tada:prefix' %}">
@@ -287,30 +287,6 @@
       </th>
       <td>
 	    Return keywords that will be scrubbed to float values (or error).
-      </td>
-    </tr>
-
-    <!-- ##### Schedule ##### -->
-    <tr class="ops">
-      <th>
-	    <a href="{% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}">
-	      {% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}
-	    </a>
-      </th>
-      <td>
-	    Set propid given telescope, instrument, observation date.
-      </td>
-    </tr>
-    <!-- ##### Audit ##### -->
-    <tr class="ops">
-      <th>
-	    <a href="{% url 'audit:agg' %}">
-	      {% url 'audit:agg' %}
-	    </a>
-      </th>
-      <td>
-	    For <b>monitoring progress</b> of ingestion. Similar to Sean's
-	    <a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
       </td>
     </tr>
     
@@ -452,6 +428,14 @@
     <!-- ###                     -->
     <tr class="spacer"><th>INACTIVE</th><th><br /></th></tr>
     <tr class="inactive">
+      <th>
+        <a href="{% url 'audit:delete' 'big-long-checksum-string' %}">
+          {% url 'audit:delete' 'big-long-checksum-string' %}        
+        </a>
+      </th>
+      <td>Delete one audit record by md5sum.</td>
+    </tr>
+    <tr class="inactive">
       <th><a href="/siap/fquery?cols=reference&limit=2">
 	  /siap/fquery?cols=reference&limit=2
       </a></th>
@@ -459,6 +443,18 @@
 	is available via: {% url 'siap:query_by_sql' %}
       </td>
     </tr>
+    <!-- ##### Schedule ##### -->
+    <tr class="inactive">
+      <th>
+	<a href="{% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}">p
+	      {% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}
+	    </a>
+      </th>
+      <td>
+	    Set propid given telescope, instrument, observation date.
+      </td>
+    </tr>
+    <!-- ############## -->
     <tr class="inactive">
       <th><a href="docs">/docs/</a></th>
       <td>
