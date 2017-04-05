@@ -7,7 +7,7 @@ class Site(models.Model):
     def __str__(self): return self.name
 
 class Telescope(models.Model):
-    name = models.CharField(max_length=10,  unique=True,
+    name = models.CharField(max_length=10, primary_key=True,
                             help_text=('Name used in FITS header '
                                        '(field name TELES'))
     def __str__(self): return self.name
@@ -23,7 +23,7 @@ class TacInstrumentAlias(models.Model):
     
 class Instrument(models.Model):
     name = models.CharField(
-        max_length=20, unique=True,
+        max_length=20, primary_key=True,
         help_text=('Name used in FITS header (field name INSTRUME)'))
 
     def __str__(self): return self.name

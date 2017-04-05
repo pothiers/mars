@@ -5,7 +5,7 @@ from django.contrib.postgres.fields import HStoreField
 from tada.models import Telescope,Instrument
 
 
-#!fstops = [
+#!  fstops = [
 #!    'dome',
 #!    'mountain:dropbox', 'mountain:queue',
 #!    'mountain:cache', 'mountain:anticache`',
@@ -16,34 +16,36 @@ from tada.models import Telescope,Instrument
 #!    errcodes = ['DUPFITS', 'BADPROP', 'COLLIDE', 'NOPROP', 'MISSREQ',
 #!                'BADDATE', 'NOFITS', 'UNKNOWN', 'none']
 #!
-#!telescopes = ('bok23m,aat,ct09m,ct13m,ct15m,ct1m,ct4m,'
-#!              'gem_n,gem_s,gemn,gems,het,'
-#!              'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
-#!              'magI,magII,mmt,soar,wiyn,unknown').split(',')
-#!instruments = ['arcoiris', '90prime',  'mosaic3', 'ccd_imager'] + sorted([
-#!    'mop/ice', 'arcon', 'spartan', 'decam',
-#!    'falmingos', 'gtcam', 'wildfire', 'chiron',
-#!    'osiris', 'andicam', 'echelle', 'flamingos',
-#!    'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
-#!    'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
-#!    'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
-#!    'cosmos',  'unknown'])
+telescopes = ('bok23m,aat,ct09m,ct13m,ct15m,ct1m,ct4m,'
+              'gem_n,gem_s,gemn,gems,het,'
+              'keckI,keckII,kp09m,kp13m,kp21m,kp4m,kpcf,'
+              'magI,magII,mmt,soar,wiyn,unknown').split(',')
+instruments = ['arcoiris', '90prime',  'mosaic3', 'ccd_imager'] + sorted([
+    'mop/ice', 'arcon', 'spartan', 'decam',
+    'falmingos', 'gtcam', 'wildfire', 'chiron',
+    'osiris', 'andicam', 'echelle', 'flamingos',
+    'sam', 'newfirm', 'goodman', 'y4kcam', 'minimo/ice', 'ice',
+    'ispi', 'mosaic', 'goodman spectrograph', 'hdi', 'bench',
+    'kosmos', 'spartan ir camera', 'soi', '(p)odi', 'whirc',
+    'cosmos',  'unknown'])
 
 
 class AuditRecord(models.Model):
     # THESE ONLY GET UPDATED when django is started. Use foreign key intead.
-    telescopes = [obj.name for obj in Telescope.objects.all()]
-    instruments = [obj.name for obj in Instrument.objects.all()]
+    #!telescopes = [obj.name for obj in Telescope.objects.all()]
+    #!instruments = [obj.name for obj in Instrument.objects.all()]
 
     # Field values provided by DOME
     md5sum = models.CharField(max_length=40, primary_key=True, db_index=True,
                               help_text='MD5SUM of FITS file')
     obsday = models.DateField(null=True, # allow no Dome info, only Submit
                               help_text='Observation Day')
-    telescope = models.CharField(max_length=10, # default='unknown',
-                                 choices=[(val,val) for val in telescopes] )
-    instrument = models.CharField(max_length=25, # default='unknown',
-                                 choices=[(val,val) for val in instruments] )
+    #!telescope = models.CharField(max_length=10, # default='unknown',
+    #!                             choices=[(val,val) for val in telescopes] )
+    #!instrument = models.CharField(max_length=25, # default='unknown',
+    #!                             choices=[(val,val) for val in instruments] )
+    telescope = models.ForeignKey(Telescope, on_delete=models.CASCADE)
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)    
     srcpath = models.CharField(max_length=256, 
                                help_text='Path of file as submitted')
     fstop_host =  models.CharField(max_length=40, blank=True,
