@@ -23,8 +23,8 @@ class InstrumentAdmin(admin.ModelAdmin):
 
 @admin.register(FilePrefix)
 class FilePrefixAdmin(admin.ModelAdmin):
-    pass
-    #list_display = ('site', 'telescope', 'instrument', 'prefix', 'comment')
+    #!list_display = ('site__name', 'telescope__name','instrument__name', 'prefix', 'comment')
+    list_display = ('site', 'telescope','instrument', 'prefix', 'comment')
 
 
 @admin.register(ObsType)

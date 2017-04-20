@@ -35,19 +35,19 @@ class InstrumFilter(admin.SimpleListFilter):
         else:
             return queryset.filter(instrument=self.value())
 
-class TeleFilter(admin.SimpleListFilter):
-    title = 'telescope'
-    parameter_name = 'telescope'
-    
-    def lookups(self, request, model_admin):
-        qs = AuditRecord.objects.order_by('telescope').distinct('telescope')
-        return [(rec.telescope, rec.telescope) for rec in qs]
-
-    def queryset(self, request, queryset):
-        if self.value() == None:
-            return queryset
-        else:
-            return queryset.filter(telescope=self.value())
+#!class TeleFilter(admin.SimpleListFilter):
+#!    title = 'telescope'
+#!    parameter_name = 'telescope'
+#!    
+#!    def lookups(self, request, model_admin):
+#!        qs = AuditRecord.objects.order_by('telescope').distinct('telescope')
+#!        return [(rec.telescope, rec.telescope) for rec in qs]
+#!
+#!    def queryset(self, request, queryset):
+#!        if self.value() == None:
+#!            return queryset
+#!        else:
+#!            return queryset.filter(telescope=self.value())
 
     
 # see: ~/sandbox/mars/env_mars/lib/python3.5/site-packages/django/contrib/admin/filters.py
@@ -226,9 +226,9 @@ class AuditRecordAdmin(admin.ModelAdmin):
                    #'instrument',
                    #'telescope',
                    InstrumFilter,
-                   TeleFilter,
+                   #!TeleFilter,
                    'staged')
-    search_fields = ['telescope', 'instrument','srcpath', 'archerr', 'md5sum']
+    search_fields = ['telescope__name', 'instrument','srcpath', 'archerr', 'md5sum']
     actions = [stage,
                unstage,
                hide,
