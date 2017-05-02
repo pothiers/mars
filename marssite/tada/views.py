@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
-from .models import Site, Telescope, Instrument, FilePrefix
+from .models import FilePrefix
 from .models import ObsType, ProcType, ProdType
 from .models import RawKeywords, FilenameKeywords
 from .models import IngestKeywords, IngestRecommendedKeywords
@@ -10,10 +10,7 @@ from .models import ErrorCode
 
 # stilut=`curl 'http://localhost:8000/tada/'`
 def prefix(request):
-    qs = FilePrefix.objects.all().order_by('pk').values('site__name',
-                                                        'telescope__name',
-                                                        'instrument__name',
-                                                        'prefix')
+    qs = FilePrefix.objects.all().order_by('pk').values('prefix')
     return JsonResponse(list(qs), safe=False)
 
 def obstype(request):

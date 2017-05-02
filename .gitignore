@@ -4,7 +4,7 @@ django_settings_local_pat.py
 django_settings_local_production.py
 settings_local.py
 venv/
-OBSOLETE/
+OBSOLETE*/
 foo.*
 marssite/schedule/OBSOLETE-views.py
 
