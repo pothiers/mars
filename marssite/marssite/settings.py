@@ -33,12 +33,23 @@ DEBUG = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    #os.path.join(BASE_DIR, "static"),
     #'/static/',
-    '/var/www/static/',
-    )
-STATIC_ROOT = '/var/www/mars/static/'
-#!STATIC_ROOT = os.path.join(BASE_DIR, "static")
+    os.path.join(BASE_DIR, 'bower_components'),
+    os.path.join(BASE_DIR, 'djangocalendar', 'static')
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+#STATIC_ROOT = '/var/www/mars/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+# SASS
+SASS_PROCESSOR_ENABLED = True
+SASS_PROCESSOR_ROOT = os.path.join(os.path.dirname(__file__), os.pardir, 'static')
 
 # Application definition
 
@@ -51,6 +62,8 @@ INSTALLED_APPS = (
     'django.contrib.postgres',
     'django.contrib.admin',
     'django.contrib.admindocs',
+    'sass_processor',
+    'djangocalendar',
     'siap',
     'schedule',
     'provisional',
@@ -61,6 +74,8 @@ INSTALLED_APPS = (
     'django_tables2',
     'audit',  # tada audit/status REST API
 )
+
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

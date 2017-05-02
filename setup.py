@@ -76,7 +76,12 @@ setup(
     # project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/technical.html#install-requires-vs-requirements-files
-    #!install_requires=['dataq',],
+    install_requires=[
+        'python-dateutil>=2.1',
+        'pytz>=2013.9',
+        'icalendar>=3.8.4',
+        'django-annoying>=0.8.0'
+    ],
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
