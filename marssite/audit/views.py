@@ -46,6 +46,7 @@ from .serializers import AuditRecordSerializer
 import audit.errcodes as ec
 
 from schedule.models import Slot
+from natica.models import Site,Telescope,Instrument
 
 from siap.models import VoiSiap
 
@@ -155,8 +156,10 @@ EXAMPLE:
         for obs in request.data['observations']:
             auditrec = dict(md5sum = obs['md5sum'],
                             obsday = obs['obsday'],
-                            telescope = obs['telescope'].lower(),
-                            instrument = obs['instrument'].lower(),
+                            telescope = Telescope.objects.get(
+                                pk=obs['telescope']),
+                            instrument = Instrument.objects.get(
+                                pk=obs['instrument']),
                             srcpath = obs['srcpath'],
                             fstop_host = obs.get('dome_host','<dome-host>'),
                             )

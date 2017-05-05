@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from . import expected as exp
 
 class TadaTest(TestCase):
-    fixtures = ['dump.tada.yaml']
+    fixtures = ['dump.tada.yaml', 'natica.yaml']
 
     def setUp(self):
         #self.factory = RequestFactory()
@@ -12,6 +12,7 @@ class TadaTest(TestCase):
     def test_table_prefix(self):
         response = self.client.get('/tada/prefix/')
         self.assertEqual(200, response.status_code)
+        print('DBG: response={}'.format(response.content.decode()))
         self.assertJSONEqual(response.content.decode(), exp.prefix)
 
     def test_table_obstype(self):

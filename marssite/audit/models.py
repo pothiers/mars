@@ -44,8 +44,8 @@ class AuditRecord(models.Model):
 #!                                 choices=[(val,val) for val in telescopes] )
 #!    instrument = models.CharField(max_length=25, # default='unknown',
 #!                                 choices=[(val,val) for val in instruments] )
-    telescope = models.ForeignKey(Telescope, on_delete=models.CASCADE)
-    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)    
+    telescope = models.ForeignKey(Telescope)
+    instrument = models.ForeignKey(Instrument)    
     srcpath = models.CharField(max_length=256, 
                                help_text='Path of file as submitted')
     fstop_host =  models.CharField(max_length=40, blank=True,
@@ -92,8 +92,8 @@ class AuditRecord(models.Model):
             self.srcpath,
         )
             
-    def __str__(self):
-        return '{}-{}'.format(self.obsday, self.instrument)
+#!    def __str__(self):
+#!        return '{}-{}'.format(self.obsday, self.instrument)
 
  
     #!class Meta:

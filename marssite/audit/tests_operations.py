@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from .models import AuditRecord
 
 class AuditTest(TestCase):
-    fixtures = ['AuditRecord.dump.yaml']
+    fixtures = ['natica.yaml', 'AuditRecord.dump.yaml']
     
     def setUp(self):
         self.client = Client()

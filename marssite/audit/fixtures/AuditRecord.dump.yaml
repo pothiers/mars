@@ -1,4 +1,15 @@
 -   model: audit.auditrecord
+    pk: faux-checksum-1
+    fields: {obsday: 2015-07-05, telescope: ct4m, instrument: cosmos, srcpath: /data/tada-test-data/scrape/20150705/ct4m-cosmos/n3.25523.fits.fz,
+        fstop_host: valley.vagrant.noao.edu,
+        updated: "2017-04-03 16:36:09.693604+00:00",
+        fstop: 'valley:direct',
+        submitted: '2017-04-03 23:36:08.975844+00:00',
+        success: true, archerr: '', errcode: '', archfile: c4c_150705_194021_zri_tTADASMOKE.fits.fz,
+        metadata: '"\"DTSITE\"=>\"ct\", \"DTACQNAM\"=>\"/data/tada-test-data/scrape/20150705/ct4m-cosmos/n3.25523.fits.fz\",
+            \"DTINSTRU\"=>\"cosmos\", \"DTTELESC\"=>\"ct4m\", \"PROCTYPE\"=>\"raw\",
+            \"PRODTYPE\"=>\"image\""', staged: false, hide: false} 
+-   model: audit.auditrecord
     pk: 0834c1c322e711b2e73f63d0c8e16332
     fields: {obsday: 2015-07-05, telescope: ct4m, instrument: cosmos, srcpath: /data/tada-test-data/scrape/20150705/ct4m-cosmos/n3.25523.fits.fz,
         fstop_host: valley.vagrant.noao.edu,
@@ -165,18 +176,6 @@
             \"DTINSTRU\"=>\"goodman\", \"DTTELESC\"=>\"soar\", \"OBSERVAT\"=>\"SOAR\",
             \"PROCTYPE\"=>\"raw\", \"PRODTYPE\"=>\"image\""', staged: false, hide: false}
 -   model: audit.auditrecord
-    pk: a24cbd309525b877a37f00047015479e
-    fields: {obsday: 2017-04-03, telescope: unknown, instrument: unknown, srcpath: /data/tada-test-data/broken/20160203/kp/kptest.fits.fz,
-        fstop_host: valley.vagrant.noao.edu, 
-        updated: '2017-04-03 16:34:57.935686+00:00',
-        fstop: 'valley:direct', 
-        submitted: '2017-04-03 23:34:57.238148+00:00',
-        success: false, archerr: 'Rejected ingest of /data/tada-test-data/broken/20160203/kp/kptest.fits.fz.
-            REASON: Modified FITS header is missing required metadata fields (PROCTYPE,
-            PRODTYPE) in file /data/tada-test-data/broken/20160203/kp/kptest.fits.fz',
-        errcode: MISSREQ, archfile: '', metadata: '"\"DTACQNAM\"=>\"/data/tada-test-data/broken/20160203/kp/kptest.fits.fz\""',
-        staged: false, hide: false}
--   model: audit.auditrecord
     pk: a7b61ae4bf9dcdc1295aa307d37793a0
     fields: {obsday: 2015-07-25, telescope: ct15m, instrument: echelle, srcpath: /data/tada-test-data/scrape/20110101/ct15m-echelle/chi150724.1000.fits.fz,
         fstop_host: valley.vagrant.noao.edu, 
@@ -187,15 +186,6 @@
         metadata: '"\"DTSITE\"=>\"ct\", \"AAPROPID\"=>\"smarts\", \"DTACQNAM\"=>\"/data/tada-test-data/scrape/20110101/ct15m-echelle/chi150724.1000.fits.fz\",
             \"DTINSTRU\"=>\"echelle\", \"DTTELESC\"=>\"ct15m\", \"PROCTYPE\"=>\"raw\",
             \"PRODTYPE\"=>\"image\""', staged: false, hide: false}
--   model: audit.auditrecord
-    pk: b91d0cbfa42ec5d9f18c93ce9916d59c
-    fields: {obsday: 2017-04-03, telescope: unknown, instrument: unknown, srcpath: /data/tada-test-data/basic/uofa-mandle.jpg,
-        fstop_host: valley.vagrant.noao.edu, 
-        updated: '2017-04-03 16:43:36.792343+00:00',
-        fstop: 'valley:direct', 
-        submitted: '2017-04-03 23:43:36.189366+00:00',
-        success: false, archerr: 'Cannot ingest non-FITS file: /data/tada-test-data/basic/uofa-mandle.jpg',
-        errcode: NOTFITS, archfile: '', metadata: '""', staged: false, hide: false}
 -   model: audit.auditrecord
     pk: c07f227b4bc3720ade2badb8e1745b81
     fields: {obsday: 2015-07-08, telescope: bok23m, instrument: 90prime, srcpath: /data/tada-test-data/basic/cleaned-bok.fits.fz,
@@ -218,18 +208,6 @@
         metadata: '"\"DTSITE\"=>\"kp\", \"DTACQNAM\"=>\"/data/tada-test-data/scrape/20150929/kp4m-kosmos/a.20153.fits.fz\",
             \"DTINSTRU\"=>\"kosmos\", \"DTTELESC\"=>\"kp4m\", \"PROCTYPE\"=>\"raw\",
             \"PRODTYPE\"=>\"image\""', staged: false, hide: false}
--   model: audit.auditrecord
-    pk: d034c5fbb2a4b1e4238532d74d3baa34
-    fields: {obsday: 2017-04-03, telescope: unknown, instrument: unknown, srcpath: /data/tada-test-data/basic/kp109391.fits.fz,
-        fstop_host: valley.vagrant.noao.edu, 
-        updated: '2017-04-03 16:33:56.381826+00:00',
-        fstop: 'valley:direct', 
-        submitted: '2017-04-03 23:33:55.691294+00:00',
-        success: false, archerr: 'Rejected ingest of /data/tada-test-data/basic/kp109391.fits.fz.
-            REASON: Modified FITS header is missing required metadata fields (OBSTYPE,
-            PROCTYPE, PRODTYPE) in file /data/tada-test-data/basic/kp109391.fits.fz',
-        errcode: MISSREQ, archfile: '', metadata: '"\"DTACQNAM\"=>\"/data/tada-test-data/basic/kp109391.fits.fz\""',
-        staged: false, hide: false}
 -   model: audit.auditrecord
     pk: d3ca4a578a1e513a7141fd5734958efd
     fields: {obsday: 2016-11-01, telescope: soar, instrument: sami, srcpath: /data/tada-test-data/scrape/20110101/soar-sami/SO2016B-015.013.fits.fz,
@@ -286,18 +264,6 @@
         metadata: '"\"DTSITE\"=>\"kp\", \"DTACQNAM\"=>\"/data/tada-test-data/scrape/20110101/wiyn-bench/24dec_2014.061.fits.fz\",
             \"DTINSTRU\"=>\"bench\", \"DTTELESC\"=>\"wiyn\", \"PROCTYPE\"=>\"raw\",
             \"PRODTYPE\"=>\"image\""', staged: false, hide: false}
--   model: audit.auditrecord
-    pk: ef10551a7ed8a0368e9b0342b286109e
-    fields: {obsday: 2017-04-03, telescope: unknown, instrument: unknown, srcpath: /data/tada-test-data/basic/kptest.fits,
-        fstop_host: valley.vagrant.noao.edu, 
-        updated: '2017-04-03 16:34:25.681791+00:00',
-        fstop: 'valley:direct', 
-        submitted: '2017-04-03 23:34:24.968282+00:00',
-        success: false, archerr: 'Rejected ingest of /data/tada-test-data/basic/kptest.fits.
-            REASON: Modified FITS header is missing required metadata fields (PROCTYPE,
-            PRODTYPE) in file /data/tada-test-data/basic/kptest.fits', errcode: MISSREQ,
-        archfile: '', metadata: '"\"DTACQNAM\"=>\"/data/tada-test-data/basic/kptest.fits\""',
-        staged: false, hide: false}
 -   model: audit.auditrecord
     pk: ef7be3bed673dc30204c26a0433bc340
     fields: {obsday: 2015-12-20, telescope: soar, instrument: spartan, srcpath: /data/tada-test-data/scrape/20110101/soar-spartan/S301D_K012-0484d3.fits.fz,

@@ -4,16 +4,18 @@ from django.test import TestCase, Client
 # python3 manage.py test audit.tests
 
 class AuditTest(TestCase):
+    fixtures = ['natica.yaml', 'AuditRecord.dump.yaml']
+
     def setUp(self):
         #self.factory = RequestFactory()
         self.client = Client()
 
         
     def test_dome(self):
-        "Created initial audit record(s).  Used in Domes."
+        "Create initial audit record(s).  Used in Domes."
         req =  '''{ "observations": [
             {
-                "md5sum": "faux-checksum-1",
+                "md5sum": "faux-checksum-0",
                 "obsday": "2016-08-05",
                 "telescope": "kp4m",
                 "instrument": "mosaic3",
@@ -34,7 +36,7 @@ class AuditTest(TestCase):
                                 content_type='application/json',
                                 data=req  )
         # response=b'<p>Added 2 audit records. 0 already existed (ignored request to add).</p>\n<ul></ul>'
-        #! print('response={}'.format(resp.content))
+        print('DBG: response={}'.format(resp.content))
         self.assertContains(resp, 'SUCCESS: added',
                             msg_prefix=('Unexpected output from webservice'
                             ' intended for use by DOME'))

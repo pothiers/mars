@@ -15,6 +15,7 @@ class ScheduleTest(TestCase):
 
     def setUp(self):
         #self.factory = RequestFactory()
+        #print('DBG: ScheduleTest.setUp()')
         self.client = Client()
 
     # Should test for:
@@ -41,12 +42,14 @@ class ScheduleTest(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(expected, response.content.decode())
 
+    # ./manage.py test --noinput schedule.tests_production.ScheduleTest.test_getpropid2
     def test_getpropid2(self):
         "Not found in Slots, found in TAC. (update Slots from TAC)"
         tele = 'kp4m'
         instrum = 'mosaic3'
         date = '2016-02-02'
         expected = '2016A-0453'
+        #print('DBG: test_getpropid: instrum={}'.format(instrum))
         response = self.client.get('/schedule/propid/{}/{}/{}/'
                                    .format(tele, instrum, date))
         try:

@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.db.models import Count, Q, Sum, Case, When, IntegerField
 
-from tada.models import Telescope,Instrument
+from natica.models import Telescope,Instrument
 from .models import AuditRecord
 
 class ErrcodeFilter(admin.SimpleListFilter):
@@ -228,7 +228,7 @@ class AuditRecordAdmin(admin.ModelAdmin):
                    InstrumFilter,
                    #!TeleFilter,
                    'staged')
-    search_fields = ['telescope__name', 'instrument','srcpath', 'archerr', 'md5sum']
+    search_fields = ['telescope', 'instrument','srcpath', 'archerr', 'md5sum']
     actions = [stage,
                unstage,
                hide,

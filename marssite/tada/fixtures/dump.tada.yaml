@@ -1,57 +1,3 @@
--   model: tada.site
-    pk: 1
-    fields: {name: kp}
--   model: tada.site
-    pk: 2
-    fields: {name: cp}
--   model: tada.site
-    pk: 3
-    fields: {name: ct}
--   model: tada.telescope
-    pk: 1
-    fields: {name: kp09m}
--   model: tada.telescope
-    pk: 2
-    fields: {name: soar}
--   model: tada.telescope
-    pk: 3
-    fields: {name: ctlab}
--   model: tada.telescope
-    pk: 4
-    fields: {name: ct4m}
--   model: tada.telescope
-    pk: 5
-    fields: {name: kp4m}
--   model: tada.telescope
-    pk: 6
-    fields: {name: kp21m}
--   model: tada.telescope
-    pk: 7
-    fields: {name: kp35m}
--   model: tada.telescope
-    pk: 8
-    fields: {name: ct15m}
--   model: tada.telescope
-    pk: 9
-    fields: {name: kpcf}
--   model: tada.telescope
-    pk: 10
-    fields: {name: ct13m}
--   model: tada.telescope
-    pk: 11
-    fields: {name: wiyn}
--   model: tada.telescope
-    pk: 12
-    fields: {name: bok23m}
--   model: tada.telescope
-    pk: 13
-    fields: {name: ct1m}
--   model: tada.telescope
-    pk: 14
-    fields: {name: ct09m}
--   model: tada.telescope
-    pk: 15
-    fields: {name: TESTtele}
 -   model: tada.tacinstrumentalias
     pk: 1
     fields: {tac: ARCoIRIS, hdr: arcoiris}
@@ -94,234 +40,141 @@
 -   model: tada.tacinstrumentalias
     pk: 14
     fields: {tac: WHIRC, hdr: whirc}
--   model: tada.instrument
-    pk: 1
-    fields: {name: mosaic}
--   model: tada.instrument
-    pk: 2
-    fields: {name: goodman spectrograph}
--   model: tada.instrument
-    pk: 3
-    fields: {name: cosmos}
--   model: tada.instrument
-    pk: 4
-    fields: {name: ispi}
--   model: tada.instrument
-    pk: 5
-    fields: {name: osiris}
--   model: tada.instrument
-    pk: 6
-    fields: {name: flamingos}
--   model: tada.instrument
-    pk: 7
-    fields: {name: wildfire}
--   model: tada.instrument
-    pk: 8
-    fields: {name: arcoiris}
--   model: tada.instrument
-    pk: 9
-    fields: {name: ice}
--   model: tada.instrument
-    pk: 10
-    fields: {name: mosaic3}
--   model: tada.instrument
-    pk: 11
-    fields: {name: minimo/ice}
--   model: tada.instrument
-    pk: 12
-    fields: {name: arcon}
--   model: tada.instrument
-    pk: 13
-    fields: {name: mop/ice}
--   model: tada.instrument
-    pk: 14
-    fields: {name: andicam}
--   model: tada.instrument
-    pk: 15
-    fields: {name: kosmos}
--   model: tada.instrument
-    pk: 16
-    fields: {name: spartan}
--   model: tada.instrument
-    pk: 17
-    fields: {name: newfirm}
--   model: tada.instrument
-    pk: 18
-    fields: {name: echelle}
--   model: tada.instrument
-    pk: 19
-    fields: {name: bench}
--   model: tada.instrument
-    pk: 20
-    fields: {name: goodman}
--   model: tada.instrument
-    pk: 21
-    fields: {name: hdi}
--   model: tada.instrument
-    pk: 22
-    fields: {name: 90prime}
--   model: tada.instrument
-    pk: 23
-    fields: {name: (p)odi}
--   model: tada.instrument
-    pk: 24
-    fields: {name: sami}
--   model: tada.instrument
-    pk: 25
-    fields: {name: soi}
--   model: tada.instrument
-    pk: 26
-    fields: {name: spartan ir camera}
--   model: tada.instrument
-    pk: 27
-    fields: {name: falmingos}
--   model: tada.instrument
-    pk: 28
-    fields: {name: chiron}
--   model: tada.instrument
-    pk: 29
-    fields: {name: whirc}
--   model: tada.instrument
-    pk: 30
-    fields: {name: decam}
--   model: tada.instrument
-    pk: 31
-    fields: {name: y4kcam}
--   model: tada.instrument
-    pk: 32
-    fields: {name: ccd_imager}
--   model: tada.instrument
-    pk: 33
-    fields: {name: gtcam}
 -   model: tada.fileprefix
-    pk: 1
-    fields: {site: 1, telescope: 1, instrument: 1, prefix: k09m, comment: ''}
+    pk: 48
+    fields: {site: cp, telescope: soar, instrument: goodman, prefix: psg, comment: ''}
 -   model: tada.fileprefix
-    pk: 2
-    fields: {site: 2, telescope: 2, instrument: 2, prefix: psg, comment: ''}
+    pk: 49
+    fields: {site: cp, telescope: soar, instrument: goodman spectrograph, prefix: psg,
+        comment: added}
 -   model: tada.fileprefix
-    pk: 3
-    fields: {site: 3, telescope: 3, instrument: 3, prefix: clc, comment: ''}
+    pk: 50
+    fields: {site: cp, telescope: soar, instrument: osiris, prefix: pso, comment: ''}
 -   model: tada.fileprefix
-    pk: 4
-    fields: {site: 3, telescope: 4, instrument: 4, prefix: c4i, comment: ''}
+    pk: 51
+    fields: {site: cp, telescope: soar, instrument: soi, prefix: psi, comment: ''}
 -   model: tada.fileprefix
-    pk: 5
-    fields: {site: 2, telescope: 2, instrument: 5, prefix: pso, comment: ''}
+    pk: 52
+    fields: {site: cp, telescope: soar, instrument: spartan, prefix: pss, comment: ''}
 -   model: tada.fileprefix
-    pk: 6
-    fields: {site: 1, telescope: 5, instrument: 6, prefix: k4f, comment: ''}
+    pk: 53
+    fields: {site: cp, telescope: soar, instrument: spartan ir camera, prefix: pss,
+        comment: '  # added'}
 -   model: tada.fileprefix
-    pk: 7
-    fields: {site: 1, telescope: 6, instrument: 7, prefix: k21w, comment: ''}
+    pk: 54
+    fields: {site: cp, telescope: soar, instrument: sami, prefix: psa, comment: ''}
 -   model: tada.fileprefix
-    pk: 8
-    fields: {site: 3, telescope: 4, instrument: 8, prefix: c4ai, comment: ''}
+    pk: 55
+    fields: {site: ct, telescope: ct4m, instrument: decam, prefix: c4d, comment: ''}
 -   model: tada.fileprefix
-    pk: 9
-    fields: {site: 1, telescope: 1, instrument: 9, prefix: k09i, comment: ''}
+    pk: 56
+    fields: {site: ct, telescope: ct4m, instrument: cosmos, prefix: c4c, comment: ''}
 -   model: tada.fileprefix
-    pk: 10
-    fields: {site: 1, telescope: 5, instrument: 10, prefix: k4m, comment: ''}
+    pk: 57
+    fields: {site: ct, telescope: ct4m, instrument: ispi, prefix: c4i, comment: ''}
 -   model: tada.fileprefix
-    pk: 11
-    fields: {site: 1, telescope: 5, instrument: 7, prefix: k4w, comment: ''}
+    pk: 58
+    fields: {site: ct, telescope: ct4m, instrument: mosaic, prefix: c4m, comment: ''}
 -   model: tada.fileprefix
-    pk: 12
-    fields: {site: 1, telescope: 7, instrument: 11, prefix: kwi, comment: ''}
+    pk: 59
+    fields: {site: ct, telescope: ct4m, instrument: newfirm, prefix: c4n, comment: ''}
 -   model: tada.fileprefix
-    pk: 13
-    fields: {site: 3, telescope: 8, instrument: 12, prefix: c15s, comment: ''}
+    pk: 60
+    fields: {site: ct, telescope: ct4m, instrument: arcoiris, prefix: c4ai, comment: added
+            <2016-03-17 Thu>}
 -   model: tada.fileprefix
-    pk: 14
-    fields: {site: 1, telescope: 9, instrument: 13, prefix: kcfs, comment: ''}
+    pk: 61
+    fields: {site: ct, telescope: ct15m, instrument: chiron, prefix: c15e, comment: ''}
 -   model: tada.fileprefix
-    pk: 15
-    fields: {site: 3, telescope: 10, instrument: 14, prefix: c13a, comment: ''}
+    pk: 62
+    fields: {site: ct, telescope: ct15m, instrument: echelle, prefix: c15e, comment: added}
 -   model: tada.fileprefix
-    pk: 16
-    fields: {site: 1, telescope: 5, instrument: 15, prefix: k4k, comment: ''}
+    pk: 63
+    fields: {site: ct, telescope: ct15m, instrument: arcon, prefix: c15s, comment: ''}
 -   model: tada.fileprefix
-    pk: 17
-    fields: {site: 2, telescope: 2, instrument: 16, prefix: pss, comment: ''}
+    pk: 64
+    fields: {site: ct, telescope: ct13m, instrument: andicam, prefix: c13a, comment: ''}
 -   model: tada.fileprefix
-    pk: 18
-    fields: {site: 3, telescope: 4, instrument: 17, prefix: c4n, comment: ''}
+    pk: 65
+    fields: {site: ct, telescope: ct1m, instrument: y4kcam, prefix: c1i, comment: ''}
 -   model: tada.fileprefix
-    pk: 19
-    fields: {site: 3, telescope: 8, instrument: 18, prefix: c15e, comment: ''}
+    pk: 66
+    fields: {site: ct, telescope: ct09m, instrument: ccd_imager, prefix: c09i, comment: '#
+            renamed from arcon'}
 -   model: tada.fileprefix
-    pk: 20
-    fields: {site: 1, telescope: 11, instrument: 19, prefix: kwb, comment: ''}
+    pk: 67
+    fields: {site: ct, telescope: ctlab, instrument: cosmos, prefix: clc, comment: ''}
 -   model: tada.fileprefix
-    pk: 21
-    fields: {site: 3, telescope: 4, instrument: 1, prefix: c4m, comment: ''}
+    pk: 68
+    fields: {site: kp, telescope: kp4m, instrument: mosaic, prefix: k4m, comment: ''}
 -   model: tada.fileprefix
-    pk: 22
-    fields: {site: 1, telescope: 5, instrument: 17, prefix: k4n, comment: ''}
+    pk: 69
+    fields: {site: kp, telescope: kp4m, instrument: mosaic3, prefix: k4m, comment: added}
 -   model: tada.fileprefix
-    pk: 23
-    fields: {site: 2, telescope: 2, instrument: 20, prefix: psg, comment: ''}
+    pk: 70
+    fields: {site: kp, telescope: kp4m, instrument: newfirm, prefix: k4n, comment: ''}
 -   model: tada.fileprefix
-    pk: 24
-    fields: {site: 1, telescope: 1, instrument: 21, prefix: k09h, comment: ''}
+    pk: 71
+    fields: {site: kp, telescope: kp4m, instrument: kosmos, prefix: k4k, comment: ''}
 -   model: tada.fileprefix
-    pk: 25
-    fields: {site: 1, telescope: 12, instrument: 22, prefix: ksb, comment: ''}
+    pk: 72
+    fields: {site: kp, telescope: kp4m, instrument: cosmos, prefix: k4k, comment: ''}
 -   model: tada.fileprefix
-    pk: 26
-    fields: {site: 1, telescope: 7, instrument: 23, prefix: kwo, comment: ''}
+    pk: 73
+    fields: {site: kp, telescope: kp4m, instrument: ice, prefix: k4i, comment: ''}
 -   model: tada.fileprefix
-    pk: 27
-    fields: {site: 2, telescope: 2, instrument: 24, prefix: psa, comment: ''}
+    pk: 74
+    fields: {site: kp, telescope: kp4m, instrument: wildfire, prefix: k4w, comment: ''}
 -   model: tada.fileprefix
-    pk: 28
-    fields: {site: 2, telescope: 2, instrument: 25, prefix: psi, comment: ''}
+    pk: 75
+    fields: {site: kp, telescope: kp4m, instrument: flamingos, prefix: k4f, comment: ''}
 -   model: tada.fileprefix
-    pk: 29
-    fields: {site: 1, telescope: 5, instrument: 3, prefix: k4k, comment: ''}
+    pk: 76
+    fields: {site: kp, telescope: kp35m, instrument: whirc, prefix: kww, comment: ''}
 -   model: tada.fileprefix
-    pk: 30
-    fields: {site: 2, telescope: 2, instrument: 26, prefix: pss, comment: ''}
+    pk: 77
+    fields: {site: kp, telescope: wiyn, instrument: whirc, prefix: kww, comment: added}
 -   model: tada.fileprefix
-    pk: 31
-    fields: {site: 1, telescope: 6, instrument: 27, prefix: k21f, comment: ''}
+    pk: 78
+    fields: {site: kp, telescope: wiyn, instrument: bench, prefix: kwb, comment: changed
+            tele (kp35m) <2016-06-17 Fri>}
 -   model: tada.fileprefix
-    pk: 32
-    fields: {site: 3, telescope: 8, instrument: 28, prefix: c15e, comment: ''}
+    pk: 79
+    fields: {site: kp, telescope: kp35m, instrument: minimo/ice, prefix: kwi, comment: ''}
 -   model: tada.fileprefix
-    pk: 33
-    fields: {site: 1, telescope: 7, instrument: 29, prefix: kww, comment: ''}
+    pk: 80
+    fields: {site: kp, telescope: kp35m, instrument: (p)odi, prefix: kwo, comment: ''}
 -   model: tada.fileprefix
-    pk: 34
-    fields: {site: 3, telescope: 4, instrument: 30, prefix: c4d, comment: ''}
+    pk: 81
+    fields: {site: kp, telescope: kp21m, instrument: mop/ice, prefix: k21i, comment: ''}
 -   model: tada.fileprefix
-    pk: 35
-    fields: {site: 1, telescope: 11, instrument: 29, prefix: kww, comment: ''}
+    pk: 82
+    fields: {site: kp, telescope: kp21m, instrument: wildfire, prefix: k21w, comment: ''}
 -   model: tada.fileprefix
-    pk: 36
-    fields: {site: 3, telescope: 13, instrument: 31, prefix: c1i, comment: ''}
+    pk: 83
+    fields: {site: kp, telescope: kp21m, instrument: falmingos, prefix: k21f, comment: ''}
 -   model: tada.fileprefix
-    pk: 37
-    fields: {site: 3, telescope: 4, instrument: 3, prefix: c4c, comment: ''}
+    pk: 84
+    fields: {site: kp, telescope: kp21m, instrument: gtcam, prefix: k21g, comment: ''}
 -   model: tada.fileprefix
-    pk: 38
-    fields: {site: 1, telescope: 6, instrument: 13, prefix: k21i, comment: ''}
+    pk: 85
+    fields: {site: kp, telescope: kpcf, instrument: mop/ice, prefix: kcfs, comment: ''}
 -   model: tada.fileprefix
-    pk: 39
-    fields: {site: 3, telescope: 12, instrument: 15, prefix: ksb, comment: ''}
+    pk: 86
+    fields: {site: kp, telescope: kp09m, instrument: hdi, prefix: k09h, comment: ''}
 -   model: tada.fileprefix
-    pk: 40
-    fields: {site: 1, telescope: 5, instrument: 9, prefix: k4i, comment: ''}
+    pk: 87
+    fields: {site: kp, telescope: kp09m, instrument: mosaic, prefix: k09m, comment: ''}
 -   model: tada.fileprefix
-    pk: 41
-    fields: {site: 1, telescope: 5, instrument: 1, prefix: k4m, comment: ''}
+    pk: 88
+    fields: {site: kp, telescope: kp09m, instrument: ice, prefix: k09i, comment: ''}
 -   model: tada.fileprefix
-    pk: 42
-    fields: {site: 3, telescope: 14, instrument: 32, prefix: c09i, comment: ''}
+    pk: 89
+    fields: {site: kp, telescope: bok23m, instrument: 90prime, prefix: ksb, comment: BOK}
 -   model: tada.fileprefix
-    pk: 43
-    fields: {site: 1, telescope: 6, instrument: 33, prefix: k21g, comment: ''}
+    pk: 90
+    fields: {site: ct, telescope: bok23m, instrument: kosmos, prefix: ksb, comment: 'fake,
+            for testing'}
 -   model: tada.obstype
     pk: 1
     fields: {name: zero, code: z, comment: added 5/8/15 for bok}
