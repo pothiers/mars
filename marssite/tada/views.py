@@ -10,7 +10,10 @@ from .models import ErrorCode
 
 # stilut=`curl 'http://localhost:8000/tada/'`
 def prefix(request):
-    qs = FilePrefix.objects.all().order_by('pk').values('prefix')
+    qs = FilePrefix.objects.all().order_by('pk').values('site',
+                                                        'telescope',
+                                                        'instrument',
+                                                        'prefix')
     return JsonResponse(list(qs), safe=False)
 
 def obstype(request):

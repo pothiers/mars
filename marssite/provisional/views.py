@@ -66,14 +66,14 @@ def add(request, reference):
 @transaction.atomic
 def rollback(request):
     'Remove all provisionaly added files from DB'
-    from django.db import connection
+    from django.db import connections
 
     logging.debug('EXECUTING: mars:provisional/rollback()')
 
     ref_list = [fn.id for fn in Fitsname.objects.all()]
     delcnt = len(ref_list)
     Fitsname.objects.all().delete()
-    cursor = connection.cursor()
+    cursor = connections['archive'].cursor()
     for ref in ref_list:
         drop_file(cursor, ref)
 
@@ -85,9 +85,9 @@ def rollback(request):
 @transaction.atomic
 def dbdelete(request, reference=None):
     '''Delete a fits file from the archive DB (all tables).'''
-    from django.db import connection
+    from django.db import connections
 
-    cursor = connection.cursor()
+    cursor = connections['archive'].cursor()
     Fitsname.objects.filter(id=reference).delete()
     results = drop_file(cursor, reference)
     #!return HttpResponse(('Number of rows affected for file {} = {}'
