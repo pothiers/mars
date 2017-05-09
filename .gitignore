@@ -7,6 +7,7 @@ venv/
 OBSOLETE/
 foo.*
 marssite/schedule/OBSOLETE-views.py
+.projectile
 
 # smoke test leavings
 *.out

@@ -6,7 +6,7 @@ from django.utils.six.moves.urllib.parse import quote
 from django.db.models import Q, F
 from django.core.urlresolvers import reverse
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 from django.http import HttpResponseRedirect, Http404, HttpResponseBadRequest
 from django.views.decorators.http import require_POST
@@ -23,6 +23,7 @@ from djangocalendar.settings import (GET_EVENTS_FUNC, OCCURRENCE_CANCEL_REDIRECT
 from djangocalendar.forms import EventForm, OccurrenceForm
 from djangocalendar.models import Calendar, Occurrence, Event
 from djangocalendar.periods import weekday_names
+from djangocalendar.sync import Sync
 from djangocalendar.utils import (
     check_event_permissions,
     check_calendar_permissions,
@@ -468,3 +469,10 @@ def _api_select_create(start, end, calendar_slug):
     response_data = {}
     response_data['status'] = "OK"
     return response_data
+
+
+def test(request):
+    #import pdb; pdb.set_trace()
+    what = Sync.sync_slots()
+
+    return render(request, 'test.html', {"slots":what})

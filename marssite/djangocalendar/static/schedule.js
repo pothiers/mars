@@ -25,3 +25,58 @@ function openURL(url, event){
     event.stopPropagation();
     window.location=url;
 }
+
+
+/**
+   --------------------------
+*/
+
+$(function(){
+    $('#calendar').fullCalendar({
+        displayEventTime: false,
+        // put your options and callbacks here
+        // example api call to fetch events
+        events: '/calendar/api/occurrences?calendar_slug='
+    });
+
+    $(".links button").on("click", function(e){
+        var d = new Date();
+        var month = e.currentTarget.dataset.month;
+        d.setMonth(month);
+        $("#calendar").fullCalendar("gotoDate", d);
+    });
+
+    t = new Timeline(document.querySelectorAll(".timeline-wrapper")[0], {});
+
+});
+
+(function(window, undefined){
+    'use strict';
+    window.Timeline = function(elem, opts){
+        var section = [
+            [
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ],
+            [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May"
+            ]
+        ];
+
+
+        elem.querySelectorAll(".blip").forEach(function(el){
+            el.addEventListener("click", function(e){
+                e.stopPropagation();
+                var semester = e.currentTarget.dataset;
+                console.log(section[semester.section]);
+            });
+        });
+    };
+})(this);
