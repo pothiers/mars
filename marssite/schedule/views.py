@@ -468,6 +468,9 @@ class ScheduleViewSet(viewsets.ModelViewSet):
     paginate_by = 100
     serializer_class = SlotSerializer
 
+def schedule_calendar(request):
+
+    return render("schedule/fullcalendar.html")
 
 @api_view(('GET',))
 def api_root(request, format=None):

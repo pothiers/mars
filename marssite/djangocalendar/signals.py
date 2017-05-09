@@ -1,4 +1,4 @@
-from django.db.models.signals import pre_save, m2m_changed
+from django.db.models.signals import pre_save, post_save, m2m_changed 
 from django.dispatch import receiver
 from datetime import datetime, timezone, timedelta
 import pdb
@@ -21,9 +21,9 @@ def optional_calendar(sender, **kwargs):
         event.calendar = calendar
     return True
 
-@receiver(m2m_changed)
 def update_slot(sender, **kwargs):
     import pdb; pdb.set_trace()
+    return True
     if "schedule.models.Slot" not in str(sender):
         return True
     else:
@@ -35,7 +35,7 @@ def update_slot(sender, **kwargs):
         # problem: relational data doesn't exist yet
         # needs to be queried seperately
         props = Proposal.objects.filter(slot_id=slot.id)
-        
+
         for prop in props:
             # check if this event is ongoing
             events = Event.objects.filter(title=prop)
@@ -65,4 +65,5 @@ def update_slot(sender, **kwargs):
 
     return True
 
+m2m_changed.connect(update_slot)
 pre_save.connect(optional_calendar)

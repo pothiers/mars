@@ -17,6 +17,8 @@ urlpatterns = [
 
     url(r'^today$', views.SlotTodayList.as_view(), name='today_list'),
 
+    url(r'^calendar$', views.schedule_calendar, name='calendar'),
+
      # By Month;  Example: /2012/aug/
      url(r'^(?P<year>[0-9]{4})/(?P<month>[-\w]+)/$',
          views.SlotMonthList.as_view(),
