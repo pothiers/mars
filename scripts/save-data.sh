@@ -72,9 +72,16 @@ schedule
 tada
 water
 "
-#!siap
+#!siap  # not managed, uses legacy "metadata" database
 
-dir=$HOME/data/mars
+stamp=`date '+%Y.%m.%d_%H.%M'`
+hash=`git rev-parse --verify HEAD`
+dir=$HOME/data/mars/${hash}
+mkdir -p ${dir} > /dev/null
+date > $dir/STAMP.txt
+echo $hash > $dir/HASH.txt # git snapshot
+
+mir="sdmvm1.tuc.noao.edu:/repo/mirrors/mars-data"
 
 #DJANGO_SETTINGS_MODULE=marssite.marssite.settings
 
@@ -88,4 +95,7 @@ do
     outfile=$dir/${app}.yaml
     echo "Writing: $outfile"
     $SITE/manage.py dumpdata --format=yaml --indent=4 --output=$outfile $app
-done   
+done
+
+echo "Syncing $dir to $mir"
+rsync -avz $dir $mir
