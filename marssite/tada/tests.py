@@ -12,7 +12,7 @@ class TadaTest(TestCase):
     def test_table_prefix(self):
         response = self.client.get('/tada/prefix/')
         self.assertEqual(200, response.status_code)
-        print('DBG: response={}'.format(response.content.decode()))
+        #print('DBG: response={}'.format(response.content.decode()))
         self.assertJSONEqual(response.content.decode(), exp.prefix)
 
     def test_table_obstype(self):

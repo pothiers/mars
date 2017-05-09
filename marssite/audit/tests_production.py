@@ -36,7 +36,7 @@ class AuditTest(TestCase):
                                 content_type='application/json',
                                 data=req  )
         # response=b'<p>Added 2 audit records. 0 already existed (ignored request to add).</p>\n<ul></ul>'
-        print('DBG: response={}'.format(resp.content))
+        #!print('DBG: response={}'.format(resp.content))
         self.assertContains(resp, 'SUCCESS: added',
                             msg_prefix=('Unexpected output from webservice'
                             ' intended for use by DOME'))
