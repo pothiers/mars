@@ -1,7 +1,9 @@
 #!/bin/bash -e
-# PURPOSE: Save DB datas for MARS apps
+# PURPOSE: Save DB data from MARS apps
 #
 # EXAMPLE:
+#   source ../venv/bin/activate
+#   ./save-data.sh
 #
 # AUTHORS: S.Pothier
 
