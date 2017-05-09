@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 {% load i18n staticfiles scheduletags %}
 {% load static from staticfiles %}
+{% load sass_tags %}
 
 {% block head_title %}Calendar: {{ object.name }}{% endblock %}
 {% block extra_head %}
 	<link rel="stylesheet" href="{% static 'schedule/css/modal.css' %}" />
-    {% include "fullcalendar_script.html" %}
+  <link rel="stylesheet" type="text/css" href="{% sass_src 'timeline.scss' %}" />
+  {% include "fullcalendar_script.html" %}
 {% endblock %}
 
 {% block body %}
@@ -15,7 +17,57 @@
     </a>
     <br>
     <br>
-    <div id='calendar'></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="timeline-wrapper">
+            <div class="timeline">
+              <div class="blip" data-year="2016" data-section="0">
+                <span class='blip-label'>2016A</span>
+              </div>
+              <div class="blip" data-year="2016" data-section="1">
+                <span class='blip-label'>2016B</span>
+              </div>
+              <div class="blip active" data-year="2017" data-section="0">
+                <span class='blip-label'>2017A</span>
+              </div>
+              <div class="blip" data-year="2017" data-section="1">
+                <span class='blip-label'>2017B</span>
+              </div>
+              <div class="blip" data-year="2018" data-section="0">
+                <span class='blip-label'>2018A</span>
+              </div>
+            </div>
+            <div class="links">
+              <ul>
+                <li>
+                  <button class="btn btn-link" data-month="0">January</button>
+                </li>
+                <li>
+                  <button class="btn btn-link" data-month="1">February</button>
+                </li>
+                <li>
+                  <button class="btn btn-link" data-month="2">March</button>
+                </li>
+                <li class="active">
+                  <button class="btn btn-link" data-month="3">April</button>
+                </li>
+                <li>
+                  <button class="btn btn-link" data-month="4">May</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <div id="calendar"></div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript"  src="{% static 'schedule.js' %}"></script>
 
     {% include "fullcalendar_modal.html" %}
 {% endblock %}

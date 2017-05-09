@@ -24,6 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
+LOGIN_URL = "/admin/login/"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,6 +43,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder'
 )
 
 #STATIC_ROOT = '/var/www/mars/static/'
@@ -49,7 +51,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # SASS
 SASS_PROCESSOR_ENABLED = True
-SASS_PROCESSOR_ROOT = os.path.join(os.path.dirname(__file__), os.pardir, 'static')
+SASS_PROCESSOR_ROOT = STATIC_ROOT # os.path.join(os.path.dirname(__file__), os.pardir, 'static')
 
 # Application definition
 

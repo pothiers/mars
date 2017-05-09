@@ -1,0 +1,71 @@
+#demo {
+  display: none; }
+
+#calendar .fc-event {
+  background-color: transparent !important;
+  border: 0px solid transparent;
+  border-bottom: 3px solid #417690; }
+
+#calendar .fc-title {
+  color: #417690; }
+
+#calendar .fc-past {
+  background-color: #f8f8f8;
+  border-color: #ddd; }
+
+.timeline-wrapper .timeline {
+  display: table;
+  width: 100%;
+  border-bottom: 3px solid #417690;
+  margin-bottom: 2em; }
+  .timeline-wrapper .timeline .blip {
+    display: table-cell;
+    position: relative;
+    text-align: center;
+    line-height: 1.3em;
+    color: #417690;
+    cursor: pointer; }
+    .timeline-wrapper .timeline .blip .blip-label {
+      display: inline-block;
+      margin: 1em 0;
+      line-height: 1.3em; }
+    .timeline-wrapper .timeline .blip:after {
+      content: "\A";
+      width: 10px;
+      height: 10px;
+      background-color: #417690;
+      border-radius: 10px;
+      position: absolute;
+      left: 50%;
+      top: 3em;
+      margin-left: -5px; }
+    .timeline-wrapper .timeline .blip.active {
+      color: #999999; }
+      .timeline-wrapper .timeline .blip.active:before {
+        content: "\A";
+        border: 5px solid #417690;
+        border-top: 0px solid transparent;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom-width: 10px;
+        position: absolute;
+        top: 2.5em;
+        left: 50%;
+        margin-left: -5px; }
+
+.timeline-wrapper .links ul {
+  display: table;
+  width: 100%;
+  margin-left: 0;
+  padding-left: 0; }
+
+.timeline-wrapper .links li {
+  list-style: none;
+  display: table-cell;
+  text-align: center;
+  margin: 0;
+  padding: 0; }
+  .timeline-wrapper .links li.active button {
+    color: #999999; }
+
+/*# sourceMappingURL=../../../../static/timeline.css.map */

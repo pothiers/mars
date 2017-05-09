@@ -56,6 +56,8 @@ router = routers.DefaultRouter()
 
 admin.site.site_header = 'MARS Administration'
 
+
+
 urlpatterns = [
     url(
         r'^favicon.ico$',

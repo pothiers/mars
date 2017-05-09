@@ -4,12 +4,14 @@ from djangocalendar.models import Calendar
 from djangocalendar.feeds import UpcomingEventsFeed
 from djangocalendar.feeds import CalendarICalendar
 from djangocalendar.periods import Year, Month, Week, Day
+from django.contrib.auth.decorators import login_required, permission_required
+
 from djangocalendar.views import (
     CalendarByPeriodsView, CalendarView, EventView,
     OccurrenceView, EditOccurrenceView, DeleteEventView,
     EditEventView, CreateEventView, OccurrencePreview,
     CreateOccurrenceView, CancelOccurrenceView, FullCalendarView,
-    api_select_create, api_move_or_resize_by_code, api_occurrences)
+    api_select_create, api_move_or_resize_by_code, api_occurrences, test)
 
 urlpatterns = [
     url(r'^$', ListView.as_view(model=Calendar), name='calendar_list'),
@@ -49,9 +51,11 @@ urlpatterns = [
         name='calendar_home',
         ),
     url(r'^fullcalendar/(?P<calendar_slug>[-\w]+)/$',
-        FullCalendarView.as_view(),
-        name='fullcalendar'),
+        login_required(FullCalendarView.as_view()),
+    ),
 
+    # Test urls
+    url(r'^test$', test, name="test"),
 
     # Event Urls
     url(r'^event/create/(?P<calendar_slug>[-\w]+)/$',

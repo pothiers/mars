@@ -1,0 +1,89 @@
+$coolBlue: #417690;
+$grey    : #999999;
+$yellow  : #f5dd5d;
+
+#demo{
+    display: none;
+}
+// style the calendar
+
+#calendar{
+ .fc-event{
+     background-color: transparent !important;
+     border: 0px solid transparent;
+     border-bottom: 3px solid $coolBlue;
+ }
+ .fc-title{
+     color: $coolBlue;
+ }
+ .fc-past{
+     background-color: #f8f8f8; 
+     border-color: #ddd;
+ }
+}
+
+.timeline-wrapper{
+    .timeline{
+        display: table;
+        width: 100%;
+        border-bottom: 3px solid $coolBlue;
+        margin-bottom: 2em;
+        .blip{
+            display: table-cell;
+            position: relative;
+            text-align: center;
+            line-height: 1.3em;
+            color: $coolBlue;
+            cursor:pointer;
+            .blip-label{
+                display: inline-block;
+                margin: 1em 0;
+                line-height: 1.3em;
+            }
+            &:after{
+                content: "\A";
+                width: 10px;
+                height: 10px;
+                background-color: $coolBlue;
+                border-radius: 10px;
+                position: absolute;
+                left: 50%;
+                top: 3em;
+                margin-left: -5px;
+            }
+            &.active{
+                color: $grey;
+                &:before{
+                    content: "\A";
+                    border: 5px solid $coolBlue;
+                    border-top: 0px solid transparent;
+                    border-left-color: transparent;
+                    border-right-color: transparent;
+                    border-bottom-width:10px;
+                    position: absolute;
+                    top: 2.5em;
+                    left: 50%;
+                    margin-left:-5px;
+                }
+            }
+        }
+
+    }
+    .links{
+        ul{ display: table; width: 100%; margin-left: 0;padding-left: 0;}
+
+        li{
+            list-style: none;
+            display: table-cell;
+            text-align: center;
+            margin:0;
+            padding: 0;
+
+            &.active{
+                button{
+                    color: $grey;
+                }
+            }
+        }
+    }
+}
