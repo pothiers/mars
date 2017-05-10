@@ -75,7 +75,6 @@ urlpatterns = [
     url(r'^provisional/', include('provisional.urls', namespace='provisional')),
     url(r'^tada/', include('tada.urls', namespace='tada')),
     url(r'^audit/', include('audit.urls', namespace='audit')),
-    url(r'^calendar/', include('djangocalendar.urls')),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 

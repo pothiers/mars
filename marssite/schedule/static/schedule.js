@@ -36,7 +36,8 @@ $(function(){
         displayEventTime: false,
         // put your options and callbacks here
         // example api call to fetch events
-        events: '/calendar/api/occurrences?calendar_slug='
+        events: '/schedule/api/occurrences?calendar_slug='
+
     });
 
     $(".links button").on("click", function(e){

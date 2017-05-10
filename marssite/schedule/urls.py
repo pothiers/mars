@@ -51,7 +51,7 @@ urlpatterns = [
 
     #!url(r'^scrape/(?P<begindate>.+)/(?P<enddate>.+)/$',
     #!    views.scrape, name='scrape'),
-
+    url(r'^api/occurrences$', views.occurrences, name="occurances"),
     url(r'^upload/$',
         views.upload_file, name='upload_file'),
     url(r'^delete_all_schedule_i_really_mean_it/$',

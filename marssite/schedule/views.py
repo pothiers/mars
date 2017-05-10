@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
@@ -468,9 +468,29 @@ class ScheduleViewSet(viewsets.ModelViewSet):
     paginate_by = 100
     serializer_class = SlotSerializer
 
+@api_view(('GET',))
+def occurrences(request):
+    '''
+    calendar:"default"
+    cancelled:false
+    color:null
+    creator:"None"
+    description:null
+    end:"2017-05-14T07:00:00+00:00"
+    end_recurring_period:null
+    event_id:214
+    existed:false
+    id:215
+    rule:null
+    start:"2017-05-12T07:00:00+00:00"
+    title: "2014B-0404"
+    '''
+    
+    return JsonResponse({})
+
 def schedule_calendar(request):
 
-    return render("schedule/fullcalendar.html")
+    return render(request, "schedule/fullcalendar.html")
 
 @api_view(('GET',))
 def api_root(request, format=None):
@@ -479,5 +499,6 @@ def api_root(request, format=None):
                           request=request, format=format),
         'empty': reverse('schedule:list_empty', request=request, format=format),
         'list': reverse('schedule:list', request=request, format=format),
+        'occurances': reverse('schedule:occurances', request=request, format=format),
     })
 

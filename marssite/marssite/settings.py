@@ -37,7 +37,7 @@ STATICFILES_DIRS = (
     #os.path.join(BASE_DIR, "static"),
     #'/static/',
     os.path.join(BASE_DIR, 'bower_components'),
-    os.path.join(BASE_DIR, 'djangocalendar', 'static')
+    #os.path.join(BASE_DIR, 'schedule', 'static')
 )
 
 STATICFILES_FINDERS = (
@@ -65,7 +65,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'sass_processor',
-    'djangocalendar',
     'siap',
     'schedule',
     'provisional',
