@@ -2,12 +2,8 @@
   display: none; }
 
 #calendar .fc-event {
-  background-color: transparent !important;
   border: 0px solid transparent;
   border-bottom: 3px solid #417690; }
-
-#calendar .fc-title {
-  color: #417690; }
 
 #calendar .fc-past {
   background-color: #f8f8f8;
