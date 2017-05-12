@@ -1,11 +1,8 @@
 #!/bin/bash -e
-# PURPOSE: Save DB data from MARS apps
-#
+# PURPOSE: Load previously saved DB data into MARS apps
 # EXAMPLE:
-#   ./save-data.sh
+#   ./load-data.sh
 #
-# TODO:
-#   add TAG.txt file indicating associaged git tag (if any) of commit
 
 cmd=`basename $0`
 dir=`dirname $0`
@@ -15,22 +12,17 @@ SCRIPTPATH=$(dirname $SCRIPT) #Absolute path this script is in
 MARSROOT=$(dirname $SCRIPTPATH)
 
 VERBOSE=0
-stamp=`date '+%Y.%m.%d_%H.%M'`
-hash=`git rev-parse --verify HEAD`
-datadir="$HOME/data/mars/${hash}"
-mirrdir="sdmvm1.tuc.noao.edu:/repo/mirrors/mars-data/${hash}"
+datadir=$HOME/Download/marsdata
+mirrdir="sdmvm1.tuc.noao.edu:/repo/mirrors/mars-data"
 
-
-usage="USAGE: $cmd [options]
+usage="USAGE: $cmd [options] 
 OPTIONS:
-  -d <datadir>:: Directory to store DB content as YAML files. [dflt: $datadir]
-  -v <verbosity>:: higher number for more output (default=$VERBOSE)
+  -d <datadir>:: Directory containing DB content as YAML files. [dflt: $datadir]
+  -v <verbosity>:: higher number for more output (default=0)
 
 "
 
-
 while getopts "hd:v:" opt; do
-    echo "opt=<$opt>"
     case $opt in
 	    h)
             echo "$usage"
@@ -53,6 +45,7 @@ while getopts "hd:v:" opt; do
 
     esac
 done
+#echo "OPTIND=$OPTIND"
 for (( x=1; x<$OPTIND; x++ )); do shift; done
 
 
@@ -73,29 +66,37 @@ water
 "
 #!siap  # not managed, uses legacy "metadata" database
 
-mkdir -p ${datadir} > /dev/null
-date > $datadir/STAMP.txt
-echo $hash > $datadir/HASH.txt # git snapshot
-
-
-#DJANGO_SETTINGS_MODULE=marssite.marssite.settings
-
 ##############################################################################
 
 SITE=$MARSROOT/marssite
-echo "SITE=$SITE"
+#echo "SITE=$SITE"
 pushd $SITE
-
 source $MARSROOT/venv/bin/activate
 
-echo "Saving data as of: $STAMP"
+
+#!stamp=`date '+%Y.%m.%d_%H.%M'`
+#!hash=`git rev-parse --verify HEAD`
+mkdir -p ${datadir} > /dev/null
+
+echo "Syncing $mirrdir to $datadir"
+rsync -avz $mirrdir/ $datadir/
+
+newest=`ls -trd $datadir/*/ | tail -1`
+hashdir=${newest%?}
+
+STAMP=`cat $hashdir/STAMP.txt`
+HASH=`cat $hashdir/HASH.txt`
+
+echo
+echo "Using data saved: $STAMP"
 echo "Corresponding to git hash: $HASH"
+echo "Storing data in: $hashdir"
+echo
+
 for app in $apps
 do
-    outfile=$datadir/${app}.yaml
-    echo "Writing: $outfile"
-    $SITE/manage.py dumpdata --format=yaml --indent=4 --output=$outfile $app
+    fixture=$hashdir/${app}.yaml
+    echo "DRY-RUN from: $fixture" 
+    #!echo "Loading from: $fixture" 
+    #! $SITE/manage.py loaddata $fixture
 done
-
-echo "Syncing $datadir to ${mirrdir}"
-rsync -avz $datadir/ ${mirrdir}/
