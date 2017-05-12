@@ -1,7 +1,6 @@
 @import 'libs/vars';
 @import 'libs/functions';
 @import 'libs/mixins';
-@import url("font-awesome.min.css");
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,600,600italic");
 
 /*
@@ -99,7 +98,7 @@
 		font-style: italic;
 	}
 
-	p, ul, ol, dl, table, blockquote {
+	p, ul, ol, dl,  blockquote {
 		margin: 0 0 2em 0;
 	}
 
@@ -567,14 +566,14 @@
 		text-align: center;
 		padding: 3em 0 0 0;
 		background-color: #fff;
-		background-image:			url('images/bg02.png'),		url('images/bg02.png'),		url('images/bg01.png');
-		background-position:		top left,					top left,					top left;
-		background-size:			100% 6em,					100% 6em,					auto;
-		background-repeat:			no-repeat,					no-repeat,					repeat;
-
+		background-image:			url('images/header.jpg'); //url('images/bg02.png'),		url('images/bg02.png'),		url('images/bg01.png');
+		background-position:	center center;
+		background-repeat:			no-repeat;
+    background-size: cover;
 		h1 {
 			padding: 0 0 2.75em 0;
 			margin: 0;
+      color: #fff;
 
 			a {
 				font-size: 1.5em;
@@ -753,7 +752,7 @@
 /* Wrapper */
 
 	.wrapper {
-		padding: 5em 0 3em 0;
+		padding: 2em 0 3em 0;
 
 		&.style1 {
 			background: #fff;

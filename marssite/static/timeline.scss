@@ -1,12 +1,13 @@
 $coolBlue: #417690;
 $grey    : #999999;
 $yellow  : #f5dd5d;
+$white   : #fcfcfc;
 
 #demo{
     display: none;
 }
 // style the calendar
-
+// .
 #calendar{
  .fc-event{
      //background-color: transparent !important;
@@ -16,8 +17,11 @@ $yellow  : #f5dd5d;
  .fc-title{
      //color: $coolBlue;
  }
+ .fc-today{
+     background-color: #fff6c6;
+ }
  .fc-past{
-     background-color: #f8f8f8; 
+     background-color: #e4e4e4; 
      border-color: #ddd;
  }
 }
@@ -27,7 +31,7 @@ $yellow  : #f5dd5d;
         display: table;
         width: 100%;
         border-bottom: 3px solid $coolBlue;
-        margin-bottom: 2em;
+        margin-bottom: 1.5em;
         .blip{
             display: table-cell;
             position: relative;
@@ -52,7 +56,8 @@ $yellow  : #f5dd5d;
                 margin-left: -5px;
             }
             &.active{
-                color: $grey;
+                color: $white;
+                background-color: lighten($grey, 20%);
                 &:before{
                     content: "\A";
                     border: 5px solid $coolBlue;
@@ -61,7 +66,7 @@ $yellow  : #f5dd5d;
                     border-right-color: transparent;
                     border-bottom-width:10px;
                     position: absolute;
-                    top: 2.5em;
+                    top: 2.7em;
                     left: 50%;
                     margin-left:-5px;
                 }
@@ -70,7 +75,7 @@ $yellow  : #f5dd5d;
 
     }
     .links{
-        ul{ display: table; width: 100%; margin-left: 0;padding-left: 0;}
+        ul{ display: table; width: 100%; margin-left: 0;padding-left: 0; margin-bottom: 0.5em;}
 
         li{
             list-style: none;
@@ -81,7 +86,8 @@ $yellow  : #f5dd5d;
 
             &.active{
                 button{
-                    color: $grey;
+                    color: $white;
+                    background-color: lighten($grey, 20% );
                 }
             }
         }
