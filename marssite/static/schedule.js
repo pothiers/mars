@@ -31,6 +31,7 @@ function eventClick(calEvent, event, view){
     });
     // day element is 5th in stack
     el = els[5];
+    debugger;
     date = moment(el.dataset.date);
     dayClick(date, trigger, null);
     return false;

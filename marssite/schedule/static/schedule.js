@@ -29,8 +29,18 @@ function eventClick(calEvent, event, view){
         clientX: x,
         clientY: y
     });
-    // day element is 5th in stack
+    // default to any day?
     el = els[5];
+    for(element of els){
+        if(element.className.search(/fc-day /) > -1){
+            el = element;
+            break;
+        }
+    }
+    if( !el.dataset.date ){
+        alert("Date for given prop id not found. Try clicking on the calendar day instead");
+        return false;
+    }
     date = moment(el.dataset.date);
     dayClick(date, trigger, null);
     return false;
