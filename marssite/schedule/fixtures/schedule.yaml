@@ -6,6 +6,10 @@
    pk: 2015B-0267
    fields:
      modified: "2015-12-02T21:30:13.039948+00:00"
+- model: schedule.proposal
+  pk: 2016A-0453
+  fields:
+    modified: "2016-01-19 18:19:23.661916+00:00"
 -  model: schedule.slot
    pk: 35755
    fields:
@@ -24,6 +28,16 @@
       modified: "2016-04-21T00:06:41.286689+00:00"
       frozen: false
       proposals: [2015B-0267]
+- model: schedule.slot
+  pk: 37955
+  fields:
+    telescope: kp4m
+    instrument: mosaic3
+    obsdate: 2016-02-02
+    modified: "2017-03-02 17:55:44.694125+00:00"
+    frozen: false
+    proposals: [2016A-0453]
+
 - model: schedule.defaultpropid
   pk: 16
   fields: {telescope: kp4m, instrument: kosmos, propids: '["1816A-0247"]'}

@@ -44,11 +44,11 @@
   </h3>
 
   <p>
-    Here are some of the MARS apps.
+    Here are some of the MARS web-services.
     <em>
       Very few of these are used during production TADA processing.
-      See the legend at the bottom of the page.
     </em>
+    See the legend at the bottom of the page.
   </p>
 
   <table>
@@ -105,6 +105,15 @@
     <!-- ##### Audit ##### -->
     <tr class="prod">
       <th>
+	    {% url 'audit:source' %}
+      </th>
+      <td>
+	    Initial audit record (ground truth). POST to this url with
+	    JSON data.
+      </td>
+    </tr>
+    <tr class="prod">
+      <th>
 	    {% url 'audit:update_fstop' '1900c5e4e342f293d538507dfd2bff3a' 'valley:cache' 'valley.sdm' %}
       </th>
       <td>
@@ -123,6 +132,15 @@
     <!-- ### Operations                       -->
     <!-- ###                                  -->
     <tr class="spacer"><th>OPERATIONS</th><th><br /></th></tr>
+    <!-- ##### Admin ##### -->
+    <tr class="ops">
+      <th>
+	<a href="{% url 'admin:index' %}tada/">
+	  /admin/tada/
+	</a>
+      </th>
+      <td>Edit data affecting TADA behavior.</td>
+    </tr>
     <tr class="ops">
       <th>
         <a href="{% url 'admin:audit_auditrecord_changelist' %}">
@@ -139,16 +157,41 @@
       </th>
       <td>Edit schedule.</td>
     </tr>
+    <!-- ##### Audit ##### -->
+    <tr class="ops">
+      <th><a href="{% url 'audit:agg' %}">{% url 'audit:agg' %}</a></th>
+      <td>
+	For <b>monitoring progress</b> of ingestion. Similar to Sean's
+	<a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
+      </td>
+    </tr>
     <tr class="ops">
       <th>
-	<a href="{% url 'admin:index' %}tada/">
-	  /admin/tada/
-	</a>
+        <a href="{% url 'audit:staged_archived_files' %}">
+          {% url 'audit:staged_archived_files' %}        
+        </a>
       </th>
-      <td>Edit data affecting TADA behavior.</td>
+      <td>Get list of audit records marked as STAGED for ingested FITS.</td>
     </tr>
-
-    <!-- #####  TADA  ######################################## -->
+    <tr class="ops">
+      <th>
+        <a href="{% url 'audit:staged_noarchived_files' %}">
+          {% url 'audit:staged_noarchived_files' %}        
+        </a>
+      </th>
+      <td>Get list of audit records marked as STAGED for files NOT
+        ingested.
+      </td>
+    </tr>
+    <tr class="ops">
+      <th>
+        <a href="{% url 'audit:re_audit' 'old-md5' 'new-md5'%}">
+          {% url 'audit:re_audit' 'old-md5' 'new-md5' %}        
+        </a>
+      </th>
+      <td>Replace previous audit record with new (initialized) one.</td>
+    </tr>
+    <!-- #####  TADA  ##### -->
     <tr class="ops">
       <th>
 	    <a href="{% url 'tada:prefix' %}">
@@ -249,30 +292,6 @@
 	    Return keywords that will be scrubbed to float values (or error).
       </td>
     </tr>
-
-    <!-- ##### Schedule ##### -->
-    <tr class="ops">
-      <th>
-	    <a href="{% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}">
-	      {% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}
-	    </a>
-      </th>
-      <td>
-	    Set propid given telescope, instrument, observation date.
-      </td>
-    </tr>
-    <!-- ##### Audit ##### -->
-    <tr class="ops">
-      <th>
-	    <a href="{% url 'audit:agg' %}">
-	      {% url 'audit:agg' %}
-	    </a>
-      </th>
-      <td>
-	    For <b>monitoring progress</b> of ingestion. Similar to Sean's
-	    <a href="http://docs.sdm.noao.edu/checknight/">CheckNight</a>
-      </td>
-    </tr>
     
 
     <!-- ################################################################### -->
@@ -314,6 +333,10 @@
     <!-- ### Testing             -->
     <!-- ###                     -->
     <tr class="spacer"><th>TESTING</th><th><br /></th></tr>
+    <tr class="test">
+      <th><a href="{% url 'audit:get_recent' %}">{% url 'audit:get_recent' %}</a></th>
+      <td>Return CSV file of audit records updated in the last day or so.</td>
+    </tr>
     <tr  class="test">
       <th><a href="{% url 'siap:query_by_url' %}{% querystring 'min:date_obs'='05-28-2016' 'reference'='c13a' %}">
 	  {% url 'siap:query_by_url' %}{% querystring 'min:date_obs'='05-28-2016' 'reference'='c13a' %}
@@ -408,6 +431,14 @@
     <!-- ###                     -->
     <tr class="spacer"><th>INACTIVE</th><th><br /></th></tr>
     <tr class="inactive">
+      <th>
+        <a href="{% url 'audit:delete' 'big-long-checksum-string' %}">
+          {% url 'audit:delete' 'big-long-checksum-string' %}        
+        </a>
+      </th>
+      <td>Delete one audit record by md5sum.</td>
+    </tr>
+    <tr class="inactive">
       <th><a href="/siap/fquery?cols=reference&limit=2">
 	  /siap/fquery?cols=reference&limit=2
       </a></th>
@@ -415,6 +446,18 @@
 	is available via: {% url 'siap:query_by_sql' %}
       </td>
     </tr>
+    <!-- ##### Schedule ##### -->
+    <tr class="inactive">
+      <th>
+	<a href="{% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}">p
+	      {% url 'schedule:setpropid' 'kp4m' 'kosmos' '2016-02-01' 'Mine' %}
+	    </a>
+      </th>
+      <td>
+	    Set propid given telescope, instrument, observation date.
+      </td>
+    </tr>
+    <!-- ############## -->
     <tr class="inactive">
       <th><a href="docs">/docs/</a></th>
       <td>
@@ -434,23 +477,25 @@
     <caption><b>Legend</b></caption>
     <tr class="prod">
       <th><em>Production:</em></th>
-      <td>Intended for use in production environent.</td>
+      <td>Intended for use in production environent.Generally every
+      file that is submitted will use all of these services</td>
     </tr>
     <tr class="ops">
       <th><em>Operations:</em></th>
-      <td>possibly used by DMO staff</td>
+      <td>Possibly used by DMO staff. Might be used against
+      production DB but is not a part of the normal file ingestion process. </td>
     </tr>
     <tr class="dev">
       <th><em>Deveolpment:</em></th>
-      <td>info on interfacing to services via software</td>
+      <td>Info on interfacing to services via software.</td>
     </tr>
     <tr class="test">
       <th><em>Testing:</em></th>
-      <td>used by smoke tests, etc.</td>
+      <td>Used by smoke tests, etc.</td>
     </tr>
     <tr class="inactive">
       <th><em>Inactive:</em></th>
-      <td>Inactive or under construction</td>
+      <td>Inactive or under construction. Don't count on these!</td>
     </tr>
   </table>
   <p>
@@ -460,6 +505,8 @@
     "Development" related ones.  Generally, more and better unit
     testing is done for types at the top of the legend. Types at the
     bottom may have no unit testing done at all.
+    <em>Before releasing new versions of MARS all PRODUCTION and
+    OPERATIONS tests must pass.</em>
   </p>
         </div>
     </div>

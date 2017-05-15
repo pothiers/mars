@@ -1,0 +1,23 @@
+language: python
+
+python:
+  - 3.5
+  - nightly
+
+services: postgresql
+
+env:
+  - DJANGO=1.10.5
+
+before_install:
+  - export DJANGO_SETTINGS_MODULE=marssite.settings
+  #- export PYTHONPATH=$HOME/builds/your_github_username/your_repo
+  - export PIP_USE_MIRRORS=true
+
+install:
+  - pip install -r requirements.txt
+  - python3 setup.py install
+
+# command to run tests
+#script: ./smoke-test.sh
+script: python3 marssite/manage.py test schedule_production

@@ -3,8 +3,8 @@ rpms-to-repo-mars.sh
 django_settings_local_pat.py
 django_settings_local_production.py
 settings_local.py
-venv/
-OBSOLETE/
+venv*
+OBSOLETE*/
 foo.*
 marssite/schedule/OBSOLETE-views.py
 .projectile
@@ -20,6 +20,9 @@ __pycache__/
 
 # C extensions
 *.so
+
+# local env, settings, workspsace etc
+.projectile
 
 # Distribution / packaging
 .Python

@@ -1,18 +1,6 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
-
-class Site(models.Model):
-    name = models.CharField(max_length=10, unique=True,
-                            help_text='Site (mountain)')
-    def __str__(self): return self.name
-
-class Telescope(models.Model):
-    name = models.CharField(max_length=10,  unique=True,
-                            help_text=('Name used in FITS header '
-                                       '(field name TELES'))
-    def __str__(self): return self.name
-
-
+from natica.models import Site,Telescope,Instrument
 
 class TacInstrumentAlias(models.Model):
     tac = models.CharField(max_length=20, unique=True,
@@ -20,17 +8,9 @@ class TacInstrumentAlias(models.Model):
     hdr = models.CharField(max_length=20, unique=True,
                            help_text='Name used in FITS header')
 
-    
-class Instrument(models.Model):
-    name = models.CharField(
-        max_length=20, unique=True,
-        help_text=('Name used in FITS header (field name INSTRUME)'))
-
-    def __str__(self): return self.name
-
 #!class InstrumentAlias(models.Model):
 #!    reason = models.CharField(max_length=80)
-#!    #!instrument = models.ForeignKey(Instrument)
+#!    #!instrument = models.ForeignKey(Instrument
 
 # Replaces tada/file_naming.py:stiLUT{}
 class FilePrefix(models.Model):

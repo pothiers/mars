@@ -1,8 +1,10 @@
 import datetime
 from django.contrib import admin
+from django.contrib.contenttypes.models import ContentType
+from django.http import HttpResponseRedirect
 from django.db.models import Count, Q, Sum, Case, When, IntegerField
 
-from tada.models import Telescope,Instrument
+from natica.models import Telescope,Instrument
 from .models import AuditRecord
 
 class ErrcodeFilter(admin.SimpleListFilter):
@@ -33,19 +35,19 @@ class InstrumFilter(admin.SimpleListFilter):
         else:
             return queryset.filter(instrument=self.value())
 
-class TeleFilter(admin.SimpleListFilter):
-    title = 'telescope'
-    parameter_name = 'telescope'
-    
-    def lookups(self, request, model_admin):
-        qs = AuditRecord.objects.order_by('telescope').distinct('telescope')
-        return [(rec.telescope, rec.telescope) for rec in qs]
-
-    def queryset(self, request, queryset):
-        if self.value() == None:
-            return queryset
-        else:
-            return queryset.filter(telescope=self.value())
+#!class TeleFilter(admin.SimpleListFilter):
+#!    title = 'telescope'
+#!    parameter_name = 'telescope'
+#!    
+#!    def lookups(self, request, model_admin):
+#!        qs = AuditRecord.objects.order_by('telescope').distinct('telescope')
+#!        return [(rec.telescope, rec.telescope) for rec in qs]
+#!
+#!    def queryset(self, request, queryset):
+#!        if self.value() == None:
+#!            return queryset
+#!        else:
+#!            return queryset.filter(telescope=self.value())
 
     
 # see: ~/sandbox/mars/env_mars/lib/python3.5/site-packages/django/contrib/admin/filters.py
@@ -107,6 +109,14 @@ def unhide(modeladmin, request, queryset):
     queryset.update(hide=False)
 unhide.short_description = "Unhide selected records"
 
+def change_archived_FITS(modeladmin, request, queryset):
+    """Change subset of selected audit records corresponding to archived
+FITS files (success=True)."""
+    selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+    ct = ContentType.objects.get_for_model(queryset.model)
+    return HttpResponseRedirect("/dart/?ct=%s&ids=%s" % (ct.pk, ",".join(selected)))
+change_archived_FITS.short_description = "Change FITS files that are selected and archived"
+    
 #!def clear_submit(modeladmin, request, queryset):
 #!    queryset.update(submitted=None,
 #!                    success=None,
@@ -216,13 +226,14 @@ class AuditRecordAdmin(admin.ModelAdmin):
                    #'instrument',
                    #'telescope',
                    InstrumFilter,
-                   TeleFilter,
+                   #!TeleFilter,
                    'staged')
     search_fields = ['telescope', 'instrument','srcpath', 'archerr', 'md5sum']
     actions = [stage,
                unstage,
                hide,
                unhide,
+               change_archived_FITS,
                #clear_submit,
                #clear_error,
     ]

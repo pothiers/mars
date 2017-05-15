@@ -9,7 +9,8 @@ from django.db.models import Value
 
 from .forms import SlotSetForm
 from .models import Slot, EmptySlot, Proposal, DefaultPropid
-from tada.models import Telescope,Instrument,TacInstrumentAlias
+from natica.models import Telescope,Instrument
+from tada.models import TacInstrumentAlias
 from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView

@@ -13,9 +13,11 @@
 
 import dateutil.parser as dp
 import re
-from datetime import datetime
+import datetime
 import logging
+from pathlib import PurePath
 
+import csv
 from django.utils.timezone import make_aware, now
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, render_to_response
@@ -44,6 +46,7 @@ from .serializers import AuditRecordSerializer
 import audit.errcodes as ec
 
 from schedule.models import Slot
+from natica.models import Site,Telescope,Instrument
 
 from siap.models import VoiSiap
 
@@ -153,8 +156,10 @@ EXAMPLE:
         for obs in request.data['observations']:
             auditrec = dict(md5sum = obs['md5sum'],
                             obsday = obs['obsday'],
-                            telescope = obs['telescope'].lower(),
-                            instrument = obs['instrument'].lower(),
+                            telescope = Telescope.objects.get(
+                                pk=obs['telescope']),
+                            instrument = Instrument.objects.get(
+                                pk=obs['instrument']),
                             srcpath = obs['srcpath'],
                             fstop_host = obs.get('dome_host','<dome-host>'),
                             )
@@ -238,6 +243,12 @@ missing requires fields"""
           .values('md5sum','srcpath'))
     return JsonResponse(list(qs), safe=False)
 
+def delete(request, md5sum):
+    "Delete one audit record"
+    AuditRecord.objects.filter(md5sum=md5sum).delete()
+    return HttpResponse('Deleted audit record for md5sum: {}'.format(md5sum))
+
+
 @api_view(['POST'])
 @csrf_exempt
 def update_fstop(request, md5sum, fstop, host):
@@ -260,7 +271,29 @@ def update_fstop(request, md5sum, fstop, host):
           .format(obj.obsday, md5sum, defaults, created))
     return HttpResponse('Updated FSTOP; {}'.format(md5sum))
     
+
+def re_audit(request, orig_md5sum, new_md5sum):
+    """Replace previous audit record with new (initialized) one."""
+    try:
+        obj = AuditRecord.objects.get(pk=orig_md5sum)
+    except:
+        return HttpResponse('Audit record for md5sum {} does not exist. Ignored'
+                            .format(orig_md5sum))
+    auditrec = dict(md5sum = new_md5sum,
+                    obsday = obj.obsday,
+                    telescope = obj.telescope,
+                    instrument = obj.instrument,
+                    srcpath = obj.srcpath,
+                    fstop_host = obj.fstop_host,
+    )
+    ar = AuditRecord(**auditrec)
+    ar.save()
+    AuditRecord.objects.filter(md5sum=orig_md5sum).delete()
     
+    return HttpResponse('Replaced audit record {} with {}'
+                        .format(orig_md5sum, new_md5sum))
+    
+
 @csrf_exempt
 @api_view(['POST'])
 @parser_classes((JSONParser,))
@@ -329,6 +362,7 @@ def add_ingested():
                 arcerr = 'From SIAP',
                 archfile=obj.reference)
 
+
 def refresh(request):
     "Query Archive for all AuditRecords"
     add_ingested()
@@ -346,7 +380,45 @@ def failed_ingest(request):
     qs = AuditRecord.objects.filter(success=False)
     return render(request, 'audit/failed_ingest.html', {"srcfiles": qs})
 
+# The field 'uri' In the table edu_noao_nsa.data_product contains the actual
+# file location.
+def get_fits_location(reference, root='/net/archive/PAT/'):
+    """RETURN: absolute path to FITS file
+    reference:: Archive basename of FITS file"""
+    cursor = connection.cursor()
+    sql = ("SELECT dp.uri FROM voi.siap as vs, edu_noao_nsa.data_product as dp"
+           " WHERE dp.data_product_id = vs.fits_data_product_id"
+           " AND vs.reference= '{}'").format(reference)
+    print('sql={}'.format(sql))
+    cursor.execute(sql)
+    uri = cursor.fetchone()
+    if uri != None:
+        ipath =  uri[0]
+        #return str(PurePath(root, *PurePath(ipath).parts[2:]))
+        return str(PurePath('/',*PurePath(ipath).parts[1:]))
+        #return ipath
+    return uri
 
+
+def staged_archived_files(request):
+    root = request.GET.get('root','/net/archive/')
+    qs = AuditRecord.objects.filter(staged=True)
+    arch_list = (obj  for obj in qs
+                 if get_fits_location(obj.archfile, root=root))
+
+    fitslist = [get_fits_location(obj.archfile, root=root) for obj in arch_list]
+    print('DBG: fitslist({})={}'.format(len(fitslist), fitslist))
+    #return JsonResponse(fitslist, safe=False)
+    return HttpResponse(' '.join((f for f in fitslist if f)))
+
+def staged_noarchived_files(request):
+    root = request.GET.get('root','/net/archive/')
+    qs = AuditRecord.objects.filter(staged=True)
+    noarch_list = (obj  for obj in qs
+                   if not get_fits_location(obj.archfile, root=root))
+    cachelist = [obj.srcpath for obj in noarch_list]
+    print('DBG: cachelist({})={}'.format(len(cachelist), cachelist))
+    return HttpResponse(' '.join((f for f in cachelist if f)))
 
 #!# PLACEHOLDER    
 #!def matplotlib_bar_image (request, data):
@@ -576,3 +648,24 @@ class AuditRecordList(ListView):
     model = AuditRecord
 
     
+def get_recent(request):
+    #today = datetime.date.today()
+    today = now()
+    yesterday = (today - datetime.timedelta(days=1))
+
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="audit_recs.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['STAGED', 'HIDE',
+                     'FSTOP', 'UPDATED', 'SUCCESS',
+                     'OBSDAY', 'TELESCOPE', 'INSTRUMENT',
+                     'SRCPATH', 'ERRCODE', 'ARCHFILE'])
+    for ar in (AuditRecord.objects
+               .filter(updated__gte=yesterday).order_by('-updated')):
+        writer.writerow([ar.staged, ar.hide,
+                         ar.fstop, ar.updated, ar.success,
+                         ar.obsday, ar.telescope, ar.instrument,
+                         ar.srcpath, ar.errcode, ar.archfile,
+                         ])
+    return response

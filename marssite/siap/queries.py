@@ -1,5 +1,5 @@
 from pathlib import PurePath
-from django.db import connection
+from django.db import connections
 
 # WARNING: this is querying a materialized view.  It only gets
 # "materialized" every so often.  There is a delay before changes in
@@ -15,7 +15,7 @@ def get_tada_references(limit=50):
            "WHERE reference LIKE '%TADA%'"
            "LIMIT {}"
            .format(limit))
-    cursor = connection.cursor()
+    cursor = connections['archive'].cursor()
     # Force material view refresh
     cursor.execute('SELECT * FROM refresh_voi_material_views()')
     cursor.fetchall()
@@ -28,7 +28,7 @@ def get_tada_references(limit=50):
 
 def get_like_archfile(archfile_substr, refresh=False, limit=150):
     """RETURN: Archive filenames that contain ARCHFILE_SUBSTR"""
-    cursor = connection.cursor()
+    cursor = connections['archive'].cursor()
     if refresh:
         #Force material view refresh
         cursor.execute('SELECT * FROM refresh_voi_material_views()')
@@ -59,7 +59,7 @@ def get_from_siap(refresh=False, limit=999, **kwargs):
     Each dict represents one row (dict[column]=value).
     This is similar to django query aggregation and should be replaced by such.
     """
-    cursor = connection.cursor()
+    cursor = connections['archive'].cursor()
     if refresh:
         #Force material view refresh
         cursor.execute('SELECT * FROM refresh_voi_material_views()')
@@ -102,7 +102,7 @@ def get_from_siap(refresh=False, limit=999, **kwargs):
 def get_fits_location(reference):
     """RETURN: absolute path to FITS file
     reference:: Archive basename of FITS file"""
-    cursor = connection.cursor()
+    cursor = connections['archive'].cursor()
     sql = ("SELECT dp.uri FROM voi.siap as vs, edu_noao_nsa.data_product as dp"
            " WHERE dp.data_product_id = vs.fits_data_product_id"
            " AND vs.reference= '{}'").format(reference)

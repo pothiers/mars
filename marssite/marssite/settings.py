@@ -71,6 +71,7 @@ INSTALLED_APPS = (
     'provisional',
     'water',
     'tada',
+    'natica',
     'rest_framework',
     'rest_framework_swagger',
     'django_tables2',
