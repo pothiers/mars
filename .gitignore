@@ -3,10 +3,11 @@ rpms-to-repo-mars.sh
 django_settings_local_pat.py
 django_settings_local_production.py
 settings_local.py
-venv/
+venv*
 OBSOLETE*/
 foo.*
 marssite/schedule/OBSOLETE-views.py
+.projectile
 
 # smoke test leavings
 *.out
@@ -20,12 +21,15 @@ __pycache__/
 # C extensions
 *.so
 
+# local env, settings, workspsace etc
+.projectile
+
 # Distribution / packaging
 .Python
 env/
 build/
 develop-eggs/
-dist/
+dist/**/*
 downloads/
 eggs/
 lib/
@@ -36,6 +40,11 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+node_modules/
+
+# Bower stuff - keep stuff even the dist folders
+!marssite/bower_components/*
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

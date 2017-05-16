@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
@@ -20,6 +20,7 @@ from .serializers import SlotSerializer
 from .tables import SlotTable
 
 import logging
+import random
 import json
 import subprocess
 from datetime import date, datetime, timedelta
@@ -469,6 +470,77 @@ class ScheduleViewSet(viewsets.ModelViewSet):
     paginate_by = 100
     serializer_class = SlotSerializer
 
+def consolidate_slots(slots):
+    container = {}
+    for s in slots:
+        props = s.propids.split(", ")
+        for pr in props:
+            current = None
+            injectTo = None
+            # if not in list create a new group
+            if pr not in container:
+                container[pr] = [[]]
+                injectTo = container[pr][0]
+            else:
+                # used to check the dates below
+                lastSet = container[pr][-1]
+                current = lastSet[-1]
+
+            if current is not None:
+                # check the dates
+                # if next slot is not consecutive (difference is more than a day and a second)
+                #  - create a new set and add it there
+                # else
+                #  - add it to the last set
+                delta = s.obsdate-current
+                if delta.total_seconds() > (24*60*60+1):
+                    # new set - also happens to be the last set
+                    container[pr].append([])
+
+                # the last set
+                injectTo = container[pr][-1]
+
+            # add the new date 
+            injectTo.append(s.obsdate)
+    return container
+
+
+@api_view(('GET',))
+def occurrences(request):
+    '''
+    calendar:"default"
+    cancelled:false
+    color:null
+    creator:"None"
+    description:null
+    end:"2017-05-14T07:00:00+00:00"
+    end_recurring_period:null
+    event_id:214
+    existed:false
+    id:215
+    rule:null
+    start:"2017-05-12T07:00:00+00:00"
+    title: "2014B-0404"
+    '''
+    query = request.GET
+    start = datetime.strptime(query['start'], '%Y-%m-%d')
+    end = datetime.strptime(query['end'], '%Y-%m-%d')
+
+    # get the events for the given month and group by propid
+    slots = Slot.objects.filter(obsdate__gte=start).filter(obsdate__lte=end)
+    slotgroups = consolidate_slots(slots)
+    data = []
+    r = lambda: random.randint(0, 255)
+    for prop in slotgroups:
+        for sets in slotgroups[prop]:
+            data.append({
+                'title':prop,
+                'start':sets[0],
+                'end': sets[-1],
+                'color': ('#%02X%02X%02X' % (r(),r(),r()))
+            })
+    return JsonResponse(data=data, safe=False)
+
 
 @api_view(('GET',))
 def api_root(request, format=None):
@@ -477,5 +549,7 @@ def api_root(request, format=None):
                           request=request, format=format),
         'empty': reverse('schedule:list_empty', request=request, format=format),
         'list': reverse('schedule:list', request=request, format=format),
+        'occurances': reverse('schedule:occurances', request=request, format=format),
     })
+
 
