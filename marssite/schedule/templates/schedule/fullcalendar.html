@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 {% load static from staticfiles %}
-{% load sass_tags %}
 
 {% block extra_head %}
    <link rel="stylesheet" href="{% static "schedule.css" %}" type="text/css" media="screen">
-   <link rel="stylesheet" type="text/css" href="{% sass_src 'timeline.scss' %}" />
+   <link rel="stylesheet" type="text/css" href="{% static 'schedule/static/timeline.css' %}" />
    <script type="text/javascript" src="{% static "schedule.js" %}"></script>
   {% include "schedule/fullcalendar_script.html" %}
 {% endblock %}

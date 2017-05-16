@@ -38,21 +38,18 @@ STATICFILES_DIRS = (
     #'/static/',
     os.path.join(BASE_DIR, 'bower_components'),
     os.path.join(BASE_DIR, 'theme'),
+    os.path.join(BASE_DIR, 'sass_out'),
     #os.path.join(BASE_DIR, 'schedule', 'static')
 )
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder'
 )
 
 #STATIC_ROOT = '/var/www/mars/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+#STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-# SASS
-SASS_PROCESSOR_ENABLED = True
-SASS_PROCESSOR_ROOT = STATIC_ROOT # os.path.join(os.path.dirname(__file__), os.pardir, 'static')
 
 # Application definition
 
@@ -65,7 +62,6 @@ INSTALLED_APPS = (
     'django.contrib.postgres',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'sass_processor',
     'siap',
     'schedule',
     'provisional',
