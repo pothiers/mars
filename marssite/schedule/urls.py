@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
 from . import views
 
 urlpatterns = [
@@ -16,6 +17,8 @@ urlpatterns = [
     url(r'^empty/$', views.list_empty, name='list_empty'),
 
     url(r'^today$', views.SlotTodayList.as_view(), name='today_list'),
+
+    url(r'^calendar$', login_required(TemplateView.as_view(template_name="schedule/fullcalendar.html"))),
 
      # By Month;  Example: /2012/aug/
      url(r'^(?P<year>[0-9]{4})/(?P<month>[-\w]+)/$',
@@ -49,7 +52,7 @@ urlpatterns = [
 
     #!url(r'^scrape/(?P<begindate>.+)/(?P<enddate>.+)/$',
     #!    views.scrape, name='scrape'),
-
+    url(r'^api/occurrences$', views.occurrences, name="occurances"),
     url(r'^upload/$',
         views.upload_file, name='upload_file'),
     url(r'^delete_all_schedule_i_really_mean_it/$',

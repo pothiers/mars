@@ -1,0 +1,32 @@
+{
+  "name": "mars",
+  "version": "1.0.0",
+  "description": "Metadata Archive Retrieval Services",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ipetepete/mars.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ipetepete/mars/issues"
+  },
+  "homepage": "https://github.com/ipetepete/mars#readme",
+  "dependencies": {
+    "coffeescript": "^1.12.6",
+    "gulp": "^3.9.1",
+    "gulp-csso": "^3.0.0",
+    "gulp-sass": "^3.1.0",
+    "sass": "^0.5.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}

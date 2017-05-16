@@ -24,6 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
+LOGIN_URL = "/admin/login/"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -33,12 +34,22 @@ DEBUG = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    #os.path.join(BASE_DIR, "static"),
     #'/static/',
-    '/var/www/static/',
-    )
-STATIC_ROOT = '/var/www/mars/static/'
-#!STATIC_ROOT = os.path.join(BASE_DIR, "static")
+    os.path.join(BASE_DIR, 'bower_components'),
+    os.path.join(BASE_DIR, 'theme'),
+    os.path.join(BASE_DIR, 'sass_out'),
+    #os.path.join(BASE_DIR, 'schedule', 'static')
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+#STATIC_ROOT = '/var/www/mars/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 
 # Application definition
 
@@ -63,6 +74,8 @@ INSTALLED_APPS = (
     'audit',  # tada audit/status REST API
 )
 
+
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,7 +93,7 @@ ROOT_URLCONF = 'marssite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

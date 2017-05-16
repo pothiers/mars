@@ -1,11 +1,10 @@
+{% extends 'base.html' %}
 {% load staticfiles %}
 {% load django_tables2 %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
+{% block extra_head %}
     <link rel="stylesheet" href="{% static 'water/style.css' %}" />
     <link rel="icon" type="image/jpg" href="{% static "water/favicon.ico" %}" /> 
-    <title>MARS Home</title>
     <style>
       .prod {
       background-color: rgba(0,255,0,0.3);
@@ -30,9 +29,13 @@
       background-color: rgba(0,0,0,0.4);
       }
 </style>
-</head>
-<body>
-  <h3><a href="http://marsmobile.jpl.nasa.gov/multimedia/resources/mars-posters-explorers-wanted/?linkId=25534068">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sx-12">
+            <h3><a href="http://marsmobile.jpl.nasa.gov/multimedia/resources/mars-posters-explorers-wanted/?linkId=25534068">
       <img src="{% static 'water/favicon.ico' %}" alt="">
     </a>
     MARS: Metadata Archive Retrival Services
@@ -505,7 +508,8 @@
     <em>Before releasing new versions of MARS all PRODUCTION and
     OPERATIONS tests must pass.</em>
   </p>
+        </div>
+    </div>
+</div> 
 
-  
-</body>
-</html>
+{% endblock %}
