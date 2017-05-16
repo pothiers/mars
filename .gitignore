@@ -29,7 +29,7 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
+dist/**/*
 downloads/
 eggs/
 lib/
@@ -37,10 +37,14 @@ lib64/
 parts/
 sdist/
 var/
-marssite/bower_components/
 *.egg-info/
 .installed.cfg
 *.egg
+node_modules/
+
+# Bower stuff - keep stuff even the dist folders
+!marssite/bower_components/*
+
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
