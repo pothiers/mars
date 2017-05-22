@@ -1,0 +1,5 @@
+{"search": {
+    "coordinates": {"ra": "0", "dec": "0"},
+    "search_box_min": "0.2",
+    "instrument": ["kosmos", "cosmos"]
+} } 
