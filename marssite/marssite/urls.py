@@ -71,6 +71,7 @@ urlpatterns = [
     #url(r'^favicon.ico$', 'django.views.static.server',  {'document_root': '/var/mars/Mars_icon.jpg'}),
 
     url(r'^siap/', include('siap.urls', namespace='siap')),
+    url(r'^dal/', include('dal.urls', namespace='dal')),
     url(r'^schedule/', include('schedule.urls', namespace='schedule')),
     url(r'^provisional/', include('provisional.urls', namespace='provisional')),
     url(r'^tada/', include('tada.urls', namespace='tada')),

@@ -122,7 +122,7 @@ def detail(request, image_id):
 #@api_view(['POST'])
 @csrf_exempt
 def query_by_json(request, format='json', cols=None, where=None, limit=None):
-    'Upload a file constaining SQL that does a SELECT against SIAP table.'
+    'Upload a file containing SQL that does a SELECT against SIAP table.'
     print('EXECUTING: views<siap>:query_by_file; method={}'
           .format(request.method))
     # Easy way to test post???
