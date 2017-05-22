@@ -1,3 +1,4 @@
+
 import json
 
 from django.http import HttpResponse, JsonResponse
@@ -60,19 +61,14 @@ response_spec_json = [
     }
 ]
 
-# cat <<EOF > search.json
-# {"search": {
-#     "coordinates": {"ra": "0", "dec": "0"},
-#     "search_box_min": "0.2",
-#     "instrument": ["kosmos", "cosmos"],
-# } } 
-# EOF
-# curl -H "Content-Type: application/json" -X POST -d @search.json http://localhost:8000/dal/search/
 
+
+
+# curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.html
 @csrf_exempt
 def search_by_json(request, limit=None):
-    print('EXECUTING: views<dal>:search_by_file; method={}'
-          .format(request.method))
+    print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
+          .format(request.method, request.content_type))
     if request.method == 'POST':
         print('body str={}'.format(request.body.decode('utf-8')))
         body = json.loads(request.body.decode('utf-8'))
