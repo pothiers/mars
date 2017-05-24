@@ -1,0 +1,27 @@
+[
+ {
+ "object_name":"",
+ "ra": 48.000003,
+ "dec": 32.00000,
+ "prop_id":"2017B-1234",
+ "survey_id":"",
+ "obs_date":"2017-05-01",
+ "pi":"Howard the Duck",
+ "telescope":"kp09",
+ "instrument":"mosaic",
+ "release_date":"2017-05-01",
+ "flag_raw" : true,
+ "image_type": "calibrated",
+ "filter":"R Harris k1004",
+ "file_size": 37558080,
+ "filename":"k09m_041124_035451_zri.fits.fz",
+ "original_filename":"/md1/36inch/zero023.fits",
+ "md5sum":"d331b17a31c41d77db61c081ba907063",
+ "exposure":0.0,
+ "observation_type":"dark",
+ "observation_mode":"imaging",
+ "product":"",
+ "seeing":"",
+ "depth":""
+ }
+ ]

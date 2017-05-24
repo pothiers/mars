@@ -1,0 +1,191 @@
+This section presents two examples of queries and responses corresponding to the following scenarios :
+
+   How do I query a SIAV2 service containing  IRAS-IRIS images in a circle of 0.1 deg around position 2.8425 +74.4846 selecting 200 and 60 micron bands ?
+
+Note: Spaces in parameter values must be URL-encoded as %2B or +; we leave this out of the example to make it easier to read.
+
+http://dalservices.ivoa.net/sia2/query?POS=CIRCLE 2.8425 74.4846 0.1 &BAND=0.0002&BAND=0.00006&COLLECTION=IRAS-IRIS
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<VOTABLE ersion="1.2" xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation = "xmlns:http://www.ivoa.net/xml/VOTable-1.2.xsd" >  
+   <RESOURCE type="results”>
+   <INFO name="QUERY_STATUS" value="OK"/>
+   <TABLE>
+    <FIELD name="dataproduct_type" ucd="meta.id" datatype="char"
+           utype="obscore:ObsDataSet.dataProductType" arraysize="*">
+        <DESCRIPTION>Data product type</DESCRIPTION>
+    </FIELD>
+    <FIELD name="calib_level" ucd="meta.code;obs.calib" datatype="int" utype="obscore:ObsDataSet.calibLevel">
+       <DESCRIPTION>Calibration level</DESCRIPTION>
+    </FIELD>
+    <FIELD name="obs_collection" datatype="char" ucd="meta.id" utype="obscore:DataID.Collection" arraysize="*">            
+        <DESCRIPTION>Data collection to which dataset belongs</DESCRIPTION>  
+    </FIELD>
+    <FIELD name="obs_id" ucd="meta.id" datatype="char" utype="obscore:DataID.observationID" arraysize="*">
+          <DESCRIPTION>Free syntax Observation Identifier</DESCRIPTION>
+    </FIELD>
+    <FIELD name="obs_publisher_did" ucd="meta.ref.url;meta.curation" datatype="char"
+           utype="obscore:Curation.PublisherDID" arraysize="*">
+       <DESCRIPTION>Publisher's ID for the dataset ID</DESCRIPTION>
+    </FIELD>
+    <FIELD name="access_url" ucd="meta.ref.url"  datatype="char" utype="obscore:Access.Reference" arraysize="*">
+       <DESCRIPTION>URL used to access dataset</DESCRIPTION>
+    </FIELD>
+    <FIELD name="access_format" datatype="char" ucd="meta.code.mime" utype="obscore:Access.Format" arraysize="*">
+       <DESCRIPTION>Content or MIME type of dataset</DESCRIPTION>          
+    </FIELD>
+    <FIELD name="access_estsize" datatype="int" ucd="phys.size;meta.file" utype="obscore:Access.Size">
+            <DESCRIPTION>Dataset estimated size</DESCRIPTION>
+    </FIELD>
+    <FIELD name="target_name" datatype="char" ucd="meta.id;src" utype="obscore:Target.Name" arraysize="*">
+           <DESCRIPTION>Target name</DESCRIPTION>
+    </FIELD>
+    <FIELD name="s_ra" datatype="double" ucd="pos.eq.ra" utype="obscore:Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C1" unit="deg" >
+          <DESCRIPTION>Spatial Position RA</DESCRIPTION>          
+    </FIELD>
+    <FIELD name="s_dec" datatype="double" ucd="pos.eq.dec"
+           utype="obscore:Char.SpatialAxis.Coverage.Location.Coord.Position2D.Value2.C2" unit="deg" >
+        <DESCRIPTION>Spatial Position Dec</DESCRIPTION>
+    </FIELD>
+    <FIELD name="s_fov" datatype="char" ucd="phys.angSize;instr.fov"
+           utype="obscore:SpatialAxis.Coverage.Bounds.Extent.diameter" unit="deg" >
+          <DESCRIPTION>Spatial Field of view "diameter"</DESCRIPTION>
+    </FIELD>
+    <FIELD name="s_region" datatype="char" ucd="phys.angArea;obs"
+           utype="obscore:Char.SpatialAxis.Coverage.Support.Area" arraysize="*" unit="deg" >
+          <DESCRIPTION>Spatial support</DESCRIPTION>       
+    </FIELD>
+    <FIELD name="s_resolution" datatype="double" ucd="pos.angResolution"
+           utype="obscore:Char.SpatialAxis.Resolution.refval.value" >
+          <DESCRIPTION>Spatial resolution FWHM</DESCRIPTION>  
+    </FIELD>
+    <FIELD name="t_min" datatype="double" ucd="time.start;obs.exposure"
+           utype="obscore:Char.TimeAxis.Coverage.Bounds.Limits.StartTime" unit="s" >
+            <DESCRIPTION>Time coordinate Lower limit</DESCRIPTION>
+    </FIELD>
+    <FIELD name="t_max" datatype="double" ucd="time.end;obs.exposure"
+           utype="obscore:Char.TimeAxis.Coverage.Bounds.Limits.StopTime" unit="s">
+            <DESCRIPTION>Time coordinate Higher limit</DESCRIPTION>
+    </FIELD>
+    <FIELD name="t_exptime" ucd="time.duration;obs.exposure" datatype="double"
+           utype="obscore:Char.TimeAxis.Coverage.Support.Extent" unit="s" >
+             <DESCRIPTION>Exposure time</DESCRIPTION>
+    </FIELD>
+    <FIELD name="t_resolution" datatype="double" ucd="time.resolution"
+           utype="obscore:Char.TimeAxis.Resolution.refval.value" unit="s" >
+             <DESCRIPTION>Time resolution</DESCRIPTION>
+    </FIELD>
+    <FIELD name="em_min" datatype="double" ucd="em.wl;stat.min"
+            utype=" obscore: Char.SpectralAxis.Coverage.Bounds.Limits. LoLimit " unit="m" >
+             <DESCRIPTION>Spectral coordinate Lower limit</DESCRIPTION>
+    </FIELD>
+    <FIELD name="em_max" datatype="double" ucd="em.wl;stat.max"
+           utype="obscore:Char.SpectralAxis.Coverage.Bounds.Limits.HiLimit"  unit="m">
+            <DESCRIPTION>Spectral coordinate Higher limit</DESCRIPTION>
+    </FIELD>
+    <FIELD name="em_res_power" datatype="double" ucd="spect.resolution"
+           utype="obscore:Char.SpectralAxis.Coverage.Resolution.ResolPower.refval" >
+          <DESCRIPTION>SPECTRAL Resolving power</DESCRIPTION>
+    </FIELD>
+    <FIELD name="o_ucd" datatype="char" ucd="meta.ucd" utype="obscore:Char.ObservableAxis.ucd" arraysize=”*”  >
+            <DESCRIPTION>UCD specifying the quantity on Observable axis</DESCRIPTION>
+    </FIELD>
+    <FIELD name="pol_states" datatype="char" ucd="meta.code;phys.polarization"
+           utype="obscore:Char.PolarizationAxis.stateList" arraysize="*" >
+           <DESCRIPTION>Enumeration of Polarization sates</DESCRIPTION>
+    </FIELD>
+    <FIELD name="facilty_name" datatype="char" ucd="meta.id;instr.tel" utype="obscore:Provenance.ObsConfig.facility.name" arraysize="*">
+          <DESCRIPTION>Facility name</DESCRIPTION>
+    </FIELD>
+    <FIELD name="instrument_name" ucd="meta.id;instr" datatype="char" arraysize="*"
+           utype="obscore:Provenance.ObsConfig.instrument.name">
+          <DESCRIPTION>Instrument name</DESCRIPTION>  
+    </FIELD>
+    <DATA>
+         <TABLEDATA>
+              <TR>
+                  <TD>cube</TD>
+                  <TD>1</TD>
+                  <TD>IRAS-IRIS</TD>
+                  <TD>I422B2H0</TD>
+                  <TD>ivo://cds.u-strasbg.fr/IRAS-IRIS/25MU/I422B2H0</TD>
+                  <TD><![CDATA[http://aladix.u-strasbg.fr/cgi-bin/nph-Aladin++dev.cgi?out=image&position=0.000000+80.000000&field=I422B2H0&survey=IRAS-IRIS&color=25MU&mode=view]]></TD>
+                  <TD>image/fits</TD>
+                  <TD>1600</TD>
+                  <TD>I422B2H0</TD>
+                  <TD>0.000000 </TD>
+                  <TD>80.000000 </TD>
+                  <TD>0.5</TD>
+                  <TD>POLYGON 30.0 200.0 32.0 200.0 32.0 198.0 30.0 198.0</TD>
+                  <TD></TD>
+                  <TD></TD>
+                  <TD></TD>
+                  <TD>1000</TD>
+                  <TD>1.0</TD>
+                  <TD>0.21</TD>
+                  <TD>0.21</TD>
+                  <TD>5.0</TD>
+                  <TD></TD>
+                  <TD>Stokes</TD>
+                  <TD>IRAS-IRIS</TD>
+                  <TD></TD>
+              </TR>
+              <TR>
+                  <TD>cube</TD>
+                  <TD>1</TD>
+                  <TD>IRAS-IRIS</TD>
+                  <TD>I408B1H0</TD>
+                  <TD>ivo://cds.u-strasbg.fr/IRAS-IRIS/12MU/I408B1H0</TD>
+                  <TD><![CDATA[http://aladix.u-strasbg.fr/cgi-bin/nph-Aladin++dev.cgi?out=image&position=0.000000+70.000000&field=I408B1H0&survey=IRAS-IRIS&color=12MU&mode=view]]></TD>
+                  <TD>image/fits</TD>
+                  <TD>1600</TD>
+                  <TD>I408B1H0</TD>
+                  <TD>0.000000 </TD>
+                  <TD>70.000000 </TD>
+                  <TD>0.5</TD>
+                  <TD>POLYGON ICRS 30.0 200.0 32.0 200.0 32.0 198.0 30.0 198.0</TD>
+                  <TD></TD>
+                  <TD></TD>
+                  <TD></TD>
+                  <TD>1000</TD>
+                  <TD>1.0</TD>
+                  <TD>0.21</TD>
+                  <TD>0.21</TD>
+                  <TD>5.0</TD>
+                  <TD></TD>
+                  <TD>Stokes</TD>
+                  <TD>IRAS-IRIS</TD>
+                  <TD></TD>
+                 </TR>
+                  <TR>
+                  <TD>cube</TD>
+                  <TD>1</TD>
+                  <TD>IRAS-IRIS</TD>
+                  <TD>I422B1H0</TD>
+                  <TD>ivo://cds.u-strasbg.fr/IRAS-IRIS/12MU/I422B1H0</TD>
+                  <TD><![CDATA[http://aladix.u-strasbg.fr/cgi-bin/nph-Aladin++dev.cgi?out=image&position=0.000000+80.000000&field=I422B1H0&survey=IRAS-IRIS&color=12MU&mode=view]]></TD>
+                  <TD>image/fits</TD>
+                  <TD>1600</TD>
+                  <TD>I422B1H0</TD>
+                  <TD>0.000000 </TD>
+                  <TD>80.000000 </TD>
+                  <TD>0.5</TD>
+                  <TD>POLYGON ICRS 30.0 200.0 32.0 200.0 32.0 198.0 30.0 198.0</TD>
+                  <TD></TD>
+                  <TD></TD>
+                  <TD></TD>
+                  <TD>1000</TD>
+                  <TD>1.0</TD>
+                  <TD>0.21</TD>
+                  <TD>0.21</TD>
+                  <TD>5.0</TD>
+                  <TD></TD>
+                  <TD>Stokes</TD>
+                  <TD>IRAS-IRIS</TD>
+                  <TD></TD>
+                </TR>
+             </TABLEDATA>
+         </DATA>
+    </TABLE>
+  </RESOURCE>
+</VOTABLE>

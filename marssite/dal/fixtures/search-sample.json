@@ -1,11 +1,11 @@
 {
     "search":{
         "coordinates": { 
-            "ra" : 47.49000083,
-            "dec": 32.481947
+            "ra": 181.368791666667,
+            "dec": -45.5396111111111
         },
-        "telescope":["kp09"],
-        "instrument":["mosaic"],
+        "telescope":["ct4m"],
+        "instrument":["mosaic_2"],
         "flag_raw":false,
         "image_filter":{
             "calibrated" : true,
