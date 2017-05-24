@@ -8,6 +8,8 @@ from siap.models import Image, VoiSiap
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
+dal_version = '0.1.0' # MVP. mostly untested
+
 search_spec_json = {
  "search":{
     "object_name" : "[text|optional]",
@@ -64,9 +66,9 @@ response_spec_json = [
 
 
 
+#    object as object_name,          -- object_name
 response_fields = '''
     reference,
-    object as object_name,          -- object_name
     ra,
     dec,
     prop_id,
@@ -101,9 +103,10 @@ def dictfetchall(cursor):
 
 # curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.html
 @csrf_exempt
-def search_by_json(request, limit=2):
+def search_by_json(request):
     print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
           .format(request.method, request.content_type))
+    limit = request.GET.get('limit',99)
     if request.method == 'POST':
         root = ET.Element('search')
         print('body str={}'.format(request.body.decode('utf-8')))
@@ -133,6 +136,7 @@ def search_by_json(request, limit=2):
         if 'coordinates' in jsearch:
             slop = .001
             coord = jsearch['coordinates']
+            if len(where) > 0:  where += ' AND '
             where += ('(ra <= {}) AND (ra >= {}) AND (dec <= {}) AND (dec >= {})'
                       .format(coord['ra'] + slop,
                               coord['ra'] - slop,
@@ -140,24 +144,36 @@ def search_by_json(request, limit=2):
                               coord['dec'] - slop))
             
         if 'telescope' in jsearch:
-            for tele in jsearch['telescope']:
-                where += " AND (telescope = '{}')".format(tele)
-        if 'instrument' in jsearch:
+            if len(where) > 0:  where += ' AND '
+            where += "((telescope = '{}')".format(jsearch['telescope'][0])
+            for tele in jsearch['telescope'][1:]:
+                where += " OR (telescope = '{}')".format(tele)
+            where += ')'
+        if 'instrument' in jsearch: 
+            if len(where) > 0:  where += ' AND '
+            where += "((instrument = '{}')".format(jsearch['instrument'][0])
             for inst in jsearch['instrument']:
-                where += " AND (instrument = '{}')".format(inst)
+                where += " OR (instrument = '{}')".format(inst)
+            where += ')'
+#!        if 'obs_date' in jsearch:
+#!            if len(where) > 0:  where += ' AND '
+#!            # Edge case bugs!!!
+#!            if isinstance(jsearch['obs_date'], list):
+#!                # INclusive bound :: "(", ")"
+#!                # EXclusive bound :: "[", "]"
+#!                mindate,maxdate,*bounds = jsearch['obs_date']
+#!            else:
+#!                obsdate = jsearch['obs_date']
         sql = ('SELECT {} FROM voi.siap WHERE {} LIMIT {}'
                .format(response_fields, where, limit))
-        qs = None
-        #qs = VoiSiap.objects.using('archive').raw(sql)
+        print('DBG sql={}'.format(sql))
         cursor.execute(sql)
-        print('qs={}'.format(qs))
-        #return JsonResponse(body, safe=False)
-        #return JsonResponse(serializers.serialize('json', qs), safe=False)
         results = dictfetchall(cursor)
-        #!return JsonResponse({'results':
-        #!                     [(ob.reference,ob.ra,ob.dec)
-        #!                      for ob in qs]})
-        return JsonResponse({'results': results})
+        return JsonResponse(dict(resultset = results,
+                                 meta = dict(dal_version = dal_version,
+                                             comment = 'WARNING: Not tested',
+                                             sql = sql
+                                 )))
     elif request.method == 'GET':
         return HttpResponse('Requires POST with json payload')
     

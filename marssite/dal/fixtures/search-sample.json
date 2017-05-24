@@ -4,7 +4,7 @@
             "ra": 181.368791666667,
             "dec": -45.5396111111111
         },
-        "telescope":["ct4m"],
+        "telescope":["ct4m", "foobar"],
         "instrument":["mosaic_2"],
         "flag_raw":false,
         "image_filter":{
