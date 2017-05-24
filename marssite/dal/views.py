@@ -104,9 +104,9 @@ def dictfetchall(cursor):
 # curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.html
 @csrf_exempt
 def search_by_json(request):
+    limit = request.GET.get('limit',99)
     print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
           .format(request.method, request.content_type))
-    limit = request.GET.get('limit',99)
     if request.method == 'POST':
         root = ET.Element('search')
         print('body str={}'.format(request.body.decode('utf-8')))
@@ -155,15 +155,24 @@ def search_by_json(request):
             for inst in jsearch['instrument']:
                 where += " OR (instrument = '{}')".format(inst)
             where += ')'
-#!        if 'obs_date' in jsearch:
-#!            if len(where) > 0:  where += ' AND '
-#!            # Edge case bugs!!!
-#!            if isinstance(jsearch['obs_date'], list):
-#!                # INclusive bound :: "(", ")"
-#!                # EXclusive bound :: "[", "]"
-#!                mindate,maxdate,*bounds = jsearch['obs_date']
-#!            else:
-#!                obsdate = jsearch['obs_date']
+        if 'obs_date' in jsearch:
+            if len(where) > 0:  where += ' AND '
+            # Edge case bugs!!!
+            if isinstance(jsearch['obs_date'], list):
+                # contains element (postresql SQL)
+                # '[2011-01-01,2011-03-01)'::tsrange @> '2011-01-10'::timestamp
+                # If the third argument is omitted, '[)' is assumed.
+                #
+                # INclusive bound :: "(", ")"
+                # EXclusive bound :: "[", "]"
+                mindate,maxdate,*xtra = jsearch['obs_date']
+                bounds = xtra[0] if (len(xtra) > 0) else '[)'
+                where += ("('{}{},{}{}'::tsrange @> date_obs::timestamp)"
+                          .format(bounds[0], mindate, maxdate, bounds[1]))
+            else:
+                obsdate = jsearch['obs_date']
+                where += "(date_obs = '{}')".format(obsdate)
+
         sql = ('SELECT {} FROM voi.siap WHERE {} LIMIT {}'
                .format(response_fields, where, limit))
         print('DBG sql={}'.format(sql))
