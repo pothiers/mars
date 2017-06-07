@@ -1051,6 +1051,13 @@ h1, h2, h3, h4, h5, h6 {
   h1 em, h2 em, h3 em, h4 em, h5 em, h6 em {
     font-style: normal;
     font-weight: 300; }
+  h1 + .lead, h2 + .lead, h3 + .lead, h4 + .lead, h5 + .lead, h6 + .lead {
+    margin-bottom: 0px;
+    margin-top: -2.8rem; }
+
+h1 {
+  font-size: 2em;
+  letter-spacing: -0.025em; }
 
 h2 {
   font-size: 1.75em;
@@ -1408,11 +1415,11 @@ input[type="button"],
   background-repeat: no-repeat;
   background-size: cover; }
   #header h1 {
-    padding: 0 0 2.75em 0;
+    padding: 0 0 3rem 0;
     margin: 0;
-    color: #fff; }
+    color: #fff;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.3); }
     #header h1 a {
-      font-size: 1.5em;
       letter-spacing: -0.025em;
       border: 0; }
 

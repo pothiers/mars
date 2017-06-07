@@ -117,7 +117,17 @@
 			font-style: normal;
 			font-weight: 300;
 		}
+
+    & + .lead{
+        margin-bottom: 0px;
+        margin-top: -2.8rem;
+    }
 	}
+
+  h1 {
+      font-size: 2em;
+      letter-spacing: -0.025em;
+  }
 
 	h2 {
 		font-size: 1.75em;
@@ -571,12 +581,11 @@
 		background-repeat:			no-repeat;
     background-size: cover;
 		h1 {
-			padding: 0 0 2.75em 0;
+			padding: 0 0 3rem 0;
 			margin: 0;
       color: #fff;
-
+      text-shadow: 0 0 3px rgba(0, 0, 0, 0.3); 
 			a {
-				font-size: 1.5em;
 				letter-spacing: -0.025em;
 				border: 0;
 			}
