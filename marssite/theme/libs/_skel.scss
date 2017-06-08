@@ -320,8 +320,8 @@
 			}
 
 		// Default.
-			.row#{$x} > * { padding: ($r * $multiplier) 0 0 ($c * $multiplier); }
-			.row#{$x} { margin: ($r * $multiplier * -1) 0 -1px ($c * $multiplier * -1); }
+			//.row#{$x} > * { padding: ($r * $multiplier) 0 0 ($c * $multiplier); }
+			//.row#{$x} { margin: ($r * $multiplier * -1) 0 -1px ($c * $multiplier * -1); }
 
 		// Uniform.
 			.row.uniform#{$x} > * { padding: ($c * $multiplier) 0 0 ($c * $multiplier); }
