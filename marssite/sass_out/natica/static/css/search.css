@@ -1,0 +1,16 @@
+@charset "UTF-8";
+.form-section {
+  background-color: #D9EDF7;
+  border: 1px solid #BCE8F1;
+  border-radius: 10px;
+  padding: 1em;
+  margin-top: 2em; }
+  .form-section .section-toggle {
+    text-align: right; }
+    .form-section .section-toggle .icon:after {
+      font-family: "FontAwesome";
+      display: inline-block;
+      font-size: 1.2em;
+      content: ""; }
+    .form-section .section-toggle .open:after {
+      content: ""; }

@@ -34,11 +34,10 @@ DEBUG = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    #os.path.join(BASE_DIR, "static"),
-    #'/static/',
+    os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, 'bower_components'),
     os.path.join(BASE_DIR, 'theme'),
-    os.path.join(BASE_DIR, 'sass_out'),
+    #os.path.join(BASE_DIR, 'sass_out'),
     #os.path.join(BASE_DIR, 'schedule', 'static')
 )
 

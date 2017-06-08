@@ -1,0 +1,38 @@
+@charset "UTF-8";
+.form-section {
+  background-color: #D9EDF7;
+  border: 1px solid #BCE8F1;
+  border-radius: 10px;
+  padding: 1em;
+  margin-top: 2em; }
+  .form-section .section-toggle {
+    text-align: right; }
+    .form-section .section-toggle .icon:after {
+      font-family: "FontAwesome";
+      display: inline-block;
+      font-size: 1.2em;
+      content: ""; }
+  .form-section .collapsible.open .section-toggle .icon:after {
+    content: ""; }
+
+label.floating {
+  position: relative !important;
+  font-size: 12px;
+  top: 1em;
+  left: 1em;
+  opacity: 0;
+  transition: all 0.2s linear; }
+
+label.open {
+  opacity: 1;
+  top: 0; }
+
+.collapsible .section-content {
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out; }
+
+.collapsible.open .section-content {
+  height: initial;
+  opacity: 1; }
