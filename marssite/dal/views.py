@@ -101,6 +101,12 @@ def dictfetchall(cursor):
         for row in cursor.fetchall()
     ]
 
+# ElementTree should be used only for TRUSTED sources (not directly) from web service.
+def search_by_xmlstr(xmlstr):
+    pass
+
+    
+
 # curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.html
 @csrf_exempt
 def search_by_json(request):
@@ -125,6 +131,7 @@ def search_by_json(request):
             tree = ET.ElementTree(root)
             xmlstr = ET.tostring(root)
             print('xml search={}'.format(xmlstr))
+            search_by_xmlstr(xmlstr)
         elif request.content_type == "application/xml":
             pass
 
@@ -181,7 +188,7 @@ def search_by_json(request):
         return JsonResponse(dict(resultset = results,
                                  meta = dict(dal_version = dal_version,
                                              comment = 'WARNING: Not tested',
-                                             sql = sql
+                                             sql = sql,
                                  )))
     elif request.method == 'GET':
         return HttpResponse('Requires POST with json payload')

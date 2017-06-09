@@ -6,6 +6,7 @@
         },
         "telescope":["ct4m", "foobar"],
         "instrument":["mosaic_2"],
+        "obs_date": ["2009-04-01", "2009-04-03", "[]"],
         "flag_raw":false,
         "image_filter":{
             "calibrated" : true,
