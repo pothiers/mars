@@ -1,19 +1,11 @@
-var Search, SearchResults, nohup, search;
 
-if (window.location.hostname !== "localhost") {
-  nohup = function() {
-    return "";
-  };
-  console.log = nohup;
-  console.info = nohup;
-  console.dir = nohup;
-}
-
-window.addMultiEventListener = function(elem, events, fn) {
-  return events.split(' ').forEach(function(e) {
-    return elem.addEventListener(e, fn, false);
-  });
-};
+/*
+Author: Peter Peterson
+Date: 2017-06-09
+Description: Serves functionality for submitting and displaying archive query forms/results
+Original file: search.coffee
+ */
+var Search, SearchResults, search;
 
 Search = (function() {
   function Search() {
@@ -21,31 +13,7 @@ Search = (function() {
   }
 
   Search.prototype.bindEvents = function() {
-    var el, els, i, j, len, len1, results, section, sections, toggle;
-    console.log("binding yo");
-    els = document.querySelectorAll("input[type=text]");
-    for (i = 0, len = els.length; i < len; i++) {
-      el = els[i];
-      addMultiEventListener(el, 'keyup blur', function(event) {
-        var target;
-        target = event.currentTarget;
-        if (target.value === "") {
-          return target.previousElementSibling.classList.remove("open");
-        } else {
-          return target.previousElementSibling.classList.add("open");
-        }
-      });
-    }
-    sections = document.querySelectorAll(".collapsible");
-    results = [];
-    for (j = 0, len1 = sections.length; j < len1; j++) {
-      section = sections[j];
-      toggle = section.querySelector(".section-toggle");
-      results.push(toggle.addEventListener("click", function(e) {
-        return section.classList.toggle("open");
-      }));
-    }
-    return results;
+    return console.log("binding yo");
   };
 
   return Search;
