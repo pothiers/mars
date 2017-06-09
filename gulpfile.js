@@ -1,4 +1,13 @@
+/***
+    Author: Peter Peterson
+    Date: 2017-06-09
+    Description: Builds and collects resources into a single static folder
+    watch - process watches for changes and compiles and copies output files to proper folders
+    collect - gathers 3rd party assets into the static directory
+***/
+
 'use strict';
+
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var minifyCSS = require('gulp-csso');
