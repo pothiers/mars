@@ -39,9 +39,9 @@ class Base
         targetId = event.currentTarget.id
         target = event.currentTarget
         if target.value is ""
-          document.querySelector("label[for=#{targetId}]")?.classList.remove("open")
+          document.querySelector("label[for=#{targetId}].floating")?.classList.remove("open")
         else
-          document.querySelector("label[for=#{targetId}]")?.classList.add("open")
+          document.querySelector("label[for=#{targetId}].floating")?.classList.add("open")
 
     sections = document.querySelectorAll(".collapsible")
     for section in sections
