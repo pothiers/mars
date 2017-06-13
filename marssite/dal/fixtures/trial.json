@@ -1,0 +1,144 @@
+# NO RESULTS
+{
+   "search":{
+     "coordinates": { 
+        "ra" : 47.49000083,
+        "dec": 32.481947
+      },
+      "pi":"Kurtis Williams",
+ #     "search_box_min": 30.0,
+      "prop_id":"2017B-123",
+      "obs_date":"2016-02-12",
+#      "filename":"tu1234576.fits.fz",
+#      "original_filename": "/md2/4meter/Sept022004/obj130.fits",
+      "telescope":["kp09"],
+      "instrument":["mosaic"],
+#      "release_date":"2017-02-01",
+      "flag_raw":false,
+      "image_filter":{
+        "calibrated" : true,
+        "reprojected" : false,
+        "stacked" : false,
+        "master_calibration" : false,
+        "image_tiles" : false,
+        "sky_subtracted" : false
+      }
+   }
+}
+
+##############################################################################
+# at least 3 results
+{
+    "search":{
+        "coordinates": { 
+            "ra": 181.368791666667,
+            "dec": -45.5396111111111
+        },
+        "telescope":["ct4m", "foobar"],
+        "instrument":["mosaic_2"],
+        "obs_date": ["2009-04-01", "2009-04-03", "[]"],
+        "pi": "Cypriano",
+        "prop_id": "noao",
+        "flag_raw":false,
+        "release_date": "2010-10-01T00:00:00",
+        "flag_raw": "stdr1_012",
+        "exposure": "15",	
+        "original_filename": "/ua84/mosaic/tflagana/3103/stdr1_012.fits",
+        "image_filter":{
+            "calibrated" : true,
+            "reprojected" : false,
+            "stacked" : false,
+            "master_calibration" : false,
+            "image_tiles" : false,
+            "sky_subtracted" : false
+        }
+    }
+}
+
+#############
+# RESPONSE
+{
+  "resultset": [
+    {
+      "filesize": 96811,
+      "observation_mode": "imaging",
+      "dec": "-45.5388055555556",
+      "exposure": "15",
+      "image_type": "InstCal",
+      "flag_raw": "stdr1_012",
+      "ra": "181.368083333333",
+      "release_date": "2010-10-01T00:00:00",
+      "product": "dqmask",
+      "seeing": "0.9",
+      "filename": null,
+      "pi": "Cypriano",
+      "original_filename": "/ua84/mosaic/tflagana/3103/stdr1_012.fits",
+      "survey_id": null,
+      "obs_date": "2009-04-01T01:23:27.900",
+      "filter": "R Harris c6004",
+      "reference": "tu006121.fits.gz",
+      "observation_type": "object",
+      "instrument": "mosaic_2",
+      "md5sum": null,
+      "prop_id": "noao",
+      "telescope": "ct4m",
+      "depth": "23.04"
+    },
+    {
+      "filesize": 222411172,
+      "observation_mode": "imaging",
+      "dec": "-45.5388055555556",
+      "exposure": "15",
+      "image_type": "InstCal",
+      "flag_raw": "stdr1_012",
+      "ra": "181.368083333333",
+      "release_date": "2010-10-01T00:00:00",
+      "product": "image",
+      "seeing": "0.9",
+      "filename": null,
+      "pi": "Cypriano",
+      "original_filename": "/ua84/mosaic/tflagana/3103/stdr1_012.fits",
+      "survey_id": null,
+      "obs_date": "2009-04-01T01:23:27.900",
+      "filter": "R Harris c6004",
+      "reference": "tu006120.fits.gz",
+      "observation_type": "object",
+      "instrument": "mosaic_2",
+      "md5sum": null,
+      "prop_id": "noao",
+      "telescope": "ct4m",
+      "depth": "23.04"
+    },
+    {
+      "filesize": 14234056,
+      "observation_mode": "imaging",
+      "dec": "-45.5388055555556",
+      "exposure": "15",
+      "image_type": "InstCal",
+      "flag_raw": "stdr1_012",
+      "ra": "181.368083333333",
+      "release_date": "2010-10-01T00:00:00",
+      "product": "png",
+      "seeing": "0.9",
+      "filename": null,
+      "pi": "Cypriano",
+      "original_filename": "/ua84/mosaic/tflagana/3103/stdr1_012.fits",
+      "survey_id": null,
+      "obs_date": "2009-04-01T01:23:27.900",
+      "filter": "R Harris c6004",
+      "reference": "tu006122.fits.gz",
+      "observation_type": "object",
+      "instrument": "mosaic_2",
+      "md5sum": null,
+      "prop_id": "noao",
+      "telescope": "ct4m",
+      "depth": "23.04"
+    }
+  ],
+  "meta": {
+    "comment": "WARNING: Not tested",
+    "sql": "SELECT \n    reference,\n    ra,\n    dec,\n    prop_id,\n    surveyid as survey_id,          -- survey_id\n    date_obs as obs_date,           -- obs_date\n    dtpi as pi,                     -- pi\n    telescope,\n    instrument,\n    release_date,\n    rawfile as flag_raw,            -- flag_raw ???\n    proctype as image_type,         -- image_type ???\n    filter,\n    filesize,\n    filename,\n    dtacqnam as original_filename,  -- original_filename\n    md5sum,\n    exposure,\n    obstype as observation_type,    -- observation_type\n    obsmode as observation_mode,    -- observation_mode\n    prodtype as product,            -- product ???\n    seeing,\n    depth\n FROM voi.siap WHERE (ra <= 181.369791666667) AND (ra >= 181.367791666667) AND (dec <= -45.5386111111111) AND (dec >= -45.5406111111111) AND (dtpi = 'Cypriano') AND (dtpropid = 'noao') AND ('[2009-04-01,2009-04-03]'::tsrange @> date_obs::timestamp) AND (dtacqnam = '/ua84/mosaic/tflagana/3103/stdr1_012.fits') AND ((telescope = 'ct4m') OR (telescope = 'foobar')) AND ((instrument = 'mosaic_2') OR (instrument = 'mosaic_2')) AND (release_date = '2010-10-01T00:00:00') LIMIT 3",
+    "dal_version": "0.1.5",
+    "num_results": 3
+  }
+}

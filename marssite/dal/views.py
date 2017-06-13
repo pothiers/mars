@@ -8,7 +8,7 @@ from siap.models import Image, VoiSiap
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-dal_version = '0.1.0' # MVP. mostly untested
+dal_version = '0.1.5' # MVP. mostly untested
 
 search_spec_json = {
  "search":{
@@ -105,7 +105,46 @@ def dictfetchall(cursor):
 def search_by_xmlstr(xmlstr):
     pass
 
-    
+
+def db_float_range(range_value, field):
+    """range_value:: [minVal, maxVal, bounds] 
+    see: https://www.postgresql.org/docs/9.3/static/functions-range.html
+    """
+    if isinstance(range_value, list):
+        # contains element (postresql SQL)
+        # '[2011-01-01,2011-03-01)'::tsrange @> '2011-01-10'::timestamp
+        # If the third argument is omitted, '[)' is assumed.
+        #
+        # INclusive bound :: "(", ")"
+        # EXclusive bound :: "[", "]"
+        minval,maxval,*xtra = range_value
+        bounds = xtra[0] if (len(xtra) > 0) else '[)'
+        clause = ("('{}{},{}{}'::numrange @> {})"
+                  .format(bounds[0], minval, maxval, bounds[1], field))
+    else:
+        clause = "({} = '{}')".format(field, range_value)
+    return clause
+
+def db_time_range(range_value, field):
+    # Edge case bugs!!!
+    if isinstance(range_value, list):
+        # contains element (postresql SQL)
+        # '[2011-01-01,2011-03-01)'::tsrange @> '2011-01-10'::timestamp
+        # If the third argument is omitted, '[)' is assumed.
+        #
+        # INclusive bound :: "(", ")"
+        # EXclusive bound :: "[", "]"
+        mindate,maxdate,*xtra = range_value
+        bounds = xtra[0] if (len(xtra) > 0) else '[)'
+        clause = ("('{}{},{}{}'::tsrange @> {}::timestamp)"
+                  .format(bounds[0], mindate, maxdate, bounds[1], field))
+    else:
+        clause = "({} = '{}')".format(field, range_value)
+    return clause
+
+def db_exact(value, field):
+    clause = "({} = '{}')".format(field, value)
+    return clause
 
 # curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.html
 @csrf_exempt
@@ -140,8 +179,9 @@ def search_by_json(request):
         # Force material view refresh
         cursor.execute('SELECT * FROM refresh_voi_material_views()')
         where = '' # WHERE clause
+        
+        slop = jsearch.get('search_box_min', .001)
         if 'coordinates' in jsearch:
-            slop = .001
             coord = jsearch['coordinates']
             if len(where) > 0:  where += ' AND '
             where += ('(ra <= {}) AND (ra >= {}) AND (dec <= {}) AND (dec >= {})'
@@ -149,7 +189,22 @@ def search_by_json(request):
                               coord['ra'] - slop,
                               coord['dec'] + slop,
                               coord['dec'] - slop))
-            
+        if 'pi' in jsearch:
+            if len(where) > 0:  where += ' AND '
+            where += "(dtpi = '{}')".format(jsearch['pi'])
+        if 'prop_id' in jsearch:
+            if len(where) > 0:  where += ' AND '
+            #where += "(dtpropid = '{}')".format(jsearch['prop_id'])
+            where += db_exact(jsearch['prop_id'], 'dtpropid')
+        if 'obs_date' in jsearch:
+            if len(where) > 0:  where += ' AND '
+            where += db_time_range(jsearch['obs_date'], 'date_obs')
+        if 'filename' in jsearch: 
+            if len(where) > 0:  where += ' AND '
+            where += db_exact(jsearch['filename'], 'dtnsanam')
+        if 'original_filename' in jsearch: 
+            if len(where) > 0:  where += ' AND '
+            where += db_exact(jsearch['original_filename'], 'dtacqnam')
         if 'telescope' in jsearch:
             if len(where) > 0:  where += ' AND '
             where += "((telescope = '{}')".format(jsearch['telescope'][0])
@@ -162,23 +217,17 @@ def search_by_json(request):
             for inst in jsearch['instrument']:
                 where += " OR (instrument = '{}')".format(inst)
             where += ')'
-        if 'obs_date' in jsearch:
+        if 'release_date' in jsearch: 
             if len(where) > 0:  where += ' AND '
-            # Edge case bugs!!!
-            if isinstance(jsearch['obs_date'], list):
-                # contains element (postresql SQL)
-                # '[2011-01-01,2011-03-01)'::tsrange @> '2011-01-10'::timestamp
-                # If the third argument is omitted, '[)' is assumed.
-                #
-                # INclusive bound :: "(", ")"
-                # EXclusive bound :: "[", "]"
-                mindate,maxdate,*xtra = jsearch['obs_date']
-                bounds = xtra[0] if (len(xtra) > 0) else '[)'
-                where += ("('{}{},{}{}'::tsrange @> date_obs::timestamp)"
-                          .format(bounds[0], mindate, maxdate, bounds[1]))
-            else:
-                obsdate = jsearch['obs_date']
-                where += "(date_obs = '{}')".format(obsdate)
+            where += db_time_range(jsearch['release_date'], 'release_date')
+#!        if 'flag_raw' in jsearch:
+#!            if len(where) > 0:  where += ' AND '
+#!            where += db_exact(jsearch['flag_raw'], 'flag_raw')
+            
+        if 'image_filter' in jsearch: pass   # !!! ???
+        if 'exposure_time' in jsearch:
+            if len(where) > 0:  where += ' AND '
+            where += db_float_range(jsearch['exposure'], 'exposure')
 
         sql = ('SELECT {} FROM voi.siap WHERE {} LIMIT {}'
                .format(response_fields, where, limit))
@@ -187,6 +236,7 @@ def search_by_json(request):
         results = dictfetchall(cursor)
         return JsonResponse(dict(resultset = results,
                                  meta = dict(dal_version = dal_version,
+                                             num_results = len(results),
                                              comment = 'WARNING: Not tested',
                                              sql = sql,
                                  )))
