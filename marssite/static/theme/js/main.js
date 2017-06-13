@@ -49,9 +49,9 @@ Base = (function() {
         targetId = event.currentTarget.id;
         target = event.currentTarget;
         if (target.value === "") {
-          return (ref = document.querySelector("label[for=" + targetId + "]")) != null ? ref.classList.remove("open") : void 0;
+          return (ref = document.querySelector("label[for=" + targetId + "].floating")) != null ? ref.classList.remove("open") : void 0;
         } else {
-          return (ref1 = document.querySelector("label[for=" + targetId + "]")) != null ? ref1.classList.add("open") : void 0;
+          return (ref1 = document.querySelector("label[for=" + targetId + "].floating")) != null ? ref1.classList.add("open") : void 0;
         }
       });
     }

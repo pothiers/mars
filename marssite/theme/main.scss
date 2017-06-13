@@ -211,7 +211,17 @@
 	}
 
 /* Form */
-   
+  .checkbox{
+      label{
+          min-height: 20px;
+          padding-left: 20px;
+          margin-bottom: 0;
+          font-weight: bold;
+          cursor: pointer;
+          line-height: 1.8em;
+          font-size: 12px;
+      }
+  } 
   .select-group{
       width: 100%;
       input.form-control{
