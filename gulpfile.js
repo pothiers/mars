@@ -19,9 +19,14 @@ var cssDest = "./marssite/static";
 var coffeeSrc = "./marssite/**/*.coffee";
 var jsDest = cssDest; // save both assets in the same root
 
-var node_module_collections = ["./node_modules/*font-awesome/**/*", "./node_modules/*vue/dist/*.js"];
+var node_module_collections = [
+  "./node_modules/*font-awesome/**/*", 
+  "./node_modules/*vue/dist/*.js",
+  "./node_modules/*better*/**/*.min.js"
+];
 
 gulp.task('collect', function(){
+  console.log("Collecting resources into '"+jsDest);
   gulp.src(node_module_collections )
     .pipe(gulp.dest("./marssite/static"));
 });

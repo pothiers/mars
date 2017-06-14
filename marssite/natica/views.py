@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -15,3 +16,10 @@ def search(request):
 
     print(telescopes)
     return render(request, "search.html", {'telescopes':telescopes})
+
+
+def test(request):
+    resp = {}
+    resp['result'] = "success"
+    resp['message'] = "hello"
+    return JsonResponse(resp)

@@ -1,5 +1,6 @@
 <div class="container">
     <form method="post" action="" id="search-form">
+        {% csrf_token %}
         <div class="form-head row">
             <div class="col-xs-12 col-md-6">
                 <h1>NOAO Science Archive</h1>
@@ -14,7 +15,7 @@
                             <option value="">Decam...</option>
                         </select>
                     </label>
-                    <button class="btn btn-primary" type="submit">Search</button>
+                    <button class="btn btn-primary" type="submit" v-on:click="submitForm">Search</button>
                 </div>
             </div><!-- /form-submit -->
         </div>
@@ -100,15 +101,15 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <div class="input-group select-group split-val">
-                                    <label class="floating" for="obs-date">Observation Date</label>
+                                    <label class="floating" for="obs-date">Observation Date <small>(YYYY-MM-DD)</small></label>
                                     <select name="obs-date-interval" class="form-control input-group-addon">
                                         <option value="=">=</option>
                                         <option value="<">&lt;</option>
                                         <option value=">">&gt;</option>
                                         <option value="between" class="toggle-option">&le; &ge;</option>
                                     </select>
-                                    <input id="obs-date" class="form-control" name="obs-date" type="text" value="" placeholder="Obervation date" v-bind:value="obsDateMin">
-                                    <input id="obs-date-max" class="form-control hidden-split" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-bind:value="obsDateMax">
+                                    <input id="obs-date" class="form-control" data-polyfill="all" data-format="YYYY-mm-dd" name="obs-date" type="text" value="" placeholder="Obervation date" v-bind:value="search.obs_date[0]">
+                                    <input id="obs-date-max" class="form-control hidden-split" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-bind:value="search.obs_date[1]">
                                 </div><!-- /input-group -->
                             </div><!-- /form-group -->
                             <div class="form-group">
@@ -154,7 +155,7 @@
                        <div class="col-sm-6">
                             <div class="form-group">
                                 <div class="input-group select-group split-val">
-                                    <label class="floating" for="release-date">Public Release Date</label>
+                                    <label class="floating" for="release-date">Public Release Date <small>(YYYY-MM-DD)</small></label>
                                     <select class="form-control input-group-addon" id="" name="release-date-interval" v-model="search.release_date[2]" >
                                         <option value="=">=</option>
                                         <option value="<">&lt;</option>
@@ -179,7 +180,7 @@
                                         <option value="image_tiles">Image Tiles</option>
                                         <option value="sky_subtracted">Sky Subtracted</option>
                                    </select>
-                                   <p class="hint caption">
+                                   <p class="help-block">
                                        * <em>Sky subtracted</em> is for <strong>NEWFIRM</strong> only. <em>Calibrated, Reprojected, Stacked, Master calibration, Image Tiles</em> are for <strong>Mosiac, NEWFIRM and DECam</strong>.
                                    </p>
                                 </div>
