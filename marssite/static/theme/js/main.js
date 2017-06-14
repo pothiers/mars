@@ -5,7 +5,54 @@ Date: 2017-06-09
 Description: Base functionality/interactions + helper functions
 Original file: main.coffee
  */
-var Base;
+var Ajax, Base;
+
+Ajax = (function() {
+  function Ajax(_opts) {
+    this.settings = {
+      url: window.location.path,
+      method: "GET",
+      accept: "html",
+      data: {},
+      success: function() {
+        return "";
+      },
+      fail: function() {
+        return "";
+      }
+    };
+    this.settings = _.extend(this.settings, _opts);
+    this.xhr = new XMLHttpRequest();
+    this.xhr.onload = this._response;
+    this.xhr.onerror = this.settings.fail;
+  }
+
+  Ajax.prototype._response = function(e) {
+    return this.settings.success(e.target.response);
+  };
+
+  Ajax.prototype.send = function() {
+    var path, settings;
+    settings = this.settings;
+    path = settings.url;
+
+    /*
+    unless _.isEmpty(settings.data)
+      params = Object.keys(settings.data).map (k) ->
+        return encodeURIComponent(k) + '=' + encodeURIComponent(settings.data[k])
+      .join('&')
+      path += "?"+params
+     */
+    this.xhr.responseType = settings.accept;
+    this.xhr.open(settings.method.toUpperCase(), path, true);
+    this.xhr.setRequestHeader('Content-Type', 'application/json');
+    this.xhr.setRequestHeader('x-hello-world', '1.0');
+    return this.xhr.send(JSON.stringify(settings.data));
+  };
+
+  return Ajax;
+
+})();
 
 Base = (function() {
   function Base() {

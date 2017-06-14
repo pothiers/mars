@@ -5,6 +5,42 @@ Description: Base functionality/interactions + helper functions
 Original file: main.coffee
 ###
 
+class Ajax
+  constructor:(_opts)->
+    @settings =
+        url : window.location.path
+        method: "GET"
+        accept: "html"
+        data: {}
+        success: ()-> return ""
+        fail: ()-> return ""
+    @settings = _.extend(@settings, _opts)
+    @xhr = new XMLHttpRequest()
+    @xhr.onload = @_response
+    @xhr.onerror = @settings.fail
+
+  _response: (e)->
+    @settings.success(e.target.response)
+
+  send: ()->
+    settings = @settings
+    path = settings.url
+    ###
+    unless _.isEmpty(settings.data)
+      params = Object.keys(settings.data).map (k) ->
+        return encodeURIComponent(k) + '=' + encodeURIComponent(settings.data[k])
+      .join('&')
+      path += "?"+params
+    ###
+    @xhr.responseType = settings.accept
+    @xhr.open(settings.method.toUpperCase(), path, true)
+    @xhr.setRequestHeader('Content-Type', 'application/json')
+    @xhr.setRequestHeader('x-hello-world', '1.0')
+
+    @xhr.send(JSON.stringify(settings.data) )
+
+
+
 class Base
   constructor: ()->
     ###
