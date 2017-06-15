@@ -19,7 +19,7 @@ class Ajax
     @xhr.onload = @_response
     @xhr.onerror = @settings.fail
 
-  _response: (e)->
+  _response: (e)=>
     @settings.success(e.target.response)
 
   send: ()->

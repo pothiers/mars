@@ -5,10 +5,12 @@ Date: 2017-06-09
 Description: Base functionality/interactions + helper functions
 Original file: main.coffee
  */
-var Ajax, Base;
+var Ajax, Base,
+  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 Ajax = (function() {
   function Ajax(_opts) {
+    this._response = bind(this._response, this);
     this.settings = {
       url: window.location.path,
       method: "GET",
