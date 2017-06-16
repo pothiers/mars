@@ -15,9 +15,11 @@
 
     {% block extra_footer %}
     <script type="text/javascript" src="{% static "natica/static/js/search.js" %}"></script>
+    <script type="text/javascript" src="{% static "natica/static/js/results.js" %}"></script>
     {% endblock %}
 
 {% block body %}
     {% include '_search_form.html' %}
+    {% include '_results.html' %}
 {% endblock %}
 

@@ -10,6 +10,8 @@ var SearchForm, SearchResults, searchForm;
 SearchForm = (function() {
   SearchForm.prototype.apiUrl = "/dal/search/";
 
+  SearchForm.prototype.rangeInputs = ["obs_date", "exposure_time", "release_date"];
+
   SearchForm.prototype.formData = {
     coordinates: {
       ra: null,
@@ -28,26 +30,38 @@ SearchForm = (function() {
     image_filter: []
   };
 
+  SearchForm.prototype.loadingMessages = ["Searching the cosmos...", "Deploying deep space probes...", "Is that you Dave?...", "There's so much S P A C E!"];
+
   function SearchForm() {
     this.bindEvents();
     this.form = new Vue({
       el: "#search-form",
       data: {
-        view: null,
+        visible: true,
+        loading: false,
+        loadingMessage: "Sweeping up star dust...",
         search: JSON.parse(JSON.stringify(this.formData))
       },
       methods: {
         submitForm: function(event) {
-          var key, newFormData;
+          var key, message, msgs, newFormData;
           event.preventDefault();
+          this.loading = true;
           newFormData = JSON.parse(JSON.stringify(this.search));
-          console.dir(newFormData);
-          console.dir(searchForm.formData);
           for (key in newFormData) {
             if (_.isEqual(newFormData[key], searchForm.formData[key])) {
               delete newFormData[key];
+            } else {
+              if (searchForm.rangeInputs.indexOf(key) >= 0) {
+                if (newFormData[key][2] === "=") {
+                  newFormData[key] = newFormData[key][0];
+                }
+              }
             }
           }
+          msgs = searchForm.loadingMessages;
+          message = Math.floor(Math.random() * msgs.length);
+          this.loadingMessage = message;
           return new Ajax({
             url: "/dal/search/",
             method: "post",
@@ -56,6 +70,10 @@ SearchForm = (function() {
               search: newFormData
             },
             success: function(data) {
+              window.searchForm.form.loading = false;
+              window.searchForm.form.visible = false;
+              window.results.table.results = data;
+              window.results.table.visible = true;
               return console.dir(data);
             }
           }).send();

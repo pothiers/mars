@@ -36,7 +36,6 @@ class Ajax
     @xhr.open(settings.method.toUpperCase(), path, true)
     @xhr.setRequestHeader('Content-Type', 'application/json')
     @xhr.setRequestHeader('x-hello-world', '1.0')
-
     @xhr.send(JSON.stringify(settings.data) )
 
 
