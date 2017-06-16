@@ -39,19 +39,11 @@
         "obs_date": ["2009-04-01", "2009-04-03", "[]"],
         "pi": "Cypriano",
         "prop_id": "noao",
-        "flag_raw":false,
         "release_date": "2010-10-01T00:00:00",
         "flag_raw": "stdr1_012",
         "exposure": "15",	
         "original_filename": "/ua84/mosaic/tflagana/3103/stdr1_012.fits",
-        "image_filter":{
-            "calibrated" : true,
-            "reprojected" : false,
-            "stacked" : false,
-            "master_calibration" : false,
-            "image_tiles" : false,
-            "sky_subtracted" : false
-        }
+        "image_filter":["calibrated"]
     }
 }
 
@@ -65,7 +57,7 @@
       "dec": "-45.5388055555556",
       "exposure": "15",
       "image_type": "InstCal",
-      "flag_raw": "stdr1_012",
+      "flag_raw": "stdr1_012",U
       "ra": "181.368083333333",
       "release_date": "2010-10-01T00:00:00",
       "product": "dqmask",

@@ -1,5 +1,6 @@
 import json
 import xml.etree.ElementTree as ET
+from collections import OrderedDict
 
 from django.db import connections
 from django.http import HttpResponse, JsonResponse
@@ -8,7 +9,7 @@ from siap.models import Image, VoiSiap
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-dal_version = '0.1.5' # MVP. mostly untested
+dal_version = '0.1.6' # MVP. mostly untested
 
 search_spec_json = {
  "search":{
@@ -79,7 +80,7 @@ response_fields = '''
     instrument,
     release_date,
     rawfile as flag_raw,            -- flag_raw ???
-    proctype as image_type,         -- image_type ???
+    proctype,
     filter,
     filesize,
     filename,
@@ -89,6 +90,7 @@ response_fields = '''
     obstype as observation_type,    -- observation_type
     obsmode as observation_mode,    -- observation_mode
     prodtype as product,            -- product ???
+    proctype,    
     seeing,
     depth
 '''
@@ -106,6 +108,12 @@ def search_by_xmlstr(xmlstr):
     pass
 
 
+def remove_leading(thestring, lead):
+    """Remove LEAD from left of THESTRING if its there."""
+    if thestring.startswith(lead):
+        return thestring[len(lead):]
+    return thestring
+
 def db_float_range(range_value, field):
     """range_value:: [minVal, maxVal, bounds] 
     see: https://www.postgresql.org/docs/9.3/static/functions-range.html
@@ -119,10 +127,10 @@ def db_float_range(range_value, field):
         # EXclusive bound :: "[", "]"
         minval,maxval,*xtra = range_value
         bounds = xtra[0] if (len(xtra) > 0) else '[)'
-        clause = ("('{}{},{}{}'::numrange @> {})"
+        clause = (" AND ('{}{},{}{}'::numrange @> {})"
                   .format(bounds[0], minval, maxval, bounds[1], field))
     else:
-        clause = "({} = '{}')".format(field, range_value)
+        clause = " AND ({} = '{}')".format(field, range_value)
     return clause
 
 def db_time_range(range_value, field):
@@ -136,19 +144,36 @@ def db_time_range(range_value, field):
         # EXclusive bound :: "[", "]"
         mindate,maxdate,*xtra = range_value
         bounds = xtra[0] if (len(xtra) > 0) else '[)'
-        clause = ("('{}{},{}{}'::tsrange @> {}::timestamp)"
+        clause = (" AND ('{}{},{}{}'::tsrange @> {}::timestamp)"
                   .format(bounds[0], mindate, maxdate, bounds[1], field))
     else:
-        clause = "({} = '{}')".format(field, range_value)
+        clause = " AND ({} = '{}')".format(field, range_value)
     return clause
 
 def db_exact(value, field):
-    clause = "({} = '{}')".format(field, value)
+    clause = " AND ({} = '{}')".format(field, value)
     return clause
 
-# curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.html
+def db_oneof(value_list, field):
+    clause = ""
+    for val in value_list:
+        clause += " OR ({} = '{}')".format(field, val)
+    return ' AND (' + remove_leading(clause, ' OR ') + ')'
+
+proc_LUT = dict(raw = 'raw',
+                calibrated = 'InstCal',
+                reprojected = 'projected',
+                stacked = 'stacked',
+                master_calibration = 'mastercal',
+                image_tiles = 'tiled',
+                sky_subtracted = 'skysub')
+               
+
+# curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.json
+# curl -H "Content-Type: application/json" -X POST -d @request.json http://localhost:8000/dal/search/ | python -m json.tool
 @csrf_exempt
 def search_by_json(request):
+    # !!! Verify values (e.g. telescope) are valid. Avoid SQL injection hit.
     limit = request.GET.get('limit',99)
     print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
           .format(request.method, request.content_type))
@@ -183,63 +208,57 @@ def search_by_json(request):
         slop = jsearch.get('search_box_min', .001)
         if 'coordinates' in jsearch:
             coord = jsearch['coordinates']
-            if len(where) > 0:  where += ' AND '
-            where += ('(ra <= {}) AND (ra >= {}) AND (dec <= {}) AND (dec >= {})'
+            where += ((' AND (ra <= {}) AND (ra >= {})'
+                      ' AND (dec <= {}) AND (dec >= {})')
                       .format(coord['ra'] + slop,
                               coord['ra'] - slop,
                               coord['dec'] + slop,
                               coord['dec'] - slop))
         if 'pi' in jsearch:
-            if len(where) > 0:  where += ' AND '
-            where += "(dtpi = '{}')".format(jsearch['pi'])
+            where += db_exact(jsearch['pi'], 'dtpi')
         if 'prop_id' in jsearch:
-            if len(where) > 0:  where += ' AND '
             #where += "(dtpropid = '{}')".format(jsearch['prop_id'])
             where += db_exact(jsearch['prop_id'], 'dtpropid')
         if 'obs_date' in jsearch:
-            if len(where) > 0:  where += ' AND '
             where += db_time_range(jsearch['obs_date'], 'date_obs')
         if 'filename' in jsearch: 
-            if len(where) > 0:  where += ' AND '
             where += db_exact(jsearch['filename'], 'dtnsanam')
         if 'original_filename' in jsearch: 
-            if len(where) > 0:  where += ' AND '
             where += db_exact(jsearch['original_filename'], 'dtacqnam')
         if 'telescope' in jsearch:
-            if len(where) > 0:  where += ' AND '
-            where += "((telescope = '{}')".format(jsearch['telescope'][0])
-            for tele in jsearch['telescope'][1:]:
-                where += " OR (telescope = '{}')".format(tele)
-            where += ')'
+            where += db_oneof(jsearch['telescope'], 'telescope')
         if 'instrument' in jsearch: 
-            if len(where) > 0:  where += ' AND '
-            where += "((instrument = '{}')".format(jsearch['instrument'][0])
-            for inst in jsearch['instrument']:
-                where += " OR (instrument = '{}')".format(inst)
-            where += ')'
+            where += db_oneof(jsearch['instrument'], 'instrument')
         if 'release_date' in jsearch: 
-            if len(where) > 0:  where += ' AND '
             where += db_time_range(jsearch['release_date'], 'release_date')
-#!        if 'flag_raw' in jsearch:
-#!            if len(where) > 0:  where += ' AND '
-#!            where += db_exact(jsearch['flag_raw'], 'flag_raw')
-            
-        if 'image_filter' in jsearch: pass   # !!! ???
+        if 'flag_raw' in jsearch:
+            where += db_exact(jsearch['flag_raw'], 'rawfile')
+        if 'image_filter' in jsearch:
+            where += db_oneof([proc_LUT[p] for p in jsearch['image_filter']],
+                               'proctype')
         if 'exposure_time' in jsearch:
-            if len(where) > 0:  where += ' AND '
-            where += db_float_range(jsearch['exposure'], 'exposure')
+            where += db_float_range(jsearch['exposure_time'], 'exposure')
 
+        where = remove_leading(where, ' AND ')
         sql = ('SELECT {} FROM voi.siap WHERE {} LIMIT {}'
                .format(response_fields, where, limit))
         print('DBG sql={}'.format(sql))
         cursor.execute(sql)
         results = dictfetchall(cursor)
-        return JsonResponse(dict(resultset = results,
-                                 meta = dict(dal_version = dal_version,
-                                             num_results = len(results),
-                                             comment = 'WARNING: Not tested',
-                                             sql = sql,
-                                 )))
+        meta = OrderedDict.fromkeys(['dal_version', 'comment', 'sql', 'count'])
+        meta.update(
+            dal_version = dal_version,
+            comment = (
+                'WARNING: Little testing.'
+                ' Does not use "image_filter".'
+            ),
+            sql = sql,
+            num_results = len(results),
+        )
+        resp = OrderedDict.fromkeys(['meta','resultset'])
+        resp.update( meta = meta, resultset = results)
+        return JsonResponse(resp)
     elif request.method == 'GET':
         return HttpResponse('Requires POST with json payload')
     
+
