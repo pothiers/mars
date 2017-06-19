@@ -169,21 +169,35 @@ proc_LUT = dict(raw = 'raw',
                 sky_subtracted = 'skysub')
                
 
+## Under PSQL, copy SELECTed results to CSV using:
+#
+# \copy (SELECT * from voi.siap WHERE (ra <= 186.368791666667) AND (ra >= 176.368791666667) AND (dec <= -40.5396111111111) AND (dec >= -50.5396111111111) AND (dtpi = 'Cypriano') AND (dtpropid = 'noao') AND ('[2009-04-01,2009-04-03]'::tsrange @> date_obs::timestamp) AND (dtacqnam = '/ua84/mosaic/tflagana/3103/stdr1_012.fits') AND ((telescope = 'ct4m') OR (telescope = 'foobar')) AND ((instrument = 'mosaic_2')) AND (release_date = '2010-10-01T00:00:00') AND ((proctype = 'raw') OR (proctype = 'InstCal')) AND (exposure = '15')) TO '~/data/metadata-dal-2.csv'
+
 # curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.json
 # curl -H "Content-Type: application/json" -X POST -d @request.json http://localhost:8000/dal/search/ | python -m json.tool
 @csrf_exempt
 def search_by_json(request):
     # !!! Verify values (e.g. telescope) are valid. Avoid SQL injection hit.
-    limit = request.GET.get('limit',99)
+    page_limit = int(request.GET.get('limit','100')) # num of records per page
+    limit_clause = 'LIMIT {}'.format(page_limit)
+    page = int(request.GET.get('page','1'))
+    offset = (page-1) * page_limit
+    offset_clause = 'OFFSET {}'.format(offset)
+    # order:: comma delimitied, leading +/-  (ascending/descending)
+    order_fields = request.GET.get('order','+reference')
+    order_clause = ('ORDER BY ' +
+                    ', '.join(['{} {}'.format(f[1:], ('DESC'
+                                                      if f[0]=='-' else 'DESC'))
+                               for f in order_fields.split()]))
     print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
           .format(request.method, request.content_type))
     if request.method == 'POST':
         root = ET.Element('search')
-        print('body str={}'.format(request.body.decode('utf-8')))
+        #!print('DBG body str={}'.format(request.body.decode('utf-8')))
         if request.content_type == "application/json":
             body = json.loads(request.body.decode('utf-8'))
             jsearch = body['search']
-            print('jsearch={}'.format(jsearch))
+            #print('jsearch={}'.format(jsearch))
             for k,v in jsearch.items():
                 e = ET.SubElement(root, k)
                 if isinstance(v, dict):
@@ -191,10 +205,10 @@ def search_by_json(request):
                         ET.SubElement(e, k2).text = str(v2)
                 else:
                     e.text = str(v)
-            print('root={}'.format(root))
+            #print('root={}'.format(root))
             tree = ET.ElementTree(root)
             xmlstr = ET.tostring(root)
-            print('xml search={}'.format(xmlstr))
+            #print('xml search={}'.format(xmlstr))
             search_by_xmlstr(xmlstr)
         elif request.content_type == "application/xml":
             pass
@@ -202,8 +216,8 @@ def search_by_json(request):
         # Query Legacy Science Archive
         cursor = connections['archive'].cursor()
         # Force material view refresh
-        cursor.execute('SELECT * FROM refresh_voi_material_views()')
-        where = '' # WHERE clause
+        #!cursor.execute('SELECT * FROM refresh_voi_material_views()')
+        where = '' # WHERE clause innards
         
         slop = jsearch.get('search_box_min', .001)
         if 'coordinates' in jsearch:
@@ -240,11 +254,18 @@ def search_by_json(request):
             where += db_float_range(jsearch['exposure_time'], 'exposure')
 
         where = remove_leading(where, ' AND ')
-        sql = ('SELECT {} FROM voi.siap WHERE {} LIMIT {}'
-               .format(response_fields, where, limit))
-        print('DBG sql={}'.format(sql))
+        #print('DBG-2 where="{}"'.format(where))
+        where_clause = '' if len(where) == 0 else 'WHERE {}'.format(where)
+        sql = ('SELECT {} FROM voi.siap {} {} {} {}'
+               .format(response_fields,
+                       where_clause,
+                       order_clause,
+                       limit_clause,
+                       offset_clause  ))
+        print('DBG-2 sql={}'.format(sql))
         cursor.execute(sql)
         results = dictfetchall(cursor)
+        #print('DBG results={}'.format(results))
         meta = OrderedDict.fromkeys(['dal_version', 'comment', 'sql', 'count'])
         meta.update(
             dal_version = dal_version,
