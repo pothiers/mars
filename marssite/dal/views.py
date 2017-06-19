@@ -178,7 +178,17 @@ proc_LUT = dict(raw = 'raw',
 @csrf_exempt
 def search_by_json(request):
     # !!! Verify values (e.g. telescope) are valid. Avoid SQL injection hit.
-    limit = request.GET.get('limit',99)
+    page_limit = int(request.GET.get('limit','100')) # num of records per page
+    limit_clause = 'LIMIT {}'.format(page_limit)
+    page = int(request.GET.get('page','1'))
+    offset = (page-1) * page_limit
+    offset_clause = 'OFFSET {}'.format(offset)
+    # order:: comma delimitied, leading +/-  (ascending/descending)
+    order_fields = request.GET.get('order','+reference')
+    order_clause = ('ORDER BY ' +
+                    ', '.join(['{} {}'.format(f[1:], ('DESC'
+                                                      if f[0]=='-' else 'DESC'))
+                               for f in order_fields.split()]))
     print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
           .format(request.method, request.content_type))
     if request.method == 'POST':
@@ -207,7 +217,7 @@ def search_by_json(request):
         cursor = connections['archive'].cursor()
         # Force material view refresh
         #!cursor.execute('SELECT * FROM refresh_voi_material_views()')
-        where = '' # WHERE clause
+        where = '' # WHERE clause innards
         
         slop = jsearch.get('search_box_min', .001)
         if 'coordinates' in jsearch:
@@ -246,8 +256,12 @@ def search_by_json(request):
         where = remove_leading(where, ' AND ')
         #print('DBG-2 where="{}"'.format(where))
         where_clause = '' if len(where) == 0 else 'WHERE {}'.format(where)
-        sql = ('SELECT {} FROM voi.siap {} LIMIT {}'
-               .format(response_fields, where_clause, limit))
+        sql = ('SELECT {} FROM voi.siap {} {} {} {}'
+               .format(response_fields,
+                       where_clause,
+                       order_clause,
+                       limit_clause,
+                       offset_clause  ))
         print('DBG-2 sql={}'.format(sql))
         cursor.execute(sql)
         results = dictfetchall(cursor)
