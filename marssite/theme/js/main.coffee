@@ -85,7 +85,7 @@ class Base
         toggle.addEventListener "click", (e)->
           thisSection.classList.toggle("open")
       ) section
-
+###
     splitVals = document.querySelectorAll(".split-val")
     for splits in splitVals
       select = splits.querySelector("select")
@@ -96,6 +96,6 @@ class Base
           else
             container.classList.remove("display-hidden")
       )(select, splits)
-
+###
 window.base = new Base()
 window.base.bindEvents()

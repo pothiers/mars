@@ -86,6 +86,7 @@ Vue.component("table-body", {
 Results = (function() {
   function Results() {
     console.log("Results set created");
+    window.base.bindEvents();
     this.table = new Vue({
       el: "#query-results",
       data: {

@@ -29,6 +29,7 @@ class SearchForm
     "Is that you Dave?..."
     "There's so much S P A C E!"
   ]
+
   constructor: ()->
     @bindEvents()
 
@@ -39,7 +40,38 @@ class SearchForm
         loading: false
         loadingMessage: "Sweeping up star dust..."
         search: JSON.parse(JSON.stringify(@formData)) # deep copy
+        showExposureMax: false
+        showObsDateMax: false
+        showReleaseDateMax: false
+        showBothExposureFields: false
+        showBothObsDateFields: false
+        showBothReleaseDateFields: false
+        relatedSplitFieldFlags :
+          "exposure_time":
+            {"fieldFlag":'showExposureMax', "bothFieldFlag":"showBothExposureFields"}
+          "obs_date":
+            {"fieldFlag":"showObsDateMax", "bothFieldFlag":"showBothObsDateFields"}
+          "release_date":
+            {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
+           
+
       methods:
+
+        splitSelection: (val)->
+          # for toggling conditional form inputs, one and sometimes both
+          fieldFlag = @relatedSplitFieldFlags[val]['fieldFlag']
+          bothFlag = @relatedSplitFieldFlags[val]['bothFieldFlag']
+
+          if @search[val][2] is "(]" or @search[val][2] is "[]"
+            @[fieldFlag] = true
+          else
+            @[fieldFlag] = false
+
+          if @search[val][2] is "[]"
+            @[bothFlag] = true
+          else
+            @[bothFlag] = false
+
         submitForm: (event)->
           event.preventDefault()
           @loading = true
@@ -49,7 +81,6 @@ class SearchForm
           # strip out anything that wasn't modified
           newFormData = JSON.parse(JSON.stringify(@search))
 
-          
           for key of newFormData
             if _.isEqual(newFormData[key], searchForm.formData[key])
               delete(newFormData[key])
@@ -79,6 +110,9 @@ class SearchForm
 
   bindEvents:()->
     console.log "binding yo"
+    # Vue clobbers previous bindings, so re-bind
+    window.base.bindEvents()
+
     # TODO: formatting
     # TODO: save form data
     # TODO: save state data i.e. UI states
@@ -88,6 +122,4 @@ class SearchResults
 
 
 searchForm = new SearchForm()
-# Vue clobbers previous bindings, so re-bind
-window.base.bindEvents()
 

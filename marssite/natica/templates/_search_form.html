@@ -109,30 +109,30 @@
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <div class="input-group select-group split-val">
+                                   <div class="input-group select-group split-val" v-bind:class="{ 'display-hidden': showBothObsDateFields } ">
                                         <label class="floating" for="obs-date">Observation Date <small>(YYYY-MM-DD)</small></label>
-                                        <select name="obs-date-interval" class="form-control input-group-addon">
+                                        <select name="obs-date-interval" class="form-control input-group-addon" v-model="search.obs_date[2]" v-on:change="splitSelection('obs_date')">
                                             <option value="=">=</option>
-                                            <option value="<">&lt;</option>
-                                            <option value=">">&gt;</option>
-                                            <option value="between" class="toggle-option">&le; &ge;</option>
+                                            <option value="(]">&le;</option>
+                                            <option value="[)">&ge;</option>
+                                            <option value="[]" class="toggle-option">&le; &ge;</option>
                                         </select>
-                                        <input id="obs-date" class="form-control" data-polyfill="all" data-format="YYYY-mm-dd" name="obs-date" type="text" value="" placeholder="Obervation date" v-model="search.obs_date[0]">
-                                        <input id="obs-date-max" class="form-control hidden-split" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-model="search.obs_date[1]">
+                                        <input id="obs-date" class="form-control" data-polyfill="all" data-format="YYYY-mm-dd" name="obs-date" type="text" value="" placeholder="Obervation date" v-model="search.obs_date[0]" v-if="search.obs_date[2] !== '(]'">
+                                        <input id="obs-date-max" class="form-control" v-bind:class="{ 'hidden-split':showBothObsDateFields }" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-model="search.obs_date[1]" v-show="showObsDateMax" >
                                     </div><!-- /input-group -->
                                 </div><!-- /form-group -->
                                 <div class="form-group">
-                                    <div class="input-group select-group split-val">
+                                    <div class="input-group select-group split-val" v-bind:class="{ 'display-hidden': showBothExposureFields }">
                                         <label class="floating" for="exposure">Exposure</label>
 
-                                        <select class="form-control input-group-addon" id="" name="expore-interval" v-model="search.exposure_time[2]">
+                                        <select class="form-control input-group-addon" id="" name="expore-interval" v-model="search.exposure_time[2]" v-on:change="splitSelection('exposure_time')">
                                             <option value="=">=</option>
-                                            <option value="<">&lt;</option>
-                                            <option value=">">&gt;</option>
-                                            <option value="between" class="toggle-option">&le; &ge;</option>
+                                            <option value="(]">&le;</option>
+                                            <option value="[)">&ge;</option>
+                                            <option value="[]" class="toggle-option">&le; &ge;</option>
                                         </select>
-                                        <input id="exposure" class="form-control" name="exposure" type="text" value="" placeholder="Exposure in seconds" v-model="search.exposure_time[0]">
-                                        <input id="exposure-max" class="form-control hidden-split" name="exposure-max" type="text" value="" placeholder="Max exposure" v-model="search.exposure_time[1]">
+                                        <input id="exposure" class="form-control" name="exposure" type="text" value="" placeholder="Exposure in seconds" v-model="search.exposure_time[0]" v-if="search.exposure_time[2] !== '(]'">
+                                        <input id="exposure-max" class="form-control" v-bind:class="{ 'hidden-split':showBothExposureFields }" name="exposure-max" type="text" value="" placeholder="Max exposure" v-model="search.exposure_time[1]" v-show="showExposureMax">
                                     </div><!-- /select-group -->
                                 </div><!-- /form-group --> 
 
@@ -163,16 +163,16 @@
                         <div class="section-content row">
                         <div class="col-sm-6">
                                 <div class="form-group">
-                                    <div class="input-group select-group split-val">
+                                    <div class="input-group select-group split-val" v-bind:class="{ 'display-hidden':showBothReleaseDateFields }">
                                         <label class="floating" for="release-date">Public Release Date <small>(YYYY-MM-DD)</small></label>
-                                        <select class="form-control input-group-addon" id="" name="release-date-interval" v-model="search.release_date[2]" >
+                                        <select class="form-control input-group-addon" id="" name="release-date-interval" v-model="search.release_date[2]" v-on:change="splitSelection('release_date')">
                                             <option value="=">=</option>
-                                            <option value="<">&lt;</option>
-                                            <option value=">">&gt;</option>
-                                            <option value="between" class="toggle-option">&le; &ge;</option>
+                                            <option value="(]">&le;</option>
+                                            <option value="[)">&ge;</option>
+                                            <option value="[]" class="toggle-option">&le; &ge;</option>
                                         </select>
-                                        <input id="release-date" class="form-control" name="release-date" type="text" value="" placeholder="Public Release Date" v-model="search.release_date[0]">
-                                        <input id="release-date-max" class="form-control hidden-split" name="release-date-max" type="text" value="" placeholder="Max release date" v-model="search.release_date[1]">
+                                        <input id="release-date" class="form-control" name="release-date" type="text" value="" placeholder="Public Release Date" v-model="search.release_date[0]" v-if="search.release_date[2] !== '(]'">
+                                        <input id="release-date-max" class="form-control" v-bind:class="{ 'hidden-split': showBothReleaseDateFields }" name="release-date-max" type="text" value="" placeholder="Max release date" v-model="search.release_date[1]" v-show="showReleaseDateMax">
                                     </div><!-- /input-group -->
                                 </div>
                             </div><!-- /col -->

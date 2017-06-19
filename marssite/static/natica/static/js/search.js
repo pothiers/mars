@@ -40,9 +40,44 @@ SearchForm = (function() {
         visible: true,
         loading: false,
         loadingMessage: "Sweeping up star dust...",
-        search: JSON.parse(JSON.stringify(this.formData))
+        search: JSON.parse(JSON.stringify(this.formData)),
+        showExposureMax: false,
+        showObsDateMax: false,
+        showReleaseDateMax: false,
+        showBothExposureFields: false,
+        showBothObsDateFields: false,
+        showBothReleaseDateFields: false,
+        relatedSplitFieldFlags: {
+          "exposure_time": {
+            "fieldFlag": 'showExposureMax',
+            "bothFieldFlag": "showBothExposureFields"
+          },
+          "obs_date": {
+            "fieldFlag": "showObsDateMax",
+            "bothFieldFlag": "showBothObsDateFields"
+          },
+          "release_date": {
+            "fieldFlag": "showReleaseDateMax",
+            "bothFieldFlag": "showBothReleaseDateFields"
+          }
+        }
       },
       methods: {
+        splitSelection: function(val) {
+          var bothFlag, fieldFlag;
+          fieldFlag = this.relatedSplitFieldFlags[val]['fieldFlag'];
+          bothFlag = this.relatedSplitFieldFlags[val]['bothFieldFlag'];
+          if (this.search[val][2] === "(]" || this.search[val][2] === "[]") {
+            this[fieldFlag] = true;
+          } else {
+            this[fieldFlag] = false;
+          }
+          if (this.search[val][2] === "[]") {
+            return this[bothFlag] = true;
+          } else {
+            return this[bothFlag] = false;
+          }
+        },
         submitForm: function(event) {
           var key, message, msgs, newFormData;
           event.preventDefault();
@@ -83,7 +118,8 @@ SearchForm = (function() {
   }
 
   SearchForm.prototype.bindEvents = function() {
-    return console.log("binding yo");
+    console.log("binding yo");
+    return window.base.bindEvents();
   };
 
   return SearchForm;
@@ -98,5 +134,3 @@ SearchResults = (function() {
 })();
 
 searchForm = new SearchForm();
-
-window.base.bindEvents();

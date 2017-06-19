@@ -61,12 +61,16 @@ Vue.component "table-body",
 class Results
   constructor: ()->
     console.log "Results set created"
+    # Vue clobbers previous bindings, so re-bind
+    window.base.bindEvents()
+
     @table = new Vue
       el: "#query-results"
       data:
         # This should be set based on some session/local storage set
         visibleColumns : JSON.parse(JSON.stringify(@defaultColumns))
         visible: false
+        # TODO: Handle 0 results
         results: [] # loaded on page for development
       methods:
         displayForm: ()->

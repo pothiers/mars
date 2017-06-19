@@ -89,7 +89,7 @@ Base = (function() {
   }
 
   Base.prototype.bindEvents = function() {
-    var el, els, fn1, i, j, k, len, len1, len2, results, section, sections, select, splitVals, splits, toggle;
+    var el, els, i, j, len, len1, results, section, sections, toggle;
     els = document.querySelectorAll("input[type=text],input[type=textarea],input[type=password],input[type=date]");
     for (i = 0, len = els.length; i < len; i++) {
       el = els[i];
@@ -105,30 +105,15 @@ Base = (function() {
       });
     }
     sections = document.querySelectorAll(".collapsible");
-    fn1 = function(thisSection) {
-      return toggle.addEventListener("click", function(e) {
-        return thisSection.classList.toggle("open");
-      });
-    };
+    results = [];
     for (j = 0, len1 = sections.length; j < len1; j++) {
       section = sections[j];
       toggle = section.querySelector(".section-toggle");
-      fn1(section);
-    }
-    splitVals = document.querySelectorAll(".split-val");
-    results = [];
-    for (k = 0, len2 = splitVals.length; k < len2; k++) {
-      splits = splitVals[k];
-      select = splits.querySelector("select");
-      results.push((function(select, container) {
-        return select.addEventListener("change", function(event) {
-          if (event.currentTarget.selectedOptions[0].classList.contains("toggle-option")) {
-            return container.classList.add("display-hidden");
-          } else {
-            return container.classList.remove("display-hidden");
-          }
+      results.push((function(thisSection) {
+        return toggle.addEventListener("click", function(e) {
+          return thisSection.classList.toggle("open");
         });
-      })(select, splits));
+      })(section));
     }
     return results;
   };
@@ -136,6 +121,20 @@ Base = (function() {
   return Base;
 
 })();
+
+
+/*
+    splitVals = document.querySelectorAll(".split-val")
+    for splits in splitVals
+      select = splits.querySelector("select")
+      ((select, container)->
+        select.addEventListener "change", (event)->
+          if event.currentTarget.selectedOptions[0].classList.contains("toggle-option")
+            container.classList.add("display-hidden")
+          else
+            container.classList.remove("display-hidden")
+      )(select, splits)
+ */
 
 window.base = new Base();
 
