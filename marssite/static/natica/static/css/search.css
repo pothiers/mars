@@ -70,6 +70,10 @@ table.results {
     border-color: #fff; }
   table.results tbody tr:nth-child(even) {
     background-color: aliceblue; }
+  table.results tbody tr.selected {
+    background-color: #37c0fb; }
+    table.results tbody tr.selected td.empty {
+      background-color: rgba(0, 0, 0, 0.3); }
 
 label.floating {
   position: relative !important;

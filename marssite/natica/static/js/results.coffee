@@ -40,7 +40,15 @@ Vue.component "table-cell",
 
 Vue.component "table-row",
   props: ['row', 'cols']
-  template: "<tr><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' :key='row.id'></table-cell></tr>"
+  template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' :key='row.id'></table-cell></tr>"
+  data: ()->
+    return
+      isSelected: false
+      
+  methods:
+    selectRow: ()->
+      this.isSelected = !this.isSelected
+      console.log "Row selected"
 
 Vue.component "table-body",
    props: ['data', 'visibleCols']

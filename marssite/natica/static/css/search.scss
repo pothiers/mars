@@ -92,6 +92,12 @@ table.results{
     tr:nth-child(even){
       background-color: aliceblue;
     }
+    tr.selected{
+      background-color: #37c0fb;
+      td.empty{
+        background-color: rgba(0,0,0,0.3);
+      }
+    }
   }
 }
 
