@@ -36,6 +36,7 @@ class SearchForm
     @form = new Vue
       el:"#search-form"
       data:
+        url: @apiUrl
         visible: true
         loading: false
         loadingMessage: "Sweeping up star dust..."
@@ -53,7 +54,6 @@ class SearchForm
             {"fieldFlag":"showObsDateMax", "bothFieldFlag":"showBothObsDateFields"}
           "release_date":
             {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
-           
 
       methods:
 
@@ -72,10 +72,14 @@ class SearchForm
           else
             @[bothFlag] = false
 
-        submitForm: (event)->
-          event.preventDefault()
-          @loading = true
-
+        submitForm: (event, paging=null, cb=null)->
+          event?.preventDefault()
+          unless paging
+            @loading = true
+            @url = searchForm.apiUrl
+            window.location.hash = ""
+            window.results.table.pageNum = 1
+            localStorage.setItem("currentPage", 1)
 
           # TODO: Validate
           # strip out anything that wasn't modified
@@ -92,20 +96,24 @@ class SearchForm
 
           msgs = searchForm.loadingMessages
           message = Math.floor(Math.random()*msgs.length)
-          @loadingMessage = message
+          @loadingMessage = msgs[message]
+          localStorage.setItem('search', JSON.stringify(@search))
 
           new Ajax
-            url: "/dal/search/"
+            url: @url
             method: "post"
             accept: "json"
             data:
               search: newFormData
             success: (data)->
+              window.location.hash = "#query"
               window.searchForm.form.loading = false
               window.searchForm.form.visible = false
               window.results.table.results = data
               window.results.table.visible = true
-              console.dir data
+              localStorage.setItem('results', JSON.stringify(data))
+              if cb
+                cb()
           .send()
 
   bindEvents:()->

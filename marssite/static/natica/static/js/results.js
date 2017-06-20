@@ -86,21 +86,50 @@ Vue.component("table-body", {
 Results = (function() {
   function Results() {
     console.log("Results set created");
-    window.base.bindEvents();
     this.table = new Vue({
       el: "#query-results",
       data: {
         visibleColumns: JSON.parse(JSON.stringify(this.defaultColumns)),
         visible: false,
+        pageNum: 1,
+        isLoading: false,
         results: []
       },
       methods: {
         displayForm: function() {
+          window.location.hash = "";
           window.results.table.visible = false;
           return window.searchForm.form.visible = true;
+        },
+        pageNext: function() {
+          return this.pageTo(this.pageNum + 1);
+        },
+        pageBack: function() {
+          return this.pageTo(this.pageNum - 1);
+        },
+        pageTo: function(page) {
+          var self;
+          this.pageNum = page;
+          localStorage.setItem('currentPage', page);
+          window.searchForm.form.url = window.searchForm.apiUrl + ("?page=" + page);
+          this.isLoading = true;
+          self = this;
+          return window.searchForm.form.submitForm(null, "paging", function() {
+            return self.isLoading = false;
+          });
+        }
+      },
+      created: function() {
+        if (window.location.hash === "#query") {
+          this.results = JSON.parse(localStorage.getItem('results'));
+          this.visible = true;
+          this.pageNum = parseInt(localStorage.getItem("currentPage"));
+          window.searchForm.form.search = JSON.parse(localStorage.getItem('search'));
+          return window.searchForm.form.visible = false;
         }
       }
     });
+    window.base.bindEvents();
   }
 
   Results.prototype.defaultColumns = [

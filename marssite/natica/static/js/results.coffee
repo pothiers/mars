@@ -61,8 +61,7 @@ Vue.component "table-body",
 class Results
   constructor: ()->
     console.log "Results set created"
-    # Vue clobbers previous bindings, so re-bind
-    window.base.bindEvents()
+
 
     @table = new Vue
       el: "#query-results"
@@ -70,12 +69,41 @@ class Results
         # This should be set based on some session/local storage set
         visibleColumns : JSON.parse(JSON.stringify(@defaultColumns))
         visible: false
+        pageNum: 1
+        isLoading: false
+
         # TODO: Handle 0 results
         results: [] # loaded on page for development
       methods:
         displayForm: ()->
+          window.location.hash = ""
           window.results.table.visible = false
           window.searchForm.form.visible = true
+        pageNext: ()->
+          @pageTo(@pageNum+1)
+        pageBack: ()->
+          @pageTo(@pageNum-1)
+        pageTo: (page)->
+          # TODO: Use vue routes to make urls look right
+          # resend post data with new page num
+          @pageNum = page
+          localStorage.setItem('currentPage', page)
+          window.searchForm.form.url = window.searchForm.apiUrl+"?page=#{page}"
+          @isLoading = true
+          self = @
+          window.searchForm.form.submitForm(null, "paging", ()->
+            self.isLoading = false
+          )
+      created:()->
+        if window.location.hash is "#query"
+          @results = JSON.parse(localStorage.getItem('results'))
+          @visible = true
+          @pageNum = parseInt(localStorage.getItem("currentPage"))
+          window.searchForm.form.search = JSON.parse(localStorage.getItem('search'))
+          window.searchForm.form.visible = false
+          
+    # Vue clobbers previous bindings, so re-bind
+    window.base.bindEvents()
 
   defaultColumns:[
     {"mapping": "dec", "name" : "Dec"},

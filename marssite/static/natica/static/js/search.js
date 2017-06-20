@@ -37,6 +37,7 @@ SearchForm = (function() {
     this.form = new Vue({
       el: "#search-form",
       data: {
+        url: this.apiUrl,
         visible: true,
         loading: false,
         loadingMessage: "Sweeping up star dust...",
@@ -78,10 +79,24 @@ SearchForm = (function() {
             return this[bothFlag] = false;
           }
         },
-        submitForm: function(event) {
+        submitForm: function(event, paging, cb) {
           var key, message, msgs, newFormData;
-          event.preventDefault();
-          this.loading = true;
+          if (paging == null) {
+            paging = null;
+          }
+          if (cb == null) {
+            cb = null;
+          }
+          if (event != null) {
+            event.preventDefault();
+          }
+          if (!paging) {
+            this.loading = true;
+            this.url = searchForm.apiUrl;
+            window.location.hash = "";
+            window.results.table.pageNum = 1;
+            localStorage.setItem("currentPage", 1);
+          }
           newFormData = JSON.parse(JSON.stringify(this.search));
           for (key in newFormData) {
             if (_.isEqual(newFormData[key], searchForm.formData[key])) {
@@ -96,20 +111,25 @@ SearchForm = (function() {
           }
           msgs = searchForm.loadingMessages;
           message = Math.floor(Math.random() * msgs.length);
-          this.loadingMessage = message;
+          this.loadingMessage = msgs[message];
+          localStorage.setItem('search', JSON.stringify(this.search));
           return new Ajax({
-            url: "/dal/search/",
+            url: this.url,
             method: "post",
             accept: "json",
             data: {
               search: newFormData
             },
             success: function(data) {
+              window.location.hash = "#query";
               window.searchForm.form.loading = false;
               window.searchForm.form.visible = false;
               window.results.table.results = data;
               window.results.table.visible = true;
-              return console.dir(data);
+              localStorage.setItem('results', JSON.stringify(data));
+              if (cb) {
+                return cb();
+              }
             }
           }).send();
         }

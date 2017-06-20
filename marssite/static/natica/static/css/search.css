@@ -37,7 +37,7 @@
   background-color: rgba(0, 0, 0, 0.8);
   background-image: url(/static/img/galaxy-loading.gif);
   background-size: cover;
-  opacity: 0.8; }
+  opacity: 1; }
   .loading .loading-message {
     position: absolute;
     top: 30%;
