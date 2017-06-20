@@ -9,6 +9,9 @@ from siap.models import Image, VoiSiap
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
+from rest_framework import viewsets
+from .serializers import SiapSerializer
+
 dal_version = '0.1.6' # MVP. mostly untested
 
 search_spec_json = {
@@ -185,9 +188,10 @@ def search_by_json(request):
     offset_clause = 'OFFSET {}'.format(offset)
     # order:: comma delimitied, leading +/-  (ascending/descending)
     order_fields = request.GET.get('order','+reference')
+    print('DBG order_fields="[]"'.format(order_fields))
     order_clause = ('ORDER BY ' +
                     ', '.join(['{} {}'.format(f[1:], ('DESC'
-                                                      if f[0]=='-' else 'DESC'))
+                                                      if f[0]=='-' else 'ASC'))
                                for f in order_fields.split()]))
     print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
           .format(request.method, request.content_type))
@@ -262,7 +266,7 @@ def search_by_json(request):
                        order_clause,
                        limit_clause,
                        offset_clause  ))
-        print('DBG-2 sql={}'.format(sql))
+        print('DBG-3 sql={}'.format(sql))
         cursor.execute(sql)
         results = dictfetchall(cursor)
         #print('DBG results={}'.format(results))
@@ -270,8 +274,9 @@ def search_by_json(request):
         meta.update(
             dal_version = dal_version,
             comment = (
-                'WARNING: Little testing.'
-                ' Does not use "image_filter".'
+                'WARNING: Minor testing.'
+                ' Could be subject to SQL injection.'
+                ' Possible edge case bugs with time ranges.' 
             ),
             sql = sql,
             num_results = len(results),
@@ -283,3 +288,15 @@ def search_by_json(request):
         return HttpResponse('Requires POST with json payload')
     
 
+
+
+##############################################################################
+### REST Framework (experimental)
+###
+
+class SiapViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows VoiSiap (FITS metadata) to be viewed.
+    """
+    queryset = VoiSiap.objects.all()[:5]
+    serializer_class = SiapSerializer

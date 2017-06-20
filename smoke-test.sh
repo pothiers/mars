@@ -35,3 +35,5 @@ cd $SCRIPTDIR/marssite
 #! ./manage.py test siap.tests
 
 #! ./manage.py test tada.tests.TadaTest.test_table_prefix
+
+#curl -H "Content-Type: application/json" -X POST -d @dal/fixtures/request-dal-search-0.json 'http://localhost:8000/dal/search/?page=4&limit=24&order=-obs_date' | python -m json.tool
