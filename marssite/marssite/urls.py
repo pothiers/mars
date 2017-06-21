@@ -25,7 +25,6 @@ from django.contrib.auth.models import User # ,Group
 from provisional.views import FitsnameViewSet
 #from schedule.views import ScheduleViewSet
 from water.views import api_root
-
 # Serializers define the API representation.
 #!class UserSerializer(serializers.HyperlinkedModelSerializer):
 #!    class Meta:
@@ -78,7 +77,7 @@ urlpatterns = [
     url(r'^audit/', include('audit.urls', namespace='audit')),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^natica/', include('natica.urls', namespace='natica')),
     #!url(r'^api-auth/',  include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^api/', include(router.urls)),
     url(r'^api/', api_root, name='api_root'),
