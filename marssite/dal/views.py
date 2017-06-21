@@ -1,3 +1,4 @@
+import datetime
 import json
 import xml.etree.ElementTree as ET
 from collections import OrderedDict
@@ -5,9 +6,12 @@ from collections import OrderedDict
 from django.db import connections
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from siap.models import Image, VoiSiap
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+
+from siap.models import Image, VoiSiap
+from tada.models import FilePrefix
+
 
 dal_version = '0.1.6' # MVP. mostly untested
 
@@ -256,6 +260,9 @@ def search_by_json(request):
         where = remove_leading(where, ' AND ')
         #print('DBG-2 where="{}"'.format(where))
         where_clause = '' if len(where) == 0 else 'WHERE {}'.format(where)
+        sql0 = 'SELECT count(reference) FROM voi.siap {}'.format(where_clause)
+        cursor.execute(sql0)
+        total_count = cursor.fetchone()[0]
         sql = ('SELECT {} FROM voi.siap {} {} {} {}'
                .format(response_fields,
                        where_clause,
@@ -266,15 +273,22 @@ def search_by_json(request):
         cursor.execute(sql)
         results = dictfetchall(cursor)
         #print('DBG results={}'.format(results))
-        meta = OrderedDict.fromkeys(['dal_version', 'comment', 'sql', 'count'])
+        meta = OrderedDict.fromkeys(['dal_version', 'timestamp',
+                                     'comment', 'sql',
+                                     'page_result_count',
+                                     'to_here_count',
+                                     'total_count'])
         meta.update(
             dal_version = dal_version,
+            timestamp = datetime.datetime.now(),
             comment = (
                 'WARNING: Little testing.'
                 ' Does not use "image_filter".'
             ),
             sql = sql,
-            num_results = len(results),
+            page_result_count = len(results),
+            to_here_count = offset + len(results),
+            total_count = total_count,
         )
         resp = OrderedDict.fromkeys(['meta','resultset'])
         resp.update( meta = meta, resultset = results)
@@ -283,3 +297,13 @@ def search_by_json(request):
         return HttpResponse('Requires POST with json payload')
     
 
+@csrf_exempt
+def tele_inst_pairs(request):
+    """
+    Retrieve all valid telescope/instrument pairs. 
+    Determined by TADA file prefix table.
+    """
+    qs = FilePrefix.objects.all().order_by('pk').values('telescope',
+                                                        'instrument')
+    return JsonResponse([(d['telescope'],d['instrument']) for d in list(qs)],
+                         safe=False)

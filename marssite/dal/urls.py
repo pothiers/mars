@@ -7,4 +7,6 @@ urlpatterns = [
 
     url(r'^search/$',
         views.search_by_json, name='search_by_json'),
+    url(r'ti-pairs/$', views.tele_inst_pairs, name='tele_inst_pairs'),
 ]
+
