@@ -114,8 +114,12 @@ def apply_tac_update(**query):
         #!obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         obsdate = proposal.get('date')
         propid = proposal.get('propid')
-        slot, smade = Slot.objects.get_or_create(telescope=telescope,
-                                                 instrument=instrument,
+        #!slot, smade = Slot.objects.get_or_create(
+        #!    telescope=telescope, instrument=instrument, obsdate=obsdate)
+        tobj = Telescope.objects.get(pk=telescope)        
+        iobj = Instrument.objects.get(pk=instrument)        
+        slot, smade = Slot.objects.get_or_create(telescope=tobj,
+                                                 instrument=iobj,
                                                  obsdate=obsdate)
         msg = 'slot={}'.format(slot)
         if smade:
@@ -247,6 +251,7 @@ def setpropid(request, telescope, instrument, date, propid):
 def getpropid(request, telescope, instrument, date):
     """
     Retrieve a **propid** from the schedule given `instrument` and `date`.
+    Should really be POST since under some circumstances adds data our our DB!!!
     """
     logger.debug('EXECUTE: getpropid({},{},{})'
                  .format(telescope, instrument, date))
