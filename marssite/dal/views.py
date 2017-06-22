@@ -72,7 +72,7 @@ response_spec_json = [
 
 
 #    object as object_name,          -- object_name
-response_fields = '''
+COMMENTED_response_fields = '''
     reference,
     ra,
     dec,
@@ -94,6 +94,33 @@ response_fields = '''
     obstype as observation_type,    -- observation_type
     obsmode as observation_mode,    -- observation_mode
     prodtype as product,            -- product ???
+    proctype,    
+    seeing,
+    depth
+'''
+
+response_fields = '''
+    reference,
+    ra,
+    dec,
+    prop_id,
+    surveyid as survey_id,
+    date_obs as obs_date, 
+    dtpi as pi,           
+    telescope,
+    instrument,
+    release_date,
+    rawfile as flag_raw,  
+    proctype,
+    filter,
+    filesize,
+    filename,
+    dtacqnam as original_filename,
+    md5sum,
+    exposure,
+    obstype as observation_type,  
+    obsmode as observation_mode,  
+    prodtype as product,          
     proctype,    
     seeing,
     depth
@@ -264,7 +291,7 @@ def search_by_json(request):
         cursor.execute(sql0)
         total_count = cursor.fetchone()[0]
         sql = ('SELECT {} FROM voi.siap {} {} {} {}'
-               .format(response_fields,
+               .format(' '.join(response_fields.split()),
                        where_clause,
                        order_clause,
                        limit_clause,
