@@ -12,6 +12,8 @@ var gulp = require('gulp');
 var sass = require('gulp-sass');
 var minifyCSS = require('gulp-csso');
 var coffee = require('gulp-coffee');
+var watch = require('gulp-watch');
+var jasmineb = require('gulp-jasmine-browser');
 
 var sassSrc = "./marssite/**/*.scss";
 var cssDest = "./marssite/static";
@@ -49,6 +51,13 @@ gulp.task('sass:watch', function(){
 
 gulp.task('coffee:watch', function(){
   gulp.watch(coffeeSrc, ['coffee']);
+});
+
+gulp.task('jasmine', function(){
+  return gulp.src([jsDest])
+    .pipe(watch(jsDest))
+    .pipe(jasmineb.specRunner())
+    .pipe(jasmineb.server({port:8888}));
 });
 
 gulp.task('watch', ["coffee:watch", "sass:watch"]);
