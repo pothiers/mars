@@ -36,6 +36,15 @@ SearchForm = (function() {
     this.bindEvents();
     this.form = new Vue({
       el: "#search-form",
+      created: function() {
+        var event;
+        event = new CustomEvent("searchLoaded", {
+          detail: "Search Vue Component Loaded"
+        });
+        event.search = this;
+        console.log("dispatching event", event);
+        return window.dispatchEvent(event);
+      },
       data: {
         url: this.apiUrl,
         visible: true,
@@ -152,5 +161,10 @@ SearchResults = (function() {
   return SearchResults;
 
 })();
+
+document.addEventListener('searchLoaded', function(e) {
+  console.dir(arguments);
+  return console.log("Search loaded", e);
+});
 
 searchForm = new SearchForm();

@@ -35,6 +35,13 @@ class SearchForm
 
     @form = new Vue
       el:"#search-form"
+      created: ()->
+        # done loading, trigger event
+        event = new CustomEvent("searchLoaded", {detail:"Search Vue Component Loaded"})
+        event.search = @
+        console.log("dispatching event", event)
+        window.dispatchEvent(event)
+
       data:
         url: @apiUrl
         visible: true
@@ -56,7 +63,6 @@ class SearchForm
             {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
 
       methods:
-
         splitSelection: (val)->
           # for toggling conditional form inputs, one and sometimes both
           fieldFlag = @relatedSplitFieldFlags[val]['fieldFlag']
@@ -116,6 +122,7 @@ class SearchForm
                 cb()
           .send()
 
+
   bindEvents:()->
     console.log "binding yo"
     # Vue clobbers previous bindings, so re-bind
@@ -128,6 +135,10 @@ class SearchForm
 class SearchResults
   # vue ui
 
+
+document.addEventListener 'searchLoaded', (e)->
+  console.dir(arguments)
+  console.log("Search loaded", e)
 
 searchForm = new SearchForm()
 
