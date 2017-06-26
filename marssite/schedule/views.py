@@ -279,7 +279,14 @@ def getpropid(request, telescope, instrument, date):
     
     # MARS schedule slot not found...
     # ... try updating the date from TAC and trying to get the Slot again
-    update_from_noaoprop(date=date)
+    try:
+        update_from_noaoprop(date=date)
+    except Exception as err:
+        logger.error(('MARS: Failure to update Slot from TAC Schedule for date:{}'
+                      ' error: {}')
+                     .format(date, err))
+        raise
+        
     try:
         slot = Slot.objects.get(obsdate=date,
                                 telescope=tele,

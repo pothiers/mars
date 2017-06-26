@@ -4,6 +4,7 @@
 
 from django.core.urlresolvers import reverse
 from django.test import TestCase, Client, RequestFactory
+from unittest.mock import patch
 from .models import Slot
 import schedule.views
 
@@ -42,23 +43,33 @@ class ScheduleTest(TestCase):
         self.assertEqual(expected, response.content.decode())
 
     # ./manage.py test --noinput schedule.tests_production.ScheduleTest.test_getpropid2
-    def test_getpropid2(self):
-        "Not found in Slots, found in TAC. (update Slots from TAC)"
+    @patch('schedule.views.logger')
+    def test_getpropid2(self, mock_logger):
+        "Not found in Slots, found in TAC. Add Slots from TAC."
         tele = 'kp4m'
         instrum = 'mosaic3'
         date = '2016-02-02'
         expected = '2016A-0453'
+
         #print('DBG: test_getpropid: instrum={}'.format(instrum))
+        inschedule = Slot.objects.filter(obsdate=date,
+                                         telescope=tele,
+                                         instrument=instrum).exists()
+
+        self.assertFalse(inschedule,
+                         ('Slot {},{},{} wrongly found before service call'
+                          .format(tele, instrum, date)))
+
         response = self.client.get('/schedule/propid/{}/{}/{}/'
                                    .format(tele, instrum, date))
-        try:
-            slot = Slot.objects.exists(obsdate=date,
-                                       telescope=tele,
-                                       instrument=instrum)
-        except:
-            pass
+        inschedule = Slot.objects.filter(obsdate=date,
+                                         telescope=tele,
+                                         instrument=instrum).exists()
         self.assertEqual(200, response.status_code)
         self.assertEqual(expected, response.content.decode())
+        #! mock_logger.error.assert_called_with('Failure to update Slot from TAC Schedule')
+        self.assertTrue(inschedule,
+                        'Slot {},{},{} not added from TAC'.format(tele, instrum, date))
 
     def test_getpropid3(self):
         "Not found in Slots, not found in TAC, use DEFAULT. No SLOT change"
@@ -68,12 +79,14 @@ class ScheduleTest(TestCase):
         expected = '1816A-0247'
         response = self.client.get('/schedule/propid/{}/{}/{}/'
                                    .format(tele, instrum, date))
+        inschedule = False
         try:
-            slot = Slot.objects.exists(obsdate=date,
+            inschedule = Slot.objects.filter(obsdate=date,
                                        telescope=tele,
-                                       instrument=instrum)
+                                       instrument=instrum).exists()
         except:
             pass
+        self.assertFalse(inschedule, 'Slot {},{},{} wrongly found'.format(tele, instrum, date))
         self.assertEqual(200, response.status_code)
         self.assertEqual(expected, response.content.decode())
 
@@ -87,9 +100,9 @@ class ScheduleTest(TestCase):
         response = self.client.get('/schedule/propid/{}/{}/{}/'
                                    .format(tele, instrum, date))
         try:
-            slot = Slot.objects.exists(obsdate=date,
+            slot = Slot.objects.filter(obsdate=date,
                                        telescope=tele,
-                                       instrument=instrum)
+                                       instrument=instrum).exists()
         except:
             pass
         self.assertEqual(200, response.status_code)
