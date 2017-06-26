@@ -93,7 +93,6 @@ def apply_tac_update(**query):
                          .format(instrument))
             continue
         instrument = sched2hdr.get(instrument)
-        logger.debug('DBG-2.2')
         if instrument == None:
             continue
         if telescope == None:
@@ -116,8 +115,16 @@ def apply_tac_update(**query):
         propid = proposal.get('propid')
         #!slot, smade = Slot.objects.get_or_create(
         #!    telescope=telescope, instrument=instrument, obsdate=obsdate)
-        tobj = Telescope.objects.get(pk=telescope)        
-        iobj = Instrument.objects.get(pk=instrument)        
+        try:
+            tobj = Telescope.objects.get(pk=telescope)        
+            iobj = Instrument.objects.get(pk=instrument)        
+        except Exception as err:
+            logger.error(('Error retrieving Telescope ({}) or Instrument ({})'
+                          ' specified in TAC for date: {}. TAC entry ignored.'
+                          ' ; {}').
+                         format(telescope, instrument, obsdate, err))
+            continue
+            
         slot, smade = Slot.objects.get_or_create(telescope=tobj,
                                                  instrument=iobj,
                                                  obsdate=obsdate)
