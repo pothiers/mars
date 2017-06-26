@@ -18,8 +18,3 @@ def search(request):
     return render(request, "search.html", {'telescopes':telescopes})
 
 
-def test(request):
-    resp = {}
-    resp['result'] = "success"
-    resp['message'] = "hello"
-    return JsonResponse(resp)
