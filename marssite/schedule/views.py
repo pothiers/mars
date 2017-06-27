@@ -28,6 +28,10 @@ import urllib.parse
 import urllib.request
 from collections import defaultdict
 
+from unittest.mock import MagicMock, patch
+from .mock_rest import fake_urlopen
+
+
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -58,26 +62,46 @@ logger = logging.getLogger(__name__)
 #!    #(None:        'spartan ir camera'}	# spartan as above
 #!}
 
+def tac_webservice(base_url='http://www.noao.edu/noaoprop/schedule.mpl',
+                   timeout=6,
+                   fake=False,
+                   **query):
+    #!print('\nDBG: tac_websvice(fake={}, {})'.format(fake,query))
+    params = urllib.parse.urlencode(query)
+    tac_url='{}?{}'.format(base_url, params)
+    logger.debug('DBG: tac_url={}'.format(tac_url))
+
+    patcher = patch('urllib.request', autospec=True)
+    if fake:
+        #! print('DBG: patching to use fake_urlopen')
+        mock_request = patcher.start()
+        mock_request.urlopen = fake_urlopen
+        #    fake_urlopen
+    #!print('DBG: urlopen={}'.format(urllib.request.urlopen))
+    try:
+        response = urllib.request.urlopen(tac_url, timeout=timeout)
+        #!response = fake_urlopen(tac_url, timeout=timeout)
+        return response
+    except Exception as err:
+        logger.error('MARS: Error contacting TAC Schedule at "{}"; {}'.format(tac_url, err))
+        return None
+    finally:
+        if fake:
+            mock_request = patcher.stop()
+    return None
+    
 
 def apply_tac_update(**query):
     """Update/add object unless it already exists and is FROZEN. """
     logger.debug('apply tac update for query={}'.format(query))
-    params = urllib.parse.urlencode(query)
-    logger.debug('DBG: query={}, params={}'.format(query, params))
-    tac_url=('http://www.noao.edu/noaoprop/schedule.mpl?{}'.format(params))
-    tac_timeout=6
-    logger.debug('DBG: tac_url={}'.format(tac_url))
 
     telescopes = [obj.name for obj in Telescope.objects.all()]
     instruments = [obj.name for obj in Instrument.objects.all()]
 
-    try:
-        with urllib.request.urlopen(tac_url, timeout=tac_timeout) as f:
-            tree = ET.parse(f)
-            root = tree.getroot()
-    except:
-        logger.error('MARS: Error contacting TAC Schedule at "{}"'.format(tac_url))
-        return None
+    with tac_webservice(**query) as f:
+        tree = ET.parse(f)
+        root = tree.getroot()
+    
     logger.debug('DBG-1')
     slot_pids = defaultdict(set) # dict[slot] = [propid, ...]
     sched2hdr = dict([(obj.tac, obj.hdr)
