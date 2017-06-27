@@ -11,6 +11,7 @@ from .forms import SlotSetForm
 from .models import Slot, EmptySlot, Proposal, DefaultPropid
 from natica.models import Telescope,Instrument
 from tada.models import TacInstrumentAlias
+from tada.models import FilePrefix
 from .upload import handle_uploaded_file
 from rest_framework import viewsets, generics
 from rest_framework.views import APIView
@@ -31,7 +32,7 @@ from collections import defaultdict
 from unittest.mock import MagicMock, patch
 from .mock_rest import fake_urlopen
 
-
+use_fake_tac = False
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -98,7 +99,7 @@ def apply_tac_update(**query):
     telescopes = [obj.name for obj in Telescope.objects.all()]
     instruments = [obj.name for obj in Instrument.objects.all()]
 
-    with tac_webservice(**query) as f:
+    with tac_webservice(fake=use_fake_tac, **query) as f:
         tree = ET.parse(f)
         root = tree.getroot()
     
@@ -117,23 +118,28 @@ def apply_tac_update(**query):
                          .format(instrument))
             continue
         instrument = sched2hdr.get(instrument)
-        if instrument == None:
-            continue
-        if telescope == None:
+        if not FilePrefix.objects.filter(
+                telescope=telescope,
+                instrument=instrument).exists():
+            logger.error('TAC ({}) returned invalid telescope/instrument pair'
+                         ' compared to TADA prefix list.'
+                         ' Telescope={}, Instrument={}'
+                         ' TAC entry ignored.'
+                         .format(query, telescope, instrument))
             continue
         #!instrument = instrument.lower()
         #!telescope = telescope.lower()
         logger.debug('DBG-2.3: TAC instrument={}, telescope={}, date={}, pid={}'
                      .format(instrument, telescope,
                              proposal.get('date'), proposal.get('propid')))
-        if telescope not in telescopes:
-            logger.warning('MARS: Telescope "{}" not one of: {}'
-                            .format(telescope, telescopes))
-            continue
-        if instrument not in instruments:
-            logger.warning('MARS: Instrument "{}" not one of: {}'
-                            .format(instrument, instruments))
-            continue
+        #! if telescope not in telescopes:
+        #!     logger.warning('MARS: Telescope "{}" not one of: {}'
+        #!                     .format(telescope, telescopes))
+        #!     continue
+        #! if instrument not in instruments:
+        #!     logger.warning('MARS: Instrument "{}" not one of: {}'
+        #!                     .format(instrument, instruments))
+        #!     continue
         #!obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         obsdate = proposal.get('date')
         propid = proposal.get('propid')

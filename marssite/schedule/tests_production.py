@@ -14,16 +14,15 @@ class ScheduleTest(TestCase):
     #fixtures = ['schedule.yaml', 'dump.tada.yaml']
     fixtures = ['schedule.yaml', 'natica.yaml']
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(self):
         #self.factory = RequestFactory()
-        #print('DBG: ScheduleTest.setUp()')
-        #!self.patcher = patch('client.urlopen', fake_urlopen)
-        #!self.patcher.start()
         self.client = Client()
+        schedule.views.use_fake_tac = True
+        print('Using stored TAC response (not web-service access)')
 
     def tearDown(self):
-        #!self.patcher.stop()
-        pass
+        schedule.views.use_fake_tac = False
 
     # Should test for:
     #   1. found in Slots
@@ -42,7 +41,17 @@ class ScheduleTest(TestCase):
         """
         TAC web service returns expected value.
         """
-        expected = '<schedule> <proposal telescope="kp4m" instrument="NEWFIRM" date="2014-03-22" half="1" propid="2013B-0528"/> <proposal telescope="kp4m" instrument="NEWFIRM" date="2014-03-22" half="2" propid="2013B-0528"/> <proposal telescope="kp21m" instrument="CFIM+STA3" date="2014-03-22" half="1" propid="2014A-0148"/> <proposal telescope="kp21m" instrument="CFIM+STA3" date="2014-03-22" half="2" propid="2014A-0148"/> <proposal telescope="wiyn" instrument="SPSPKR+STA1" date="2014-03-22" half="1" propid="2014A-0553"/> <proposal telescope="wiyn" instrument="SPSPKR+STA1" date="2014-03-22" half="2" propid="2014A-0553"/> <proposal telescope="ct4m" instrument="DECam" date="2014-03-22" half="1" propid="2014A-0339"/> <proposal telescope="ct4m" instrument="DECam" date="2014-03-22" half="2" propid="2014A-0339"/></schedule>'
+        expected = '''<schedule>
+  <proposal telescope="kp4m" instrument="NEWFIRM" date="2014-03-22" half="1" propid="2013B-0528"/>
+  <proposal telescope="kp4m" instrument="NEWFIRM" date="2014-03-22" half="2" propid="2013B-0528"/>
+  <proposal telescope="kp21m" instrument="CFIM+STA3" date="2014-03-22" half="1" propid="2014A-0148"/>
+  <proposal telescope="kp21m" instrument="CFIM+STA3" date="2014-03-22" half="2" propid="2014A-0148"/>
+  <proposal telescope="wiyn" instrument="SPSPKR+STA1" date="2014-03-22" half="1" propid="2014A-0553"/>
+  <proposal telescope="wiyn" instrument="SPSPKR+STA1" date="2014-03-22" half="2" propid="2014A-0553"/>
+  <proposal telescope="ct4m" instrument="DECam" date="2014-03-22" half="1" propid="2014A-0339"/>
+  <proposal telescope="ct4m" instrument="DECam" date="2014-03-22" half="2" propid="2014A-0339"/>
+</schedule>
+'''
         response = schedule.views.tac_webservice(date='2014-03-22')
         self.assertEqual(200, response.status) # getcode())
         got = ' '.join(response.read().decode().split())
