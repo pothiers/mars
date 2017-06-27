@@ -21,15 +21,19 @@ var cssDest = "./marssite/static";
 var coffeeSrc = "./marssite/**/*.coffee";
 var jsDest = cssDest; // save both assets in the same root
 
-var node_module_collections = [
-  "./node_modules/*font-awesome/**/*", 
-  "./node_modules/*vue/dist/*.js",
-  "./node_modules/*better*/**/*.min.js"
+var libraries = [
+"./node_modules/*font-awesome/**/*", 
+"./node_modules/*vue/dist/*.js",
+"./node_modules/*better*/**/*.min.js",
+"./marssite/bower_components/*jquery-ui/**/*",
+"./marssite/*theme/images/**/*",
+"./marssite/bower_components/*fullcalendar/**/*",
+"./marssite/bower_components/*moment/**/*"
 ];
 
 gulp.task('collect', function(){
   console.log("Collecting resources into '"+jsDest);
-  gulp.src(node_module_collections )
+  gulp.src(libraries)
     .pipe(gulp.dest("./marssite/static"));
 });
 

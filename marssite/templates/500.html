@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load i18n static %}
+
+{% block head_title %}404 Page not found{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static "theme/404.css" %}" type="text/css"  media="screen">
+{% endblock %}
+
+
+{% block body %}
+    
+    <div class="container content">
+        <div class="row">
+            <div class="col-sm-offset-3 col-sm-6">
+                <h1>500 Internal Error</h1>
+                <p>There was an unrecoverable error</p>
+                
+            </div>
+        </div>
+    </div>
+
+        
+{% endblock %}
