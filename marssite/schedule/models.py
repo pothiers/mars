@@ -3,11 +3,8 @@ from django.contrib.postgres.fields import ArrayField
 from natica.models import Site,Telescope,Instrument
 
 class EmptySlot(models.Model):
-    #!telescope = models.CharField(max_length=80)
-    #!instrument = models.CharField(max_length=20)
     telescope = models.ForeignKey(Telescope)
     instrument = models.ForeignKey(Instrument)    
-
     obsdate = models.DateField()
     modified = models.DateTimeField(auto_now=True, help_text='When modified' )
 
@@ -21,25 +18,16 @@ class EmptySlot(models.Model):
 class Proposal(models.Model):
     propid = models.CharField(primary_key=True,  max_length=10,
                               help_text='YYYYs-nnnn (s[emester]:: A|B)')
-
-    #!title = models.CharField(max_length=256)
-    #!pi_name = models.CharField(max_length=80,
-    #!                           help_text='Principal Investigator name')
-    #!pi_affiliation = models.CharField(max_length=160)
     modified = models.DateTimeField(auto_now=True, help_text='When modified')
     
     def __str__(self):
         return self.propid
 
 class DefaultPropid(models.Model):
-    #!telescope = models.CharField(max_length=10)
-    #!instrument = models.CharField(max_length=20)
     telescope = models.ForeignKey(Telescope)
     instrument = models.ForeignKey(Instrument)    
-
     propids = ArrayField( models.CharField(max_length=10) )
     
-
 #!    # These are the only telescopes allowed by the perl script that
 #!    # uses a foreign web service for schedule retrieval.  Since the web
 #!    # service will return error for anything else, we limit also.
@@ -56,16 +44,9 @@ class DefaultPropid(models.Model):
 
 
 class Slot(models.Model):
-    # THESE ONLY GET UPDATED when django is started.
-    #telescopes = [obj.name for obj in Telescope.objects.all()]
-    #instruments = [obj.name for obj in Instrument.objects.all()]
-    #!telescope = models.CharField(max_length=10)
-    #!instrument = models.CharField(max_length=20)
     telescope = models.ForeignKey(Telescope)
     instrument = models.ForeignKey(Instrument)    
-
     obsdate = models.DateField(help_text='Observation date') # DATE-OBS
-
     proposals = models.ManyToManyField(Proposal)
     modified = models.DateTimeField(auto_now=True, help_text='When modified' )
     frozen = models.BooleanField(default=False,
@@ -73,7 +54,6 @@ class Slot(models.Model):
                                             'slot during a bulk operation.'))
     
     def propid_list(self):
-        #! return ', '.join([p.propid for p in self.proposals.all()[:4]])
         return ', '.join([p.propid for p in self.proposals.all()])
 
     propids = property(propid_list)
@@ -81,11 +61,6 @@ class Slot(models.Model):
     def __str__(self):
         return '{}:{}-{}'.format(self.obsdate, self.telescope, self.instrument)
         
-    #!pi_name = models.CharField(max_length=80,
-    #!                           help_text='Principal Investigator name')
-    #!pi_affiliation = models.CharField(max_length=160)
-    #!title = models.CharField(max_length=256)
-    #!
     class Meta:
         unique_together = ('telescope', 'instrument', 'obsdate')
         index_together = ['telescope', 'instrument', 'obsdate']
