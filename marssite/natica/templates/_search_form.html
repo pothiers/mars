@@ -3,7 +3,7 @@
         <div class="loading" v-show="loading">
             <div class="loading-message">
                 <small>Loading...</small>
-                {% verbatim %}
+{% verbatim %}
                 <div class="message" v-bind:text="loadingMessage">{{ loadingMessage }}</div>
                 {% endverbatim %}
             </div>
@@ -58,13 +58,23 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="ra" class="floating">Ra</label>
-                                        <input class="form-control" placeholder="RA" name="ra" id="ra" type="text" value="" v-model="search.coordinates.ra">
+                                        <input class="form-control" placeholder="RA" name="ra" id="ra" type="text" value="" v-model="search.coordinates.ra" v-validate="'decimal'">
+                                        {% verbatim %}
+                                        <span class="error-message" v-if="errors.has('ra')">
+                                            {{errors.first('ra')}}
+                                        </span>
+                                        {% endverbatim %}
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="dec" class="floating">Dec</label>
-                                        <input class="form-control" placeholder="Dec" name="dec" id="dec" type="text" value="" v-model="search.coordinates.dec">
+                                        <input class="form-control" placeholder="Dec" name="dec" id="dec" type="text" value="" v-model="search.coordinates.dec" v-validate="'decimal'">
+                                        {% verbatim %}
+                                        <span class="error-message" v-if="errors.has('dec')">
+                                            {{errors.first('dec')}}
+                                        </span>
+                                        {% endverbatim %}
                                     </div> 
                                 </div>
                             </div>
@@ -119,8 +129,12 @@
                                             <option value="[)">&ge;</option>
                                             <option value="[]" class="toggle-option">&le; &ge;</option>
                                         </select>
-                                        <input id="obs-date" class="form-control" data-polyfill="all" data-format="YYYY-mm-dd" name="obs-date" type="text" value="" placeholder="Obervation date" v-model="search.obs_date[0]" v-if="search.obs_date[2] !== '(]'">
-                                        <input id="obs-date-max" class="form-control" v-bind:class="{ 'hidden-split':showBothObsDateFields }" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-model="search.obs_date[1]" v-show="showObsDateMax" >
+                                        <input id="obs-date" class="form-control" data-polyfill="all" name="obs-date" type="text" value="" placeholder="Obervation date" v-model="search.obs_date[0]" v-if="search.obs_date[2] !== '(]'" v-validate="'date_format:YYYY-MM-DD'">
+                                        <input id="obs-date-max" class="form-control" v-bind:class="{ 'hidden-split':showBothObsDateFields }" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-model="search.obs_date[1]" v-show="showObsDateMax" v-validate="'date_format:YYYY-MM-DD'">
+                                        {% verbatim %}
+                                        <span class="error-message" v-if="errors.has('obs-date')">{{ errors.first('obs-date') }}</span>
+                                        <span class="error-message" v-if="errors.has('obs-date-max')">{{ errors.first('obs-date-max') }}</span>
+                                        {% endverbatim %}
                                     </div><!-- /input-group -->
                                 </div><!-- /form-group -->
                                 <div class="form-group">

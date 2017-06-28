@@ -4,9 +4,19 @@ Date: 2017-06-09
 Description: Serves functionality for submitting and displaying archive query forms/results
 Original file: search.coffee
 ###
+
+
+
 class SearchForm
   apiUrl: "/dal/search/"
   rangeInputs: ["obs_date", "exposure_time", "release_date"]
+
+  validatorConfig:
+    delay: 800
+    events: "input|blur"
+    inject: true
+
+
   formData:
     coordinates:
       ra: null
@@ -32,7 +42,7 @@ class SearchForm
 
   constructor: ()->
     @bindEvents()
-
+    Vue.use(VeeValidate, @validatorConfig) # validation plugin
     @form = new Vue
       el:"#search-form"
       created: ()->

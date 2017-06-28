@@ -14,6 +14,12 @@
       content: ""; }
   .form-section .collapsible.open .section-toggle .icon:after {
     content: ""; }
+  .form-section .error-message {
+    color: #d85454;
+    font-size: 14px;
+    line-height: 1.23em;
+    position: relative;
+    display: inline-block; }
 
 .results-wrapper {
   overflow-x: auto; }

@@ -243,4 +243,3 @@ if 'TRAVIS' in os.environ:
 else:
     exec(open('/etc/mars/django_local_settings.py').read())
 
-DEBUG=False

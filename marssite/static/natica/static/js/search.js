@@ -12,6 +12,12 @@ SearchForm = (function() {
 
   SearchForm.prototype.rangeInputs = ["obs_date", "exposure_time", "release_date"];
 
+  SearchForm.prototype.validatorConfig = {
+    delay: 800,
+    events: "input|blur",
+    inject: true
+  };
+
   SearchForm.prototype.formData = {
     coordinates: {
       ra: null,
@@ -34,6 +40,7 @@ SearchForm = (function() {
 
   function SearchForm() {
     this.bindEvents();
+    Vue.use(VeeValidate, this.validatorConfig);
     this.form = new Vue({
       el: "#search-form",
       created: function() {
