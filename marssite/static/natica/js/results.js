@@ -9,7 +9,7 @@ Original file: results.coffee
 /*
   Helper functions
  */
-var Results, results;
+var Results;
 
 Number.prototype.pad = function(size, char) {
   var s;
@@ -200,4 +200,4 @@ Results = (function() {
 
 })();
 
-results = new Results();
+export default Results;

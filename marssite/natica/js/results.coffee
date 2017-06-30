@@ -5,6 +5,7 @@ Description: Serves functionality for displaying and filtering result sets
 Original file: results.coffee
 ###
 
+
 ###
   Helper functions
 ###
@@ -128,4 +129,4 @@ class Results
     {"mapping": "survey_id", "name":"Survey Id"}
   ]
 
-results = new Results()
+export default Results

@@ -1,4 +1,5 @@
-<div id="query-results" >
+<template>
+    <div id="query-results">
     <transition name="fade">
         <div v-if="visible">
             <div class="container" >
@@ -14,9 +15,7 @@
                 <div class="row results-controls">
                     <div class="col-sm-3">
                         <button class="btn-link btn page-prev" v-on:click="pageBack">Prev</button>
-                        {% verbatim %}
                         <span class="page-num">{{ pageNum }}</span>
-                        {% endverbatim %}
                         <button class="btn-link btn page-next" v-on:click="pageNext">Next</button>
                         <span class="fa fa-spinner fa-spin fa-1x fa-fw" v-if="isLoading"></span>
                     </div>
@@ -52,5 +51,12 @@
             </div>
         </div>
     </transition>
-</div>
+    </div>
+</template>
+
+<script>
+    export default {
+
+    }
+</script>
 

@@ -22,14 +22,14 @@ var coffeeSrc = "./marssite/**/*.coffee";
 var jsDest = cssDest; // save both assets in the same root
 
 var libraries = [
-    "./node_modules/*font-awesome/**/*",
-    "./node_modules/*vue/dist/*.js",
-    "./node_modules/*better*/**/*.min.js",
-    "./marssite/bower_components/*jquery-ui/**/*",
-    "./marssite/*theme/images/**/*",
-    "./marssite/bower_components/*fullcalendar/**/*",
-    "./marssite/bower_components/*moment/**/*",
-    "./node_modules/*vee-validate/dist/**/*",
+  "./node_modules/*font-awesome/**/*",
+  "./node_modules/*vue/dist/*.js",
+  "./node_modules/*better*/**/*.min.js",
+  "./marssite/bower_components/*jquery-ui/**/*",
+  "./marssite/*theme/images/**/*",
+  "./marssite/bower_components/*fullcalendar/**/*",
+  "./marssite/bower_components/*moment/**/*",
+  "./node_modules/*vee-validate/dist/**/*",
 ];
 
 gulp.task('collect', function(){

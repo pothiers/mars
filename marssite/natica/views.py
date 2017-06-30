@@ -1,20 +1,26 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from os import listdir, path
+from os.path import isfile, join, abspath
+import json
 
 # Create your views here.
 
 
 def search(request):
-    # TODO: Get telescope + intrument combos from db
-    tel = type('Telescope', (object,),{})
-    telescopes = []
-    for i in range(1,10):
-        t = tel()
-        t.name = "Telescope{0}-Intrument{0}".format(i)
-        t.id = i
-        telescopes.append(t)
+    # get the resource names for html
+    curdir = path.dirname(__file__)
+    resPath = path.join(curdir,"../static/natica/dist")
+    
+    stats = open(path.join(curdir, "webpack-assets.json"), 'r')
+    resources = json.loads(stats.read())
+    r = []
+    r.append(resources.pop('manifest')['js'])
+    app = resources.pop('app.bundle')
+    for js in resources:
+        r.append(resources[js]['js'])
+    r.append(app['js'])
 
-    print(telescopes)
-    return render(request, "search.html", {'telescopes':telescopes})
+    return render(request, "search.html", {"jsResources":r })
 
 
