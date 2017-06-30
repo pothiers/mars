@@ -5,6 +5,7 @@ Description: Serves functionality for displaying and filtering result sets
 Original file: results.coffee
 ###
 
+import Vue from "vue"
 
 ###
   Helper functions
@@ -57,56 +58,10 @@ Vue.component "table-body",
 
 
 ###
-   App - Results Class
+   App - Results
 ###
-class Results
-  constructor: ()->
-    console.log "Results set created"
-
-
-    @table = new Vue
-      el: "#query-results"
-      data:
-        # This should be set based on some session/local storage set
-        visibleColumns : JSON.parse(JSON.stringify(@defaultColumns))
-        visible: false
-        pageNum: 1
-        isLoading: false
-
-        # TODO: Handle 0 results
-        results: [] # loaded on page for development
-      methods:
-        displayForm: ()->
-          window.location.hash = ""
-          window.results.table.visible = false
-          window.searchForm.form.visible = true
-        pageNext: ()->
-          @pageTo(@pageNum+1)
-        pageBack: ()->
-          @pageTo(@pageNum-1)
-        pageTo: (page)->
-          # TODO: Use vue routes to make urls look right
-          # resend post data with new page num
-          @pageNum = page
-          localStorage.setItem('currentPage', page)
-          window.searchForm.form.url = window.searchForm.apiUrl+"?page=#{page}"
-          @isLoading = true
-          self = @
-          window.searchForm.form.submitForm(null, "paging", ()->
-            self.isLoading = false
-          )
-      created:()->
-        if window.location.hash is "#query"
-          @results = JSON.parse(localStorage.getItem('results'))
-          @visible = true
-          @pageNum = parseInt(localStorage.getItem("currentPage"))
-          window.searchForm.form.search = JSON.parse(localStorage.getItem('search'))
-          window.searchForm.form.visible = false
-          
-    # Vue clobbers previous bindings, so re-bind
-    window.base.bindEvents()
-
-  defaultColumns:[
+config = {
+ defaultColumns:[
     {"mapping": "dec", "name" : "Dec"},
     {"mapping": "depth", "name": "Depth"},
     {"mapping": "exposure", "name": "Exposure"},
@@ -128,5 +83,48 @@ class Results
     {"mapping": "telescope", "name":"Telescope"},
     {"mapping": "survey_id", "name":"Survey Id"}
   ]
+}
+# TODO: Handle 0 results
+export default {
+  props: ['componentData']
+  data: ()->
+    return {
+      # This should be set based on some session/local storage set
+      visibleColumns : JSON.parse(JSON.stringify(config.defaultColumns))
+      visible: false
+      pageNum: 1
+      isLoading: false
+      results: []
+    }
+  methods:
+    displayForm: ()->
+      window.location.hash = ""
+      this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))] )
+    pageNext: ()->
+      @pageTo(@pageNum+1)
+    pageBack: ()->
+      @pageTo(@pageNum-1)
+    pageTo: (page)->
+      # TODO: Use vue routes to make urls look right
+      # resend post data with new page num
+      this.$data.pageNum = page
+      localStorage.setItem('currentPage', page)
+      this.$emit("pageto", page)
+      this.$data.isLoading = true
+      self = @
+      this.$emit("submitform", [null, "paging", ()->
+        self.$data.isLoading = false
+      ])
+  mounted:()->
+    window.base.bindEvents()
+    #
+    
+    if window.location.hash is "#query"
+      @results = JSON.parse(localStorage.getItem('results'))
+      @visible = true
+      @pageNum = parseInt(localStorage.getItem("currentPage"))
+      #window.searchForm.form.search = JSON.parse(localStorage.getItem('search'))
 
-export default Results
+
+  
+}

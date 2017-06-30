@@ -5,7 +5,7 @@ Date: 2017-06-09
 Description: Serves functionality for submitting and displaying archive query forms/results
 Original file: search.coffee
  */
-var config;
+var config, searchFormComponent;
 
 import Vue from 'vue';
 
@@ -47,15 +47,17 @@ config = {
   return Vue.use(VeeValidate, config.validatorConfig);
 })();
 
-export default {
+searchFormComponent = {
+  created: function() {
+    return this.getTelescopes();
+  },
   mounted: function() {
-    var event;
-    event = new CustomEvent("searchLoaded", {
-      detail: "Search Vue Component Loaded"
-    });
-    event.search = this;
-    console.log("dispatching event", event);
-    return window.dispatchEvent(event);
+    var search;
+    search = this.$parent.$data.componentData;
+    if (search != null ? search.hasOwnProperty("coordinates") : void 0) {
+      this.search = search;
+    }
+    return window.base.bindEvents();
   },
   data: function() {
     return {
@@ -70,6 +72,7 @@ export default {
       showBothExposureFields: false,
       showBothObsDateFields: false,
       showBothReleaseDateFields: false,
+      telescopes: [],
       relatedSplitFieldFlags: {
         "exposure_time": {
           "fieldFlag": 'showExposureMax',
@@ -87,6 +90,29 @@ export default {
     };
   },
   methods: {
+    getTelescopes: function() {
+      var now, self, telescopes;
+      telescopes = JSON.parse(localStorage.getItem("telescopes") || "0");
+      self = this;
+      now = moment();
+      if (telescopes && moment(telescopes != null ? telescopes.expires : void 0) > now) {
+        return self.telescopes = telescopes.telescopes;
+      } else {
+        return new Ajax({
+          url: window.location.origin + "/dal/ti-pairs",
+          method: "get",
+          accept: "json",
+          success: function(data) {
+            self.telescopes = data;
+            telescopes = {
+              expires: moment().add(7, 'days'),
+              telescopes: data
+            };
+            return localStorage.setItem("telescopes", JSON.stringify(telescopes));
+          }
+        }).send();
+      }
+    },
     splitSelection: function(val) {
       var bothFlag, fieldFlag;
       fieldFlag = this.relatedSplitFieldFlags[val]['fieldFlag'];
@@ -103,7 +129,7 @@ export default {
       }
     },
     submitForm: function(event, paging, cb) {
-      var key, message, msgs, newFormData;
+      var key, message, msgs, newFormData, self;
       if (paging == null) {
         paging = null;
       }
@@ -115,9 +141,9 @@ export default {
       }
       if (!paging) {
         this.loading = true;
-        this.url = searchForm.apiUrl;
+        this.url = config.apiUrl;
         window.location.hash = "";
-        window.results.table.pageNum = 1;
+        this.$emit('setpagenum', 1);
         localStorage.setItem("currentPage", 1);
       }
       newFormData = JSON.parse(JSON.stringify(this.search));
@@ -136,6 +162,7 @@ export default {
       message = Math.floor(Math.random() * msgs.length);
       this.loadingMessage = msgs[message];
       localStorage.setItem('search', JSON.stringify(this.search));
+      self = this;
       return new Ajax({
         url: this.url,
         method: "post",
@@ -145,11 +172,9 @@ export default {
         },
         success: function(data) {
           window.location.hash = "#query";
-          window.searchForm.form.loading = false;
-          window.searchForm.form.visible = false;
-          window.results.table.results = data;
-          window.results.table.visible = true;
+          self.loading = false;
           localStorage.setItem('results', JSON.stringify(data));
+          self.$emit("displayform", ["results", data]);
           if (cb) {
             return cb();
           }
@@ -158,3 +183,5 @@ export default {
     }
   }
 };
+
+export default searchFormComponent;

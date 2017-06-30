@@ -5,11 +5,14 @@ Date: 2017-06-09
 Description: Serves functionality for displaying and filtering result sets
 Original file: results.coffee
  */
+var config;
+
+import Vue from "vue";
+
 
 /*
   Helper functions
  */
-var Results;
 
 Number.prototype.pad = function(size, char) {
   var s;
@@ -80,59 +83,11 @@ Vue.component("table-body", {
 
 
 /*
-   App - Results Class
+   App - Results
  */
 
-Results = (function() {
-  function Results() {
-    console.log("Results set created");
-    this.table = new Vue({
-      el: "#query-results",
-      data: {
-        visibleColumns: JSON.parse(JSON.stringify(this.defaultColumns)),
-        visible: false,
-        pageNum: 1,
-        isLoading: false,
-        results: []
-      },
-      methods: {
-        displayForm: function() {
-          window.location.hash = "";
-          window.results.table.visible = false;
-          return window.searchForm.form.visible = true;
-        },
-        pageNext: function() {
-          return this.pageTo(this.pageNum + 1);
-        },
-        pageBack: function() {
-          return this.pageTo(this.pageNum - 1);
-        },
-        pageTo: function(page) {
-          var self;
-          this.pageNum = page;
-          localStorage.setItem('currentPage', page);
-          window.searchForm.form.url = window.searchForm.apiUrl + ("?page=" + page);
-          this.isLoading = true;
-          self = this;
-          return window.searchForm.form.submitForm(null, "paging", function() {
-            return self.isLoading = false;
-          });
-        }
-      },
-      created: function() {
-        if (window.location.hash === "#query") {
-          this.results = JSON.parse(localStorage.getItem('results'));
-          this.visible = true;
-          this.pageNum = parseInt(localStorage.getItem("currentPage"));
-          window.searchForm.form.search = JSON.parse(localStorage.getItem('search'));
-          return window.searchForm.form.visible = false;
-        }
-      }
-    });
-    window.base.bindEvents();
-  }
-
-  Results.prototype.defaultColumns = [
+config = {
+  defaultColumns: [
     {
       "mapping": "dec",
       "name": "Dec"
@@ -194,10 +149,51 @@ Results = (function() {
       "mapping": "survey_id",
       "name": "Survey Id"
     }
-  ];
+  ]
+};
 
-  return Results;
-
-})();
-
-export default Results;
+export default {
+  props: ['componentData'],
+  data: function() {
+    return {
+      visibleColumns: JSON.parse(JSON.stringify(config.defaultColumns)),
+      visible: false,
+      pageNum: 1,
+      isLoading: false,
+      results: []
+    };
+  },
+  methods: {
+    displayForm: function() {
+      window.location.hash = "";
+      return this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
+    },
+    pageNext: function() {
+      return this.pageTo(this.pageNum + 1);
+    },
+    pageBack: function() {
+      return this.pageTo(this.pageNum - 1);
+    },
+    pageTo: function(page) {
+      var self;
+      this.$data.pageNum = page;
+      localStorage.setItem('currentPage', page);
+      this.$emit("pageto", page);
+      this.$data.isLoading = true;
+      self = this;
+      return this.$emit("submitform", [
+        null, "paging", function() {
+          return self.$data.isLoading = false;
+        }
+      ]);
+    }
+  },
+  mounted: function() {
+    window.base.bindEvents();
+    if (window.location.hash === "#query") {
+      this.results = JSON.parse(localStorage.getItem('results'));
+      this.visible = true;
+      return this.pageNum = parseInt(localStorage.getItem("currentPage"));
+    }
+  }
+};

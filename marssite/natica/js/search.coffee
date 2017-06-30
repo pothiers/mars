@@ -54,13 +54,16 @@ config =
   Vue.use(VeeValidate, config.validatorConfig) # validation plugin
 )()
 
-export default {
+searchFormComponent = {
+  created: ()->
+    this.getTelescopes()
+
   mounted: ()->
-    # done loading, trigger event
-    event = new CustomEvent("searchLoaded", {detail:"Search Vue Component Loaded"})
-    event.search = @
-    console.log("dispatching event", event)
-    window.dispatchEvent(event)
+    # get stuff from parent 
+    search = this.$parent.$data.componentData
+    if search?.hasOwnProperty("coordinates")
+      @search = search
+    window.base.bindEvents()
 
   data: ()->
     return {
@@ -75,6 +78,7 @@ export default {
       showBothExposureFields: false
       showBothObsDateFields: false
       showBothReleaseDateFields: false
+      telescopes: []
       relatedSplitFieldFlags :
         "exposure_time":
           {"fieldFlag":'showExposureMax', "bothFieldFlag":"showBothExposureFields"}
@@ -84,6 +88,27 @@ export default {
           {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
     }
   methods:
+    getTelescopes: ()->
+      # check if we have a cached set to use
+      telescopes = JSON.parse(localStorage.getItem("telescopes")||"0")
+      self = @
+      now = moment()
+      if telescopes and moment(telescopes?.expires) > now
+        self.telescopes = telescopes.telescopes
+      else
+        new Ajax
+          url: window.location.origin+"/dal/ti-pairs"
+          method: "get"
+          accept: "json"
+          success: (data)->
+            self.telescopes = data
+            telescopes = {
+              expires: moment().add(7,'days')
+              telescopes: data
+            }
+            localStorage.setItem("telescopes", JSON.stringify(telescopes))
+        .send()
+
     splitSelection: (val)->
       # for toggling conditional form inputs, one and sometimes both
       fieldFlag = @relatedSplitFieldFlags[val]['fieldFlag']
@@ -103,9 +128,9 @@ export default {
       event?.preventDefault()
       unless paging
         @loading = true
-        @url = searchForm.apiUrl
+        @url = config.apiUrl
         window.location.hash = ""
-        window.results.table.pageNum = 1
+        this.$emit('setpagenum', 1)
         localStorage.setItem("currentPage", 1)
 
       # strip out anything that wasn't modified
@@ -124,7 +149,7 @@ export default {
       message = Math.floor(Math.random()*msgs.length)
       @loadingMessage = msgs[message]
       localStorage.setItem('search', JSON.stringify(@search))
-
+      self = @
       new Ajax
         url: @url
         method: "post"
@@ -133,12 +158,12 @@ export default {
           search: newFormData
         success: (data)->
           window.location.hash = "#query"
-          window.searchForm.form.loading = false
-          window.searchForm.form.visible = false
-          window.results.table.results = data
-          window.results.table.visible = true
+          self.loading = false
           localStorage.setItem('results', JSON.stringify(data))
+          self.$emit("displayform", ["results", data])
           if cb
             cb()
       .send()
 }
+
+export default searchFormComponent 

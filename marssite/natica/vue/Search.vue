@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="search-form">
+  <div class="container" id="search-form" >
       <transition name="fade">
           <div class="loading" v-show="loading">
               <div class="loading-message">
@@ -123,8 +123,8 @@
                                               <option value="[)">&ge;</option>
                                               <option value="[]" class="toggle-option">&le; &ge;</option>
                                           </select>
-                                          <input id="obs-date" class="form-control" data-polyfill="all" name="obs-date" type="text" value="" placeholder="Obervation date" v-model="search.obs_date[0]" v-if="search.obs_date[2] !== '(]'" v-validate="'date_format:YYYY-MM-DD'">
-                                          <input id="obs-date-max" class="form-control" v-bind:class="{ 'hidden-split':showBothObsDateFields }" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-model="search.obs_date[1]" v-show="showObsDateMax" v-validate="'date_format:YYYY-MM-DD'">
+                                          <input id="obs-date" class="date form-control" data-polyfill="all" name="obs-date" type="text" value="" placeholder="Obervation date" v-model="search.obs_date[0]" v-if="search.obs_date[2] !== '(]'" v-validate="'date_format:YYYY-MM-DD'">
+                                          <input id="obs-date-max" class="date form-control" v-bind:class="{ 'hidden-split':showBothObsDateFields }" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-model="search.obs_date[1]" v-show="showObsDateMax" v-validate="'date_format:YYYY-MM-DD'">
                                           <span class="error-message" v-if="errors.has('obs-date')">{{ errors.first('obs-date') }}</span>
                                           <span class="error-message" v-if="errors.has('obs-date-max')">{{ errors.first('obs-date-max') }}</span>
                                       </div><!-- /input-group -->
@@ -181,8 +181,8 @@
                                               <option value="[)">&ge;</option>
                                               <option value="[]" class="toggle-option">&le; &ge;</option>
                                           </select>
-                                          <input id="release-date" class="form-control" name="release-date" type="text" value="" placeholder="Public Release Date" v-model="search.release_date[0]" v-if="search.release_date[2] !== '(]'">
-                                          <input id="release-date-max" class="form-control" v-bind:class="{ 'hidden-split': showBothReleaseDateFields }" name="release-date-max" type="text" value="" placeholder="Max release date" v-model="search.release_date[1]" v-show="showReleaseDateMax">
+                                          <input id="release-date" class="date form-control" name="release-date" type="text" value="" placeholder="Public Release Date" v-model="search.release_date[0]" v-if="search.release_date[2] !== '(]'">
+                                          <input id="release-date-max" class="date form-control" v-bind:class="{ 'hidden-split': showBothReleaseDateFields }" name="release-date-max" type="text" value="" placeholder="Max release date" v-model="search.release_date[1]" v-show="showReleaseDateMax">
                                       </div><!-- /input-group -->
                                   </div>
                               </div><!-- /col -->
@@ -210,7 +210,7 @@
                                       <div class="input-group">
                                           <label for="telescope">Telescope &amp; Intrument</label>
                                           <select id="telescope" name="telescope" class="form-control" multiple size="10" v-model="search.instrument">
-                                             
+                                            <option value="" v-for="tel in telescopes" v-bind:value="tel">{{ tel[0] }} + {{ tel[1] }}</option>                                            
                                           </select>
                                       </div>
                                   </div>
@@ -225,6 +225,6 @@
 </template>
 <script>
 import search from "../js/search.coffee";
-
+ 
 export default search;
 </script>

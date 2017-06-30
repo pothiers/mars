@@ -55,8 +55,8 @@
 </template>
 
 <script>
-    export default {
+  import results from "../js/results.coffee";
 
-    }
+  export default results;
 </script>
 

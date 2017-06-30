@@ -39,9 +39,11 @@ module.exports = {
   plugins: [
     assetsPluginInstance,
     new CleanWebpackPlugin(["static/natica/dist"], cleanConfig),
+    /*
     new BundleAnalyzerPlugin({
       analyzerMode: 'static'
     }),
+    */
     // splitting can be done implicitly
     // https://webpack.js.org/guides/code-splitting-libraries/
     new webpack.optimize.CommonsChunkPlugin({
