@@ -208,6 +208,7 @@ proc_LUT = dict(raw = 'raw',
 # curl -H "Content-Type: application/json" -X POST -d @request.json http://localhost:8000/dal/search/ | python -m json.tool
 @csrf_exempt
 def search_by_json(request):
+    print('DBG-0: search_by_json')
     # !!! Verify values (e.g. telescope) are valid. Avoid SQL injection hit.
     page_limit = int(request.GET.get('limit','100')) # num of records per page
     limit_clause = 'LIMIT {}'.format(page_limit)
@@ -216,12 +217,15 @@ def search_by_json(request):
     offset_clause = 'OFFSET {}'.format(offset)
     # order:: comma delimitied, leading +/-  (ascending/descending)
     order_fields = request.GET.get('order','+reference')
+    print('DBG-1: search_by_json')
     order_clause = ('ORDER BY ' +
                     ', '.join(['{} {}'.format(f[1:], ('DESC'
                                                       if f[0]=='-' else 'DESC'))
                                for f in order_fields.split()]))
+    print('DBG-2: search_by_json')
     print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
           .format(request.method, request.content_type))
+    print('DBG-3: search_by_json')
     if request.method == 'POST':
         root = ET.Element('search')
         #!print('DBG body str={}'.format(request.body.decode('utf-8')))
@@ -250,6 +254,7 @@ def search_by_json(request):
         #!cursor.execute('SELECT * FROM refresh_voi_material_views()')
         where = '' # WHERE clause innards
         
+        print('DBG-4: search_by_json')
         slop = jsearch.get('search_box_min', .001)
         if 'coordinates' in jsearch:
             coord = jsearch['coordinates']
@@ -287,8 +292,11 @@ def search_by_json(request):
         where = remove_leading(where, ' AND ')
         #print('DBG-2 where="{}"'.format(where))
         where_clause = '' if len(where) == 0 else 'WHERE {}'.format(where)
+        print('DBG-5: search_by_json')
         sql0 = 'SELECT count(reference) FROM voi.siap {}'.format(where_clause)
+        print('DBG-6: search_by_json; sql0=',sql0)
         cursor.execute(sql0)
+        print('DBG-7: search_by_json')
         total_count = cursor.fetchone()[0]
         sql = ('SELECT {} FROM voi.siap {} {} {} {}'
                .format(' '.join(response_fields.split()),
@@ -309,8 +317,8 @@ def search_by_json(request):
             dal_version = dal_version,
             timestamp = datetime.datetime.now(),
             comment = (
-                'WARNING: Little testing.'
-                ' Does not use "image_filter".'
+                'WARNING: Has not been tested much.'
+                ' Does not use IMAGE_FILTER.'
             ),
             sql = sql,
             page_result_count = len(results),

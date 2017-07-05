@@ -66,7 +66,8 @@ INSTALLED_APPS = (
     'provisional',
     'water',
     'tada',
-    'natica',
+    'lsa',  # Legacy Science Archive (pre-NATICA)
+    'natica', # replace LSA
     'rest_framework',
     'rest_framework_swagger',
     'django_tables2',

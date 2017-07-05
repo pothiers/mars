@@ -14,6 +14,21 @@ class DisableMigrations(object):
     def __getitem__(self, item):
         return "notmigrations"
 
+class LiveDBTestRunner(DiscoverRunner):
+    """
+    THIS IS DANGEROUS.
+    Do NOT create new database.  Use live DB (for metadata DB). 
+    Done as stop-gap until we have build a clone of metadata DB on test server. 
+    It should contain a small subset of full metadata content.
+    """
+    def setup_databases(self, *args, **kwargs):
+        print('WARNING: using LIVE database = {}'
+              .format(DATABASES['archive']['HOST']))
+        pass
+    
+    def teardown_databases(self, *args, **kwargs):
+        pass
+
 class UnManagedModelTestRunner(DiscoverRunner):
     '''
     Test runner that automatically makes all unmanaged models in your Django
@@ -26,7 +41,8 @@ class UnManagedModelTestRunner(DiscoverRunner):
         #!self.unmanaged_models = [m for m in get_models() if not m._meta.managed]
         # for django-1.10
         from django.apps import apps
-        self.unmanaged_models = [m for m in apps.get_models() if not m._meta.managed]
+        self.unmanaged_models = [m for m in apps.get_models()
+                                 if (not m._meta.managed) and m != apps.get_model('siap.Image')]
 
         for m in self.unmanaged_models:
             m._meta.managed = True
@@ -43,17 +59,8 @@ class UnManagedModelTestRunner(DiscoverRunner):
 # some of the global db settings, only to be in effect when "test" is present
 # in the command line arguments:
 
-#!if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
-#!
-#!    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-#!    DATABASES['default']['HOST'] = '127.0.0.1'
-#!    DATABASES['default']['USER'] = 'username'
-#!    DATABASES['default']['PASSWORD'] = 'secret'
-#!
-#!    DATABASES['archive']['ENGINE'] = 'django.db.backends.postgresql_psycopg2'
-#!    DATABASES['archive']['HOST'] = '127.0.0.1'
-#!    DATABASES['archive']['USER'] = 'username'
-#!    DATABASES['archive']['PASSWORD'] = 'secret'
+if 'test' in sys.argv or 'test_coverage' in sys.argv:  # Covers regular testing and django-coverage
+    exec(open('/etc/mars/django_local_settings_test.py').read())
 
 
 # The custom routers we're using to route certain ORM queries
@@ -68,4 +75,5 @@ DATABASE_ROUTERS = []
 MIGRATION_MODULES = DisableMigrations()
 
 # Set Django's test runner to the custom class defined above
-TEST_RUNNER = 'marssite.test_settings.UnManagedModelTestRunner'
+#TEST_RUNNER = 'marssite.test_settings.UnManagedModelTestRunner'
+TEST_RUNNER = 'marssite.test_settings.LiveDBTestRunner'
