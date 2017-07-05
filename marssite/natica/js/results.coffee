@@ -6,6 +6,7 @@ Original file: results.coffee
 ###
 
 import Vue from "vue"
+import Shared from "./mixins.coffee"
 
 ###
   Helper functions
@@ -60,33 +61,10 @@ Vue.component "table-body",
 ###
    App - Results
 ###
-config = {
- defaultColumns:[
-    {"mapping": "dec", "name" : "Dec"},
-    {"mapping": "depth", "name": "Depth"},
-    {"mapping": "exposure", "name": "Exposure"},
-    {"mapping": "filename", "name": "Filename"},
-    {"mapping": "filesize", "name" : "File size"},
-    {"mapping": "filter", "name": "Filter"},
-    {"mapping": "image_type", "name": "Image Type"},
-    {"mapping": "instrument", "name": "Instrument"},
-    {"mapping": "md5sum", "name": "MD5 sum"},
-    {"mapping": "obs_date", "name": "Observed date"},
-    {"mapping": "original_filename", "name":"Original filename"},
-    {"mapping": "pi", "name": "Principle Investigator"},
-    {"mapping": "product", "name":"Product"},
-    {"mapping": "prop_id", "name": "Program Number"},
-    {"mapping": "ra", "name":"RA"},
-    {"mapping": "reference", "name":"Reference"},
-    {"mapping": "release_date", "name":"Release Date"},
-    {"mapping": "seeing", "name":"Seeing"},
-    {"mapping": "telescope", "name":"Telescope"},
-    {"mapping": "survey_id", "name":"Survey Id"}
-  ]
-}
-# TODO: Handle 0 results
+config = Shared.config
 export default {
   props: ['componentData']
+  mixins: [Shared.mixin]
   data: ()->
     return {
       # This should be set based on some session/local storage set
@@ -95,11 +73,15 @@ export default {
       pageNum: 1
       isLoading: false
       results: []
+      totalItems: 0
+      error: ""
     }
   methods:
     displayForm: ()->
       window.location.hash = ""
       this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))] )
+    handleError: (e)->
+      console.log "There was an error", e
     pageNext: ()->
       @pageTo(@pageNum+1)
     pageBack: ()->
@@ -107,22 +89,31 @@ export default {
     pageTo: (page)->
       # TODO: Use vue routes to make urls look right
       # resend post data with new page num
-      this.$data.pageNum = page
+      @pageNum = page
       localStorage.setItem('currentPage', page)
       this.$emit("pageto", page)
-      this.$data.isLoading = true
+      @isLoading = true
       self = @
-      this.$emit("submitform", [null, "paging", ()->
-        self.$data.isLoading = false
-      ])
+      @submitForm(null, "paging",  (data)->
+        self.isLoading = false
+        self.results = data
+      )
   mounted:()->
     window.base.bindEvents()
     #
     
     if window.location.hash is "#query"
-      @results = JSON.parse(localStorage.getItem('results'))
-      @visible = true
-      @pageNum = parseInt(localStorage.getItem("currentPage"))
+      try
+        @results = JSON.parse(localStorage.getItem('results')) || []
+        @totalItems = @results?.meta.total_count
+        @visible = true
+        @pageNum = parseInt(localStorage.getItem("currentPage"))
+      catch e
+        @results = []
+        @totalItems = 0
+        @visible = true
+        @error = "There was an error parsing results from server"
+        @handleError(e)
       #window.searchForm.form.search = JSON.parse(localStorage.getItem('search'))
 
 

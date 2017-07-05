@@ -6,7 +6,7 @@
                 <div class="row heading">
                     <div class="col-xs-10">
 
-                        <h2 class="text-warn">Query returned <em>N</em> records</h2>
+                        <h2 class="text-warn">Query returned <em>{{totalItems}}</em> records</h2>
                     </div>
                     <div class="col-xs-2 text-right">
                         <button class="btn btn-primary" v-on:click="displayForm">New Search</button>
@@ -31,7 +31,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 results-wrapper">
-                        <table class="results">
+                        <table class="results" v-if="results.resultset">
                             <thead>
                                 <tr>
                                     <th>Selected</th>
@@ -46,6 +46,10 @@
 
                             </tfoot>
                         </table>
+                        <div v-else>
+                          <h1 class="text-center">No results found</h1>
+                          <div class="alert alert-danger text-center" v-if="error">{{ error }}</div>
+                        </div>
                     </div>
                 </div>
             </div>

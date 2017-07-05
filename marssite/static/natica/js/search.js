@@ -5,49 +5,45 @@ Date: 2017-06-09
 Description: Serves functionality for submitting and displaying archive query forms/results
 Original file: search.coffee
  */
-var config, searchFormComponent;
+var config, searchFormComponent, validateDependsOn;
 
 import Vue from 'vue';
 
-import VeeValidate from 'vee-validate';
+import VeeValidate, {
+  Validator
+} from 'vee-validate';
 
-config = {
-  apiUrl: "/dal/search/",
-  rangeInputs: ["obs_date", "exposure_time", "release_date"],
-  validatorConfig: {
-    delay: 800,
-    events: "input|blur",
-    inject: true
+import Shared from './mixins.coffee';
+
+validateDependsOn = {
+  getMessage: function(field, params, data) {
+    var dependsOn, id;
+    id = params[0].replace("#", "");
+    dependsOn = document.querySelector("label[for=" + id + "]").innerText;
+    return (data && data.message) || ("This field depends on " + dependsOn);
   },
-  formData: {
-    coordinates: {
-      ra: null,
-      dec: null
-    },
-    pi: null,
-    search_box_min: null,
-    prop_id: null,
-    obs_date: ['', '', "="],
-    filename: null,
-    original_filename: null,
-    telescope: [],
-    exposure_time: ['', '', "="],
-    instrument: [],
-    release_date: ['', '', "="],
-    image_filter: []
-  },
-  loadingMessages: ["Searching the cosmos...", "Deploying deep space probes...", "Is that you Dave?...", "There's so much S P A C E!"]
+  validate: function(value, args) {
+    return document.querySelector(args[0]).value !== "";
+  }
 };
 
+config = Shared.config;
+
 (function() {
+  var validation;
   window.addEventListener('searchLoaded', function(e) {
     console.log("Search loaded", e);
     return window.base.bindEvents();
+  });
+  Validator.extend('dependson', validateDependsOn);
+  validation = new Validator({
+    dependant: "dependson"
   });
   return Vue.use(VeeValidate, config.validatorConfig);
 })();
 
 searchFormComponent = {
+  mixins: [Shared.mixin],
   created: function() {
     return this.getTelescopes();
   },
@@ -127,59 +123,6 @@ searchFormComponent = {
       } else {
         return this[bothFlag] = false;
       }
-    },
-    submitForm: function(event, paging, cb) {
-      var key, message, msgs, newFormData, self;
-      if (paging == null) {
-        paging = null;
-      }
-      if (cb == null) {
-        cb = null;
-      }
-      if (event != null) {
-        event.preventDefault();
-      }
-      if (!paging) {
-        this.loading = true;
-        this.url = config.apiUrl;
-        window.location.hash = "";
-        this.$emit('setpagenum', 1);
-        localStorage.setItem("currentPage", 1);
-      }
-      newFormData = JSON.parse(JSON.stringify(this.search));
-      for (key in newFormData) {
-        if (_.isEqual(newFormData[key], config.formData[key])) {
-          delete newFormData[key];
-        } else {
-          if (config.rangeInputs.indexOf(key) >= 0) {
-            if (newFormData[key][2] === "=") {
-              newFormData[key] = newFormData[key][0];
-            }
-          }
-        }
-      }
-      msgs = config.loadingMessages;
-      message = Math.floor(Math.random() * msgs.length);
-      this.loadingMessage = msgs[message];
-      localStorage.setItem('search', JSON.stringify(this.search));
-      self = this;
-      return new Ajax({
-        url: this.url,
-        method: "post",
-        accept: "json",
-        data: {
-          search: newFormData
-        },
-        success: function(data) {
-          window.location.hash = "#query";
-          self.loading = false;
-          localStorage.setItem('results', JSON.stringify(data));
-          self.$emit("displayform", ["results", data]);
-          if (cb) {
-            return cb();
-          }
-        }
-      }).send();
     }
   }
 };

@@ -6,41 +6,20 @@ Original file: search.coffee
 ###
 
 import Vue from 'vue'
-import VeeValidate from 'vee-validate'
+import VeeValidate, {Validator} from 'vee-validate'
+import Shared from './mixins.coffee'
 
-config =
-  apiUrl: "/dal/search/"
-  rangeInputs: ["obs_date", "exposure_time", "release_date"]
+validateDependsOn =
+  getMessage: (field, params, data)->
+    id = params[0].replace("#", "")
+    dependsOn = document.querySelector("label[for=#{id}]").innerText
+    return (data && data.message) || "This field depends on #{dependsOn}"
+  validate: (value, args)->
+    return (document.querySelector(args[0]).value isnt "")
 
-  validatorConfig:
-    delay: 800
-    events: "input|blur"
-    inject: true
 
 
-  formData:
-    coordinates:
-      ra: null
-      dec: null
-    pi: null
-    search_box_min: null
-    prop_id: null
-    obs_date:['','', "="]
-    filename: null
-    original_filename: null
-    telescope:[]
-    exposure_time:['', '', "="]
-    instrument:[]
-    release_date:['', '', "="]
-    image_filter:[]
-
-  loadingMessages:[
-    "Searching the cosmos..."
-    "Deploying deep space probes..."
-    "Is that you Dave?..."
-    "There's so much S P A C E!"
-  ]
-
+config = Shared.config
 
 (()->
   # This gets called after the component has been mounted
@@ -49,12 +28,14 @@ config =
     # re-bind since the template will render after the page is loaded.
     window.base.bindEvents()
 
-
+  Validator.extend('dependson', validateDependsOn)
+  validation = new Validator({dependant:"dependson"})
   # Use vee-validate, and assign before component is loaded
   Vue.use(VeeValidate, config.validatorConfig) # validation plugin
 )()
 
 searchFormComponent = {
+  mixins: [Shared.mixin]
   created: ()->
     this.getTelescopes()
 
@@ -124,46 +105,6 @@ searchFormComponent = {
       else
         @[bothFlag] = false
 
-    submitForm: (event, paging=null, cb=null)->
-      event?.preventDefault()
-      unless paging
-        @loading = true
-        @url = config.apiUrl
-        window.location.hash = ""
-        this.$emit('setpagenum', 1)
-        localStorage.setItem("currentPage", 1)
-
-      # strip out anything that wasn't modified
-      newFormData = JSON.parse(JSON.stringify(@search))
-
-      for key of newFormData
-        if _.isEqual(newFormData[key], config.formData[key])
-          delete(newFormData[key])
-        else
-          if config.rangeInputs.indexOf(key) >= 0
-            # flatten value if it is for direct match
-            if newFormData[key][2] is "="
-              newFormData[key] = newFormData[key][0]
-
-      msgs = config.loadingMessages
-      message = Math.floor(Math.random()*msgs.length)
-      @loadingMessage = msgs[message]
-      localStorage.setItem('search', JSON.stringify(@search))
-      self = @
-      new Ajax
-        url: @url
-        method: "post"
-        accept: "json"
-        data:
-          search: newFormData
-        success: (data)->
-          window.location.hash = "#query"
-          self.loading = false
-          localStorage.setItem('results', JSON.stringify(data))
-          self.$emit("displayform", ["results", data])
-          if cb
-            cb()
-      .send()
 }
 
 export default searchFormComponent 

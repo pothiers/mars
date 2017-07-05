@@ -56,7 +56,7 @@
                                   <div class="col-md-6">
                                       <div class="form-group">
                                           <label for="ra" class="floating">Ra</label>
-                                          <input class="form-control" placeholder="RA" name="ra" id="ra" type="text" value="" v-model="search.coordinates.ra" v-validate="'decimal'">
+                                          <input class="form-control" placeholder="RA" name="ra" id="ra" type="text" value="" v-model="search.coordinates.ra" v-validate="'decimal|dependson:#dec'">
                                           <span class="error-message" v-if="errors.has('ra')">
                                               {{errors.first('ra')}}
                                           </span>
@@ -65,7 +65,7 @@
                                   <div class="col-md-6">
                                       <div class="form-group">
                                           <label for="dec" class="floating">Dec</label>
-                                          <input class="form-control" placeholder="Dec" name="dec" id="dec" type="text" value="" v-model="search.coordinates.dec" v-validate="'decimal'">
+                                          <input class="form-control" placeholder="Dec" name="dec" id="dec" type="text" value="" v-model="search.coordinates.dec" v-validate="'decimal|dependson:#ra'">
                                           <span class="error-message" v-if="errors.has('dec')">
                                               {{errors.first('dec')}}
                                           </span>

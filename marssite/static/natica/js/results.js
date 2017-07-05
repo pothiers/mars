@@ -9,6 +9,8 @@ var config;
 
 import Vue from "vue";
 
+import Shared from "./mixins.coffee";
+
 
 /*
   Helper functions
@@ -86,87 +88,29 @@ Vue.component("table-body", {
    App - Results
  */
 
-config = {
-  defaultColumns: [
-    {
-      "mapping": "dec",
-      "name": "Dec"
-    }, {
-      "mapping": "depth",
-      "name": "Depth"
-    }, {
-      "mapping": "exposure",
-      "name": "Exposure"
-    }, {
-      "mapping": "filename",
-      "name": "Filename"
-    }, {
-      "mapping": "filesize",
-      "name": "File size"
-    }, {
-      "mapping": "filter",
-      "name": "Filter"
-    }, {
-      "mapping": "image_type",
-      "name": "Image Type"
-    }, {
-      "mapping": "instrument",
-      "name": "Instrument"
-    }, {
-      "mapping": "md5sum",
-      "name": "MD5 sum"
-    }, {
-      "mapping": "obs_date",
-      "name": "Observed date"
-    }, {
-      "mapping": "original_filename",
-      "name": "Original filename"
-    }, {
-      "mapping": "pi",
-      "name": "Principle Investigator"
-    }, {
-      "mapping": "product",
-      "name": "Product"
-    }, {
-      "mapping": "prop_id",
-      "name": "Program Number"
-    }, {
-      "mapping": "ra",
-      "name": "RA"
-    }, {
-      "mapping": "reference",
-      "name": "Reference"
-    }, {
-      "mapping": "release_date",
-      "name": "Release Date"
-    }, {
-      "mapping": "seeing",
-      "name": "Seeing"
-    }, {
-      "mapping": "telescope",
-      "name": "Telescope"
-    }, {
-      "mapping": "survey_id",
-      "name": "Survey Id"
-    }
-  ]
-};
+config = Shared.config;
 
 export default {
   props: ['componentData'],
+  mixins: [Shared.mixin],
   data: function() {
     return {
       visibleColumns: JSON.parse(JSON.stringify(config.defaultColumns)),
       visible: false,
       pageNum: 1,
       isLoading: false,
-      results: []
+      results: [],
+      totalItems: 0,
+      error: ""
     };
   },
   methods: {
     displayForm: function() {
       window.location.hash = "";
       return this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
+    },
+    handleError: function(e) {
+      return console.log("There was an error", e);
     },
     pageNext: function() {
       return this.pageTo(this.pageNum + 1);
@@ -176,24 +120,34 @@ export default {
     },
     pageTo: function(page) {
       var self;
-      this.$data.pageNum = page;
+      this.pageNum = page;
       localStorage.setItem('currentPage', page);
       this.$emit("pageto", page);
-      this.$data.isLoading = true;
+      this.isLoading = true;
       self = this;
-      return this.$emit("submitform", [
-        null, "paging", function() {
-          return self.$data.isLoading = false;
-        }
-      ]);
+      return this.submitForm(null, "paging", function(data) {
+        self.isLoading = false;
+        return self.results = data;
+      });
     }
   },
   mounted: function() {
+    var e, ref;
     window.base.bindEvents();
     if (window.location.hash === "#query") {
-      this.results = JSON.parse(localStorage.getItem('results'));
-      this.visible = true;
-      return this.pageNum = parseInt(localStorage.getItem("currentPage"));
+      try {
+        this.results = JSON.parse(localStorage.getItem('results')) || [];
+        this.totalItems = (ref = this.results) != null ? ref.meta.total_count : void 0;
+        this.visible = true;
+        return this.pageNum = parseInt(localStorage.getItem("currentPage"));
+      } catch (error) {
+        e = error;
+        this.results = [];
+        this.totalItems = 0;
+        this.visible = true;
+        this.error = "There was an error parsing results from server";
+        return this.handleError(e);
+      }
     }
   }
 };
