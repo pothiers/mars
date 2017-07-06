@@ -44,11 +44,12 @@ class SearchTest(TestCase):
                         <= response.json()['meta']['to_here_count']
                         <= response.json()['meta']['total_count'])
         self.assertEqual(json.dumps(response.json()['meta']['dal_version']),
-                         '"0.1.6"',
+                         '"0.1.7"',
                          msg='Unexpected API version')
 
     def test_search_1(self):
         "MVP-1. Basics. No validation of input"
+        #! "filename": "foo",
         req = '''{ "search":{
         "coordinates": { 
             "ra": 181.368791666667,
@@ -58,11 +59,9 @@ class SearchTest(TestCase):
         "search_box_min": 5.0,
         "prop_id": "noao",
         "obs_date": ["2009-04-01", "2009-04-03", "[]"],
-        "TRY_FILENAME": "foo",
         "original_filename": "/ua84/mosaic/tflagana/3103/stdr1_012.fits",
-        "telescope":["ct4m", "foobar"],
+        "telescope_instrument": [["ct4m","mosaic_2"],["foobar", "bar"]],
         "exposure_time": "15",
-        "instrument":["mosaic_2"],
         "release_date": "2010-10-01T00:00:00",
         "image_filter":["raw", "calibrated"]
     }
@@ -80,8 +79,8 @@ class SearchTest(TestCase):
         "Return telescope/instrument pairs."
         #print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
         response = self.client.get('/dal/ti-pairs/')
-        print('DBG: response={}'.format(response.json()))
-        print('DBG: expected={}'.format(exp.tipairs_0))
+        #!print('DBG: response={}'.format(response.json()))
+        #!print('DBG: expected={}'.format(exp.tipairs_0))
         self.assertJSONEqual(json.dumps(response.json()),
                              json.dumps(exp.tipairs_0))
         

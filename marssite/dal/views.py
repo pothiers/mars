@@ -4,16 +4,19 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
 from django.db import connections
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.views.defaults import bad_request
 from django.core import serializers
 
 from siap.models import Image, VoiSiap
 from tada.models import FilePrefix
 
+from . import exceptions as dex
 
-dal_version = '0.1.6' # MVP. mostly untested
+
+dal_version = '0.1.7' # MVP. mostly untested
 
 search_spec_json = {
  "search":{
@@ -24,6 +27,7 @@ search_spec_json = {
     },
      "search_box_min": "[float|optional]",
      "prop_id":"[text|optional]",
+
      "obs_date":"[text|optional]",
      "filename":"[text|optional]",
      "telescope":"[array(text)|optional]",
@@ -191,6 +195,20 @@ def db_oneof(value_list, field):
         clause += " OR ({} = '{}')".format(field, val)
     return ' AND (' + remove_leading(clause, ' OR ') + ')'
 
+def db_ti_oneof(value_list):
+    clause = ""
+    frag = ""
+    try:
+        for telescope,instrument in value_list:
+            clause += " OR ((telescope = '{}') AND (instrument = '{}'))" \
+                       .format(telescope, instrument)
+        frag = ' AND (' + remove_leading(clause, ' OR ') + ')'
+    except Exception as err:
+        raise dex.BadTIFormat(
+            'search.telescope_instrument but be list of form: '
+            '[["tele1", "instrum1"], ["t2","i2"]]')
+    return frag
+
 proc_LUT = dict(raw = 'raw',
                 calibrated = 'InstCal',
                 reprojected = 'projected',
@@ -199,6 +217,20 @@ proc_LUT = dict(raw = 'raw',
                 image_tiles = 'tiled',
                 sky_subtracted = 'skysub')
                
+
+def fake_error_response(request, error_type):
+    if error_type == 'bad_numeric':
+        return HttpResponseBadRequest('Bad numeric value',
+                                      content_type='application/json')
+    elif error_type == 'bad_search_json':
+        return HttpResponseBadRequest('Invalid JSON for search. Bad syntax.')
+    else:
+        return HttpResponseBadRequest(
+            'Unknown value ({}) for URL "error" parameter.'
+            ' Allowable: bad_numeric, bad_search_json'
+            .format(error_type)
+        )
+
 
 ## Under PSQL, copy SELECTed results to CSV using:
 #
@@ -209,6 +241,10 @@ proc_LUT = dict(raw = 'raw',
 @csrf_exempt
 def search_by_json(request):
     #!print('DBG-0: search_by_json')
+    gen_error = request.GET.get('error',None)
+    if gen_error != None:
+        return fake_error_response(request, gen_error)
+        
     # !!! Verify values (e.g. telescope) are valid. Avoid SQL injection hit.
     page_limit = int(request.GET.get('limit','100')) # num of records per page
     limit_clause = 'LIMIT {}'.format(page_limit)
@@ -245,6 +281,27 @@ def search_by_json(request):
         elif request.content_type == "application/xml":
             pass
 
+        avail_fields = set([
+            'search_box_min',
+            'pi',
+            'prop_id',
+            'obs_date',
+            'filename',
+            'original_filename',
+            'telescope_instrument',
+            'release_date',
+            'flag_raw',
+            'image_filter',
+            'exposure_time',
+            'coordinates',
+        ])
+        used_fields = set(jsearch.keys())
+        if not (avail_fields >= used_fields):
+            unavail = used_fields - avail_fields
+            print('DBG: Extra fields ({}) in search'.format(unavail))
+            raise dex.UnknownSearchField('Extra fields ({}) in search'.format(unavail))
+        assert(avail_fields >= used_fields)
+        
         # Query Legacy Science Archive
         cursor = connections['archive'].cursor()
         # Force material view refresh
@@ -271,10 +328,13 @@ def search_by_json(request):
             where += db_exact(jsearch['filename'], 'dtnsanam')
         if 'original_filename' in jsearch: 
             where += db_exact(jsearch['original_filename'], 'dtacqnam')
-        if 'telescope' in jsearch:
-            where += db_oneof(jsearch['telescope'], 'telescope')
-        if 'instrument' in jsearch: 
-            where += db_oneof(jsearch['instrument'], 'instrument')
+        #!if 'telescope' in jsearch:
+        #!    where += db_oneof(jsearch['telescope'], 'telescope')
+        #!if 'instrument' in jsearch: 
+        #!    where += db_oneof(jsearch['instrument'], 'instrument')
+        # NEW api (0.1.7): "telescope_instrument":[["ct4m", "cosmos"], ["soar","osiris"]]
+        if 'telescope_instrument' in jsearch:
+            where += db_ti_oneof(jsearch['telescope_instrument'])
         if 'release_date' in jsearch: 
             where += db_time_range(jsearch['release_date'], 'release_date')
         if 'flag_raw' in jsearch:
@@ -302,8 +362,10 @@ def search_by_json(request):
         cursor.execute(sql)
         results = dictfetchall(cursor)
         #print('DBG results={}'.format(results))
-        meta = OrderedDict.fromkeys(['dal_version', 'timestamp',
-                                     'comment', 'sql',
+        meta = OrderedDict.fromkeys(['dal_version',
+                                     'timestamp',
+                                     'comment',
+                                     'sql',
                                      'page_result_count',
                                      'to_here_count',
                                      'total_count'])
