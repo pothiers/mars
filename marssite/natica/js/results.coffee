@@ -78,7 +78,7 @@ export default {
     }
   methods:
     displayForm: ()->
-      window.location.hash = ""
+      window.location.hash = "#search_again"
       this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))] )
     handleError: (e)->
       console.log "There was an error", e

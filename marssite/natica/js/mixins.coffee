@@ -33,17 +33,16 @@ _config =
 
   formData:
     coordinates:
-      ra: null
-      dec: null
+      ra: ""
+      dec: ""
     pi: null
     search_box_min: null
     prop_id: null
     obs_date:['','', "="]
     filename: null
     original_filename: null
-    telescope:[]
+    telescope_instrument:[]
     exposure_time:['', '', "="]
-    instrument:[]
     release_date:['', '', "="]
     image_filter:[]
 
@@ -77,7 +76,8 @@ export default {
           # strip out anything that wasn't modified
           newFormData = if @search then JSON.parse(JSON.stringify(@search)) else JSON.parse(localStorage.getItem("search"))
           search = newFormData
-          
+          localStorage.setItem('search', JSON.stringify(search))
+ 
           for key of newFormData
             if _.isEqual(newFormData[key], @config.formData[key])
               delete(newFormData[key])
@@ -86,11 +86,13 @@ export default {
                 # flatten value if it is for direct match
                 if newFormData[key][2] is "="
                   newFormData[key] = newFormData[key][0]
-
+          if newFormData.coordinates?.ra
+            newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra)
+            newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec)
+            
           msgs = @config.loadingMessages
           message = Math.floor(Math.random()*msgs.length)
           @loadingMessage = msgs[message]
-          localStorage.setItem('search', JSON.stringify(search))
           self = @
           url = @config.apiUrl+"?page=#{page}"
           new Ajax

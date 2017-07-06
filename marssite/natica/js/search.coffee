@@ -40,10 +40,11 @@ searchFormComponent = {
     this.getTelescopes()
 
   mounted: ()->
-    # get stuff from parent 
-    search = this.$parent.$data.componentData
-    if search?.hasOwnProperty("coordinates")
-      @search = search
+    # check if this is a new search
+    if window.location.hash.indexOf("search_again") > -1
+      oldSearch = JSON.parse(localStorage.getItem("search"))
+      newSearch = JSON.parse(JSON.stringify(@config.formData))
+      @search = _.extend(newSearch, oldSearch)
     window.base.bindEvents()
 
   data: ()->
@@ -69,6 +70,10 @@ searchFormComponent = {
           {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
     }
   methods:
+    newSearch: ()->
+      # clear current search and storage
+      @search = JSON.parse(JSON.stringify(@config.formData))
+      localStorage.setItem("search", @search)
     getTelescopes: ()->
       # check if we have a cached set to use
       telescopes = JSON.parse(localStorage.getItem("telescopes")||"0")

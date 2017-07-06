@@ -5,7 +5,9 @@ $caret-up: "\f077";
 $caret-down: "\f078";
 
 $error-color: #d85454;
-
+div[rel=form-submit]{
+  padding-top: 12px;
+}
 .form-section{
   background-color: $section-bg;
   border: 1px solid $section-border-color;
@@ -13,6 +15,7 @@ $error-color: #d85454;
   padding: 1em;
   margin-top: 2em;
 
+  
   .section-toggle{
     text-align: right;
     

@@ -182,8 +182,8 @@ _config = {
   ],
   formData: {
     coordinates: {
-      ra: null,
-      dec: null
+      ra: "",
+      dec: ""
     },
     pi: null,
     search_box_min: null,
@@ -191,9 +191,8 @@ _config = {
     obs_date: ['', '', "="],
     filename: null,
     original_filename: null,
-    telescope: [],
+    telescope_instrument: [],
     exposure_time: ['', '', "="],
-    instrument: [],
     release_date: ['', '', "="],
     image_filter: []
   },
@@ -210,7 +209,7 @@ _config = {
     },
     methods: {
       submitForm: function(event, paging, cb) {
-        var key, message, msgs, newFormData, page, search, self, url;
+        var key, message, msgs, newFormData, page, ref, search, self, url;
         if (paging == null) {
           paging = null;
         }
@@ -232,6 +231,7 @@ _config = {
         }
         newFormData = this.search ? JSON.parse(JSON.stringify(this.search)) : JSON.parse(localStorage.getItem("search"));
         search = newFormData;
+        localStorage.setItem('search', JSON.stringify(search));
         for (key in newFormData) {
           if (_.isEqual(newFormData[key], this.config.formData[key])) {
             delete newFormData[key];
@@ -243,10 +243,13 @@ _config = {
             }
           }
         }
+        if ((ref = newFormData.coordinates) != null ? ref.ra : void 0) {
+          newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra);
+          newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec);
+        }
         msgs = this.config.loadingMessages;
         message = Math.floor(Math.random() * msgs.length);
         this.loadingMessage = msgs[message];
-        localStorage.setItem('search', JSON.stringify(search));
         self = this;
         url = this.config.apiUrl + ("?page=" + page);
         return new Ajax({
@@ -310,7 +313,7 @@ App = (function() {
     window._ = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a;
     new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       el: "#content",
-      template: "<component data='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
+      template: "<component compdata='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
       methods: {
         switchComponent: function(data) {
           this.componentData = data[1];
@@ -607,6 +610,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
  
@@ -671,10 +676,11 @@ searchFormComponent = {
     return this.getTelescopes();
   },
   mounted: function() {
-    var search;
-    search = this.$parent.$data.componentData;
-    if (search != null ? search.hasOwnProperty("coordinates") : void 0) {
-      this.search = search;
+    var newSearch, oldSearch;
+    if (window.location.hash.indexOf("search_again") > -1) {
+      oldSearch = JSON.parse(localStorage.getItem("search"));
+      newSearch = JSON.parse(JSON.stringify(this.config.formData));
+      this.search = _.extend(newSearch, oldSearch);
     }
     return window.base.bindEvents();
   },
@@ -709,6 +715,10 @@ searchFormComponent = {
     };
   },
   methods: {
+    newSearch: function() {
+      this.search = JSON.parse(JSON.stringify(this.config.formData));
+      return localStorage.setItem("search", this.search);
+    },
     getTelescopes: function() {
       var now, self, telescopes;
       telescopes = JSON.parse(localStorage.getItem("telescopes") || "0");
@@ -832,7 +842,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.submitForm
     }
-  }, [_vm._v("Search")])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Search")]), _vm._v(" "), _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": _vm.newSearch
+    }
+  }, [_vm._v("Clear Search")])])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-12 form-section panel panel-default"
@@ -1382,7 +1399,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "error-message"
   }, [_vm._v(_vm._s(_vm.errors.first('exposure')))]) : _vm._e(), _vm._v(" "), (_vm.errors.has('exposure-max')) ? _c('span', {
     staticClass: "error-message"
-  }, [_vm._v(_vm._s(_vm.errors.first('exposure-max')) + "}")]) : _vm._e()])])])])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.errors.first('exposure-max')))]) : _vm._e()])])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-12 form-section panel panel-default"
@@ -1468,14 +1485,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       rawName: "v-model",
       value: (_vm.search.release_date[0]),
       expression: "search.release_date[0]"
+    }, {
+      name: "validate",
+      rawName: "v-validate",
+      value: ('date_format:YYYY-MM-DD'),
+      expression: "'date_format:YYYY-MM-DD'"
     }],
     staticClass: "date form-control",
     attrs: {
       "id": "release-date",
+      "data-polyfill": "all",
       "name": "release-date",
       "type": "text",
       "value": "",
-      "placeholder": "Public Release Date"
+      "placeholder": "Release date"
     },
     domProps: {
       "value": (_vm.search.release_date[0])
@@ -1503,6 +1526,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       rawName: "v-show",
       value: (_vm.showReleaseDateMax),
       expression: "showReleaseDateMax"
+    }, {
+      name: "validate",
+      rawName: "v-validate",
+      value: ('date_format:YYYY-MM-DD'),
+      expression: "'date_format:YYYY-MM-DD'"
     }],
     staticClass: "date form-control",
     class: {
@@ -1609,8 +1637,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.search.instrument),
-      expression: "search.instrument"
+      value: (_vm.search.telescope_instrument),
+      expression: "search.telescope_instrument"
     }],
     staticClass: "form-control",
     attrs: {
@@ -1627,7 +1655,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.search.instrument = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.search.telescope_instrument = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }
     }
   }, _vm._l((_vm.telescopes), function(tel) {
@@ -1878,7 +1906,7 @@ config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
   },
   methods: {
     displayForm: function() {
-      window.location.hash = "";
+      window.location.hash = "#search_again";
       return this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
     },
     handleError: function(e) {
@@ -2050,7 +2078,7 @@ exports = module.exports = __webpack_require__(19)(undefined);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.form-section {\n  background-color: #D9EDF7;\n  border: 1px solid #BCE8F1;\n  border-radius: 10px;\n  padding: 1em;\n  margin-top: 2em; }\n  .form-section .section-toggle {\n    text-align: right; }\n    .form-section .section-toggle .icon:after {\n      font-family: \"FontAwesome\";\n      display: inline-block;\n      font-size: 1.2em;\n      content: \"\\F078\"; }\n  .form-section .collapsible.open .section-toggle .icon:after {\n    content: \"\\F077\"; }\n  .form-section .error-message {\n    color: #d85454;\n    font-size: 14px;\n    line-height: 1.23em;\n    position: relative;\n    display: inline-block; }\n\n.results-wrapper {\n  overflow-x: auto; }\n\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n\n.loading {\n  display: block;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.8);\n  background-image: url(/static/img/galaxy-loading.gif);\n  background-size: cover;\n  opacity: 1; }\n  .loading .loading-message {\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    width: 500px;\n    margin-left: -250px;\n    text-align: center;\n    font-size: 2.3em;\n    color: yellow;\n    line-height: 1.25em; }\n    .loading .loading-message small {\n      font-size: 0.5em; }\n\ntable.results {\n  overflow: auto;\n  padding: 20px; }\n  table.results thead tr {\n    border-bottom: 2px solid #666; }\n  table.results thead th {\n    font-size: 14px;\n    white-space: nowrap;\n    padding: 5px; }\n  table.results tbody td {\n    font-size: 0.8em;\n    overflow: hidden;\n    padding: 2px 7px;\n    border: 1px solid transparent; }\n  table.results tbody td.empty {\n    background-color: #ccc;\n    border-color: #fff; }\n  table.results tbody tr:nth-child(even) {\n    background-color: aliceblue; }\n  table.results tbody tr.selected {\n    background-color: #37c0fb; }\n    table.results tbody tr.selected td.empty {\n      background-color: rgba(0, 0, 0, 0.3); }\n\nlabel.floating {\n  position: relative !important;\n  font-size: 12px;\n  top: 1em;\n  left: 1em;\n  opacity: 0;\n  transition: all 0.2s linear; }\n\nlabel.open {\n  opacity: 1;\n  top: 0; }\n\n.collapsible .section-content {\n  height: 0;\n  opacity: 0;\n  overflow: hidden;\n  transition: all 0.3s ease-in-out; }\n\n.collapsible.open .section-content {\n  height: initial;\n  opacity: 1; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\ndiv[rel=form-submit] {\n  padding-top: 12px; }\n\n.form-section {\n  background-color: #D9EDF7;\n  border: 1px solid #BCE8F1;\n  border-radius: 10px;\n  padding: 1em;\n  margin-top: 2em; }\n  .form-section .section-toggle {\n    text-align: right; }\n    .form-section .section-toggle .icon:after {\n      font-family: \"FontAwesome\";\n      display: inline-block;\n      font-size: 1.2em;\n      content: \"\\F078\"; }\n  .form-section .collapsible.open .section-toggle .icon:after {\n    content: \"\\F077\"; }\n  .form-section .error-message {\n    color: #d85454;\n    font-size: 14px;\n    line-height: 1.23em;\n    position: relative;\n    display: inline-block; }\n\n.results-wrapper {\n  overflow-x: auto; }\n\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n\n.loading {\n  display: block;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.8);\n  background-image: url(/static/img/galaxy-loading.gif);\n  background-size: cover;\n  opacity: 1; }\n  .loading .loading-message {\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    width: 500px;\n    margin-left: -250px;\n    text-align: center;\n    font-size: 2.3em;\n    color: yellow;\n    line-height: 1.25em; }\n    .loading .loading-message small {\n      font-size: 0.5em; }\n\ntable.results {\n  overflow: auto;\n  padding: 20px; }\n  table.results thead tr {\n    border-bottom: 2px solid #666; }\n  table.results thead th {\n    font-size: 14px;\n    white-space: nowrap;\n    padding: 5px; }\n  table.results tbody td {\n    font-size: 0.8em;\n    overflow: hidden;\n    padding: 2px 7px;\n    border: 1px solid transparent; }\n  table.results tbody td.empty {\n    background-color: #ccc;\n    border-color: #fff; }\n  table.results tbody tr:nth-child(even) {\n    background-color: aliceblue; }\n  table.results tbody tr.selected {\n    background-color: #37c0fb; }\n    table.results tbody tr.selected td.empty {\n      background-color: rgba(0, 0, 0, 0.3); }\n\nlabel.floating {\n  position: relative !important;\n  font-size: 12px;\n  top: 1em;\n  left: 1em;\n  opacity: 0;\n  transition: all 0.2s linear; }\n\nlabel.open {\n  opacity: 1;\n  top: 0; }\n\n.collapsible .section-content {\n  height: 0;\n  opacity: 0;\n  overflow: hidden;\n  transition: all 0.3s ease-in-out; }\n\n.collapsible.open .section-content {\n  height: initial;\n  opacity: 1; }\n", ""]);
 
 // exports
 
