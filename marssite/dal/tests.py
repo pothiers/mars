@@ -1,4 +1,4 @@
-# Example:
+# Example (in mars::mars/marssite)
 # ./manage.py test --settings=marssite.test_settings dal.tests
 # TO ADD:
 #  - verify EXISTANCE of "meta" fields: dal_version, timestamp, comment, sql
@@ -22,7 +22,27 @@ class SearchTest(TestCase):
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
-        print('DBG: response={}'.format(response.content.decode()))
+        meta = {"dal_version": "0.1.6", "timestamp": "2017-07-05T11:44:05.946",
+
+                "comment": "WARNING: Has not been tested much. Does not use IMAGE_FILTER.",
+                "sql": "SELECT ...",
+                "page_result_count": 100,
+                "to_here_count": 100,
+                "total_count": 11583954}
+        #!print('DBG: response={}'.format(response.content.decode()))
+        self.assertIn('meta', response.json())
+        self.assertIn('timestamp', response.json()['meta'])
+        self.assertIn('comment', response.json()['meta'])
+        self.assertIn('sql', response.json()['meta'])
+        self.assertIn('page_result_count', response.json()['meta'])
+        self.assertIn('to_here_count', response.json()['meta'])
+        self.assertIn('total_count', response.json()['meta'])
+        self.assertIsInstance(response.json()['meta']['page_result_count'], int)
+        self.assertIsInstance(response.json()['meta']['to_here_count'], int)
+        self.assertIsInstance(response.json()['meta']['total_count'], int)
+        self.assertTrue(response.json()['meta']['page_result_count']
+                        <= response.json()['meta']['to_here_count']
+                        <= response.json()['meta']['total_count'])
         self.assertEqual(json.dumps(response.json()['meta']['dal_version']),
                          '"0.1.6"',
                          msg='Unexpected API version')
@@ -47,7 +67,6 @@ class SearchTest(TestCase):
         "image_filter":["raw", "calibrated"]
     }
 }'''
-        
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
@@ -56,3 +75,14 @@ class SearchTest(TestCase):
                              json.dumps(json.loads(exp.search_1)['resultset']),
                              msg='Unexpected resultset')
 
+
+    def test_tipairs_0(self):
+        "Return telescope/instrument pairs."
+        #print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
+        response = self.client.get('/dal/ti-pairs/')
+        print('DBG: response={}'.format(response.json()))
+        print('DBG: expected={}'.format(exp.tipairs_0))
+        self.assertJSONEqual(json.dumps(response.json()),
+                             json.dumps(exp.tipairs_0))
+        
+        
