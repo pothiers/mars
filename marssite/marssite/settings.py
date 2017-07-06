@@ -66,7 +66,8 @@ INSTALLED_APPS = (
     'provisional',
     'water',
     'tada',
-    'natica',
+    'lsa',  # Legacy Science Archive (pre-NATICA)
+    'natica', # replace LSA
     'rest_framework',
     'rest_framework_swagger',
     'django_tables2',
@@ -75,17 +76,26 @@ INSTALLED_APPS = (
 
 
 
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.admindocs.middleware.XViewMiddleware',
-)
+#! MIDDLEWARE_CLASSES = (
+#!     'django.contrib.sessions.middleware.SessionMiddleware',
+#!     'django.middleware.common.CommonMiddleware',
+#!     'django.middleware.csrf.CsrfViewMiddleware',
+#!     'django.contrib.auth.middleware.AuthenticationMiddleware',
+#!     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+#!     'django.contrib.messages.middleware.MessageMiddleware',
+#!     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#!     'django.middleware.security.SecurityMiddleware',
+#!     'django.contrib.admindocs.middleware.XViewMiddleware',
+#! )
+MIDDLEWARE = [
+        'django.middleware.security.SecurityMiddleware',
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    ]
 
 ROOT_URLCONF = 'marssite.urls'
 

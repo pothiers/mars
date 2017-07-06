@@ -4,16 +4,19 @@ import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
 from django.db import connections
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.views.defaults import bad_request
 from django.core import serializers
 
 from siap.models import Image, VoiSiap
 from tada.models import FilePrefix
 
+from . import exceptions as dex
 
-dal_version = '0.1.6' # MVP. mostly untested
+
+dal_version = '0.1.7' # MVP. mostly untested
 
 search_spec_json = {
  "search":{
@@ -24,6 +27,7 @@ search_spec_json = {
     },
      "search_box_min": "[float|optional]",
      "prop_id":"[text|optional]",
+
      "obs_date":"[text|optional]",
      "filename":"[text|optional]",
      "telescope":"[array(text)|optional]",
@@ -191,6 +195,20 @@ def db_oneof(value_list, field):
         clause += " OR ({} = '{}')".format(field, val)
     return ' AND (' + remove_leading(clause, ' OR ') + ')'
 
+def db_ti_oneof(value_list):
+    clause = ""
+    frag = ""
+    try:
+        for telescope,instrument in value_list:
+            clause += " OR ((telescope = '{}') AND (instrument = '{}'))" \
+                       .format(telescope, instrument)
+        frag = ' AND (' + remove_leading(clause, ' OR ') + ')'
+    except Exception as err:
+        raise dex.BadTIFormat(
+            'search.telescope_instrument but be list of form: '
+            '[["tele1", "instrum1"], ["t2","i2"]]')
+    return frag
+
 proc_LUT = dict(raw = 'raw',
                 calibrated = 'InstCal',
                 reprojected = 'projected',
@@ -200,6 +218,20 @@ proc_LUT = dict(raw = 'raw',
                 sky_subtracted = 'skysub')
                
 
+def fake_error_response(request, error_type):
+    if error_type == 'bad_numeric':
+        return HttpResponseBadRequest('Bad numeric value',
+                                      content_type='application/json')
+    elif error_type == 'bad_search_json':
+        return HttpResponseBadRequest('Invalid JSON for search. Bad syntax.')
+    else:
+        return HttpResponseBadRequest(
+            'Unknown value ({}) for URL "error" parameter.'
+            ' Allowable: bad_numeric, bad_search_json'
+            .format(error_type)
+        )
+
+
 ## Under PSQL, copy SELECTed results to CSV using:
 #
 # \copy (SELECT * from voi.siap WHERE (ra <= 186.368791666667) AND (ra >= 176.368791666667) AND (dec <= -40.5396111111111) AND (dec >= -50.5396111111111) AND (dtpi = 'Cypriano') AND (dtpropid = 'noao') AND ('[2009-04-01,2009-04-03]'::tsrange @> date_obs::timestamp) AND (dtacqnam = '/ua84/mosaic/tflagana/3103/stdr1_012.fits') AND ((telescope = 'ct4m') OR (telescope = 'foobar')) AND ((instrument = 'mosaic_2')) AND (release_date = '2010-10-01T00:00:00') AND ((proctype = 'raw') OR (proctype = 'InstCal')) AND (exposure = '15')) TO '~/data/metadata-dal-2.csv'
@@ -208,6 +240,11 @@ proc_LUT = dict(raw = 'raw',
 # curl -H "Content-Type: application/json" -X POST -d @request.json http://localhost:8000/dal/search/ | python -m json.tool
 @csrf_exempt
 def search_by_json(request):
+    #!print('DBG-0: search_by_json')
+    gen_error = request.GET.get('error',None)
+    if gen_error != None:
+        return fake_error_response(request, gen_error)
+        
     # !!! Verify values (e.g. telescope) are valid. Avoid SQL injection hit.
     page_limit = int(request.GET.get('limit','100')) # num of records per page
     limit_clause = 'LIMIT {}'.format(page_limit)
@@ -220,8 +257,8 @@ def search_by_json(request):
                     ', '.join(['{} {}'.format(f[1:], ('DESC'
                                                       if f[0]=='-' else 'DESC'))
                                for f in order_fields.split()]))
-    print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
-          .format(request.method, request.content_type))
+    #!print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
+    #!      .format(request.method, request.content_type))
     if request.method == 'POST':
         root = ET.Element('search')
         #!print('DBG body str={}'.format(request.body.decode('utf-8')))
@@ -244,6 +281,27 @@ def search_by_json(request):
         elif request.content_type == "application/xml":
             pass
 
+        avail_fields = set([
+            'search_box_min',
+            'pi',
+            'prop_id',
+            'obs_date',
+            'filename',
+            'original_filename',
+            'telescope_instrument',
+            'release_date',
+            'flag_raw',
+            'image_filter',
+            'exposure_time',
+            'coordinates',
+        ])
+        used_fields = set(jsearch.keys())
+        if not (avail_fields >= used_fields):
+            unavail = used_fields - avail_fields
+            print('DBG: Extra fields ({}) in search'.format(unavail))
+            raise dex.UnknownSearchField('Extra fields ({}) in search'.format(unavail))
+        assert(avail_fields >= used_fields)
+        
         # Query Legacy Science Archive
         cursor = connections['archive'].cursor()
         # Force material view refresh
@@ -270,10 +328,13 @@ def search_by_json(request):
             where += db_exact(jsearch['filename'], 'dtnsanam')
         if 'original_filename' in jsearch: 
             where += db_exact(jsearch['original_filename'], 'dtacqnam')
-        if 'telescope' in jsearch:
-            where += db_oneof(jsearch['telescope'], 'telescope')
-        if 'instrument' in jsearch: 
-            where += db_oneof(jsearch['instrument'], 'instrument')
+        #!if 'telescope' in jsearch:
+        #!    where += db_oneof(jsearch['telescope'], 'telescope')
+        #!if 'instrument' in jsearch: 
+        #!    where += db_oneof(jsearch['instrument'], 'instrument')
+        # NEW api (0.1.7): "telescope_instrument":[["ct4m", "cosmos"], ["soar","osiris"]]
+        if 'telescope_instrument' in jsearch:
+            where += db_ti_oneof(jsearch['telescope_instrument'])
         if 'release_date' in jsearch: 
             where += db_time_range(jsearch['release_date'], 'release_date')
         if 'flag_raw' in jsearch:
@@ -288,6 +349,7 @@ def search_by_json(request):
         #print('DBG-2 where="{}"'.format(where))
         where_clause = '' if len(where) == 0 else 'WHERE {}'.format(where)
         sql0 = 'SELECT count(reference) FROM voi.siap {}'.format(where_clause)
+        #! print('DBG-6: search_by_json; sql0=',sql0)
         cursor.execute(sql0)
         total_count = cursor.fetchone()[0]
         sql = ('SELECT {} FROM voi.siap {} {} {} {}'
@@ -296,12 +358,14 @@ def search_by_json(request):
                        order_clause,
                        limit_clause,
                        offset_clause  ))
-        print('DBG-2 sql={}'.format(sql))
+        #! print('DBG-2 sql={}'.format(sql))
         cursor.execute(sql)
         results = dictfetchall(cursor)
         #print('DBG results={}'.format(results))
-        meta = OrderedDict.fromkeys(['dal_version', 'timestamp',
-                                     'comment', 'sql',
+        meta = OrderedDict.fromkeys(['dal_version',
+                                     'timestamp',
+                                     'comment',
+                                     'sql',
                                      'page_result_count',
                                      'to_here_count',
                                      'total_count'])
@@ -309,8 +373,8 @@ def search_by_json(request):
             dal_version = dal_version,
             timestamp = datetime.datetime.now(),
             comment = (
-                'WARNING: Little testing.'
-                ' Does not use "image_filter".'
+                'WARNING: Has not been tested much.'
+                ' Does not use IMAGE_FILTER.'
             ),
             sql = sql,
             page_result_count = len(results),
