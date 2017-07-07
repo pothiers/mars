@@ -32,5 +32,5 @@ class RequestExceptionHandler(object):
             exception_dict = {'errorMessage': 'Unexpected Error!'}
         
         error_message = exception_dict['errorMessage']
-        traceback.print_exc()
+        #! traceback.print_exc()
         return JsonResponse(exception_dict, status=status)

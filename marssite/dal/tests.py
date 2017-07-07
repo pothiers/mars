@@ -75,6 +75,24 @@ class SearchTest(TestCase):
                              msg='Unexpected resultset')
 
 
+    def test_search_error_1(self):
+        "Error in request content: extra fields sent"
+        req = '''{ "search":{
+        "coordinates": { 
+            "ra": 181.368791666667,
+            "dec": -45.5396111111111
+        },
+        "TRY_FILENAME": "foo.fits",
+        "image_filter":["raw", "calibrated"]
+        }
+        }'''
+        response = self.client.post('/dal/search/',
+                                    content_type='application/json',
+                                    data=req  )
+        expected = {"errorMessage": "Extra fields ({'TRY_FILENAME'}) in search"}
+        #!print('DBG0-tse-1: response={}'.format(response.content.decode()))
+        self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
+
     def test_tipairs_0(self):
         "Return telescope/instrument pairs."
         #print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
