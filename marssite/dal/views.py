@@ -219,17 +219,18 @@ proc_LUT = dict(raw = 'raw',
                
 
 def fake_error_response(request, error_type):
+    fake_err_types = ['bad_numeric',
+                      'bad_search_json',
+    ]
     if error_type == 'bad_numeric':
-        return HttpResponseBadRequest('Bad numeric value',
-                                      content_type='application/json')
+        raise dex.BadNumeric('Bad numeric value')
     elif error_type == 'bad_search_json':
-        return HttpResponseBadRequest('Invalid JSON for search. Bad syntax.')
+        raise dex.BadSearchSyntax('Invalid JSON for search. Bad syntax.')
     else:
-        return HttpResponseBadRequest(
-            'Unknown value ({}) for URL "error" parameter.'
-            ' Allowable: bad_numeric, bad_search_json'
-            .format(error_type)
-        )
+        raise dex.BadFakeError(
+            'Unknown value ({}) for URL ERROR parameter. Allowed: {}'
+            .format(error_type, ','.join(fake_err_types)))
+
 
 
 ## Under PSQL, copy SELECTed results to CSV using:
@@ -298,7 +299,7 @@ def search_by_json(request):
         used_fields = set(jsearch.keys())
         if not (avail_fields >= used_fields):
             unavail = used_fields - avail_fields
-            print('DBG: Extra fields ({}) in search'.format(unavail))
+            #print('DBG: Extra fields ({}) in search'.format(unavail))
             raise dex.UnknownSearchField('Extra fields ({}) in search'.format(unavail))
         assert(avail_fields >= used_fields)
         

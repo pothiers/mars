@@ -20,3 +20,12 @@ class UnknownSearchField(BaseDalException):
 
 class BadTIFormat(BaseDalException):
     status_code = 400    
+
+class BadNumeric(BaseDalException):
+    status_code = 400    
+
+class BadSearchSyntax(BaseDalException):
+    status_code = 400    
+
+class BadFakeError(BaseDalException):
+    status_code = 400    

@@ -29,7 +29,7 @@ class RequestExceptionHandler(object):
             exception_dict = exception.to_dict()
         else:
             status = 500
-            exception_dict = {'errorMessage': 'Unexpected Error!'}
+            exception_dict = {'errorMessage': 'Unexpected Error!: {}'.format(exception)}
         
         error_message = exception_dict['errorMessage']
         #! traceback.print_exc()

@@ -15,6 +15,7 @@ from . import expected as exp
 
 
 class SearchTest(TestCase):
+
     def test_search_0(self):
         "No filter. Verify: API version."
         req = '{ "search" : { } }'
@@ -22,8 +23,8 @@ class SearchTest(TestCase):
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
-        meta = {"dal_version": "0.1.6", "timestamp": "2017-07-05T11:44:05.946",
-
+        meta = {"dal_version": "0.1.6",
+                "timestamp": "2017-07-05T11:44:05.946",
                 "comment": "WARNING: Has not been tested much. Does not use IMAGE_FILTER.",
                 "sql": "SELECT ...",
                 "page_result_count": 100,
@@ -46,7 +47,8 @@ class SearchTest(TestCase):
         self.assertEqual(json.dumps(response.json()['meta']['dal_version']),
                          '"0.1.7"',
                          msg='Unexpected API version')
-
+        self.assertEqual(response.status_code, 200)
+        
     def test_search_1(self):
         "MVP-1. Basics. No validation of input"
         #! "filename": "foo",
@@ -73,7 +75,30 @@ class SearchTest(TestCase):
         self.assertJSONEqual(json.dumps(response.json()['resultset']),
                              json.dumps(json.loads(exp.search_1)['resultset']),
                              msg='Unexpected resultset')
+        self.assertEqual(response.status_code, 200)
 
+    def test_search_fakeerror_0(self):
+        "Fake Error for client testing: unknown type (return allowables)"
+        req = '{ "search":{ } }'
+        response = self.client.post('/dal/search/?error=foobar',
+                                    content_type='application/json',
+                                    data=req)
+        expected = {'errorMessage':
+                    'Unknown value (foobar) for URL ERROR parameter. Allowed: '
+                    'bad_numeric,bad_search_json'}
+        self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
+        self.assertEqual(response.status_code, 400)
+
+    def test_search_fakeerror_1(self):
+        "Fake Error for client testing: bad_numeric"
+        req = '{ "search":{ } }'
+        response = self.client.post('/dal/search/?error=bad_numeric',
+                                    content_type='application/json',
+                                    data=req)
+        expected = {'errorMessage': 'Bad numeric value'}
+        #!print('DBG0-tse-1: response={}'.format(response.content.decode()))
+        self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
+        self.assertEqual(response.status_code, 400)
 
     def test_search_error_1(self):
         "Error in request content: extra fields sent"
@@ -92,6 +117,24 @@ class SearchTest(TestCase):
         expected = {"errorMessage": "Extra fields ({'TRY_FILENAME'}) in search"}
         #!print('DBG0-tse-1: response={}'.format(response.content.decode()))
         self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
+        self.assertEqual(response.status_code, 400)
+
+#!    def test_search_error_2(self):
+#!        "Error in request content: non-decimal RA"
+#!        req = '''{ "search":{
+#!        "coordinates": { 
+#!            "ra": "somethingbad",
+#!            "dec": -45.5396111111111
+#!        },
+#!        "image_filter":["raw", "calibrated"]
+#!        }
+#!        }'''
+#!        response = self.client.post('/dal/search/',
+#!                                    content_type='application/json',
+#!                                    data=req  )
+#!        expected = {"errorMessage": "Extra fields ({'TRY_FILENAME'}) in search"}
+#!        print('DBG0-tse-2: response={}'.format(response.content.decode()))
+#!        self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
 
     def test_tipairs_0(self):
         "Return telescope/instrument pairs."
@@ -101,5 +144,5 @@ class SearchTest(TestCase):
         #!print('DBG: expected={}'.format(exp.tipairs_0))
         self.assertJSONEqual(json.dumps(response.json()),
                              json.dumps(exp.tipairs_0))
-        
+        self.assertEqual(response.status_code, 200)        
         
