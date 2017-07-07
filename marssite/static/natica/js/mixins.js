@@ -74,8 +74,8 @@ _config = {
   ],
   formData: {
     coordinates: {
-      ra: null,
-      dec: null
+      ra: "",
+      dec: ""
     },
     pi: null,
     search_box_min: null,
@@ -83,9 +83,8 @@ _config = {
     obs_date: ['', '', "="],
     filename: null,
     original_filename: null,
-    telescope: [],
+    telescope_instrument: [],
     exposure_time: ['', '', "="],
-    instrument: [],
     release_date: ['', '', "="],
     image_filter: []
   },
@@ -102,7 +101,7 @@ export default {
     },
     methods: {
       submitForm: function(event, paging, cb) {
-        var key, message, msgs, newFormData, page, search, self, url;
+        var key, message, msgs, newFormData, page, ref, search, self, url;
         if (paging == null) {
           paging = null;
         }
@@ -124,6 +123,7 @@ export default {
         }
         newFormData = this.search ? JSON.parse(JSON.stringify(this.search)) : JSON.parse(localStorage.getItem("search"));
         search = newFormData;
+        localStorage.setItem('search', JSON.stringify(search));
         for (key in newFormData) {
           if (_.isEqual(newFormData[key], this.config.formData[key])) {
             delete newFormData[key];
@@ -135,10 +135,13 @@ export default {
             }
           }
         }
+        if ((ref = newFormData.coordinates) != null ? ref.ra : void 0) {
+          newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra);
+          newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec);
+        }
         msgs = this.config.loadingMessages;
         message = Math.floor(Math.random() * msgs.length);
         this.loadingMessage = msgs[message];
-        localStorage.setItem('search', JSON.stringify(search));
         self = this;
         url = this.config.apiUrl + ("?page=" + page);
         return new Ajax({

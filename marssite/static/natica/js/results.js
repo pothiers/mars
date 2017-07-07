@@ -106,7 +106,7 @@ export default {
   },
   methods: {
     displayForm: function() {
-      window.location.hash = "";
+      window.location.hash = "#search_again";
       return this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
     },
     handleError: function(e) {

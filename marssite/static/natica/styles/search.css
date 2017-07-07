@@ -1,12 +1,13 @@
 @charset "UTF-8";
+div[rel=form-submit] {
+  padding-top: 12px; }
+
 .form-section {
   background-color: #D9EDF7;
   border: 1px solid #BCE8F1;
   border-radius: 10px;
   padding: 1em;
   margin-top: 2em; }
-  .form-section div[rel=form-submit] {
-    padding-top: 12px; }
   .form-section .section-toggle {
     text-align: right; }
     .form-section .section-toggle .icon:after {

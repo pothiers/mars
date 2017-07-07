@@ -18,7 +18,7 @@ App = (function() {
     window._ = _;
     new Vue({
       el: "#content",
-      template: "<component data='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
+      template: "<component compdata='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
       methods: {
         switchComponent: function(data) {
           this.componentData = data[1];

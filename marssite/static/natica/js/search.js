@@ -48,10 +48,11 @@ searchFormComponent = {
     return this.getTelescopes();
   },
   mounted: function() {
-    var search;
-    search = this.$parent.$data.componentData;
-    if (search != null ? search.hasOwnProperty("coordinates") : void 0) {
-      this.search = search;
+    var newSearch, oldSearch;
+    if (window.location.hash.indexOf("search_again") > -1) {
+      oldSearch = JSON.parse(localStorage.getItem("search"));
+      newSearch = JSON.parse(JSON.stringify(this.config.formData));
+      this.search = _.extend(newSearch, oldSearch);
     }
     return window.base.bindEvents();
   },
@@ -86,6 +87,10 @@ searchFormComponent = {
     };
   },
   methods: {
+    newSearch: function() {
+      this.search = JSON.parse(JSON.stringify(this.config.formData));
+      return localStorage.setItem("search", this.search);
+    },
     getTelescopes: function() {
       var now, self, telescopes;
       telescopes = JSON.parse(localStorage.getItem("telescopes") || "0");
