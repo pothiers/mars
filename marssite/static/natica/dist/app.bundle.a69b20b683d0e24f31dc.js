@@ -243,6 +243,13 @@ _config = {
             }
           }
         }
+        if (newFormData.telescope_instrument) {
+          newFormData.telescope_instrument = _.map(newFormData.telescope_instrument, (function(_this) {
+            return function(item) {
+              return item.split(",");
+            };
+          })(this));
+        }
         if ((ref = newFormData.coordinates) != null ? ref.ra : void 0) {
           newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra);
           newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec);
@@ -612,6 +619,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
  
@@ -681,8 +691,15 @@ searchFormComponent = {
       oldSearch = JSON.parse(localStorage.getItem("search"));
       newSearch = JSON.parse(JSON.stringify(this.config.formData));
       this.search = _.extend(newSearch, oldSearch);
+    } else if (window.location.hash.indexOf("query") > -1) {
+      this.$emit("displayform", ["results", []]);
     }
     return window.base.bindEvents();
+  },
+  computed: {
+    code: function() {
+      return JSON.stringify(this.search, null, 2);
+    }
   },
   data: function() {
     return {
@@ -837,6 +854,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Decam...")])])]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary",
     attrs: {
+      "id": "submit-form",
       "type": "submit"
     },
     on: {
@@ -1538,6 +1556,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     },
     attrs: {
       "id": "release-date-max",
+      "data-polyfill": "all",
       "name": "release-date-max",
       "type": "text",
       "value": "",
@@ -1643,7 +1662,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "form-control",
     attrs: {
       "id": "telescope",
-      "name": "telescope",
+      "name": "telescope[]",
       "multiple": "",
       "size": "10"
     },
@@ -1664,10 +1683,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "value": ""
       },
       domProps: {
-        "value": tel
+        "value": tel[0] + ',' + tel[1]
       }
     }, [_vm._v(_vm._s(tel[0]) + " + " + _vm._s(tel[1]))])
-  }))])])])])])])])]) : _vm._e()])], 1)
+  }))])])])])])])])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "code-view"
+  }, [_c('pre', {
+    staticClass: "code"
+  }, [_vm._v(_vm._s(_vm.code))])])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -1839,18 +1862,18 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-header", {
 });
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-cell", {
-  props: ['data'],
-  template: "<td v-if='data'>{{ format }}</td><td class='empty' v-else></td>",
+  props: ['data', 'field'],
+  template: "<td v-if='data' v-bind:rel='field'>{{ format }}</td><td class='empty' v-else></td>",
   computed: {
     format: function() {
       var d, dateStr;
       if (this.data === null) {
         return this.data;
       }
-      if (this.data.toString().match(/\d{4}-\d{2}-[0-9T:]+/) !== null) {
+      if (this.field === 'obs_date' || this.field === 'release_date') {
         try {
-          d = new Date(this.data);
-          dateStr = (d.getFullYear()) + "-" + ((d.getMonth() + 1).pad()) + "-" + ((d.getDate()).pad());
+          d = moment(this.data);
+          dateStr = d.format("YYYY-MM-DD");
           return dateStr;
         } catch (error) {
           return this.data;
@@ -1864,7 +1887,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-cell", {
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
   props: ['row', 'cols'],
-  template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' :key='row.id'></table-cell></tr>",
+  template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' v-bind:field='vis.mapping' :key='row.id'></table-cell></tr>",
   data: function() {
     return {
       isSelected: false
@@ -1981,7 +2004,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.displayForm
     }
-  }, [_vm._v("New Search")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Search Again")])])]), _vm._v(" "), _c('div', {
     staticClass: "row results-controls"
   }, [_c('div', {
     staticClass: "col-sm-3"
@@ -2009,7 +2032,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-12 results-wrapper"
-  }, [(_vm.results.resultset) ? _c('table', {
+  }, [((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _vm._l((_vm.visibleColumns), function(col) {
     return _c('th', [_c("table-header", {
@@ -2078,7 +2101,7 @@ exports = module.exports = __webpack_require__(19)(undefined);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\ndiv[rel=form-submit] {\n  padding-top: 12px; }\n\n.form-section {\n  background-color: #D9EDF7;\n  border: 1px solid #BCE8F1;\n  border-radius: 10px;\n  padding: 1em;\n  margin-top: 2em; }\n  .form-section .section-toggle {\n    text-align: right; }\n    .form-section .section-toggle .icon:after {\n      font-family: \"FontAwesome\";\n      display: inline-block;\n      font-size: 1.2em;\n      content: \"\\F078\"; }\n  .form-section .collapsible.open .section-toggle .icon:after {\n    content: \"\\F077\"; }\n  .form-section .error-message {\n    color: #d85454;\n    font-size: 14px;\n    line-height: 1.23em;\n    position: relative;\n    display: inline-block; }\n\n.results-wrapper {\n  overflow-x: auto; }\n\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n\n.loading {\n  display: block;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.8);\n  background-image: url(/static/img/galaxy-loading.gif);\n  background-size: cover;\n  opacity: 1; }\n  .loading .loading-message {\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    width: 500px;\n    margin-left: -250px;\n    text-align: center;\n    font-size: 2.3em;\n    color: yellow;\n    line-height: 1.25em; }\n    .loading .loading-message small {\n      font-size: 0.5em; }\n\ntable.results {\n  overflow: auto;\n  padding: 20px; }\n  table.results thead tr {\n    border-bottom: 2px solid #666; }\n  table.results thead th {\n    font-size: 14px;\n    white-space: nowrap;\n    padding: 5px; }\n  table.results tbody td {\n    font-size: 0.8em;\n    overflow: hidden;\n    padding: 2px 7px;\n    border: 1px solid transparent; }\n  table.results tbody td.empty {\n    background-color: #ccc;\n    border-color: #fff; }\n  table.results tbody tr:nth-child(even) {\n    background-color: aliceblue; }\n  table.results tbody tr.selected {\n    background-color: #37c0fb; }\n    table.results tbody tr.selected td.empty {\n      background-color: rgba(0, 0, 0, 0.3); }\n\nlabel.floating {\n  position: relative !important;\n  font-size: 12px;\n  top: 1em;\n  left: 1em;\n  opacity: 0;\n  transition: all 0.2s linear; }\n\nlabel.open {\n  opacity: 1;\n  top: 0; }\n\n.collapsible .section-content {\n  height: 0;\n  opacity: 0;\n  overflow: hidden;\n  transition: all 0.3s ease-in-out; }\n\n.collapsible.open .section-content {\n  height: initial;\n  opacity: 1; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.code {\n  font-size: 14px;\n  height: 400px; }\n\ndiv[rel=form-submit] {\n  padding-top: 12px; }\n\n.form-section {\n  background-color: #D9EDF7;\n  border: 1px solid #BCE8F1;\n  border-radius: 10px;\n  padding: 1em;\n  margin-top: 2em; }\n  .form-section .section-toggle {\n    text-align: right; }\n    .form-section .section-toggle .icon:after {\n      font-family: \"FontAwesome\";\n      display: inline-block;\n      font-size: 1.2em;\n      content: \"\\F078\"; }\n  .form-section .collapsible.open .section-toggle .icon:after {\n    content: \"\\F077\"; }\n  .form-section .error-message {\n    color: #d85454;\n    font-size: 14px;\n    line-height: 1.23em;\n    position: relative;\n    display: inline-block; }\n\n.results-wrapper {\n  overflow-x: auto; }\n\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n\n.loading {\n  display: block;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.8);\n  background-image: url(/static/img/galaxy-loading.gif);\n  background-size: cover;\n  opacity: 1; }\n  .loading .loading-message {\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    width: 500px;\n    margin-left: -250px;\n    text-align: center;\n    font-size: 2.3em;\n    color: yellow;\n    line-height: 1.25em; }\n    .loading .loading-message small {\n      font-size: 0.5em; }\n\ntable.results {\n  overflow: auto;\n  padding: 20px; }\n  table.results thead tr {\n    border-bottom: 2px solid #666; }\n  table.results thead th {\n    font-size: 14px;\n    white-space: nowrap;\n    padding: 5px; }\n  table.results tbody td {\n    font-size: 0.8em;\n    overflow: hidden;\n    padding: 2px 7px;\n    border: 1px solid transparent; }\n  table.results tbody td.empty {\n    background-color: #ccc;\n    border-color: #fff; }\n  table.results tbody tr:nth-child(even) {\n    background-color: aliceblue; }\n  table.results tbody tr.selected {\n    background-color: #37c0fb; }\n    table.results tbody tr.selected td.empty {\n      background-color: rgba(0, 0, 0, 0.3); }\n\nlabel.floating {\n  position: relative !important;\n  font-size: 12px;\n  top: 1em;\n  left: 1em;\n  opacity: 0;\n  transition: all 0.2s linear; }\n\nlabel.open {\n  opacity: 1;\n  top: 0; }\n\n.collapsible .section-content {\n  height: 0;\n  opacity: 0;\n  overflow: hidden;\n  transition: all 0.3s ease-in-out; }\n\n.collapsible.open .section-content {\n  height: initial;\n  opacity: 1; }\n", ""]);
 
 // exports
 

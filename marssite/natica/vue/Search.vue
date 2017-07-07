@@ -24,7 +24,7 @@
                                   <option value="">Decam...</option>
                               </select>
                           </label>
-                          <button class="btn btn-primary" type="submit" v-on:click="submitForm">Search</button>
+                          <button class="btn btn-primary" id="submit-form" type="submit" v-on:click="submitForm">Search</button>
                           <div><a class="" href="#" v-on:click="newSearch">Clear Search</a></div> 
                       </div>
                   </div><!-- /form-submit -->
@@ -184,7 +184,7 @@
                                           </select>
                                           <input id="release-date" class="date form-control" data-polyfill="all" name="release-date" type="text" value="" placeholder="Release date" v-model="search.release_date[0]" v-if="search.release_date[2] !== '(]'" v-validate="'date_format:YYYY-MM-DD'">
 
-                                          <input id="release-date-max" class="date form-control" v-bind:class="{ 'hidden-split': showBothReleaseDateFields }" name="release-date-max" type="text" value="" placeholder="Max release date" v-model="search.release_date[1]" v-show="showReleaseDateMax" v-validate="'date_format:YYYY-MM-DD'">
+                                          <input id="release-date-max" class="date form-control" data-polyfill="all" v-bind:class="{ 'hidden-split': showBothReleaseDateFields }" name="release-date-max" type="text" value="" placeholder="Max release date" v-model="search.release_date[1]" v-show="showReleaseDateMax" v-validate="'date_format:YYYY-MM-DD'">
                                       </div><!-- /input-group -->
                                   </div>
                               </div><!-- /col -->
@@ -211,8 +211,8 @@
                                   <div class="form-group">
                                       <div class="input-group">
                                           <label for="telescope">Telescope &amp; Intrument</label>
-                                          <select id="telescope" name="telescope" class="form-control" multiple size="10" v-model="search.telescope_instrument">
-                                            <option value="" v-for="tel in telescopes" v-bind:value="tel">{{ tel[0] }} + {{ tel[1] }}</option>                                            
+                                          <select id="telescope" name="telescope[]" class="form-control" multiple size="10" v-model="search.telescope_instrument">
+                                            <option value="" v-for="tel in telescopes" v-bind:value="tel[0]+','+tel[1]">{{ tel[0] }} + {{ tel[1] }}</option>                                            
                                           </select>
                                       </div>
                                   </div>
@@ -223,6 +223,9 @@
               </div><!-- /row -->
           </form>
       </transition>
+          <div class='code-view'>
+            <pre class="code">{{ code }}</pre>
+          </div>
   </div>
 </template>
 <script>

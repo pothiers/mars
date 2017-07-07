@@ -25,16 +25,16 @@ Vue.component "table-header",
   template: "<th>{{ name }}</th>"
 
 Vue.component "table-cell",
-  props: ['data']
-  template: "<td v-if='data'>{{ format }}</td><td class='empty' v-else></td>"
+  props: ['data', 'field']
+  template: "<td v-if='data' v-bind:rel='field'>{{ format }}</td><td class='empty' v-else></td>"
   computed: 
       format: ()->
         if @data is null
           return @data
-        if @data.toString().match(/\d{4}-\d{2}-[0-9T:]+/) isnt null
+        if @field is 'obs_date' or @field is 'release_date'
           try
-            d = new Date(@data)
-            dateStr = "#{d.getFullYear()}-#{(d.getMonth()+1).pad()}-#{(d.getDate()).pad()}"
+            d = moment(@data)
+            dateStr = d.format("YYYY-MM-DD")
             return dateStr
           catch
             return @data
@@ -43,7 +43,7 @@ Vue.component "table-cell",
 
 Vue.component "table-row",
   props: ['row', 'cols']
-  template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' :key='row.id'></table-cell></tr>"
+  template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' v-bind:field='vis.mapping' :key='row.id'></table-cell></tr>"
   data: ()->
     return
       isSelected: false

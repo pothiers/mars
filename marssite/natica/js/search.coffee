@@ -45,8 +45,12 @@ searchFormComponent = {
       oldSearch = JSON.parse(localStorage.getItem("search"))
       newSearch = JSON.parse(JSON.stringify(@config.formData))
       @search = _.extend(newSearch, oldSearch)
+    else if window.location.hash.indexOf("query") > -1
+      this.$emit("displayform", ["results", []]) 
     window.base.bindEvents()
-
+  computed:
+    code: ()->
+      return JSON.stringify(@search, null, 2)
   data: ()->
     return {
       url: config.apiUrl

@@ -5,6 +5,12 @@ $caret-up: "\f077";
 $caret-down: "\f078";
 
 $error-color: #d85454;
+
+.code{
+  font-size: 14px;
+  height: 400px;
+}
+
 div[rel=form-submit]{
   padding-top: 12px;
 }

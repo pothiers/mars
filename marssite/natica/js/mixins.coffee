@@ -86,6 +86,8 @@ export default {
                 # flatten value if it is for direct match
                 if newFormData[key][2] is "="
                   newFormData[key] = newFormData[key][0]
+          if newFormData.telescope_instrument
+            newFormData.telescope_instrument = _.map(newFormData.telescope_instrument, (item)=> return item.split(","))
           if newFormData.coordinates?.ra
             newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra)
             newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec)
