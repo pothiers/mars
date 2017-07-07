@@ -15,4 +15,8 @@ class InvalidUsage(BaseDalException):
 
 
 class UnknownSearchField(BaseDalException):
+    status_code = 400
+    
+
+class BadTIFormat(BaseDalException):
     status_code = 400    
