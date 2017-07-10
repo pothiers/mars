@@ -1,7 +1,32 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "additionalProperties": true,
-    "definitions": {},
+    "definitions": {
+        "date": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "array",
+                    "items": [
+                        {
+                            "description": "Minimum bound",
+                            "type": "string"
+                        },
+                        {
+                            "description": "Maxiumum bound",
+                            "type": "string"
+                        },
+                        {
+                            "default": "[)",
+                            "type": "string"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
     "id": "http://example.com/example.json",
     "properties": {
         "search": {
@@ -68,27 +93,9 @@
                     "uniqueItems": true
                 },
                 "obs_date": {
-                    "description": "An explanation about the purpose of this instance.",
-                    "id": "/properties/search/properties/obs_date",
-                    "items": [
-                        {
-                            "id": "/properties/search/properties/exposure_time/items/0",
-                            "description": "Miniumum bound",
-                            "type": "string"
-                        },
-                        {
-                            "id": "/properties/search/properties/exposure_time/items/1",
-                            "description": "Miniumum bound",
-                            "type": "number"
-                        },
-                        {
-                            "default": "[)",
-                            "description": "Lower/Upper Bound limit specification",
-                            "id": "/properties/search/properties/exposure_time/items/2",
-                            "type": "string"
-                        }
-                    ],
-                    "type": "array",
+                    "anyOf": [
+                        { "$ref": "#/definitions/date" }
+                    ]
                 },
                 "original_filename": {
                     "description": "An explanation about the purpose of this instance.",
@@ -105,15 +112,16 @@
                     "id": "/properties/search/properties/prop_id",
                     "type": "string"
                 },
-                "release_date": {
-                    "id": "/properties/search/properties/release_date",
-                    "type": "string",
+                "release_date":  {
+                    "anyOf": [
+                        { "$ref": "#/definitions/date" }
+                    ]
                 },
                 "search_box_min": {
                     "description": "An explanation about the purpose of this instance.",
                     "id": "/properties/search/properties/search_box_min",
-                    "minimum": 0,
-                    "type": "integer"
+                    "minimum": 0.0,
+                    "type": "number"
                 },
                 "telescope_instrument": {
                     "additionalItems": true,
@@ -121,6 +129,7 @@
                     "items": {
                         "additionalItems": true,
                         "id": "/properties/search/properties/telescope_instrument/items",
+                        "type": "array",
                         "items": [
                             {
                                 "description": "Telescope",
@@ -130,8 +139,7 @@
                                 "description": "Instrument",
                                 "type": "string"
                             }
-                        ],
-                        "type": "array",
+                        ]
                     },
                     "type": "array",
                     "uniqueItems": true
