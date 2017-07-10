@@ -1,5 +1,5 @@
 {
-    "name": "font-awesome",
+  "name": "font-awesome",
   "description": "The iconic font and CSS framework",
   "version": "4.7.0",
   "style": "css/font-awesome.css",
@@ -41,5 +41,4 @@
   "engines" : {
     "node" : ">=0.10.3"
   }
-
 }

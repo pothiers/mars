@@ -68,6 +68,8 @@ class Base
     return ""
 
   bindEvents: ()->
+    $("input.date").datepicker()
+    $("input.date").datepicker("option", "dateFormat", "yy-mm-dd") 
     els = document.querySelectorAll("input[type=text],input[type=textarea],input[type=password],input[type=date]")
     for el in els
       addMultiEventListener el, 'keyup blur', (event)->

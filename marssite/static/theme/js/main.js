@@ -90,6 +90,8 @@ Base = (function() {
 
   Base.prototype.bindEvents = function() {
     var el, els, i, j, len, len1, results, section, sections, toggle;
+    $("input.date").datepicker();
+    $("input.date").datepicker("option", "dateFormat", "yy-mm-dd");
     els = document.querySelectorAll("input[type=text],input[type=textarea],input[type=password],input[type=date]");
     for (i = 0, len = els.length; i < len; i++) {
       el = els[i];

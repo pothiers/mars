@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load i18n static %}
+
+{% block head_title %}404 Page not found{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static "theme/404.css" %}" type="text/css"  media="screen">
+{% endblock %}
+
+
+{% block body %}
+    
+    <div class="container content">
+        <div class="row">
+            <div class="col-sm-offset-3 col-sm-6">
+                <h1>404 Page Not Found</h1>
+                <p>Here are some links that might help out in your quest:</p>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li>
+                        <a href="/natica/search">Search</a>
+                    </li>
+                    <li>
+                        <a href="/calendar">Calendar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+        
+{% endblock %}
