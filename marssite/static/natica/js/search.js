@@ -53,8 +53,15 @@ searchFormComponent = {
       oldSearch = JSON.parse(localStorage.getItem("search"));
       newSearch = JSON.parse(JSON.stringify(this.config.formData));
       this.search = _.extend(newSearch, oldSearch);
+    } else if (window.location.hash.indexOf("query") > -1) {
+      this.$emit("displayform", ["results", []]);
     }
     return window.base.bindEvents();
+  },
+  computed: {
+    code: function() {
+      return JSON.stringify(this.search, null, 2);
+    }
   },
   data: function() {
     return {

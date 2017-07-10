@@ -135,6 +135,13 @@ export default {
             }
           }
         }
+        if (newFormData.telescope_instrument) {
+          newFormData.telescope_instrument = _.map(newFormData.telescope_instrument, (function(_this) {
+            return function(item) {
+              return item.split(",");
+            };
+          })(this));
+        }
         if ((ref = newFormData.coordinates) != null ? ref.ra : void 0) {
           newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra);
           newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec);

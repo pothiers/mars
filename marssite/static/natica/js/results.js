@@ -39,18 +39,18 @@ Vue.component("table-header", {
 });
 
 Vue.component("table-cell", {
-  props: ['data'],
-  template: "<td v-if='data'>{{ format }}</td><td class='empty' v-else></td>",
+  props: ['data', 'field'],
+  template: "<td v-if='data' v-bind:rel='field'>{{ format }}</td><td class='empty' v-else></td>",
   computed: {
     format: function() {
       var d, dateStr;
       if (this.data === null) {
         return this.data;
       }
-      if (this.data.toString().match(/\d{4}-\d{2}-[0-9T:]+/) !== null) {
+      if (this.field === 'obs_date' || this.field === 'release_date') {
         try {
-          d = new Date(this.data);
-          dateStr = (d.getFullYear()) + "-" + ((d.getMonth() + 1).pad()) + "-" + ((d.getDate()).pad());
+          d = moment(this.data);
+          dateStr = d.format("YYYY-MM-DD");
           return dateStr;
         } catch (error) {
           return this.data;
@@ -64,7 +64,7 @@ Vue.component("table-cell", {
 
 Vue.component("table-row", {
   props: ['row', 'cols'],
-  template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' :key='row.id'></table-cell></tr>",
+  template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' v-bind:field='vis.mapping' :key='row.id'></table-cell></tr>",
   data: function() {
     return {
       isSelected: false
