@@ -1,5 +1,6 @@
 import datetime
 import json
+import dicttoxml
 import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
@@ -138,9 +139,6 @@ def dictfetchall(cursor):
         for row in cursor.fetchall()
     ]
 
-# ElementTree should be used only for TRUSTED sources (not directly) from web service.
-def search_by_xmlstr(xmlstr):
-    pass
 
 
 def remove_leading(thestring, lead):
@@ -265,22 +263,16 @@ def search_by_json(request):
         #!print('DBG body str={}'.format(request.body.decode('utf-8')))
         if request.content_type == "application/json":
             body = json.loads(request.body.decode('utf-8'))
+            xml = dicttoxml.dicttoxml(body)
             jsearch = body['search']
-            #print('jsearch={}'.format(jsearch))
-            for k,v in jsearch.items():
-                e = ET.SubElement(root, k)
-                if isinstance(v, dict):
-                    for k2,v2 in v.items():                 
-                        ET.SubElement(e, k2).text = str(v2)
-                else:
-                    e.text = str(v)
-            #print('root={}'.format(root))
-            tree = ET.ElementTree(root)
-            xmlstr = ET.tostring(root)
-            #print('xml search={}'.format(xmlstr))
-            search_by_xmlstr(xmlstr)
+            #!validate_by_xmlstr(xmlstr)
+
         elif request.content_type == "application/xml":
-            pass
+            print('WARNING: processing of XML payload not implemented!!!')
+            raise dex.CannotProcessContentType('Cannot parse content type: application/xml')
+        else:
+            raise dex.CannotProcessContentType('Cannot parse content type: {}'
+                                               .format(request.content_type))
 
         avail_fields = set([
             'search_box_min',

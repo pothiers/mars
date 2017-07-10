@@ -71,7 +71,7 @@ class SearchTest(TestCase):
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
-        #!print('DBG: response={}'.format(response.content.decode()))
+        #print('DBG: response={}'.format(response.content.decode()))
         self.assertJSONEqual(json.dumps(response.json()['resultset']),
                              json.dumps(json.loads(exp.search_1)['resultset']),
                              msg='Unexpected resultset')

@@ -10,7 +10,7 @@
         "obs_date": ["2009-04-01", "2009-04-03", "[]"],
         "original_filename": "/ua84/mosaic/tflagana/3103/stdr1_012.fits",
         "telescope_instrument": [["ct4m","mosaic_2"],["foobar", "bar"]],
-        "exposure_time": "15",	
+        "exposure_time": 15,	
         "release_date": "2010-10-01T00:00:00",
         "image_filter":["raw", "calibrated"]
     }

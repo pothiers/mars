@@ -1,0 +1,144 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "additionalProperties": true,
+    "definitions": {},
+    "id": "http://example.com/example.json",
+    "properties": {
+        "search": {
+            "additionalProperties": false,
+            "id": "/properties/search",
+            "properties": {
+                "coordinates": {
+                    "additionalProperties": false,
+                    "id": "/properties/search/properties/coordinates",
+                    "properties": {
+                        "dec": {
+                            "description": "An explanation about the purpose of this instance.",
+                            "id": "/properties/search/properties/coordinates/properties/dec",
+                            "title": "The Dec Schema",
+                            "type": "number"
+                        },
+                        "ra": {
+                            "description": "An explanation about the purpose of this instance.",
+                            "id": "/properties/search/properties/coordinates/properties/ra",
+                            "title": "The Ra Schema",
+                            "type": "number"
+                        }
+                    },
+                    "type": "object"
+                },
+                "exposure_time": {
+                    "additionalItems": false,
+                    "id": "/properties/search/properties/exposure_time",
+                    "items": [
+                        {
+                            "id": "/properties/search/properties/exposure_time/items/0",
+                            "description": "Miniumum bound",
+                            "type": "number"
+                        },
+                        {
+                            "id": "/properties/search/properties/exposure_time/items/1",
+                            "description": "Miniumum bound",
+                            "type": "number"
+                        },
+                        {
+                            "default": "[)",
+                            "description": "Lower/Upper Bound limit specification",
+                            "id": "/properties/search/properties/exposure_time/items/2",
+                            "type": "string"
+                        }
+                    ],
+                    "type": "array",
+                    "uniqueItems": false
+                },
+                "filename": {
+                    "description": "An explanation about the purpose of this instance.",
+                    "id": "/properties/search/properties/filename",
+                    "type": "string"
+                },
+                "image_filter": {
+                    "additionalItems": true,
+                    "id": "/properties/search/properties/image_filter",
+                    "items": {
+                        "description": "An explanation about the purpose of this instance.",
+                        "id": "/properties/search/properties/image_filter/items",
+                        "type": "string"
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                },
+                "obs_date": {
+                    "description": "An explanation about the purpose of this instance.",
+                    "id": "/properties/search/properties/obs_date",
+                    "items": [
+                        {
+                            "id": "/properties/search/properties/exposure_time/items/0",
+                            "description": "Miniumum bound",
+                            "type": "string"
+                        },
+                        {
+                            "id": "/properties/search/properties/exposure_time/items/1",
+                            "description": "Miniumum bound",
+                            "type": "number"
+                        },
+                        {
+                            "default": "[)",
+                            "description": "Lower/Upper Bound limit specification",
+                            "id": "/properties/search/properties/exposure_time/items/2",
+                            "type": "string"
+                        }
+                    ],
+                    "type": "array",
+                },
+                "original_filename": {
+                    "description": "An explanation about the purpose of this instance.",
+                    "id": "/properties/search/properties/original_filename",
+                    "type": "string"
+                },
+                "pi": {
+                    "description": "An explanation about the purpose of this instance.",
+                    "id": "/properties/search/properties/pi",
+                    "type": "string"
+                },
+                "prop_id": {
+                    "description": "An explanation about the purpose of this instance.",
+                    "id": "/properties/search/properties/prop_id",
+                    "type": "string"
+                },
+                "release_date": {
+                    "id": "/properties/search/properties/release_date",
+                    "type": "string",
+                },
+                "search_box_min": {
+                    "description": "An explanation about the purpose of this instance.",
+                    "id": "/properties/search/properties/search_box_min",
+                    "minimum": 0,
+                    "type": "integer"
+                },
+                "telescope_instrument": {
+                    "additionalItems": true,
+                    "id": "/properties/search/properties/telescope_instrument",
+                    "items": {
+                        "additionalItems": true,
+                        "id": "/properties/search/properties/telescope_instrument/items",
+                        "items": [
+                            {
+                                "description": "Telescope",
+                                "type": "string"
+                            },
+                            {
+                                "description": "Instrument",
+                                "type": "string"
+                            }
+                        ],
+                        "type": "array",
+                    },
+                    "type": "array",
+                    "uniqueItems": true
+                }
+            },
+            "type": "object"
+        }
+    },
+    "type": "object"
+}

@@ -29,3 +29,8 @@ class BadSearchSyntax(BaseDalException):
 
 class BadFakeError(BaseDalException):
     status_code = 400    
+
+class CannotProcessContentType(BaseDalException):
+    status_code = 400
+    
+    
