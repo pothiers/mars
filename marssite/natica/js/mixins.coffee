@@ -110,8 +110,9 @@ export default {
             success: (data)->
               window.location.hash = "#query"
               self.loading = false
-              localStorage.setItem('results', JSON.stringify(data))
-              self.$emit("displayform", ["results", data])
+              saveData =  if typeof(data) is "object" then JSON.stringify(data) else data 
+              localStorage.setItem('results', saveData )
+              self.$emit("displayform", ["results", saveData])
               if cb
                 cb(data)
             fail: (statusMsg, status, xhr)->
@@ -124,6 +125,5 @@ export default {
               self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>#{message}</strong></div>"
               ToggleModal("#search-modal")
               console.dir arguments
-          .send()
 
 }

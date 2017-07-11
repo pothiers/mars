@@ -101,7 +101,6 @@ searchFormComponent = {
               telescopes: data
             }
             localStorage.setItem("telescopes", JSON.stringify(telescopes))
-        .send()
 
     splitSelection: (val)->
       # for toggling conditional form inputs, one and sometimes both

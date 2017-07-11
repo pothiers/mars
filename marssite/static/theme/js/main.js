@@ -5,31 +5,29 @@ Date: 2017-06-09
 Description: Base functionality/interactions + helper functions
 Original file: main.coffee
  */
-var Ajax, Base,
+var Ajax, Base, ToggleModal,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
-/* De-couple the need to use jquery */
-ToggleModal = function(selector){
-  var m = document.querySelector(selector),
-      b = document.querySelector(".modal-backdrop");
-
-  m.style.display = "block";
-  m.classList.toggle("in");
-  if( b === null ){
-    var backdrop = document.createElement("div"),
-        body = document.querySelector("body");
-
-    backdrop.setAttribute("class", "modal-backdrop fade in");
+ToggleModal = function(selector) {
+  var b, backdrop, body, m;
+  m = document.querySelector(selector);
+  b = document.querySelector('.modal-backdrop');
+  m.style.display = 'block';
+  m.classList.toggle('in');
+  if (b === null) {
+    backdrop = document.createElement('div');
+    body = document.querySelector('body');
+    backdrop.setAttribute('class', 'modal-backdrop fade in');
     body.appendChild(backdrop);
-  }else{
+  } else {
     b.remove();
   }
-  
 };
 
 Ajax = (function() {
   function Ajax(_opts) {
     this._response = bind(this._response, this);
+    var settings;
     this.settings = {
       url: window.location.path,
       method: "GET",
@@ -39,31 +37,32 @@ Ajax = (function() {
         return "";
       },
       fail: function() {
-
         return "";
-      },
-      networkEror: function(){
-        console.error("Network error is unhandled");
-        return arguments;
       }
     };
-    this.settings = _.extend(this.settings, _opts);
+    settings = _.extend(this.settings, _opts);
+    this.settings = settings;
     this.xhr = new XMLHttpRequest();
     this.xhr.onload = this._response;
-    this.xhr.onerror = this.settings.networkError;
+    this.xhr.onerror = settings.fail;
+    this.xhr.open(settings.method.toUpperCase(), settings.url, true);
+    this.xhr.setRequestHeader('Content-Type', 'application/json');
+    this.xhr.setRequestHeader('x-hello-world', '1.0');
+    this.xhr.send(JSON.stringify(settings.data));
   }
 
   Ajax.prototype._response = function(e) {
-    if(e.target.status !== 200){
-      return this.settings.fail(e.target.statusText, e.target.status, e.target);
+    if (e.target.status !== 200) {
+      this.settings.fail(e.target.statusText, e.target.status, e.target);
+      return;
     }
-    return this.settings.success(e.target.response);
+    this.settings.success(e.target.response);
   };
 
   Ajax.prototype.send = function() {
     var path, settings;
     settings = this.settings;
-    path = settings.url;
+    return path = settings.url;
 
     /*
     unless _.isEmpty(settings.data)
@@ -72,11 +71,6 @@ Ajax = (function() {
       .join('&')
       path += "?"+params
      */
-    this.xhr.responseType = settings.accept;
-    this.xhr.open(settings.method.toUpperCase(), path, true);
-    this.xhr.setRequestHeader('Content-Type', 'application/json');
-    this.xhr.setRequestHeader('x-hello-world', '1.0');
-    return this.xhr.send(JSON.stringify(settings.data));
   };
 
   return Ajax;
@@ -92,19 +86,9 @@ Base = (function() {
      */
     var nohup;
     window.addMultiEventListener = function(elem, events, fn) {
-      debugger
-      if( Array.isArray(elem)){
-        for(i in elem){
-          events.split(' ').forEach(function(e){
-            return elem[i].addEventListener(e, fn, false);
-          }) ;
-        }
-        return true;
-      }else{
-        return events.split(' ').forEach(function(e) {
-          return elem.addEventListener(e, fn, false);
-        });
-      }
+      return events.split(' ').forEach(function(e) {
+        return elem.addEventListener(e, fn, false);
+      });
     };
     if (window.location.hostname !== "localhost") {
       nohup = function() {
@@ -127,13 +111,7 @@ Base = (function() {
 
   Base.prototype.bindEvents = function() {
     var el, els, i, j, len, len1, results, section, sections, toggle;
-    $("input.date").datepicker({
-      onSelect:function(text){
-        $(this).focus();
-        $(this).change();
-      }
-    });
-    addMultiEventListener(document.querySelectorAll(".input.date"), "change", function(event){ console.log("Date changed");});
+    $("input.date").datepicker();
     $("input.date").datepicker("option", "dateFormat", "yy-mm-dd");
     els = document.querySelectorAll("input[type=text],input[type=textarea],input[type=password],input[type=date]");
     for (i = 0, len = els.length; i < len; i++) {
