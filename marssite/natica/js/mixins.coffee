@@ -66,8 +66,6 @@ export default {
       stripData: ()->
         # strip out anything that wasn't modified
         newFormData = if @search then JSON.parse(JSON.stringify(@search)) else JSON.parse(localStorage.getItem("search"))
-        search = newFormData
-        localStorage.setItem('search', JSON.stringify(search))
 
         for key of newFormData
           if _.isEqual(newFormData[key], @config.formData[key])
@@ -82,6 +80,7 @@ export default {
         if newFormData.coordinates?.ra
           newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra)
           newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec)
+        localStorage.setItem('search', JSON.stringify(newFormData))
         return newFormData
       submitForm: (event, paging=null, cb=null)->
           event?.preventDefault()
@@ -92,6 +91,7 @@ export default {
             this.$emit('setpagenum', 1)
             page = 1
             localStorage.setItem("currentPage", 1)
+            localStorage.setItem("searchData", JSON.stringify(@search))
           else
             page = localStorage.getItem("currentPage")
 

@@ -34,10 +34,11 @@ class Ajax
     @xhr.onload = @_response
     @xhr.onerror = settings.fail
     # FF throws an error if setting the response type...wth?
-    #@xhr.responseType = settings.accept
     @xhr.open(settings.method.toUpperCase(), settings.url, true)
     @xhr.setRequestHeader('Content-Type', 'application/json')
-    @xhr.setRequestHeader('x-hello-world', '1.0')
+    @xhr.setRequestHeader('Accepts', settings.accepts)
+    @xhr.setRequestHeader('x-mars-ajax-handler', '1.0')
+    @xhr.responseType = settings.accept
     @xhr.send(JSON.stringify(settings.data) )
 
 

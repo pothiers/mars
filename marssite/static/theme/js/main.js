@@ -47,7 +47,9 @@ Ajax = (function() {
     this.xhr.onerror = settings.fail;
     this.xhr.open(settings.method.toUpperCase(), settings.url, true);
     this.xhr.setRequestHeader('Content-Type', 'application/json');
-    this.xhr.setRequestHeader('x-hello-world', '1.0');
+    this.xhr.setRequestHeader('Accepts', settings.accepts);
+    this.xhr.setRequestHeader('x-mars-ajax-handler', '1.0');
+    this.xhr.responseType = settings.accept;
     this.xhr.send(JSON.stringify(settings.data));
   }
 

@@ -42,9 +42,8 @@ searchFormComponent = {
   mounted: ()->
     # check if this is a new search
     if window.location.hash.indexOf("search_again") > -1
-      oldSearch = JSON.parse(localStorage.getItem("search"))
-      newSearch = JSON.parse(JSON.stringify(@config.formData))
-      @search = _.extend(newSearch, oldSearch)
+      oldSearch = JSON.parse(localStorage.getItem("searchData"))
+      @search = oldSearch
     else if window.location.hash.indexOf("query") > -1
       this.$emit("displayform", ["results", []]) 
     window.base.bindEvents()
@@ -81,7 +80,7 @@ searchFormComponent = {
     newSearch: ()->
       # clear current search and storage
       @search = JSON.parse(JSON.stringify(@config.formData))
-      localStorage.setItem("search", @search)
+      localStorage.setItem("searchData", JSON.stringify(@search))
     getTelescopes: ()->
       # check if we have a cached set to use
       telescopes = JSON.parse(localStorage.getItem("telescopes")||"0")

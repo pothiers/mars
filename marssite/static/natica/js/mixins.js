@@ -164,10 +164,12 @@ export default {
             search: newFormData
           },
           success: function(data) {
+            var saveData;
             window.location.hash = "#query";
             self.loading = false;
-            localStorage.setItem('results', JSON.stringify(data));
-            self.$emit("displayform", ["results", data]);
+            saveData = typeof data === "object" ? JSON.stringify(data) : data;
+            localStorage.setItem('results', saveData);
+            self.$emit("displayform", ["results", saveData]);
             if (cb) {
               return cb(data);
             }
@@ -184,7 +186,7 @@ export default {
             ToggleModal("#search-modal");
             return console.dir(arguments);
           }
-        }).send();
+        });
       }
     }
   }

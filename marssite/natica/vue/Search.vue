@@ -97,8 +97,8 @@
                           <div class="section-content row">
                               <div class="col-md-6">
                                   <div class="form-group">
-                                      <label class="floating" for="program-number">Program Number</label>
-                                      <input class="form-control" name="program-number" id="program-number" placeholder="Program Number" type="text" value="" v-model="search.prop_id">
+                                      <label class="floating" for="program-number">Program Number (Prop ID)</label>
+                                      <input class="form-control" name="program-number" id="program-number" placeholder="Program Number (Prop ID)" type="text" value="" v-model="search.prop_id">
                                   </div>
                                   <div class="form-group">
                                       <label class="floating" for="principle-investigator">Principle Investigator</label> 
