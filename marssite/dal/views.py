@@ -1,6 +1,7 @@
 import datetime
 import json
-import dicttoxml
+#import dicttoxml
+import jsonschema
 import xml.etree.ElementTree as ET
 from collections import OrderedDict
 
@@ -18,61 +19,6 @@ from . import exceptions as dex
 
 
 dal_version = '0.1.7' # MVP. mostly untested
-
-search_spec_json = {
- "search":{
-    "object_name" : "[text|optional]",
-    "coordinates": { 
-        "ra" : "[float|optional]",
-        "dec": "[float|optional]"
-    },
-     "search_box_min": "[float|optional]",
-     "prop_id":"[text|optional]",
-
-     "obs_date":"[text|optional]",
-     "filename":"[text|optional]",
-     "telescope":"[array(text)|optional]",
-     "instrument":"[array(text)|optional]",
-     "release_date":"[date|optional]",
-     "flag_raw":"[boolean|false]",
-     "image_filter":{
-         "calibrated" : "[boolean|false]",
-         "reprojected" : "[boolean|false]",
-         "stacked" : "[boolean|false]",
-         "master_calibration" : "[boolean|false]",
-         "image_tiles" : "[boolean|false]",
-         "sky_subtracted" : "[boolean|false]",
-     }
-  }
-}
-
-response_spec_json = [
-    {
-        "object_name":"string",
-        "ra": 0.0,
-        "dec": 0.0,
-        "prop_id":"string",
-        "survey_id":"string",
-        "obs_date":"2017-05-01",
-        "pi":"string",
-        "telescope":"string",
-        "instrument":"string",
-        "release_date":"2017-05-01",
-        "flag_raw" : "bool",
-        "image_type": "string(calibrated,stacked,etc)",
-        "filter":"string",
-        "file_size":0,
-        "filename":"string",
-        "original_filename":"string",
-        "md5sum":"string",
-        "exposure":0.0,
-        "observation_type":"string",
-        "observation_mode":"stirng",
-        "product":"string",
-        "seeing":"string",
-        "depth":"string"
-    }
-]
 
 
 
@@ -243,6 +189,7 @@ def search_by_json(request):
     gen_error = request.GET.get('error',None)
     if gen_error != None:
         return fake_error_response(request, gen_error)
+
         
     # !!! Verify values (e.g. telescope) are valid. Avoid SQL injection hit.
     page_limit = int(request.GET.get('limit','100')) # num of records per page
@@ -263,9 +210,18 @@ def search_by_json(request):
         #!print('DBG body str={}'.format(request.body.decode('utf-8')))
         if request.content_type == "application/json":
             body = json.loads(request.body.decode('utf-8'))
-            xml = dicttoxml.dicttoxml(body)
             jsearch = body['search']
+            #xml = dicttoxml.dicttoxml(body)
             #!validate_by_xmlstr(xmlstr)
+            # Validate against schema
+            try:
+                schemafile = '/etc/mars/search-schema.json'
+                with open(schemafile) as f:
+                    schema = json.load(f)
+                    jsonschema.validate(body, schema)
+            except Exception as err:
+                raise dex.BadSearchSyntax('JSON did not validate against /etc/mars/search-schema.json'
+                                          '; {}'.format(err))
 
         elif request.content_type == "application/xml":
             print('WARNING: processing of XML payload not implemented!!!')

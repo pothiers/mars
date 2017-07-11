@@ -63,7 +63,7 @@ class SearchTest(TestCase):
         "obs_date": ["2009-04-01", "2009-04-03", "[]"],
         "original_filename": "/ua84/mosaic/tflagana/3103/stdr1_012.fits",
         "telescope_instrument": [["ct4m","mosaic_2"],["foobar", "bar"]],
-        "exposure_time": "15",
+        "exposure_time": 15,
         "release_date": "2010-10-01T00:00:00",
         "image_filter":["raw", "calibrated"]
     }
@@ -96,7 +96,6 @@ class SearchTest(TestCase):
                                     content_type='application/json',
                                     data=req)
         expected = {'errorMessage': 'Bad numeric value'}
-        #!print('DBG0-tse-1: response={}'.format(response.content.decode()))
         self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
         self.assertEqual(response.status_code, 400)
 
@@ -116,26 +115,54 @@ class SearchTest(TestCase):
                                     data=req  )
         expected = {"errorMessage": "Extra fields ({'TRY_FILENAME'}) in search"}
         #!print('DBG0-tse-1: response={}'.format(response.content.decode()))
-        self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
+        #!self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
+        self.assertIn('JSON did not validate against /etc/mars/search-schema.json',
+                      json.dumps(response.json()['errorMessage']))
         self.assertEqual(response.status_code, 400)
 
-#!    def test_search_error_2(self):
-#!        "Error in request content: non-decimal RA"
-#!        req = '''{ "search":{
-#!        "coordinates": { 
-#!            "ra": "somethingbad",
-#!            "dec": -45.5396111111111
-#!        },
-#!        "image_filter":["raw", "calibrated"]
-#!        }
-#!        }'''
-#!        response = self.client.post('/dal/search/',
-#!                                    content_type='application/json',
-#!                                    data=req  )
-#!        expected = {"errorMessage": "Extra fields ({'TRY_FILENAME'}) in search"}
-#!        print('DBG0-tse-2: response={}'.format(response.content.decode()))
-#!        self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
 
+    def test_search_error_2(self):
+        "Error in request content: non-decimal RA"
+        req = '''{ "search":{
+        "coordinates": { 
+            "ra": "somethingbad",
+            "dec": -45.5396111111111
+        },
+        "image_filter":["raw", "calibrated"]
+        }
+        }'''
+        response = self.client.post('/dal/search/',
+                                    content_type='application/json',
+                                    data=req  )
+        expected = {'errorMessage':
+                    "Unexpected Error!: Can't convert 'float' object to str implicitly"}
+        #self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
+        self.assertIn('JSON did not validate against /etc/mars/search-schema.json',
+                      json.dumps(response.json()['errorMessage']))
+        self.assertEqual(response.status_code, 400)
+        
+    def test_search_error_3(self):
+        "Error in request content: obs_date is numeric (not valid per schema)"
+        req = '{ "search":{ "obs_date": 99 } }'
+        response = self.client.post('/dal/search/',
+                                    content_type='application/json',
+                                    data=req  )
+        expected = {"errorMessage": "foo"}
+        expected = {'errorMessage':
+                    "JSON did not validate against /etc/mars/search-schema.json; "
+                    "99 is not valid under any of the given schemas\n"
+                    "\n"
+                    "Failed validating 'anyOf' in "
+                    "schema['properties']['search']['properties']['obs_date']:\n"
+                    "    {'anyOf': [{'$ref': '#/definitions/date'}]}\n"
+                    "\n"
+                    "On instance['search']['obs_date']:\n"
+                    "    99"}
+        #self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
+        self.assertIn('JSON did not validate against /etc/mars/search-schema.json',
+                      json.dumps(response.json()['errorMessage']))
+        self.assertEqual(response.status_code, 400)
+        
     def test_tipairs_0(self):
         "Return telescope/instrument pairs."
         #print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
