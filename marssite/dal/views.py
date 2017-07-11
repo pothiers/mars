@@ -185,6 +185,9 @@ def fake_error_response(request, error_type):
 # curl -H "Content-Type: application/json" -X POST -d @request.json http://localhost:8000/dal/search/ | python -m json.tool
 @csrf_exempt
 def search_by_json(request):
+    """
+    Search the NOAO Archive, returns a list of image resource metadata
+    """
     #!print('DBG-0: search_by_json')
     gen_error = request.GET.get('error',None)
     if gen_error != None:
