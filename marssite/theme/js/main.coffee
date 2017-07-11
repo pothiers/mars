@@ -5,6 +5,20 @@ Description: Base functionality/interactions + helper functions
 Original file: main.coffee
 ###
 
+ToggleModal = (selector) ->
+  m = document.querySelector(selector)
+  b = document.querySelector('.modal-backdrop')
+  m.style.display = 'block'
+  m.classList.toggle 'in'
+  if b == null
+    backdrop = document.createElement('div')
+    body = document.querySelector('body')
+    backdrop.setAttribute 'class', 'modal-backdrop fade in'
+    body.appendChild backdrop
+  else
+    b.remove()
+  return
+
 class Ajax
   constructor:(_opts)->
     @settings =
@@ -14,13 +28,26 @@ class Ajax
         data: {}
         success: ()-> return ""
         fail: ()-> return ""
-    @settings = _.extend(@settings, _opts)
+    settings = _.extend(@settings, _opts)
+    @settings = settings
     @xhr = new XMLHttpRequest()
     @xhr.onload = @_response
-    @xhr.onerror = @settings.fail
+    @xhr.onerror = settings.fail
+    # FF throws an error if setting the response type...wth?
+    @xhr.open(settings.method.toUpperCase(), settings.url, true)
+    @xhr.setRequestHeader('Content-Type', 'application/json')
+    @xhr.setRequestHeader('Accepts', settings.accepts)
+    @xhr.setRequestHeader('x-mars-ajax-handler', '1.0')
+    @xhr.responseType = settings.accept
+    @xhr.send(JSON.stringify(settings.data) )
+
 
   _response: (e)=>
-    @settings.success(e.target.response)
+    if e.target.status != 200
+      @settings.fail e.target.statusText, e.target.status, e.target
+      return
+    @settings.success e.target.response
+    return
 
   send: ()->
     settings = @settings
@@ -32,13 +59,7 @@ class Ajax
       .join('&')
       path += "?"+params
     ###
-    @xhr.responseType = settings.accept
-    @xhr.open(settings.method.toUpperCase(), path, true)
-    @xhr.setRequestHeader('Content-Type', 'application/json')
-    @xhr.setRequestHeader('x-hello-world', '1.0')
-    @xhr.send(JSON.stringify(settings.data) )
-
-
+    
 
 class Base
   constructor: ()->

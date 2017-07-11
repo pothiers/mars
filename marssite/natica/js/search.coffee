@@ -42,20 +42,21 @@ searchFormComponent = {
   mounted: ()->
     # check if this is a new search
     if window.location.hash.indexOf("search_again") > -1
-      oldSearch = JSON.parse(localStorage.getItem("search"))
-      newSearch = JSON.parse(JSON.stringify(@config.formData))
-      @search = _.extend(newSearch, oldSearch)
+      oldSearch = JSON.parse(localStorage.getItem("searchData"))
+      @search = oldSearch
     else if window.location.hash.indexOf("query") > -1
       this.$emit("displayform", ["results", []]) 
     window.base.bindEvents()
   computed:
     code: ()->
-      return JSON.stringify(@search, null, 2)
+      return JSON.stringify(@stripData(), null, 2)
   data: ()->
     return {
       url: config.apiUrl
       visible: true
       loading: false
+      modalTitle: ""
+      modalBody: ""
       loadingMessage: "Sweeping up star dust..."
       search: JSON.parse(JSON.stringify(config.formData)) # deep copy
       showExposureMax: false
@@ -74,10 +75,12 @@ searchFormComponent = {
           {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
     }
   methods:
+    closeModal: ()->
+      ToggleModal("#search-modal")
     newSearch: ()->
       # clear current search and storage
       @search = JSON.parse(JSON.stringify(@config.formData))
-      localStorage.setItem("search", @search)
+      localStorage.setItem("searchData", JSON.stringify(@search))
     getTelescopes: ()->
       # check if we have a cached set to use
       telescopes = JSON.parse(localStorage.getItem("telescopes")||"0")
@@ -97,7 +100,6 @@ searchFormComponent = {
               telescopes: data
             }
             localStorage.setItem("telescopes", JSON.stringify(telescopes))
-        .send()
 
     splitSelection: (val)->
       # for toggling conditional form inputs, one and sometimes both

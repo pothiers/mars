@@ -49,6 +49,12 @@
                         <div v-else>
                           <h1 class="text-center">No results found</h1>
                           <div class="alert alert-danger text-center" v-if="error">{{ error }}</div>
+                          <pre class="code">{{ searchObj }}              
+                          </pre>
+                          <div class="text-center">
+                            <h5>You might try and adjust your paramaters and search again</h5>
+                            <button class="btn btn-success" v-on:click="displayForm">Adjust Paramaters</button>
+                          </div>
                         </div>
                     </div>
                 </div>

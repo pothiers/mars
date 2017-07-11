@@ -97,8 +97,8 @@
                           <div class="section-content row">
                               <div class="col-md-6">
                                   <div class="form-group">
-                                      <label class="floating" for="program-number">Program Number</label>
-                                      <input class="form-control" name="program-number" id="program-number" placeholder="Program Number" type="text" value="" v-model="search.prop_id">
+                                      <label class="floating" for="program-number">Program Number (Prop ID)</label>
+                                      <input class="form-control" name="program-number" id="program-number" placeholder="Program Number (Prop ID)" type="text" value="" v-model="search.prop_id">
                                   </div>
                                   <div class="form-group">
                                       <label class="floating" for="principle-investigator">Principle Investigator</label> 
@@ -225,6 +225,22 @@
       </transition>
           <div class='code-view'>
             <pre class="code">{{ code }}</pre>
+          </div>
+          <!-- Modal -->
+          <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-labelledby="searchModelLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" v-on:click="closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">{{ modalTitle }}</h4>
+                </div>
+                <div class="modal-body" v-html="modalBody">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="closeModal">Close</button>
+                </div>
+              </div>
+            </div>
           </div>
   </div>
 </template>
