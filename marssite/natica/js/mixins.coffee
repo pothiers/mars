@@ -60,7 +60,29 @@ export default {
       return
         config: _config 
 
+    
+
     methods:
+      stripData: ()->
+        # strip out anything that wasn't modified
+        newFormData = if @search then JSON.parse(JSON.stringify(@search)) else JSON.parse(localStorage.getItem("search"))
+        search = newFormData
+        localStorage.setItem('search', JSON.stringify(search))
+
+        for key of newFormData
+          if _.isEqual(newFormData[key], @config.formData[key])
+            delete(newFormData[key])
+          else
+            if @config.rangeInputs.indexOf(key) >= 0
+              # flatten value if it is for direct match
+              if newFormData[key][2] is "="
+                newFormData[key] = newFormData[key][0]
+        if newFormData.telescope_instrument
+          newFormData.telescope_instrument = _.map(newFormData.telescope_instrument, (item)=> return item.split(","))
+        if newFormData.coordinates?.ra
+          newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra)
+          newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec)
+        return newFormData
       submitForm: (event, paging=null, cb=null)->
           event?.preventDefault()
           unless paging
@@ -72,26 +94,8 @@ export default {
             localStorage.setItem("currentPage", 1)
           else
             page = localStorage.getItem("currentPage")
-            
-          # strip out anything that wasn't modified
-          newFormData = if @search then JSON.parse(JSON.stringify(@search)) else JSON.parse(localStorage.getItem("search"))
-          search = newFormData
-          localStorage.setItem('search', JSON.stringify(search))
- 
-          for key of newFormData
-            if _.isEqual(newFormData[key], @config.formData[key])
-              delete(newFormData[key])
-            else
-              if @config.rangeInputs.indexOf(key) >= 0
-                # flatten value if it is for direct match
-                if newFormData[key][2] is "="
-                  newFormData[key] = newFormData[key][0]
-          if newFormData.telescope_instrument
-            newFormData.telescope_instrument = _.map(newFormData.telescope_instrument, (item)=> return item.split(","))
-          if newFormData.coordinates?.ra
-            newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra)
-            newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec)
-            
+
+          newFormData = @stripData()
           msgs = @config.loadingMessages
           message = Math.floor(Math.random()*msgs.length)
           @loadingMessage = msgs[message]
@@ -110,6 +114,16 @@ export default {
               self.$emit("displayform", ["results", data])
               if cb
                 cb(data)
+            fail: (statusMsg, status, xhr)->
+              console.log "Request failed, got this"
+              message = "#{statusMsg}"
+              if xhr.response
+                message += ":  #{xhr.response.errorMessage}"
+              self.loading = false 
+              self.modalTitle = "Request Error"
+              self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>#{message}</strong></div>"
+              ToggleModal("#search-modal")
+              console.dir arguments
           .send()
 
 }

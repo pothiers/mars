@@ -50,12 +50,14 @@ searchFormComponent = {
     window.base.bindEvents()
   computed:
     code: ()->
-      return JSON.stringify(@search, null, 2)
+      return JSON.stringify(@stripData(), null, 2)
   data: ()->
     return {
       url: config.apiUrl
       visible: true
       loading: false
+      modalTitle: ""
+      modalBody: ""
       loadingMessage: "Sweeping up star dust..."
       search: JSON.parse(JSON.stringify(config.formData)) # deep copy
       showExposureMax: false
@@ -74,6 +76,8 @@ searchFormComponent = {
           {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
     }
   methods:
+    closeModal: ()->
+      ToggleModal("#search-modal")
     newSearch: ()->
       # clear current search and storage
       @search = JSON.parse(JSON.stringify(@config.formData))
