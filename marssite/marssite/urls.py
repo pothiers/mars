@@ -23,6 +23,8 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from rest_framework import routers, serializers, viewsets
 from django.contrib.auth.models import User # ,Group
 from provisional.views import FitsnameViewSet
+from rest_framework_swagger.views import get_swagger_view
+
 #from schedule.views import ScheduleViewSet
 from water.views import api_root
 # Serializers define the API representation.
@@ -34,6 +36,9 @@ from water.views import api_root
 #!class GroupSerializer(serializers.HyperlinkedModelSerializer):
 #!    class Meta:
 #!        model = Group
+
+
+schema_view = get_swagger_view(title='Rest API')
 
 
 # ViewSets define the view behavior.
@@ -81,6 +86,7 @@ urlpatterns = [
     #!url(r'^api-auth/',  include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^api/', include(router.urls)),
     url(r'^api/', api_root, name='api_root'),
+    url(r'^api-docs/', schema_view),
     #!url(r'^docs/', include('rest_framework_swagger.urls', namespace='docs')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

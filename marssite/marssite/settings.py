@@ -69,7 +69,6 @@ INSTALLED_APPS = (
     'lsa',  # Legacy Science Archive (pre-NATICA)
     'natica', # replace LSA
     'rest_framework',
-    'rest_framework.documentation',
     'rest_framework_swagger',
     'django_tables2',
     'audit',  # tada audit/status REST API

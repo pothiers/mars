@@ -15,6 +15,13 @@ from django.core import serializers
 from siap.models import Image, VoiSiap
 from tada.models import FilePrefix
 
+import coreapi
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework import response, schemas, renderers
+from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
+
+from .serializers import FilePrefixSerializer
+
 from . import exceptions as dex
 
 
@@ -341,12 +348,79 @@ def search_by_json(request):
     
 
 @csrf_exempt
+@api_view(['GET'])
 def tele_inst_pairs(request):
     """
     Retrieve all valid telescope/instrument pairs. 
     Determined by TADA file prefix table.
+
+    Response will be an array of **telescope**, **instrument** pairs
+    
+    `[ [\"telescope1\", \"instrument1\"], [\"telescope2\", \"instrument2\"] ]`
     """
     qs = FilePrefix.objects.all().order_by('pk').values('telescope',
                                                         'instrument')
-    return JsonResponse([(d['telescope'],d['instrument']) for d in list(qs)],
+    serialized = FilePrefixSerializer(qs, many=True)
+    return JsonResponse([(d['telescope'],d['instrument']) for d in list(serialized.data)],
                          safe=False)
+
+
+
+schema = coreapi.Document(
+    title="Search API",
+    url="http://localhost:8000",
+    
+    content={
+        "search": coreapi.Link(
+            url="/dal/search/",
+            action = "post",
+            fields = [
+                coreapi.Field(
+                    name="obs_date",
+                    required=False,
+                    location="form",
+                    description="Single date or date range"
+                ),
+                coreapi.Field(
+                    name="prop_id",
+                    required=False,
+                    location="form",
+                    description="Prop ID to search for"
+                ),
+                coreapi.Field(
+                    name="pi",
+                    required=False,
+                    location="form",
+                    description="Principle Investigator"
+                ),
+                coreapi.Field(
+                    name="filename",
+                    required="false",
+                    location="form",
+                    description="Ingested archival filename"
+                )
+            ],
+            description='''
+            NOAO Search API
+
+Requests need to be wrapped in a root `search` paramater
+            
+            {
+              \"search\":{
+                 \"obs_date\":\"2015-09-06\"
+              }
+            }
+            '''
+        )
+    }
+)
+
+@api_view()
+@renderer_classes([SwaggerUIRenderer, OpenAPIRenderer])
+def schema_view(request):
+    '''
+      Search API
+    '''
+    #generator = schema.SchemaGenerator(title='Bookings API')
+    #return Response(generator.get_schema())
+    return response.Response(schema)

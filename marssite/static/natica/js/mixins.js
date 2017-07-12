@@ -101,10 +101,8 @@ export default {
     },
     methods: {
       stripData: function() {
-        var key, newFormData, ref, search;
+        var key, newFormData, ref;
         newFormData = this.search ? JSON.parse(JSON.stringify(this.search)) : JSON.parse(localStorage.getItem("search"));
-        search = newFormData;
-        localStorage.setItem('search', JSON.stringify(search));
         for (key in newFormData) {
           if (_.isEqual(newFormData[key], this.config.formData[key])) {
             delete newFormData[key];
@@ -127,6 +125,7 @@ export default {
           newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra);
           newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec);
         }
+        localStorage.setItem('search', JSON.stringify(newFormData));
         return newFormData;
       },
       submitForm: function(event, paging, cb) {
@@ -147,6 +146,7 @@ export default {
           this.$emit('setpagenum', 1);
           page = 1;
           localStorage.setItem("currentPage", 1);
+          localStorage.setItem("searchData", JSON.stringify(this.search));
         } else {
           page = localStorage.getItem("currentPage");
         }

@@ -100,6 +100,7 @@ export default {
       pageNum: 1,
       isLoading: false,
       results: [],
+      searchObj: JSON.parse(localStorage.getItem('search')),
       totalItems: 0,
       error: ""
     };

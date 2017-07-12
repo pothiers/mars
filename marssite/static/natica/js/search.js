@@ -48,11 +48,10 @@ searchFormComponent = {
     return this.getTelescopes();
   },
   mounted: function() {
-    var newSearch, oldSearch;
+    var oldSearch;
     if (window.location.hash.indexOf("search_again") > -1) {
-      oldSearch = JSON.parse(localStorage.getItem("search"));
-      newSearch = JSON.parse(JSON.stringify(this.config.formData));
-      this.search = _.extend(newSearch, oldSearch);
+      oldSearch = JSON.parse(localStorage.getItem("searchData"));
+      this.search = oldSearch;
     } else if (window.location.hash.indexOf("query") > -1) {
       this.$emit("displayform", ["results", []]);
     }
@@ -101,7 +100,7 @@ searchFormComponent = {
     },
     newSearch: function() {
       this.search = JSON.parse(JSON.stringify(this.config.formData));
-      return localStorage.setItem("search", this.search);
+      return localStorage.setItem("searchData", JSON.stringify(this.search));
     },
     getTelescopes: function() {
       var now, self, telescopes;
