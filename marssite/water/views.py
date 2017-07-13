@@ -1,4 +1,3 @@
-from os import path
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.views.generic.list import ListView
@@ -9,16 +8,9 @@ from rest_framework.decorators import api_view
 from rest_framework.reverse import reverse
 
 def home(request):
-    here = path.abspath(path.dirname(__file__))
-    with open(path.join(here,'VERSION')) as f:
-        version = f.read().strip()
-    with open(path.join(here,'UPDATED')) as f:
-        updated = f.read().strip()
-
-    #version = 'version 2016.06.30b'
+    # version, updated placed in marssite/context_processors.py
+    
     context = {
-        'mars_version': version,
-        'mars_updated': updated,
         'dbhost': settings.DATABASES['default']['HOST'],
     }
     return render(request, 'water/home.html', context)

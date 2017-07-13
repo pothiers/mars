@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="{% static 'water/style.css' %}" />
     <link rel="icon" type="image/jpg" href="{% static "water/favicon.ico" %}" /> 
     <style>
+        
+
       .prod {
       background-color: rgba(0,255,0,0.3);
       }
@@ -35,13 +37,12 @@
 <div class="container">
     <div class="row">
         <div class="col-sx-12">
-            <h3><a href="http://marsmobile.jpl.nasa.gov/multimedia/resources/mars-posters-explorers-wanted/?linkId=25534068">
-      <img src="{% static 'water/favicon.ico' %}" alt="">
-    </a>
-    MARS: Metadata Archive Retrival Services
-({{ mars_updated }}, v{{ mars_version }})
-    using DB-Host "{{ dbhost }}"    
-  </h3>
+            <div><p><a href="http://marsmobile.jpl.nasa.gov/multimedia/resources/mars-posters-explorers-wanted/?linkId=25534068">
+            <img src="{% static 'water/favicon.ico' %}" alt="">
+            </a>
+            MARS: Metadata Archive Retrival Services
+            using DB-Host "{{ dbhost }}"    
+            </p></div>
 
   <p>
     Here are some of the MARS web-services.

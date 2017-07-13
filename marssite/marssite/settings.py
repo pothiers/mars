@@ -18,6 +18,10 @@ import os
 #!    'error', r"DateTimeField .* received a naive datetime",
 #!    RuntimeWarning, r'django\.db\.models\.fields',
 #!)
+here = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+with open(os.path.join(here, "water",'VERSION')) as f:
+ VERSION = f.read().strip()
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -62,6 +66,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'siap',
+    'docs',
     'schedule',
     'provisional',
     'water',
@@ -112,6 +117,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'marssite.context_processors.project_status',
                 #'django.core.context_processors.request',
             ],
         },

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            
+            <h1>Documentation</h1>
+            <p>
+                Documentation is very much still a work in progress, as is the rest-api framework and
+                front-end search portal.
+            </p>
+            <p>
+                Standard documentation on usage and sample apps will be provided here as they become available.
+            </p>
+            <hr>
+            <h2>API Docs</h2>
+            <ul>
+                <li><a href="/api-docs">Mars/Tada (standard model documentation)</a></li>
+                <li><a href="/dal/schema">Natica Search Documentaion</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
