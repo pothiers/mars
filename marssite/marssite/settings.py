@@ -18,9 +18,6 @@ import os
 #!    'error', r"DateTimeField .* received a naive datetime",
 #!    RuntimeWarning, r'django\.db\.models\.fields',
 #!)
-here = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-with open(os.path.join(here, "water",'VERSION')) as f:
- VERSION = f.read().strip()
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

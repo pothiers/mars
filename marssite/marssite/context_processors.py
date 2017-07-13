@@ -10,5 +10,6 @@ def project_status(request):
 
     return {
         'VERSION': version,
-        'UPDATED': updated
+        'UPDATED': updated,
+        'DBHOST': settings.DATABASES['default']['HOST'],
     }

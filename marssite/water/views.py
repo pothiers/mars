@@ -11,7 +11,6 @@ def home(request):
     # version, updated placed in marssite/context_processors.py
     
     context = {
-        'dbhost': settings.DATABASES['default']['HOST'],
     }
     return render(request, 'water/home.html', context)
 

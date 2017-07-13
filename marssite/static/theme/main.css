@@ -846,10 +846,11 @@ body {
 /* Basic */
 .version {
   font-size: 12px;
-  line-height: 10px;
+  line-height: 12px;
   padding: 0.5em;
   text-align: right;
-  margin-top: 20px; }
+  margin-top: -30px;
+  color: #ababab; }
 
 body {
   background: #f7f7f7 url("/static/theme/images/bg01.png"); }
@@ -1441,7 +1442,7 @@ input[type="button"],
 
 /* Wrapper */
 .wrapper {
-  padding: 2em 0 3em 0; }
+  padding: 1em 0 3em 0; }
   .wrapper.style1 {
     background: #fff; }
   .wrapper.style2 {
@@ -1527,13 +1528,13 @@ input[type="button"],
   #header {
     padding: 2em 0 0 0; }
     #header h1 {
-      padding: 0 0 1.75em 0; }
+      padding: 0 0 1em 0; }
   /* Banner */
   #banner {
     height: 20em; }
   /* Wrapper */
   .wrapper {
-    padding: 3em 0 1em 0; }
+    padding: 1em 0 1em 0; }
   /* CTA */
   #cta {
     padding: 2em 0; }
