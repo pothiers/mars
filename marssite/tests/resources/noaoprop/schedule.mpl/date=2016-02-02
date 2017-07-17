@@ -1,0 +1,14 @@
+<schedule>
+  <proposal telescope="kp4m" instrument="MOSA3" date="2016-02-02" half="1" propid="2016A-0453"/>
+  <proposal telescope="kp4m" instrument="MOSA3" date="2016-02-02" half="2" propid="2016A-0453"/>
+  <proposal telescope="kp21m" instrument="VIS" date="2016-02-02" half="1" propid="2015B-3001"/>
+  <proposal telescope="kp21m" instrument="VIS" date="2016-02-02" half="2" propid="2015B-3001"/>
+  <proposal telescope="kp09m" instrument="HDI" date="2016-02-02" half="1" propid="2016A-0901"/>
+  <proposal telescope="kp09m" instrument="HDI" date="2016-02-02" half="2" propid="2016A-0901"/>
+  <proposal telescope="wiyn" instrument="HYDRB+STA1" date="2016-02-02" half="1" propid="2015B-0180"/>
+  <proposal telescope="wiyn" instrument="HYDRB+STA1" date="2016-02-02" half="2" propid="2015B-0180"/>
+  <proposal telescope="ct4m" instrument="COSMOS" date="2016-02-02" half="1" propid="2015B-0605"/>
+  <proposal telescope="ct4m" instrument="COSMOS" date="2016-02-02" half="2" propid="2015B-0605"/>
+  <proposal telescope="ct09m" instrument="CFIM+T2K" date="2016-02-02" half="1" propid="2016A-0370"/>
+  <proposal telescope="ct09m" instrument="CFIM+T2K" date="2016-02-02" half="2" propid="2016A-0370"/>
+</schedule>
