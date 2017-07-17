@@ -1,0 +1,37 @@
+Description of apps:
+
+audit/ 
+  Dome, TADA-mountain, and TADA-valley add data data via this
+  service.  App presents list of audit records (one per FITS file
+  submitted by Dome).  Used to find if and where error occured during
+  ingest process. Allows filter and drill-down.
+
+bower_components/
+
+dal/
+   Database Access Layer for archive.  All access to LSA or NATICA
+   database should be through here.
+   
+docs/
+fhdr/
+lsa/
+   Legacy Science Archive.
+   
+marssite/
+natica/
+provisional/
+
+schedule/
+   Get propid(s) assigned to each (telescope, instrument, day) per
+   TAC observing schedule.  Add/modify schedule via ADMIN interface.
+
+scripts/
+
+siap/
+static/
+
+tada/
+
+templates/
+theme/
+water/
