@@ -1904,6 +1904,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2019,6 +2022,8 @@ config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
       visible: false,
       pageNum: 1,
       isLoading: false,
+      recordsFrom: 1,
+      recordsTo: 100,
       results: [],
       searchObj: JSON.parse(localStorage.getItem('search')),
       totalItems: 0,
@@ -2048,7 +2053,9 @@ config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
       self = this;
       return this.submitForm(null, "paging", function(data) {
         self.isLoading = false;
-        return self.results = data;
+        self.results = data;
+        self.recordsFrom = data.meta.to_here_count;
+        return self.recordsTo = data.meta.to_here_count + data.meta.page_result_count;
       });
     }
   },
@@ -2122,7 +2129,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "fa fa-spinner fa-spin fa-1x fa-fw"
   }) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-9 "
-  })]), _vm._v(" "), _c('div', {
+  }, [_c('div', {
+    staticClass: "pull-left"
+  }, [_c('span', {
+    staticClass: "records-from"
+  }, [_vm._v(_vm._s(_vm.recordsFrom))]), _vm._v(" to "), _c('span', {
+    staticClass: "records-to"
+  }, [_vm._v(_vm._s(_vm.recordsTo))])])])]), _vm._v(" "), _c('div', {
     staticClass: "row table-filters"
   }), _vm._v(" "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "container"

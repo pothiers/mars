@@ -20,6 +20,9 @@
                         <span class="fa fa-spinner fa-spin fa-1x fa-fw" v-if="isLoading"></span>
                     </div>
                     <div class="col-sm-9 ">
+                      <div class="pull-left">
+                        <span class="records-from">{{ recordsFrom }}</span> to <span class="records-to">{{ recordsTo }}</span>
+                      </div>
                         <!--control button/dropdown placeholder-->
                     </div>
                 </div>
