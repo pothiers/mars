@@ -34,6 +34,28 @@ config = Shared.config
   Vue.use(VeeValidate, config.validatorConfig) # validation plugin
 )()
 
+dateLookup = {
+      "obs-date": {
+        "field" : "obs_date",
+        "index" : 0
+      },
+      "obs-date-max": {
+        "field" : 'obs_date',
+        "index" : 1
+      },
+      "release-date": {
+        "field": "release_date",
+        "index": 0
+      },
+      "release-date-max":{
+        "field": "release_date",
+        "index": 1
+      },
+      "parent":{
+        "obj": this
+      }
+}
+
 searchFormComponent = {
   mixins: [Shared.mixin]
   created: ()->
@@ -47,6 +69,30 @@ searchFormComponent = {
     else if window.location.hash.indexOf("query") > -1
       this.$emit("displayform", ["results", []]) 
     window.base.bindEvents()
+    ### 
+    $("#obs-date").datepicker({
+      onSelect: (dateText)=>
+        this.search.obs_date[0] = dateText
+    })
+
+    $("#obs-date").datepicker("option", "dateFormat", "yy-mm-dd")
+    ###
+    $("input.date").datepicker({
+            onSelect: (dateText, datePicker)=>
+              fieldName = datePicker.input[0].name
+              field = this.search[dateLookup[fieldName].field]
+              field[dateLookup[fieldName].index] = dateText
+              e = new CustomEvent("datechanged", {'detail':{'date':dateText} }) 
+              document.dispatchEvent(e)
+              this.$forceUpdate()
+      })
+    $("input.date").datepicker("option", "dateFormat", "yy-mm-dd")
+    window.searchVue = this
+    # Datepicker doesn't trigger change in the model data, so...
+    # bind to datepicker changes
+    document.addEventListener("datechanged", ()->
+      console.log("update code view")
+    )
   computed:
     code: ()->
       return JSON.stringify(@stripData(), null, 2)
@@ -73,6 +119,9 @@ searchFormComponent = {
           {"fieldFlag":"showObsDateMax", "bothFieldFlag":"showBothObsDateFields"}
         "release_date":
           {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
+      option:{
+        format: 'YYYY-MM-DD'
+      }
     }
   methods:
     closeModal: ()->

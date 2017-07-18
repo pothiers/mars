@@ -5,7 +5,7 @@ Date: 2017-06-09
 Description: Serves functionality for submitting and displaying archive query forms/results
 Original file: search.coffee
  */
-var config, searchFormComponent, validateDependsOn;
+var config, dateLookup, searchFormComponent, validateDependsOn;
 
 import Vue from 'vue';
 
@@ -42,6 +42,28 @@ config = Shared.config;
   return Vue.use(VeeValidate, config.validatorConfig);
 })();
 
+dateLookup = {
+  "obs-date": {
+    "field": "obs_date",
+    "index": 0
+  },
+  "obs-date-max": {
+    "field": 'obs_date',
+    "index": 1
+  },
+  "release-date": {
+    "field": "release_date",
+    "index": 0
+  },
+  "release-date-max": {
+    "field": "release_date",
+    "index": 1
+  },
+  "parent": {
+    "obj": this
+  }
+};
+
 searchFormComponent = {
   mixins: [Shared.mixin],
   created: function() {
@@ -55,7 +77,38 @@ searchFormComponent = {
     } else if (window.location.hash.indexOf("query") > -1) {
       this.$emit("displayform", ["results", []]);
     }
-    return window.base.bindEvents();
+    window.base.bindEvents();
+
+    /* 
+    $("#obs-date").datepicker({
+      onSelect: (dateText)=>
+        this.search.obs_date[0] = dateText
+    })
+    
+    $("#obs-date").datepicker("option", "dateFormat", "yy-mm-dd")
+     */
+    $("input.date").datepicker({
+      onSelect: (function(_this) {
+        return function(dateText, datePicker) {
+          var e, field, fieldName;
+          fieldName = datePicker.input[0].name;
+          field = _this.search[dateLookup[fieldName].field];
+          field[dateLookup[fieldName].index] = dateText;
+          e = new CustomEvent("datechanged", {
+            'detail': {
+              'date': dateText
+            }
+          });
+          document.dispatchEvent(e);
+          return _this.$forceUpdate();
+        };
+      })(this)
+    });
+    $("input.date").datepicker("option", "dateFormat", "yy-mm-dd");
+    window.searchVue = this;
+    return document.addEventListener("datechanged", function() {
+      return console.log("update code view");
+    });
   },
   computed: {
     code: function() {
@@ -91,6 +144,9 @@ searchFormComponent = {
           "fieldFlag": "showReleaseDateMax",
           "bothFieldFlag": "showBothReleaseDateFields"
         }
+      },
+      option: {
+        format: 'YYYY-MM-DD'
       }
     };
   },

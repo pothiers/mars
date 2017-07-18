@@ -99,6 +99,8 @@ export default {
       visible: false,
       pageNum: 1,
       isLoading: false,
+      recordsFrom: 1,
+      recordsTo: 100,
       results: [],
       searchObj: JSON.parse(localStorage.getItem('search')),
       totalItems: 0,
@@ -128,7 +130,9 @@ export default {
       self = this;
       return this.submitForm(null, "paging", function(data) {
         self.isLoading = false;
-        return self.results = data;
+        self.results = data;
+        self.recordsFrom = data.meta.to_here_count - data.meta.page_result_count + 1;
+        return self.recordsTo = data.meta.to_here_count;
       });
     }
   },

@@ -100,8 +100,8 @@ export default {
       @submitForm(null, "paging",  (data)->
         self.isLoading = false
         self.results = data
-        self.recordsFrom = data.meta.to_here_count
-        self.recordsTo = data.meta.to_here_count+data.meta.page_result_count
+        self.recordsFrom = data.meta.to_here_count-data.meta.page_result_count+1
+        self.recordsTo = data.meta.to_here_count
       )
   mounted:()->
     window.base.bindEvents()

@@ -117,12 +117,13 @@
                               <div class="col-md-6">
                                   <div class="form-group">
                                     <div class="input-group select-group split-val" v-bind:class="{ 'display-hidden': showBothObsDateFields } ">
+
                                           <label class="floating" for="obs-date">Observation Date <small>(YYYY-MM-DD)</small></label>
                                           <select name="obs-date-interval" class="form-control input-group-addon" v-model="search.obs_date[2]" v-on:change="splitSelection('obs_date')">
-                                              <option value="=">=</option>
-                                              <option value="(]">&le;</option>
-                                              <option value="[)">&ge;</option>
-                                              <option value="[]" class="toggle-option">&le; &ge;</option>
+                                              <option value="=">On Date</option>
+                                              <option value="(]">Before Date</option>
+                                              <option value="[)">After Date</option>
+                                              <option value="[]" class="toggle-option">Between</option>
                                           </select>
                                           <input id="obs-date" class="date form-control" data-polyfill="all" name="obs-date" type="text" value="" placeholder="Obervation date" v-model="search.obs_date[0]" v-if="search.obs_date[2] !== '(]'" v-validate="'date_format:YYYY-MM-DD'">
                                           <input id="obs-date-max" class="date form-control" v-bind:class="{ 'hidden-split':showBothObsDateFields }" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-model="search.obs_date[1]" v-show="showObsDateMax" v-validate="'date_format:YYYY-MM-DD'">
@@ -135,10 +136,10 @@
                                           <label class="floating" for="exposure">Exposure</label>
 
                                           <select class="form-control input-group-addon" id="" name="expore-interval" v-model="search.exposure_time[2]" v-on:change="splitSelection('exposure_time')">
-                                              <option value="=">=</option>
-                                              <option value="(]">&le;</option>
-                                              <option value="[)">&ge;</option>
-                                              <option value="[]" class="toggle-option">&le; &ge;</option>
+                                              <option value="=">Exactly</option>
+                                              <option value="(]">Less Than</option>
+                                              <option value="[)">Greater Than</option>
+                                              <option value="[]" class="toggle-option">Between</option>
                                           </select>
                                           <input id="exposure" class="form-control" name="exposure" type="text" value="" placeholder="Exposure in seconds" v-model="search.exposure_time[0]" v-if="search.exposure_time[2] !== '(]'" v-validate="'numeric'">
                                           <input id="exposure-max" class="form-control" v-bind:class="{ 'hidden-split':showBothExposureFields }" name="exposure-max" type="text" value="" placeholder="Max exposure" v-model="search.exposure_time[1]" v-show="showExposureMax" v-validate="'numeric'">
@@ -177,10 +178,10 @@
                                       <div class="input-group select-group split-val" v-bind:class="{ 'display-hidden':showBothReleaseDateFields }">
                                           <label class="floating" for="release-date">Public Release Date <small>(YYYY-MM-DD)</small></label>
                                           <select class="form-control input-group-addon" id="" name="release-date-interval" v-model="search.release_date[2]" v-on:change="splitSelection('release_date')">
-                                              <option value="=">=</option>
-                                              <option value="(]">&le;</option>
-                                              <option value="[)">&ge;</option>
-                                              <option value="[]" class="toggle-option">&le; &ge;</option>
+                                              <option value="=">On Date</option>
+                                              <option value="(]">Before Date</option>
+                                              <option value="[)">After Date</option>
+                                              <option value="[]" class="toggle-option">Between</option>
                                           </select>
                                           <input id="release-date" class="date form-control" data-polyfill="all" name="release-date" type="text" value="" placeholder="Release date" v-model="search.release_date[0]" v-if="search.release_date[2] !== '(]'" v-validate="'date_format:YYYY-MM-DD'">
 

@@ -239,7 +239,7 @@
       }
       select.input-group-addon{
           -webkit-border-radius: 0;
-          width: 10%;
+          width: 120px;
           border: 0 solid transparent;
           -webkit-appearance: none;
           -webkit-border-radius: 0;
@@ -250,7 +250,7 @@
       &.split-val{
          position: relative;
          input[type=text]{
-           width: 90%;
+           width: calc(100% - 120px);
          }
          input[type=text].hidden-split{
            width: 0;
@@ -260,7 +260,7 @@
            right: -10px;
          }
          &.display-hidden input[type=text]{
-           width: 42%;
+           width: calc(47% - 10%);
            opacity: 1;
          }
          &.display-hidden > input[type=text] + input[type=text] {

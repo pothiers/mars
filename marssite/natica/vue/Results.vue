@@ -13,16 +13,14 @@
                     </div>
                 </div>
                 <div class="row results-controls">
-                    <div class="col-sm-3">
+                    <div class="col-sm-5">
                         <button class="btn-link btn page-prev" v-on:click="pageBack">Prev</button>
                         <span class="page-num">{{ pageNum }}</span>
                         <button class="btn-link btn page-next" v-on:click="pageNext">Next</button>
-                        <span class="fa fa-spinner fa-spin fa-1x fa-fw" v-if="isLoading"></span>
-                    </div>
-                    <div class="col-sm-9 ">
-                      <div class="pull-left">
                         <span class="records-from">{{ recordsFrom }}</span> to <span class="records-to">{{ recordsTo }}</span>
-                      </div>
+                        <span class="fa fa-spinner fa-spin fa-1x fa-fw" v-if="isLoading"></span>
+                   </div>
+                    <div class="col-sm-7 ">
                         <!--control button/dropdown placeholder-->
                     </div>
                 </div>

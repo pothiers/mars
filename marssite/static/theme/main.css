@@ -989,7 +989,7 @@ footer {
     width: 90%; }
   .select-group select.input-group-addon {
     -webkit-border-radius: 0;
-    width: 10%;
+    width: 120px;
     border: 0 solid transparent;
     -webkit-appearance: none;
     -webkit-border-radius: 0;
@@ -999,7 +999,7 @@ footer {
   .select-group.split-val {
     position: relative; }
     .select-group.split-val input[type=text] {
-      width: 90%; }
+      width: calc(100% - 120px); }
     .select-group.split-val input[type=text].hidden-split {
       width: 0;
       opacity: 0;
@@ -1007,7 +1007,7 @@ footer {
       position: absolute;
       right: -10px; }
     .select-group.split-val.display-hidden input[type=text] {
-      width: 42%;
+      width: calc(47% - 10%);
       opacity: 1; }
     .select-group.split-val.display-hidden > input[type=text] + input[type=text] {
       margin-left: 5% !important;

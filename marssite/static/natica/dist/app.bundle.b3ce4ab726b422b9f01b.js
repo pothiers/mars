@@ -1,10 +1,7 @@
 webpackJsonp([0],[
 /* 0 */,
 /* 1 */,
-/* 2 */,
-/* 3 */,
-/* 4 */,
-/* 5 */
+/* 2 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -101,8 +98,8 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 6 */,
-/* 7 */
+/* 3 */,
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -302,26 +299,22 @@ _config = {
 
 
 /***/ }),
-/* 8 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_Search_vue__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__vue_Search_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__vue_Results_vue__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__vue_Results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__vue_Results_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles_search_scss__ = __webpack_require__(17);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__styles_search_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__styles_search_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__vue_Search_vue__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__vue_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__vue_Search_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_Results_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_Results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__vue_Results_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_search_scss__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_search_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__styles_search_scss__);
 var App;
-
-
 
 
 
@@ -336,7 +329,6 @@ var App;
 App = (function() {
   function App() {
     window.moment = __WEBPACK_IMPORTED_MODULE_1_moment___default.a;
-    window._ = __WEBPACK_IMPORTED_MODULE_2_lodash___default.a;
     new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
       el: "#content",
       template: "<component compdata='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
@@ -351,8 +343,8 @@ App = (function() {
         componentData: []
       },
       components: {
-        search: __WEBPACK_IMPORTED_MODULE_3__vue_Search_vue___default.a,
-        results: __WEBPACK_IMPORTED_MODULE_4__vue_Results_vue___default.a
+        search: __WEBPACK_IMPORTED_MODULE_2__vue_Search_vue___default.a,
+        results: __WEBPACK_IMPORTED_MODULE_3__vue_Results_vue___default.a
       }
     });
   }
@@ -365,15 +357,17 @@ new App();
 
 
 /***/ }),
-/* 9 */
+/* 6 */,
+/* 7 */,
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(5)(
+var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(10),
+  __webpack_require__(9),
   /* template */
-  __webpack_require__(12),
+  __webpack_require__(11),
   /* styles */
   null,
   /* scopeId */
@@ -381,7 +375,7 @@ var Component = __webpack_require__(5)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -405,12 +399,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_search_coffee__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_search_coffee__ = __webpack_require__(10);
+//
 //
 //
 //
@@ -659,20 +654,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
- 
+
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_search_coffee__["a" /* default */]);
 
-
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vee_validate__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_coffee__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_coffee__ = __webpack_require__(4);
 
 /*
 Author: Peter Peterson
@@ -680,7 +674,7 @@ Date: 2017-06-09
 Description: Serves functionality for submitting and displaying archive query forms/results
 Original file: search.coffee
  */
-var config, searchFormComponent, validateDependsOn;
+var config, dateLookup, searchFormComponent, validateDependsOn;
 
 
 
@@ -715,6 +709,28 @@ config = __WEBPACK_IMPORTED_MODULE_2__mixins_coffee__["a" /* default */].config;
   return __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate___default.a, config.validatorConfig);
 })();
 
+dateLookup = {
+  "obs-date": {
+    "field": "obs_date",
+    "index": 0
+  },
+  "obs-date-max": {
+    "field": 'obs_date',
+    "index": 1
+  },
+  "release-date": {
+    "field": "release_date",
+    "index": 0
+  },
+  "release-date-max": {
+    "field": "release_date",
+    "index": 1
+  },
+  "parent": {
+    "obj": this
+  }
+};
+
 searchFormComponent = {
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_coffee__["a" /* default */].mixin],
   created: function() {
@@ -728,7 +744,38 @@ searchFormComponent = {
     } else if (window.location.hash.indexOf("query") > -1) {
       this.$emit("displayform", ["results", []]);
     }
-    return window.base.bindEvents();
+    window.base.bindEvents();
+
+    /* 
+    $("#obs-date").datepicker({
+      onSelect: (dateText)=>
+        this.search.obs_date[0] = dateText
+    })
+    
+    $("#obs-date").datepicker("option", "dateFormat", "yy-mm-dd")
+     */
+    $("input.date").datepicker({
+      onSelect: (function(_this) {
+        return function(dateText, datePicker) {
+          var e, field, fieldName;
+          fieldName = datePicker.input[0].name;
+          field = _this.search[dateLookup[fieldName].field];
+          field[dateLookup[fieldName].index] = dateText;
+          e = new CustomEvent("datechanged", {
+            'detail': {
+              'date': dateText
+            }
+          });
+          document.dispatchEvent(e);
+          return _this.$forceUpdate();
+        };
+      })(this)
+    });
+    $("input.date").datepicker("option", "dateFormat", "yy-mm-dd");
+    window.searchVue = this;
+    return document.addEventListener("datechanged", function() {
+      return console.log("update code view");
+    });
   },
   computed: {
     code: function() {
@@ -764,6 +811,9 @@ searchFormComponent = {
           "fieldFlag": "showReleaseDateMax",
           "bothFieldFlag": "showBothReleaseDateFields"
         }
+      },
+      option: {
+        format: 'YYYY-MM-DD'
       }
     };
   },
@@ -820,7 +870,7 @@ searchFormComponent = {
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1218,20 +1268,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "="
     }
-  }, [_vm._v("=")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("On Date")]), _vm._v(" "), _c('option', {
     attrs: {
       "value": "(]"
     }
-  }, [_vm._v("≤")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("Before Date")]), _vm._v(" "), _c('option', {
     attrs: {
       "value": "[)"
     }
-  }, [_vm._v("≥")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("After Date")]), _vm._v(" "), _c('option', {
     staticClass: "toggle-option",
     attrs: {
       "value": "[]"
     }
-  }, [_vm._v("≤ ≥")])]), _vm._v(" "), (_vm.search.obs_date[2] !== '(]') ? _c('input', {
+  }, [_vm._v("Between")])]), _vm._v(" "), (_vm.search.obs_date[2] !== '(]') ? _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -1361,20 +1411,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "="
     }
-  }, [_vm._v("=")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("Exactly")]), _vm._v(" "), _c('option', {
     attrs: {
       "value": "(]"
     }
-  }, [_vm._v("≤")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("Less Than")]), _vm._v(" "), _c('option', {
     attrs: {
       "value": "[)"
     }
-  }, [_vm._v("≥")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("Greater Than")]), _vm._v(" "), _c('option', {
     staticClass: "toggle-option",
     attrs: {
       "value": "[]"
     }
-  }, [_vm._v("≤ ≥")])]), _vm._v(" "), (_vm.search.exposure_time[2] !== '(]') ? _c('input', {
+  }, [_vm._v("Between")])]), _vm._v(" "), (_vm.search.exposure_time[2] !== '(]') ? _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -1523,20 +1573,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "="
     }
-  }, [_vm._v("=")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("On Date")]), _vm._v(" "), _c('option', {
     attrs: {
       "value": "(]"
     }
-  }, [_vm._v("≤")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("Before Date")]), _vm._v(" "), _c('option', {
     attrs: {
       "value": "[)"
     }
-  }, [_vm._v("≥")]), _vm._v(" "), _c('option', {
+  }, [_vm._v("After Date")]), _vm._v(" "), _c('option', {
     staticClass: "toggle-option",
     attrs: {
       "value": "[]"
     }
-  }, [_vm._v("≤ ≥")])]), _vm._v(" "), (_vm.search.release_date[2] !== '(]') ? _c('input', {
+  }, [_vm._v("Between")])]), _vm._v(" "), (_vm.search.release_date[2] !== '(]') ? _c('input', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -1792,15 +1842,15 @@ if (false) {
 }
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(5)(
+var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(14),
+  __webpack_require__(13),
   /* template */
-  __webpack_require__(16),
+  __webpack_require__(15),
   /* styles */
   null,
   /* scopeId */
@@ -1808,7 +1858,7 @@ var Component = __webpack_require__(5)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1832,14 +1882,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_coffee__ = __webpack_require__(15);
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_coffee__ = __webpack_require__(14);
 //
 //
 //
@@ -1912,15 +1960,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_coffee__["a" /* default */]);
 
-
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__ = __webpack_require__(4);
 
 /*
 Author: Peter Peterson
@@ -2054,8 +2101,8 @@ config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
       return this.submitForm(null, "paging", function(data) {
         self.isLoading = false;
         self.results = data;
-        self.recordsFrom = data.meta.to_here_count;
-        return self.recordsTo = data.meta.to_here_count + data.meta.page_result_count;
+        self.recordsFrom = data.meta.to_here_count - data.meta.page_result_count + 1;
+        return self.recordsTo = data.meta.to_here_count;
       });
     }
   },
@@ -2082,7 +2129,7 @@ config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
 
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -2112,7 +2159,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Search Again")])])]), _vm._v(" "), _c('div', {
     staticClass: "row results-controls"
   }, [_c('div', {
-    staticClass: "col-sm-3"
+    staticClass: "col-sm-5"
   }, [_c('button', {
     staticClass: "btn-link btn page-prev",
     on: {
@@ -2125,17 +2172,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.pageNext
     }
-  }, [_vm._v("Next")]), _vm._v(" "), (_vm.isLoading) ? _c('span', {
-    staticClass: "fa fa-spinner fa-spin fa-1x fa-fw"
-  }) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-9 "
-  }, [_c('div', {
-    staticClass: "pull-left"
-  }, [_c('span', {
+  }, [_vm._v("Next")]), _vm._v(" "), _c('span', {
     staticClass: "records-from"
   }, [_vm._v(_vm._s(_vm.recordsFrom))]), _vm._v(" to "), _c('span', {
     staticClass: "records-to"
-  }, [_vm._v(_vm._s(_vm.recordsTo))])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.recordsTo))]), _vm._v(" "), (_vm.isLoading) ? _c('span', {
+    staticClass: "fa fa-spinner fa-spin fa-1x fa-fw"
+  }) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-7 "
+  })]), _vm._v(" "), _c('div', {
     staticClass: "row table-filters"
   }), _vm._v(" "), _c('hr')]), _vm._v(" "), _c('div', {
     staticClass: "container"
@@ -2182,13 +2227,13 @@ if (false) {
 }
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(18);
+var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2196,7 +2241,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(20)(content, options);
+var update = __webpack_require__(19)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -2213,10 +2258,10 @@ if(false) {
 }
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(19)(undefined);
+exports = module.exports = __webpack_require__(18)(undefined);
 // imports
 
 
@@ -2227,7 +2272,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n.code {\n  font-size: 14px;\n  hei
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 /*
@@ -2309,7 +2354,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -2355,7 +2400,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(21);
+var	fixUrls = __webpack_require__(20);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -2668,7 +2713,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports) {
 
 
@@ -2763,4 +2808,4 @@ module.exports = function (css) {
 
 
 /***/ })
-],[8]);
+],[5]);

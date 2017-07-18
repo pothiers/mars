@@ -21,7 +21,7 @@ module.exports = {
   entry:{
     "app.bundle":"./app.coffee",
     "vue":['vue', 'vee-validate'],
-    "vendor":['moment', 'lodash']
+    "vendor":['moment']
   },
   output: {
     path: path.resolve(outPath),
@@ -34,7 +34,7 @@ module.exports = {
   },
   externals: {
     "Vue":"vue",
-    "VeeValidate":"vee-validate"
+    "VeeValidate":"vee-validate",
   },
   plugins: [
     assetsPluginInstance,
@@ -70,7 +70,7 @@ module.exports = {
       {
         test: /\.coffee$/,
         use: [ 'coffee-loader' ]
-      }
+      },
     ]
   }
 };

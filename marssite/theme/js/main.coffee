@@ -89,13 +89,13 @@ class Base
     return ""
 
   bindEvents: ()->
-    $("input.date").datepicker()
-    $("input.date").datepicker("option", "dateFormat", "yy-mm-dd") 
     els = document.querySelectorAll("input[type=text],input[type=textarea],input[type=password],input[type=date]")
     for el in els
       addMultiEventListener el, 'keyup blur', (event)->
         targetId = event.currentTarget.id
         target = event.currentTarget
+        unless targetId
+          return false
         if target.value is ""
           document.querySelector("label[for=#{targetId}].floating")?.classList.remove("open")
         else
