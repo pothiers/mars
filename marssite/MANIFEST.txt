@@ -19,7 +19,7 @@ lsa/
    
 marssite/
 natica/
-provisional/
+provisional/b
 
 schedule/
    Get propid(s) assigned to each (telescope, instrument, day) per
