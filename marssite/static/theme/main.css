@@ -1007,7 +1007,7 @@ footer {
       position: absolute;
       right: -10px; }
     .select-group.split-val.display-hidden input[type=text] {
-      width: calc(47% - 10%);
+      width: calc(50% - 70px);
       opacity: 1; }
     .select-group.split-val.display-hidden > input[type=text] + input[type=text] {
       margin-left: 5% !important;
