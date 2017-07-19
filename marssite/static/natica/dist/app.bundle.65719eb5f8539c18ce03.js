@@ -375,7 +375,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Search.vue"
+Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -654,8 +654,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
-
+ 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_search_coffee__["a" /* default */]);
+
 
 /***/ }),
 /* 10 */
@@ -1858,7 +1859,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Results.vue"
+Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1960,6 +1961,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_coffee__["a" /* default */]);
 
+
 /***/ }),
 /* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2005,7 +2007,7 @@ Number.prototype.pad = function(size, char) {
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-header", {
   props: ['name'],
-  template: "<th>{{ name }}</th>"
+  template: "<span>{{ name }}</span>"
 });
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-cell", {
@@ -2266,7 +2268,7 @@ exports = module.exports = __webpack_require__(18)(undefined);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.code {\n  font-size: 14px;\n  height: 400px; }\n\ndiv[rel=form-submit] {\n  padding-top: 12px; }\n\n.form-section {\n  background-color: #D9EDF7;\n  border: 1px solid #BCE8F1;\n  border-radius: 10px;\n  padding: 1em;\n  margin-top: 2em; }\n  .form-section .section-toggle {\n    text-align: right; }\n    .form-section .section-toggle .icon:after {\n      font-family: \"FontAwesome\";\n      display: inline-block;\n      font-size: 1.2em;\n      content: \"\\F078\"; }\n  .form-section .collapsible.open .section-toggle .icon:after {\n    content: \"\\F077\"; }\n  .form-section .error-message {\n    color: #d85454;\n    font-size: 14px;\n    line-height: 1.23em;\n    position: relative;\n    display: inline-block; }\n\n.results-wrapper {\n  overflow-x: auto; }\n\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n\n.loading {\n  display: block;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.8);\n  background-image: url(/static/img/galaxy-loading.gif);\n  background-size: cover;\n  opacity: 1; }\n  .loading .loading-message {\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    width: 500px;\n    margin-left: -250px;\n    text-align: center;\n    font-size: 2.3em;\n    color: yellow;\n    line-height: 1.25em; }\n    .loading .loading-message small {\n      font-size: 0.5em; }\n\ntable.results {\n  overflow: auto;\n  padding: 20px; }\n  table.results thead tr {\n    border-bottom: 2px solid #666; }\n  table.results thead th {\n    font-size: 14px;\n    white-space: nowrap;\n    padding: 5px; }\n  table.results tbody td {\n    font-size: 0.8em;\n    overflow: hidden;\n    padding: 2px 7px;\n    border: 1px solid transparent; }\n  table.results tbody td.empty {\n    background-color: #ccc;\n    border-color: #fff; }\n  table.results tbody tr:nth-child(even) {\n    background-color: aliceblue; }\n  table.results tbody tr.selected {\n    background-color: #37c0fb; }\n    table.results tbody tr.selected td.empty {\n      background-color: rgba(0, 0, 0, 0.3); }\n\nlabel.floating {\n  position: relative !important;\n  font-size: 12px;\n  top: 1em;\n  left: 1em;\n  opacity: 0;\n  transition: all 0.2s linear; }\n\nlabel.open {\n  opacity: 1;\n  top: 0; }\n\n.collapsible .section-content {\n  height: 0;\n  opacity: 0;\n  overflow: hidden;\n  transition: all 0.3s ease-in-out; }\n\n.collapsible.open .section-content {\n  height: initial;\n  opacity: 1; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.code {\n  font-size: 14px;\n  height: 400px; }\n\ndiv[rel=form-submit] {\n  padding-top: 12px; }\n\n.form-section {\n  background-color: #D9EDF7;\n  border: 1px solid #BCE8F1;\n  border-radius: 10px;\n  padding: 1em;\n  margin-top: 2em; }\n  .form-section .section-toggle {\n    text-align: right; }\n    .form-section .section-toggle .icon:after {\n      font-family: \"FontAwesome\";\n      display: inline-block;\n      font-size: 1.2em;\n      content: \"\\F078\"; }\n  .form-section .collapsible.open .section-toggle .icon:after {\n    content: \"\\F077\"; }\n  .form-section .error-message {\n    color: #d85454;\n    font-size: 14px;\n    line-height: 1.23em;\n    position: relative;\n    display: inline-block; }\n\n.results-wrapper {\n  overflow-x: auto; }\n\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n\n.loading {\n  display: block;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.8);\n  background-image: url(/static/img/galaxy-loading.gif);\n  background-size: cover;\n  opacity: 1; }\n  .loading .loading-message {\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    width: 500px;\n    margin-left: -250px;\n    text-align: center;\n    font-size: 2.3em;\n    color: yellow;\n    line-height: 1.25em; }\n    .loading .loading-message small {\n      font-size: 0.5em; }\n\ntable.results {\n  overflow: auto;\n  padding: 20px;\n  border: 2px solid #333; }\n  table.results thead {\n    background-color: #8cdbfd; }\n    table.results thead tr {\n      border-bottom: 2px solid #666; }\n    table.results thead th {\n      font-size: 14px;\n      white-space: nowrap;\n      padding: 5px;\n      border: 1px solid paleturquoise;\n      border-top: 0 transparent solid;\n      border-bottom: 0 transparent; }\n  table.results tbody td {\n    font-size: 0.8em;\n    overflow: hidden;\n    padding: 2px 7px;\n    border: 1px solid transparent; }\n  table.results tbody td.empty {\n    background-color: #ccc;\n    border-color: #fff; }\n  table.results tbody tr:nth-child(even) {\n    background-color: aliceblue; }\n  table.results tbody tr.selected {\n    background-color: #37c0fb; }\n    table.results tbody tr.selected td.empty {\n      background-color: rgba(0, 0, 0, 0.3); }\n\nlabel.floating {\n  position: relative !important;\n  font-size: 12px;\n  top: 1em;\n  left: 1em;\n  opacity: 0;\n  transition: all 0.2s linear; }\n\nlabel.open {\n  opacity: 1;\n  top: 0; }\n\n.collapsible .section-content {\n  height: 0;\n  opacity: 0;\n  overflow: hidden;\n  transition: all 0.3s ease-in-out; }\n\n.collapsible.open .section-content {\n  height: initial;\n  opacity: 1; }\n", ""]);
 
 // exports
 

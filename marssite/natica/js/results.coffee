@@ -22,7 +22,7 @@ Number.prototype.pad = (size, char='0')->
 ###
 Vue.component "table-header",
   props: ['name']
-  template: "<th>{{ name }}</th>"
+  template: "<span>{{ name }}</span>"
 
 Vue.component "table-cell",
   props: ['data', 'field']

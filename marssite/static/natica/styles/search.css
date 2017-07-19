@@ -66,13 +66,19 @@ div[rel=form-submit] {
 
 table.results {
   overflow: auto;
-  padding: 20px; }
-  table.results thead tr {
-    border-bottom: 2px solid #666; }
-  table.results thead th {
-    font-size: 14px;
-    white-space: nowrap;
-    padding: 5px; }
+  padding: 20px;
+  border: 2px solid #333; }
+  table.results thead {
+    background-color: #8cdbfd; }
+    table.results thead tr {
+      border-bottom: 2px solid #666; }
+    table.results thead th {
+      font-size: 14px;
+      white-space: nowrap;
+      padding: 5px;
+      border: 1px solid paleturquoise;
+      border-top: 0 transparent solid;
+      border-bottom: 0 transparent; }
   table.results tbody td {
     font-size: 0.8em;
     overflow: hidden;

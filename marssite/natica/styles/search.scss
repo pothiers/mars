@@ -92,9 +92,18 @@ div[rel=form-submit]{
 table.results{
   overflow: auto;
   padding: 20px;
+  border: 2px solid #333;
   thead{
+    background-color: #8cdbfd;
     tr{ border-bottom: 2px solid #666;}
-    th{ font-size: 14px; white-space: nowrap; padding: 5px;}
+    th{
+      font-size: 14px;
+      white-space: nowrap;
+      padding: 5px;
+      border: 1px solid paleturquoise;
+      border-top: 0 transparent solid;
+      border-bottom: 0 transparent;
+      }
   }
   tbody{
     td{
