@@ -746,15 +746,6 @@ searchFormComponent = {
       this.$emit("displayform", ["results", []]);
     }
     window.base.bindEvents();
-
-    /* 
-    $("#obs-date").datepicker({
-      onSelect: (dateText)=>
-        this.search.obs_date[0] = dateText
-    })
-    
-    $("#obs-date").datepicker("option", "dateFormat", "yy-mm-dd")
-     */
     $("input.date").datepicker({
       onSelect: (function(_this) {
         return function(dateText, datePicker) {
@@ -768,7 +759,7 @@ searchFormComponent = {
             }
           });
           document.dispatchEvent(e);
-          return _this.$forceUpdate();
+          return _this.code = new Date().getTime();
         };
       })(this)
     });
@@ -779,8 +770,20 @@ searchFormComponent = {
     });
   },
   computed: {
-    code: function() {
-      return JSON.stringify(this.stripData(), null, 2);
+    code: {
+      get: function() {
+        this.codeView = JSON.stringify({
+          search: this.stripData()
+        }, null, 2);
+        return this.codeView;
+      },
+      set: function(update) {
+        this.codeUpdate = update;
+        this.codeView = JSON.stringify({
+          search: this.stripData()
+        }, null, 2);
+        return null;
+      }
     }
   },
   data: function() {
@@ -788,6 +791,8 @@ searchFormComponent = {
       url: config.apiUrl,
       visible: true,
       loading: false,
+      codeUpdate: 0,
+      codeView: "",
       modalTitle: "",
       modalBody: "",
       loadingMessage: "Sweeping up star dust...",

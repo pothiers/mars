@@ -69,14 +69,7 @@ searchFormComponent = {
     else if window.location.hash.indexOf("query") > -1
       this.$emit("displayform", ["results", []]) 
     window.base.bindEvents()
-    ### 
-    $("#obs-date").datepicker({
-      onSelect: (dateText)=>
-        this.search.obs_date[0] = dateText
-    })
 
-    $("#obs-date").datepicker("option", "dateFormat", "yy-mm-dd")
-    ###
     $("input.date").datepicker({
             onSelect: (dateText, datePicker)=>
               fieldName = datePicker.input[0].name
@@ -84,23 +77,38 @@ searchFormComponent = {
               field[dateLookup[fieldName].index] = dateText
               e = new CustomEvent("datechanged", {'detail':{'date':dateText} }) 
               document.dispatchEvent(e)
-              this.$forceUpdate()
+              # this value is updated to force the computed values to refresh
+              # for the code sample view
+              this.code = new Date().getTime()
+              #nothing = this.code
       })
     $("input.date").datepicker("option", "dateFormat", "yy-mm-dd")
+
+    # for debugging/testing in the browser
     window.searchVue = this
+
     # Datepicker doesn't trigger change in the model data, so...
     # bind to datepicker changes
-    document.addEventListener("datechanged", ()->
+    document.addEventListener "datechanged", ()->
       console.log("update code view")
-    )
+
   computed:
-    code: ()->
-      return JSON.stringify(@stripData(), null, 2)
+    code:
+      get: ()->
+        this.codeView = JSON.stringify({search:@stripData()}, null, 2)
+        return this.codeView
+      set: (update)->
+        # for some reason, the code view won't update unless we go through this mess 
+        this.codeUpdate = update
+        this.codeView = JSON.stringify({search:@stripData()}, null, 2)
+        return null
   data: ()->
     return {
       url: config.apiUrl
       visible: true
       loading: false
+      codeUpdate: 0
+      codeView: ""
       modalTitle: ""
       modalBody: ""
       loadingMessage: "Sweeping up star dust..."
@@ -123,6 +131,7 @@ searchFormComponent = {
         format: 'YYYY-MM-DD'
       }
     }
+
   methods:
     closeModal: ()->
       ToggleModal("#search-modal")
@@ -167,4 +176,4 @@ searchFormComponent = {
 
 }
 
-export default searchFormComponent 
+export default searchFormComponent
