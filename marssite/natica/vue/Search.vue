@@ -200,10 +200,10 @@
                                               <option value="stacked">Stacked</option>
                                               <option value="master_calibration">Master Calibration</option>
                                               <option value="image_tiles">Image Tiles</option>
-                                              <option value="sky_subtracted">Sky Subtracted</option>
+                                              <option value="sky_subtracted">Sky Subtracted (Newfirm)</option>
                                       </select>
                                       <p class="help-block">
-                                          * <em>Sky subtracted</em> is for <strong>NEWFIRM</strong> only. <em>Calibrated, Reprojected, Stacked, Master calibration, Image Tiles</em> are for <strong>Mosiac, NEWFIRM and DECam</strong>.
+                                          * <em>Calibrated, Reprojected, Stacked, Master calibration, Image Tiles</em> are for <strong>Mosiac, NEWFIRM and DECam</strong>.
                                       </p>
                                       </div>
                                   </div>

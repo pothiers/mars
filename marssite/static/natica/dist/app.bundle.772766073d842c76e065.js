@@ -375,7 +375,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -654,9 +654,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
- 
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_search_coffee__["a" /* default */]);
 
+/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_search_coffee__["a" /* default */]);
 
 /***/ }),
 /* 10 */
@@ -1735,9 +1734,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "value": "sky_subtracted"
     }
-  }, [_vm._v("Sky Subtracted")])]), _vm._v(" "), _c('p', {
+  }, [_vm._v("Sky Subtracted (Newfirm)")])]), _vm._v(" "), _c('p', {
     staticClass: "help-block"
-  }, [_vm._v("\n                                        * "), _c('em', [_vm._v("Sky subtracted")]), _vm._v(" is for "), _c('strong', [_vm._v("NEWFIRM")]), _vm._v(" only. "), _c('em', [_vm._v("Calibrated, Reprojected, Stacked, Master calibration, Image Tiles")]), _vm._v(" are for "), _c('strong', [_vm._v("Mosiac, NEWFIRM and DECam")]), _vm._v(".\n                                    ")])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                                        * "), _c('em', [_vm._v("Calibrated, Reprojected, Stacked, Master calibration, Image Tiles")]), _vm._v(" are for "), _c('strong', [_vm._v("Mosiac, NEWFIRM and DECam")]), _vm._v(".\n                                    ")])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-3"
   }, [_c('div', {
     staticClass: "form-group"
@@ -1864,7 +1863,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1965,7 +1964,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_coffee__["a" /* default */]);
-
 
 /***/ }),
 /* 14 */
