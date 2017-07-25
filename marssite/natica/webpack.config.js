@@ -20,6 +20,7 @@ let cleanConfig = {
 module.exports = {
   entry:{
     "app.bundle":"./app.coffee",
+    "staging.bundle":"./staging.app.coffee",
     "vue":['vue', 'vee-validate'],
     "vendor":['moment']
   },

@@ -8,8 +8,8 @@
     {% endblock %}
 
     {% block extra_footer %}
-        {% for js in jsResources %}
         <script type="text/javascript" src="{% get_static_prefix %}lodash/lodash.core.min.js"></script>            
+        {% for js in jsResources %}
         <script type="text/javascript" src="{% get_static_prefix %}natica/dist/{{js}}"></script> 
         {% endfor %}
     {% endblock %}
