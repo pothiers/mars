@@ -74,6 +74,8 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django_tables2',
     'audit',  # tada audit/status REST API
+    'users', # LDAP admin
+    'ldapdb',
 )
 
 
@@ -97,7 +99,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
     'dal.middleware.RequestExceptionHandler',
     ]
 
@@ -257,4 +259,3 @@ if 'TRAVIS' in os.environ:
     }
 else:
     exec(open('/etc/mars/django_local_settings.py').read())
-

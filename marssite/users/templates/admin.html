@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block head_title %}{% endblock %}
+{% block extra_head %}
+{% endblock %}
+
+{% block extra_footer %}
+<script type="text/javascript" src="{% get_static_prefix %}lodash/lodash.core.min.js"></script>
+{% for js in jsResources %}
+<script type="text/javascript" src="{% get_static_prefix %}{{js}}"></script>
+{% endfor %}
+{% endblock %}
+
+{% block body %}
+<div id="content"></div>
+{% endblock %}
