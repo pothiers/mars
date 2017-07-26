@@ -35,7 +35,7 @@ Number.prototype.pad = function(size, char) {
 
 Vue.component("table-header", {
   props: ['name'],
-  template: "<th>{{ name }}</th>"
+  template: "<span>{{ name }}</span>"
 });
 
 Vue.component("table-cell", {

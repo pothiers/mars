@@ -24,7 +24,7 @@ from rest_framework import routers, serializers, viewsets
 from django.contrib.auth.models import User # ,Group
 from provisional.views import FitsnameViewSet
 from rest_framework_swagger.views import get_swagger_view
-
+from cas.views import login, logout
 #from schedule.views import ScheduleViewSet
 from water.views import api_root
 # Serializers define the API representation.
@@ -63,6 +63,9 @@ admin.site.site_header = 'MARS Administration'
 
 
 urlpatterns = [
+    # CAS
+    url(r'^accounts/login/$', login, name='login'),
+    url(r'^accounts/logout/$', logout, name='logout'),
     url(
         r'^favicon.ico$',
         RedirectView.as_view(

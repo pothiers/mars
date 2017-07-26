@@ -19,6 +19,12 @@ import os
 #!    RuntimeWarning, r'django\.db\.models\.fields',
 #!)
 
+CAS_SERVER_URL = "http://localhost:3000"
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'cas.backends.CASBackend',
+)
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -74,6 +80,7 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django_tables2',
     'audit',  # tada audit/status REST API
+    'cas'
 )
 
 
@@ -97,7 +104,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+    'cas.middleware.CASMiddleware', 
     'dal.middleware.RequestExceptionHandler',
     ]
 

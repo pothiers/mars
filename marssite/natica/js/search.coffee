@@ -80,7 +80,6 @@ searchFormComponent = {
               # this value is updated to force the computed values to refresh
               # for the code sample view
               this.code = new Date().getTime()
-              #nothing = this.code
       })
     $("input.date").datepicker("option", "dateFormat", "yy-mm-dd")
 
