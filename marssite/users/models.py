@@ -2,6 +2,14 @@ from ldapdb.models.fields import (CharField, ImageField, ListField,
                                   IntegerField)
 import ldapdb.models
 
+"""
+there are issues I cannot work around using this library.
+LDAP houses the key in a list field. There is no way to define the primary key from
+a list field for django model support.
+
+Either I'd have to write my own admin, or change LDAP schema....
+
+"""
 
 class LdapUser(ldapdb.models.Model):
     """
@@ -9,26 +17,20 @@ class LdapUser(ldapdb.models.Model):
     """
     # LDAP meta-data
     base_dn = "dc=sdm,dc=noao,dc=edu"
-    object_classes = ['*']#, 'posixAccount','shadowAccount', 'inetOrgPerson']
+    object_classes = ['person']
 
-    # inetOrgPerson
-    email = CharField(db_column='mail', blank=True)
-    phone = CharField(db_column='telephoneNumber', blank=True)
-    mobile_phone = CharField(db_column='mobile', blank=True)
 
-    # posixAccount
-    uid = IntegerField(db_column='uidNumber', unique=True)
-    group = IntegerField(db_column='gidNumber')
+
     home_directory = CharField(db_column='homeDirectory')
-    username = CharField(db_column='sn', primary_key=True)
+    lastname = CharField(db_column='sn')
     password = CharField(db_column='userPassword')
-    name = CharField(db_column='commonName')
-
+    name = ListField(db_column='cn', primary_key=True)
+    classes = ListField(db_column='objectclass')
     def __str__(self):
-        return self.username
+        return self.name
 
     def __unicode__(self):
-        return self.full_name
+        return self.lastname
 
 
 class LdapGroup(ldapdb.models.Model):

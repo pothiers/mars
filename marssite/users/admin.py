@@ -8,7 +8,11 @@ class LDAPGroupAdmin(admin.ModelAdmin):
 
 class LDAPUserAdmin(admin.ModelAdmin):
     exclude = ['dn']
-    search_fields = ['username', 'name']
-    list_display = ['username','home_directory', 'name']
+    search_fields = ['lastname']
+    list_display = ['username', 'lastname', 'home_directory']
+
+    def username(self, obj):
+        to_return = obj.name[1]
+        return to_return
 
 admin.site.register(models.LdapUser, LDAPUserAdmin)
