@@ -1,10 +1,10 @@
 import Vue from "vue"
 #import Results from "./js/results.coffee"
 import moment from "moment"
-import Search from "./vue/Search.vue"
-import Results from "./vue/Results.vue"
+import Search from "../vue/Search.vue"
+import Results from "../vue/Results.vue"
 
-import AppStyles from "./styles/search.scss"
+import AppStyles from "../styles/search.scss"
 
 class App
   constructor: ()->

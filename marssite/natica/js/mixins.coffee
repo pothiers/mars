@@ -58,9 +58,9 @@ export default {
   mixin:
     data: ()->
       return
-        config: _config 
+        config: _config
 
-    
+
 
     methods:
       stripData: ()->
@@ -110,7 +110,8 @@ export default {
             success: (data)->
               window.location.hash = "#query"
               self.loading = false
-              saveData =  if typeof(data) is "object" then JSON.stringify(data) else data 
+              saveData =  if typeof(data) is "object" then JSON.stringify(data) else data
+
               localStorage.setItem('results', saveData )
               self.$emit("displayform", ["results", saveData])
               if cb
@@ -120,7 +121,7 @@ export default {
               message = "#{statusMsg}"
               if xhr.response
                 message += ":  #{xhr.response.errorMessage}"
-              self.loading = false 
+              self.loading = false
               self.modalTitle = "Request Error"
               self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>#{message}</strong></div>"
               ToggleModal("#search-modal")

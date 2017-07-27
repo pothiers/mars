@@ -1,11 +1,12 @@
 * Structure
 app.coffee is the main entry point and will load the appropriate component onto the page
-./js/ 
+./js/
 mixins.coffee houses data/structure and methods used in both results and search
 
 ./vue/
 contains the vue templates used in the app
 
-* UI Improvements 
-** Re-design/improve the range selection
-** 
+* UI Improvements
+*** TODO Re-design/improve the range selection
+*** TODO Results need bulk operation controls
+*** TODO Results also need download/stage button

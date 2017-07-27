@@ -3,7 +3,14 @@ from django.http import JsonResponse
 from os import listdir, path
 from os.path import isfile, join, abspath
 import json
+"""
+Assume there are some mount points on this machine
+one will have the archive files
+another will have the ftp directories
 
+This needs to get a list of files (selected by the user) and create
+relative symlinks from the archive to the ftp directory owned by the user
+"""
 
 # Stub for future work to generate links from NFS mount for downloads
 def _generateFileLinks(results):
@@ -40,4 +47,3 @@ def staging(request):
     r = _getResources("staging.bundle")
     print(r)
     return render(request, "staging.html", {'jsResources':r})
-

@@ -280,7 +280,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Search.vue"
+Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1768,7 +1768,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Results.vue"
+Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1798,6 +1798,9 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_coffee__ = __webpack_require__(15);
+//
+//
+//
 //
 //
 //
@@ -1953,14 +1956,21 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
   methods: {
     selectRow: function() {
       this.isSelected = !this.isSelected;
-      return console.log("Row selected");
+      console.log("Row selected");
+      return this.$emit("rowselected", this);
     }
   }
 });
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-body", {
   props: ['data', 'visibleCols'],
-  template: "<tbody><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>"
+  template: "<tbody v-on:rowselected='iheardthat'><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>",
+  methods: {
+    iheardthat: function() {
+      console.log("I heard that");
+      return console.log(arguments);
+    }
+  }
 });
 
 
@@ -1982,12 +1992,22 @@ config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
       recordsFrom: 1,
       recordsTo: 100,
       results: [],
+      selected: [],
       searchObj: JSON.parse(localStorage.getItem('search')),
       totalItems: 0,
+      toggle: false,
       error: ""
     };
   },
   methods: {
+    sayWhat: function() {
+      console.log("what");
+      return console.dir(arguments);
+    },
+    toggleResults: function() {
+      this.toggle = !this.toggle;
+      return console.log("toggle");
+    },
     displayForm: function() {
       window.location.hash = "#search_again";
       return this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
@@ -2097,8 +2117,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-12 results-wrapper"
-  }, [((_vm.results.resultset.length > 0)) ? _c('table', {
+    staticClass: "col-xs-12 results-wrapper",
+    on: {
+      "rowselected": _vm.sayWhat
+    }
+  }, [_c('div', [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "name": "",
+      "type": "checkbox",
+      "value": "",
+      "click": _vm.toggleResults
+    }
+  }), _vm._v(" "), _c('label', [_vm._v("Select all")])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _vm._l((_vm.visibleColumns), function(col) {
     return _c('th', [_c("table-header", {
@@ -2119,7 +2150,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "alert alert-danger text-center"
   }, [_vm._v(_vm._s(_vm.error))]) : _vm._e(), _vm._v(" "), _c('pre', {
     staticClass: "code"
-  }, [_vm._v(_vm._s(_vm.searchObj) + "              \n                      ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.searchObj) + "\n                      ")]), _vm._v(" "), _c('div', {
     staticClass: "text-center"
   }, [_c('h5', [_vm._v("You might try and adjust your paramaters and search again")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-success",

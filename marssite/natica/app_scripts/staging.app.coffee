@@ -1,6 +1,6 @@
-import Staging from "./vue/Staging.vue"
+import Staging from "../vue/Staging.vue"
 import Vue from 'vue'
-import AppStyles from "./styles/search.scss"
+import AppStyles from "../styles/search.scss"
 
 
 class App

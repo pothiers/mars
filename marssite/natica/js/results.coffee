@@ -27,7 +27,7 @@ Vue.component "table-header",
 Vue.component "table-cell",
   props: ['data', 'field']
   template: "<td v-if='data' v-bind:rel='field'>{{ format }}</td><td class='empty' v-else></td>"
-  computed: 
+  computed:
       format: ()->
         if @data is null
           return @data
@@ -47,16 +47,20 @@ Vue.component "table-row",
   data: ()->
     return
       isSelected: false
-      
+
   methods:
     selectRow: ()->
       this.isSelected = !this.isSelected
       console.log "Row selected"
+      this.$emit("rowselected", this)
 
 Vue.component "table-body",
    props: ['data', 'visibleCols']
-   template: "<tbody><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>"
-
+   template: "<tbody v-on:rowselected='iheardthat'><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>"
+   methods:
+     iheardthat: ()->
+       console.log "I heard that"
+       console.log arguments
 
 ###
    App - Results
@@ -75,11 +79,19 @@ export default {
       recordsFrom: 1
       recordsTo: 100
       results: []
+      selected: []
       searchObj: JSON.parse(localStorage.getItem('search'))
       totalItems: 0
+      toggle: false
       error: ""
     }
   methods:
+    sayWhat: ()->
+      console.log "what"
+      console.dir arguments
+    toggleResults: ()->
+      @toggle = !@toggle
+      console.log "toggle"
     displayForm: ()->
       window.location.hash = "#search_again"
       this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))] )
@@ -106,7 +118,7 @@ export default {
   mounted:()->
     window.base.bindEvents()
     #
-    
+
     if window.location.hash is "#query"
       try
         @results = JSON.parse(localStorage.getItem('results')) || []
@@ -122,5 +134,5 @@ export default {
       #window.searchForm.form.search = JSON.parse(localStorage.getItem('search'))
 
 
-  
+
 }

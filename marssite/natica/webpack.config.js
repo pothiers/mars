@@ -19,8 +19,8 @@ let cleanConfig = {
 
 module.exports = {
   entry:{
-    "app.bundle":"./app.coffee",
-    "staging.bundle":"./staging.app.coffee",
+    "app.bundle":"./app_scripts/app.coffee",
+    "staging.bundle":"./app_scripts/staging.app.coffee",
     "vue":['vue', 'vee-validate'],
     "vendor":['moment']
   },
@@ -70,7 +70,7 @@ module.exports = {
       },
       {
         test: /\.coffee$/,
-        use: [ 'coffee-loader' ]
+        use: [ {loader: 'coffee-loader'} ]
       },
     ]
   }

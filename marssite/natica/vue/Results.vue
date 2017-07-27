@@ -31,7 +31,10 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 results-wrapper">
+                    <div class="col-xs-12 results-wrapper" v-on:rowselected="sayWhat">
+                      <div>
+                        <input class="form-control" name="" type="checkbox" value="" v-bind:click="toggleResults"> <label>Select all</label>
+                      </div>
                         <table class="results" v-if="(results.resultset.length > 0)">
                             <thead>
                                 <tr>
@@ -50,7 +53,7 @@
                         <div v-else>
                           <h1 class="text-center">No results found</h1>
                           <div class="alert alert-danger text-center" v-if="error">{{ error }}</div>
-                          <pre class="code">{{ searchObj }}              
+                          <pre class="code">{{ searchObj }}
                           </pre>
                           <div class="text-center">
                             <h5>You might try and adjust your paramaters and search again</h5>
@@ -70,4 +73,3 @@
 
   export default results;
 </script>
-
