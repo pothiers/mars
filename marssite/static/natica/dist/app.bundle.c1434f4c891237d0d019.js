@@ -18,67 +18,107 @@ _config = {
     inject: true,
     dependsOn: "dependson"
   },
-  defaultColumns: [
+  allColumns: [
     {
-      "mapping": "dec",
-      "name": "Dec"
-    }, {
-      "mapping": "depth",
-      "name": "Depth"
-    }, {
-      "mapping": "exposure",
-      "name": "Exposure"
-    }, {
-      "mapping": "filename",
-      "name": "Filename"
-    }, {
-      "mapping": "filesize",
-      "name": "File size"
-    }, {
-      "mapping": "filter",
-      "name": "Filter"
-    }, {
-      "mapping": "image_type",
-      "name": "Image Type"
-    }, {
-      "mapping": "instrument",
-      "name": "Instrument"
-    }, {
-      "mapping": "md5sum",
-      "name": "MD5 sum"
-    }, {
-      "mapping": "obs_date",
-      "name": "Observed date"
-    }, {
-      "mapping": "original_filename",
-      "name": "Original filename"
-    }, {
-      "mapping": "pi",
-      "name": "Principle Investigator"
-    }, {
-      "mapping": "product",
-      "name": "Product"
-    }, {
+      "checked": true,
       "mapping": "prop_id",
-      "name": "Program Number"
+      "name": "Program Number",
+      "num": 1
     }, {
+      "checked": true,
+      "mapping": "obs_date",
+      "name": "Observed date",
+      "num": 2
+    }, {
+      "checked": false,
+      "mapping": "pi",
+      "name": "Principle Investigator",
+      "num": 3
+    }, {
+      "checked": false,
       "mapping": "ra",
-      "name": "RA"
+      "name": "RA",
+      "num": 4
     }, {
-      "mapping": "reference",
-      "name": "Reference"
+      "checked": false,
+      "mapping": "dec",
+      "name": "Dec",
+      "num": 5
     }, {
-      "mapping": "release_date",
-      "name": "Release Date"
+      "checked": false,
+      "mapping": "product",
+      "name": "Product",
+      "num": 6
     }, {
-      "mapping": "seeing",
-      "name": "Seeing"
+      "checked": false,
+      "mapping": "depth",
+      "name": "Depth",
+      "num": 7
     }, {
+      "checked": true,
+      "mapping": "exposure",
+      "name": "Exposure",
+      "num": 8
+    }, {
+      "checked": true,
+      "mapping": "filter",
+      "name": "Filter",
+      "num": 9
+    }, {
+      "checked": true,
       "mapping": "telescope",
-      "name": "Telescope"
+      "name": "Telescope",
+      "num": 10
     }, {
+      "checked": true,
+      "mapping": "instrument",
+      "name": "Instrument",
+      "num": 11
+    }, {
+      "checked": false,
+      "mapping": "image_type",
+      "name": "Image Type",
+      "num": 12
+    }, {
+      "checked": false,
+      "mapping": "filename",
+      "name": "Filename",
+      "num": 13
+    }, {
+      "checked": false,
+      "mapping": "md5sum",
+      "name": "MD5 sum",
+      "num": 14
+    }, {
+      "checked": false,
+      "mapping": "filesize",
+      "name": "File size",
+      "num": 15
+    }, {
+      "checked": false,
+      "mapping": "original_filename",
+      "name": "Original filename",
+      "num": 16
+    }, {
+      "checked": false,
+      "mapping": "reference",
+      "name": "Reference",
+      "num": 17
+    }, {
+      "checked": true,
       "mapping": "survey_id",
-      "name": "Survey Id"
+      "name": "Survey Id",
+      "num": 18
+    }, {
+      "checked": false,
+      "mapping": "release_date",
+      "name": "Release Date",
+      "num": 19
+    }, {
+      "checked": false,
+      "mapping": "seeing",
+      "name": "Seeing",
+      "num": 20
     }
   ],
   formData: {
@@ -280,7 +320,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1768,7 +1808,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1798,6 +1838,15 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_coffee__ = __webpack_require__(15);
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1953,10 +2002,20 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
       isSelected: false
     };
   },
+  created: function() {
+    console.log('created');
+    return bus.$on("toggleSelected", function(onoff) {
+      return this.isSelected = onoff;
+    });
+  },
   methods: {
     selectRow: function() {
       this.isSelected = !this.isSelected;
       console.log("Row selected");
+      bus.$emit("rowselected", {
+        stuff: 'hi',
+        thing: this.row
+      });
       return this.$emit("rowselected", this);
     }
   }
@@ -1964,7 +2023,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
 
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-body", {
   props: ['data', 'visibleCols'],
-  template: "<tbody v-on:rowselected='iheardthat'><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>",
+  template: "<tbody ><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>",
   methods: {
     iheardthat: function() {
       console.log("I heard that");
@@ -1980,12 +2039,15 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-body", {
 
 config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
 
+window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
+
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['componentData'],
   mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].mixin],
   data: function() {
     return {
-      visibleColumns: JSON.parse(JSON.stringify(config.defaultColumns)),
+      visibleColumns: [],
+      allColumns: config.allColumns,
       visible: false,
       pageNum: 1,
       isLoading: false,
@@ -2000,13 +2062,39 @@ config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
     };
   },
   methods: {
-    sayWhat: function() {
-      console.log("what");
-      return console.dir(arguments);
+    toggleColumn: function(column) {
+      var col, first, found, i, j, last, len, len1, n, ref, ref1;
+      if (column.checked) {
+        ref = this.visibleColumns;
+        for (n = i = 0, len = ref.length; i < len; n = ++i) {
+          col = ref[n];
+          if (_.isEqual(col, column)) {
+            this.visibleColumns.splice(n, 1);
+          }
+        }
+      } else {
+        found = false;
+        ref1 = this.visibleColumns;
+        for (n = j = 0, len1 = ref1.length; j < len1; n = ++j) {
+          col = ref1[n];
+          if (column.num < col.num) {
+            first = this.visibleColumns.slice(0, n);
+            last = this.visibleColumns.slice(n);
+            this.visibleColumns = first.concat(column, last);
+            found = true;
+            break;
+          }
+        }
+        if (found !== true) {
+          this.visibleColumns.push(column);
+        }
+      }
+      return column.checked = !column.checked;
     },
     toggleResults: function() {
       this.toggle = !this.toggle;
-      return console.log("toggle");
+      console.log("toggle");
+      return bus.$emit("toggleSelected", this.toggle);
     },
     displayForm: function() {
       window.location.hash = "#search_again";
@@ -2036,9 +2124,28 @@ config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
       });
     }
   },
+  created: function() {
+    var col, i, len, ref, results;
+    ref = this.allColumns;
+    results = [];
+    for (i = 0, len = ref.length; i < len; i++) {
+      col = ref[i];
+      if (col.checked) {
+        results.push(this.visibleColumns.push(col));
+      } else {
+        results.push(void 0);
+      }
+    }
+    return results;
+  },
   mounted: function() {
     var e, ref;
     window.base.bindEvents();
+    window.results = this;
+    bus.$on("rowselected", function(data) {
+      console.dir(data);
+      return console.log("bus called");
+    });
     if (window.location.hash === "#query") {
       try {
         this.results = JSON.parse(localStorage.getItem('results')) || [];
@@ -2117,17 +2224,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-12 results-wrapper",
-    on: {
-      "rowselected": _vm.sayWhat
-    }
-  }, [_c('div', [_c('input', {
+    staticClass: "col-xs-12 results-wrapper"
+  }, [_c('div', {
+    staticClass: "filters panel"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('h4', [_vm._v("Toggle visibility of columns")]), _vm._v(" "), _c('ul', {
+    staticClass: "list-unstyled columns"
+  }, _vm._l((_vm.allColumns), function(column) {
+    return _c('li', [_c('label', [_c('input', {
+      attrs: {
+        "name": "",
+        "type": "checkbox",
+        "value": "",
+        "name": column.mapping
+      },
+      domProps: {
+        "checked": column.checked
+      },
+      on: {
+        "change": function($event) {
+          _vm.toggleColumn(column)
+        }
+      }
+    }), _vm._v(" " + _vm._s(column.name))])])
+  }))])]), _vm._v(" "), _c('div', [_c('input', {
     staticClass: "form-control",
     attrs: {
       "name": "",
       "type": "checkbox",
-      "value": "",
-      "click": _vm.toggleResults
+      "value": ""
+    },
+    on: {
+      "change": _vm.toggleResults
     }
   }), _vm._v(" "), _c('label', [_vm._v("Select all")])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"

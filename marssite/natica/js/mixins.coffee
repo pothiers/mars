@@ -8,28 +8,30 @@ _config =
     inject: true
     dependsOn: "dependson"
 
-  defaultColumns:[
-    {"mapping": "dec", "name" : "Dec"},
-    {"mapping": "depth", "name": "Depth"},
-    {"mapping": "exposure", "name": "Exposure"},
-    {"mapping": "filename", "name": "Filename"},
-    {"mapping": "filesize", "name" : "File size"},
-    {"mapping": "filter", "name": "Filter"},
-    {"mapping": "image_type", "name": "Image Type"},
-    {"mapping": "instrument", "name": "Instrument"},
-    {"mapping": "md5sum", "name": "MD5 sum"},
-    {"mapping": "obs_date", "name": "Observed date"},
-    {"mapping": "original_filename", "name":"Original filename"},
-    {"mapping": "pi", "name": "Principle Investigator"},
-    {"mapping": "product", "name":"Product"},
-    {"mapping": "prop_id", "name": "Program Number"},
-    {"mapping": "ra", "name":"RA"},
-    {"mapping": "reference", "name":"Reference"},
-    {"mapping": "release_date", "name":"Release Date"},
-    {"mapping": "seeing", "name":"Seeing"},
-    {"mapping": "telescope", "name":"Telescope"},
-    {"mapping": "survey_id", "name":"Survey Id"}
+  # default columns are checked
+  allColumns:[
+    {"checked":true, "mapping": "prop_id", "name": "Program Number", "num":1},
+    {"checked":true, "mapping": "obs_date", "name": "Observed date", "num":2},
+    {"checked":false, "mapping": "pi", "name": "Principle Investigator", "num":3},
+    {"checked":false, "mapping": "ra", "name":"RA", "num":4},
+    {"checked":false, "mapping": "dec", "name" : "Dec", "num":5},
+    {"checked":false, "mapping": "product", "name":"Product", "num":6},
+    {"checked":false, "mapping": "depth", "name": "Depth", "num":7},
+    {"checked":true, "mapping": "exposure", "name": "Exposure", "num":8},
+    {"checked":true, "mapping": "filter", "name": "Filter","num":9},
+    {"checked":true, "mapping": "telescope", "name":"Telescope", "num": 10},
+    {"checked":true, "mapping": "instrument", "name": "Instrument", "num":11},
+    {"checked":false, "mapping": "image_type", "name": "Image Type", "num":12},
+    {"checked":false, "mapping": "filename", "name": "Filename", "num":13},
+    {"checked":false, "mapping": "md5sum", "name": "MD5 sum", "num":14},
+    {"checked":false, "mapping": "filesize", "name" : "File size", "num":15},
+    {"checked":false, "mapping": "original_filename", "name":"Original filename", "num":16},
+    {"checked":false, "mapping": "reference", "name":"Reference", "num":17},
+    {"checked":true, "mapping": "survey_id", "name":"Survey Id", "num":18}
+    {"checked":false, "mapping": "release_date", "name":"Release Date", "num":19},
+    {"checked":false, "mapping": "seeing", "name":"Seeing", "num": 20},
   ]
+
 
   formData:
     coordinates:

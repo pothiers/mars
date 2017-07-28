@@ -31,9 +31,18 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 results-wrapper" v-on:rowselected="sayWhat">
+                    <div class="col-xs-12 results-wrapper">
+                        <div class="filters panel">
+                            <div class="panel-body">
+                                <h4>Toggle visibility of columns</h4>
+                                <ul class="list-unstyled columns">
+                                    <li v-for="column in allColumns"><label><input name="" type="checkbox" value="" v-bind:name="column.mapping" v-bind:checked="column.checked" v-on:change="toggleColumn(column)"> {{ column.name }}</label></li>
+                                </ul>
+                            </div>
+                        </div>
                       <div>
-                        <input class="form-control" name="" type="checkbox" value="" v-bind:click="toggleResults"> <label>Select all</label>
+
+                        <input class="form-control" name="" type="checkbox" value="" v-on:change="toggleResults"> <label>Select all</label>
                       </div>
                         <table class="results" v-if="(results.resultset.length > 0)">
                             <thead>

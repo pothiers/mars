@@ -21,10 +21,10 @@ div[rel=form-submit]{
   padding: 1em;
   margin-top: 2em;
 
-  
+
   .section-toggle{
     text-align: right;
-    
+
     .icon:after{
       font-family: "FontAwesome";
       display: inline-block;
@@ -89,6 +89,15 @@ div[rel=form-submit]{
   }
 }
 
+
+/*
+   Results
+*/
+.filters li{
+  display: inline-block;
+  font-size: 14px;
+  padding:10px;
+}
 table.results{
   overflow: auto;
   padding: 20px;
@@ -155,4 +164,3 @@ label.open{
     opacity: 1;
   }
 }
-

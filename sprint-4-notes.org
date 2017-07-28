@@ -1,0 +1,14 @@
+* Questions/thoughts for user admin
+  * Users won't have a django db instance, they will be managed by ldap...?
+  * The admin will actually not be part of the django admin, but some password protected pages
+    for administering users
+  * User-facing admin pages will also need to be built for managing profiles/passwords?
+
+* Need to get ldap login/host info
+** Found: Relavent info is here: https://bytebucket.org/noao/opswiki/wiki/ldap/ldap_sync.sh?token=9d43306e3cea877d3eaa9fbf07ff07819ea482b0&rev=71aaa9e1818252d34a6f0b80820dd6cdb8596c7c
+*** Base DN: dc=sdm,dc=noao,dc=edu
+*** User DN: cn=directory manager
+*** Port: 636
+*** See script linked above for server name + credentials
+
+* Auth via SSO with the LDAP backend

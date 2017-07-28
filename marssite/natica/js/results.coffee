@@ -47,16 +47,20 @@ Vue.component "table-row",
   data: ()->
     return
       isSelected: false
-
+  created: ()->
+    console.log 'created'
+    bus.$on "toggleSelected", (onoff)->
+      this.isSelected = onoff
   methods:
     selectRow: ()->
       this.isSelected = !this.isSelected
       console.log "Row selected"
+      bus.$emit("rowselected", {stuff:'hi', thing:this.row})
       this.$emit("rowselected", this)
 
 Vue.component "table-body",
    props: ['data', 'visibleCols']
-   template: "<tbody v-on:rowselected='iheardthat'><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>"
+   template: "<tbody ><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>"
    methods:
      iheardthat: ()->
        console.log "I heard that"
@@ -66,13 +70,15 @@ Vue.component "table-body",
    App - Results
 ###
 config = Shared.config
+window.bus = new Vue()
 export default {
   props: ['componentData']
   mixins: [Shared.mixin]
   data: ()->
     return {
       # This should be set based on some session/local storage set
-      visibleColumns : JSON.parse(JSON.stringify(config.defaultColumns))
+      visibleColumns : []
+      allColumns: config.allColumns
       visible: false
       pageNum: 1
       isLoading: false
@@ -86,12 +92,30 @@ export default {
       error: ""
     }
   methods:
-    sayWhat: ()->
-      console.log "what"
-      console.dir arguments
+    toggleColumn: (column)->
+
+      if column.checked
+        for col, n in @visibleColumns
+          if _.isEqual(col, column)
+            @visibleColumns.splice(n,1)
+      else
+        found = false
+        for col,n in @visibleColumns
+          if column.num < col.num
+            first = @visibleColumns.slice(0,n)
+            last = @visibleColumns.slice(n)
+            @visibleColumns = first.concat(column, last)
+            found = true
+            break
+        if found isnt true
+          # if we got here, then column is indexed greater than what is visible, just append
+          @visibleColumns.push(column)
+      column.checked = !column.checked
+
     toggleResults: ()->
       @toggle = !@toggle
       console.log "toggle"
+      bus.$emit("toggleSelected", @toggle)
     displayForm: ()->
       window.location.hash = "#search_again"
       this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))] )
@@ -115,9 +139,18 @@ export default {
         self.recordsFrom = data.meta.to_here_count-data.meta.page_result_count+1
         self.recordsTo = data.meta.to_here_count
       )
+  created:()->
+    for col in @allColumns
+      if col.checked
+        @visibleColumns.push(col)
   mounted:()->
     window.base.bindEvents()
-    #
+    window.results = @
+
+    # listen to bus selected row notifications
+    bus.$on "rowselected", (data)->
+      console.dir data
+      console.log "bus called"
 
     if window.location.hash is "#query"
       try
