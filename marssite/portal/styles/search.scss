@@ -14,14 +14,7 @@ $error-color: #d85454;
 div[rel=form-submit]{
   padding-top: 12px;
 }
-.form-section{
-  background-color: $section-bg;
-  border: 1px solid $section-border-color;
-  border-radius: 10px;
-  padding: 1em;
-  margin-top: 2em;
-
-
+.collapsible{
   .section-toggle{
     text-align: right;
     float:right;
@@ -33,15 +26,26 @@ div[rel=form-submit]{
       content: $caret-down;
     }
   }
-  .collapsible.open{
-    .section-toggle{
-      .icon:after{
-        content: $caret-up;
-      }
-
+}
+.collapsible.open{
+  .section-toggle{
+    .icon:after{
+      content: $caret-up;
     }
+
   }
-  .error-message{
+}
+
+
+.form-section{
+  background-color: $section-bg;
+  border: 1px solid $section-border-color;
+  border-radius: 10px;
+  padding: 1em;
+  margin-top: 2em;
+  @extend .collapsible;
+
+    .error-message{
       color: $error-color;
       font-size: 14px;
       line-height: 1.23em;

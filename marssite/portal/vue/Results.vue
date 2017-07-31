@@ -32,23 +32,27 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 results-wrapper">
-                        <div class="filters panel">
-                            <div class="panel-heading section-heading">
-                                <h4>Toggle visibility of columns</h4>
-                                  <div class="section-toggle">
-                                      <span class="icon open"></span>
-                                  </div>
+                        <div class="collapsible container fluid">
 
-                            </div>
-                            <div class="panel-body collapsible">
-                                <ul class="list-unstyled columns">
-                                    <li v-for="column in allColumns"><label><input name="" type="checkbox" value="" v-bind:name="column.mapping" v-bind:checked="column.checked" v-on:change="toggleColumn(column)"> {{ column.name }}</label></li>
-                                </ul>
+                            <div class="filters panel">
+                                <div class="panel-heading section-heading clearfix">
+                                    <h4 class="pull-left">Toggle visibility of columns</h4>
+                                    <div class="section-toggle pull-right">
+                                        <span class="icon open"></span>
+                                    </div>
+
+                                </div>
+                                <div class="panel-body section-content ">
+                                    <ul class="list-unstyled columns">
+                                        <li v-for="column in allColumns"><label><input name="" type="checkbox" value="" v-bind:name="column.mapping" v-bind:checked="column.checked" v-on:change="toggleColumn(column)"> {{ column.name }}</label></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                      <div>
-
-                        <label><input class="" name="" type="checkbox" value="" v-on:change="toggleResults"> Select all</label>
+                      <div class="row">
+                          <div class="col-sm-3">
+                            <label><input class="" name="" type="checkbox" value="" v-on:change="toggleResults"> Select all</label>
+                          </div>
                       </div>
                         <table class="results" v-if="(results.resultset.length > 0)">
                             <thead>

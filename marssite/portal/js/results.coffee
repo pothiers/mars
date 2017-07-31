@@ -48,16 +48,12 @@ Vue.component "table-row",
     return
       isSelected: false
   created: ()->
-    console.log 'created'
     bus.$on "toggleSelected", (onoff)=>
-      console.log "Gettin' toggled", onoff
       this.isSelected = onoff
   methods:
     selectRow: ()->
       this.isSelected = !this.isSelected
-      console.log "Row selected"
       bus.$emit("rowselected", {stuff:'hi', thing:this.row})
-      this.$emit("rowselected", this)
 
 Vue.component "table-body",
    props: ['data', 'visibleCols']
@@ -144,14 +140,17 @@ export default {
     for col in @allColumns
       if col.checked
         @visibleColumns.push(col)
-  mounted:()->
-    window.base.bindEvents()
-    window.results = @
+  updated:()->
 
+
+    console.log document.querySelectorAll(".collapsible")
+    window.base.bindEvents()
+  mounted:()->
+    window.results = @
+    console.log "Results mounted"
     # listen to bus selected row notifications
     bus.$on "rowselected", (data)->
       console.dir data
-      console.log "bus called"
 
     if window.location.hash is "#query"
       try
@@ -166,7 +165,5 @@ export default {
         @error = "There was an error parsing results from server"
         @handleError(e)
       #window.searchForm.form.search = JSON.parse(localStorage.getItem('search'))
-
-
-
+    console.log document.querySelectorAll(".collapsible")
 }

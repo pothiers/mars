@@ -16,6 +16,7 @@ class App
         switchComponent: (data)->
           @componentData = data[1]
           @currentView = data[0]
+          window.base.bindEvents()
       data:
         currentView: "search"
         componentData: []
