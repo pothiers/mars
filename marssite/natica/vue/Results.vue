@@ -42,7 +42,7 @@
                         </div>
                       <div>
 
-                        <input class="form-control" name="" type="checkbox" value="" v-on:change="toggleResults"> <label>Select all</label>
+                        <label><input class="" name="" type="checkbox" value="" v-on:change="toggleResults"> Select all</label>
                       </div>
                         <table class="results" v-if="(results.resultset.length > 0)">
                             <thead>

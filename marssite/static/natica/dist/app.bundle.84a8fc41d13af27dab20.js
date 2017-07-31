@@ -320,7 +320,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Search.vue"
+Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1808,7 +1808,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/natica/vue/Results.vue"
+Component.options.__file = "/Users/peter/Workspace/NOAO/dev-docker-mars/mars/marssite/natica/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -2004,9 +2004,12 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
   },
   created: function() {
     console.log('created');
-    return bus.$on("toggleSelected", function(onoff) {
-      return this.isSelected = onoff;
-    });
+    return bus.$on("toggleSelected", (function(_this) {
+      return function(onoff) {
+        console.log("Gettin' toggled", onoff);
+        return _this.isSelected = onoff;
+      };
+    })(this));
   },
   methods: {
     selectRow: function() {
@@ -2248,8 +2251,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }), _vm._v(" " + _vm._s(column.name))])])
-  }))])]), _vm._v(" "), _c('div', [_c('input', {
-    staticClass: "form-control",
+  }))])]), _vm._v(" "), _c('div', [_c('label', [_c('input', {
     attrs: {
       "name": "",
       "type": "checkbox",
@@ -2258,7 +2260,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.toggleResults
     }
-  }), _vm._v(" "), _c('label', [_vm._v("Select all")])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
+  }), _vm._v(" Select all")])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _vm._l((_vm.visibleColumns), function(col) {
     return _c('th', [_c("table-header", {

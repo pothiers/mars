@@ -49,7 +49,8 @@ Vue.component "table-row",
       isSelected: false
   created: ()->
     console.log 'created'
-    bus.$on "toggleSelected", (onoff)->
+    bus.$on "toggleSelected", (onoff)=>
+      console.log "Gettin' toggled", onoff
       this.isSelected = onoff
   methods:
     selectRow: ()->
