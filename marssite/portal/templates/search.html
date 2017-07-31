@@ -3,18 +3,16 @@
 
 {% block head_title %}NOAO Archive Search{% endblock %}
     {% block extra_head %}
-        <!--<link rel="stylesheet" href="{% static "natica/static/css/search.css" %}" type="text/css" media="screen">-->
         <link rel="stylesheet" href="{% static "font-awesome/css/font-awesome.min.css" %}" type="text/css" media="screen">
     {% endblock %}
 
     {% block extra_footer %}
-        <script type="text/javascript" src="{% get_static_prefix %}lodash/lodash.core.min.js"></script>            
+        <script type="text/javascript" src="{% get_static_prefix %}lodash/lodash.core.min.js"></script>
         {% for js in jsResources %}
-        <script type="text/javascript" src="{% get_static_prefix %}natica/dist/{{js}}"></script> 
+        <script type="text/javascript" src="{% get_static_prefix %}portal/dist/{{js}}"></script>
         {% endfor %}
     {% endblock %}
 
     {% block body %}
     <div id="content"></div>
 {% endblock %}
-

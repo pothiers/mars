@@ -82,11 +82,10 @@ urlpatterns = [
     url(r'^audit/', include('audit.urls', namespace='audit')),
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^natica/', include('natica.urls', namespace='natica')),
+    url(r'^portal/', include('portal.urls', namespace='portal')),
     #!url(r'^api-auth/',  include('rest_framework.urls', namespace='rest_framework')),
     #url(r'^api/', include(router.urls)),
     url(r'^api/', api_root, name='api_root'),
     url(r'^api-docs/', schema_view),
     url(r'^docs/', include('docs.urls', namespace='docs')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-

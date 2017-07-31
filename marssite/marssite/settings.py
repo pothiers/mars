@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     'tada',
     'lsa',  # Legacy Science Archive (pre-NATICA)
     'natica', # replace LSA
+    'portal',
     'rest_framework',
     'rest_framework_swagger',
     'django_tables2',
@@ -97,7 +98,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
+
     'dal.middleware.RequestExceptionHandler',
     ]
 
@@ -257,4 +258,3 @@ if 'TRAVIS' in os.environ:
     }
 else:
     exec(open('/etc/mars/django_local_settings.py').read())
-

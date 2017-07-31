@@ -20,7 +20,7 @@ def _generateFileLinks(results):
 def _getResources(appname):
     # get the resource names for html
     curdir = path.dirname(__file__)
-    resPath = path.join(curdir,"../static/natica/dist")
+    resPath = path.join(curdir,"../static/portal/dist")
     stats = open(path.join(curdir, "webpack-assets.json"), 'r')
     resources = json.loads(stats.read())
     r = []

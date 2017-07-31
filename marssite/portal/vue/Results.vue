@@ -33,8 +33,14 @@
                 <div class="row">
                     <div class="col-xs-12 results-wrapper">
                         <div class="filters panel">
-                            <div class="panel-body">
+                            <div class="panel-heading section-heading">
                                 <h4>Toggle visibility of columns</h4>
+                                  <div class="section-toggle">
+                                      <span class="icon open"></span>
+                                  </div>
+
+                            </div>
+                            <div class="panel-body collapsible">
                                 <ul class="list-unstyled columns">
                                     <li v-for="column in allColumns"><label><input name="" type="checkbox" value="" v-bind:name="column.mapping" v-bind:checked="column.checked" v-on:change="toggleColumn(column)"> {{ column.name }}</label></li>
                                 </ul>

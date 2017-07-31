@@ -4,7 +4,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
-const outPath = "../static/natica/dist";
+const outPath = "../static/portal/dist";
 var AssetsPlugin = require('assets-webpack-plugin');
 var assetsPluginInstance = new AssetsPlugin();
 
@@ -39,7 +39,7 @@ module.exports = {
   },
   plugins: [
     assetsPluginInstance,
-    new CleanWebpackPlugin(["static/natica/dist"], cleanConfig),
+    new CleanWebpackPlugin(["static/portal/dist"], cleanConfig),
     /*
     new BundleAnalyzerPlugin({
       analyzerMode: 'static'
