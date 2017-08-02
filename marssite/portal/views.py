@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from os import listdir, path
+from os import listdir, path, mkdir
 from os.path import isfile, join, abspath
 import json
 """
@@ -11,6 +11,9 @@ another will have the ftp directories
 This needs to get a list of files (selected by the user) and create
 relative symlinks from the archive to the ftp directory owned by the user
 """
+
+ftpdirs = "/srv/ftp/ftpusers/"
+ftppasswd = "/srv/ftp/ftp-passwd/pureftpd.passwd"
 
 # Stub for future work to generate links from NFS mount for downloads
 def _generateFileLinks(results):
@@ -45,5 +48,9 @@ def search(request):
 
 def staging(request):
     r = _getResources("staging.bundle")
-    print(r)
     return render(request, "staging.html", {'jsResources':r})
+
+def staged(request):
+    # create user dir
+    mkdir(path.join(ftpdirs, "elmasbueno"), 755)
+    return render(request, "staging.html", {})

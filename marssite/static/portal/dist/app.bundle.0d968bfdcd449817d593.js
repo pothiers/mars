@@ -280,7 +280,8 @@ App = (function() {
       methods: {
         switchComponent: function(data) {
           this.componentData = data[1];
-          return this.currentView = data[0];
+          this.currentView = data[0];
+          return window.base.bindEvents();
         }
       },
       data: {
@@ -1923,6 +1924,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2009,10 +2014,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
     };
   },
   created: function() {
-    console.log('created');
     return bus.$on("toggleSelected", (function(_this) {
       return function(onoff) {
-        console.log("Gettin' toggled", onoff);
         return _this.isSelected = onoff;
       };
     })(this));
@@ -2020,12 +2023,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
   methods: {
     selectRow: function() {
       this.isSelected = !this.isSelected;
-      console.log("Row selected");
-      bus.$emit("rowselected", {
+      return bus.$emit("rowselected", {
         stuff: 'hi',
         thing: this.row
       });
-      return this.$emit("rowselected", this);
     }
   }
 });
@@ -2147,29 +2148,33 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
     }
     return results;
   },
+  updated: function() {
+    console.log(document.querySelectorAll(".collapsible"));
+    return window.base.bindEvents();
+  },
   mounted: function() {
     var e, ref;
-    window.base.bindEvents();
     window.results = this;
+    console.log("Results mounted");
     bus.$on("rowselected", function(data) {
-      console.dir(data);
-      return console.log("bus called");
+      return console.dir(data);
     });
     if (window.location.hash === "#query") {
       try {
         this.results = JSON.parse(localStorage.getItem('results')) || [];
         this.totalItems = (ref = this.results) != null ? ref.meta.total_count : void 0;
         this.visible = true;
-        return this.pageNum = parseInt(localStorage.getItem("currentPage"));
+        this.pageNum = parseInt(localStorage.getItem("currentPage"));
       } catch (error) {
         e = error;
         this.results = [];
         this.totalItems = 0;
         this.visible = true;
         this.error = "There was an error parsing results from server";
-        return this.handleError(e);
+        this.handleError(e);
       }
     }
+    return console.log(document.querySelectorAll(".collapsible"));
   }
 });
 
@@ -2235,15 +2240,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-xs-12 results-wrapper"
   }, [_c('div', {
+    staticClass: "collapsible container fluid"
+  }, [_c('div', {
     staticClass: "filters panel"
   }, [_c('div', {
-    staticClass: "panel-heading section-heading"
-  }, [_c('h4', [_vm._v("Toggle visibility of columns")]), _vm._v(" "), _c('div', {
-    staticClass: "section-toggle"
+    staticClass: "panel-heading section-heading clearfix"
+  }, [_c('h4', {
+    staticClass: "pull-left"
+  }, [_vm._v("Toggle visibility of columns")]), _vm._v(" "), _c('div', {
+    staticClass: "section-toggle pull-right"
   }, [_c('span', {
     staticClass: "icon open"
   })])]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body collapsible"
+    staticClass: "panel-body section-content "
   }, [_c('ul', {
     staticClass: "list-unstyled columns"
   }, _vm._l((_vm.allColumns), function(column) {
@@ -2263,7 +2272,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }), _vm._v(" " + _vm._s(column.name))])])
-  }))])]), _vm._v(" "), _c('div', [_c('label', [_c('input', {
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', [_c('input', {
     attrs: {
       "name": "",
       "type": "checkbox",
@@ -2272,7 +2285,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.toggleResults
     }
-  }), _vm._v(" Select all")])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
+  }), _vm._v(" Select all")])])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _vm._l((_vm.visibleColumns), function(col) {
     return _c('th', [_c("table-header", {
