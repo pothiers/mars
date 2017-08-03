@@ -109,6 +109,8 @@ export default {
           @visibleColumns.push(column)
       column.checked = !column.checked
 
+    confirmStage: ()->
+
     toggleResults: ()->
       @toggle = !@toggle
       console.log "toggle"

@@ -55,6 +55,7 @@
                           </div>
                           <div class="col-sm-9 text-right">
                               <button class="btn btn-default" v-bind:disabled="selected.length == 0">Stage Selected</button>
+                              <button class="btn btn-default" v-bind:class="{ confirm : stageAllConfirm }" v-on:click="confirmStage">Stage ALL results</button>
                           </div>
                       </div>
                         <table class="results" v-if="(results.resultset.length > 0)">
