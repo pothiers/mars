@@ -48,12 +48,12 @@ Vue.component "table-row",
     return
       isSelected: false
   created: ()->
-    bus.$on "toggleSelected", (onoff)=>
+    bus.$on "toggleselected", (onoff)=>
       this.isSelected = onoff
   methods:
     selectRow: ()->
       this.isSelected = !this.isSelected
-      bus.$emit("rowselected", {stuff:'hi', thing:this.row})
+      bus.$emit("rowselected", {isSelected:this.isSelected, row:this.row, vueobject:this})
 
 Vue.component "table-body",
    props: ['data', 'visibleCols']
@@ -112,7 +112,7 @@ export default {
     toggleResults: ()->
       @toggle = !@toggle
       console.log "toggle"
-      bus.$emit("toggleSelected", @toggle)
+      bus.$emit("toggleselected", @toggle)
     displayForm: ()->
       window.location.hash = "#search_again"
       this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))] )
@@ -141,16 +141,25 @@ export default {
       if col.checked
         @visibleColumns.push(col)
   updated:()->
-
-
-    console.log document.querySelectorAll(".collapsible")
     window.base.bindEvents()
   mounted:()->
     window.results = @
     console.log "Results mounted"
+    # listen to bus toggle selected notifications
+    bus.$on "toggleselected", (onoff)=>
+      if onoff
+        @selected = [].concat(@results.resultset)
+      else
+        @selected = []
     # listen to bus selected row notifications
-    bus.$on "rowselected", (data)->
-      console.dir data
+    bus.$on "rowselected", (data)=>
+      # if checked, push on the selected queue
+      if data.isSelected
+        @selected.push(data.row)
+      else
+      # else find & remove from selected queue
+        index = _.indexOf(@selected, data.row)
+        @selected.splice(index, 1)
 
     if window.location.hash is "#query"
       try

@@ -53,6 +53,9 @@
                           <div class="col-sm-3">
                             <label><input class="" name="" type="checkbox" value="" v-on:change="toggleResults"> Select all</label>
                           </div>
+                          <div class="col-sm-9 text-right">
+                              <button class="btn btn-default" v-bind:disabled="selected.length == 0">Stage Selected</button>
+                          </div>
                       </div>
                         <table class="results" v-if="(results.resultset.length > 0)">
                             <thead>

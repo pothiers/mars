@@ -52,5 +52,6 @@ def staging(request):
 
 def staged(request):
     # create user dir
-    mkdir(path.join(ftpdirs, "elmasbueno"), 755)
+
+    # mkdir(path.join(ftpdirs, "elmasbueno"), 755)
     return render(request, "staging.html", {})

@@ -1928,6 +1928,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2014,7 +2017,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
     };
   },
   created: function() {
-    return bus.$on("toggleSelected", (function(_this) {
+    return bus.$on("toggleselected", (function(_this) {
       return function(onoff) {
         return _this.isSelected = onoff;
       };
@@ -2024,8 +2027,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
     selectRow: function() {
       this.isSelected = !this.isSelected;
       return bus.$emit("rowselected", {
-        stuff: 'hi',
-        thing: this.row
+        isSelected: this.isSelected,
+        row: this.row,
+        vueobject: this
       });
     }
   }
@@ -2104,7 +2108,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
     toggleResults: function() {
       this.toggle = !this.toggle;
       console.log("toggle");
-      return bus.$emit("toggleSelected", this.toggle);
+      return bus.$emit("toggleselected", this.toggle);
     },
     displayForm: function() {
       window.location.hash = "#search_again";
@@ -2149,16 +2153,32 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
     return results;
   },
   updated: function() {
-    console.log(document.querySelectorAll(".collapsible"));
     return window.base.bindEvents();
   },
   mounted: function() {
     var e, ref;
     window.results = this;
     console.log("Results mounted");
-    bus.$on("rowselected", function(data) {
-      return console.dir(data);
-    });
+    bus.$on("toggleselected", (function(_this) {
+      return function(onoff) {
+        if (onoff) {
+          return _this.selected = [].concat(_this.results.resultset);
+        } else {
+          return _this.selected = [];
+        }
+      };
+    })(this));
+    bus.$on("rowselected", (function(_this) {
+      return function(data) {
+        var index;
+        if (data.isSelected) {
+          return _this.selected.push(data.row);
+        } else {
+          index = _.indexOf(_this.selected, data.row);
+          return _this.selected.splice(index, 1);
+        }
+      };
+    })(this));
     if (window.location.hash === "#query") {
       try {
         this.results = JSON.parse(localStorage.getItem('results')) || [];
@@ -2285,7 +2305,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.toggleResults
     }
-  }), _vm._v(" Select all")])])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
+  }), _vm._v(" Select all")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-9 text-right"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "disabled": _vm.selected.length == 0
+    }
+  }, [_vm._v("Stage Selected")])])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _vm._l((_vm.visibleColumns), function(col) {
     return _c('th', [_c("table-header", {
