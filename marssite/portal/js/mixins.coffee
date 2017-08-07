@@ -67,8 +67,9 @@ export default {
     methods:
       stripData: ()->
         # strip out anything that wasn't modified
-        newFormData = if @search then JSON.parse(JSON.stringify(@search)) else JSON.parse(localStorage.getItem("search"))
-
+        newFormData = if @search isnt undefined then JSON.parse(JSON.stringify(@search)) else JSON.parse(localStorage.getItem("searchData"))
+        console.dir newFormData
+        console.log @search
         for key of newFormData
           if _.isEqual(newFormData[key], @config.formData[key])
             delete(newFormData[key])
@@ -82,7 +83,6 @@ export default {
         if newFormData.coordinates?.ra
           newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra)
           newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec)
-        localStorage.setItem('search', JSON.stringify(newFormData))
         return newFormData
       submitForm: (event, paging=null, cb=null)->
           event?.preventDefault()

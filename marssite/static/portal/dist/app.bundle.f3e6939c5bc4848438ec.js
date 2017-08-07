@@ -151,7 +151,9 @@ _config = {
     methods: {
       stripData: function() {
         var key, newFormData, ref;
-        newFormData = this.search ? JSON.parse(JSON.stringify(this.search)) : JSON.parse(localStorage.getItem("search"));
+        newFormData = this.search !== void 0 ? JSON.parse(JSON.stringify(this.search)) : JSON.parse(localStorage.getItem("searchData"));
+        console.dir(newFormData);
+        console.log(this.search);
         for (key in newFormData) {
           if (_.isEqual(newFormData[key], this.config.formData[key])) {
             delete newFormData[key];
@@ -174,7 +176,6 @@ _config = {
           newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra);
           newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec);
         }
-        localStorage.setItem('search', JSON.stringify(newFormData));
         return newFormData;
       },
       submitForm: function(event, paging, cb) {
@@ -321,7 +322,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/peter/Workspace/NOAO/dev-env/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1809,7 +1810,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/dev-env/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/peter/Workspace/NOAO/dev-env/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1839,6 +1840,12 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_coffee__ = __webpack_require__(15);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2062,6 +2069,8 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
     return {
       visibleColumns: [],
       allColumns: config.allColumns,
+      stageAllConfirm: false,
+      stageButtonText: "Stage ALL results",
       visible: false,
       pageNum: 1,
       isLoading: false,
@@ -2104,6 +2113,17 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         }
       }
       return column.checked = !column.checked;
+    },
+    confirmStage: function() {
+      var searchObj;
+      if (this.stageAllConfirm === true) {
+        return console.log("second confirm is true");
+      } else {
+        this.stageButtonText = "OK, continue";
+        this.stageAllConfirm = true;
+        searchObj = this.stripData();
+        return console.dir(searchObj);
+      }
     },
     toggleResults: function() {
       this.toggle = !this.toggle;
@@ -2305,14 +2325,28 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "change": _vm.toggleResults
     }
-  }), _vm._v(" Select all")])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Select all visible")])]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-9 text-right"
   }, [_c('button', {
     staticClass: "btn btn-default",
     attrs: {
       "disabled": _vm.selected.length == 0
     }
-  }, [_vm._v("Stage Selected")])])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
+  }, [_vm._v("Stage selected files")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    class: {
+      'btn-danger': _vm.stageAllConfirm
+    },
+    on: {
+      "click": _vm.confirmStage
+    }
+  }, [_vm._v(_vm._s(_vm.stageButtonText))]), _vm._v(" "), _c('div', {
+    staticClass: "text-small help-block"
+  }, [(_vm.stageAllConfirm) ? _c('span', {
+    staticClass: "text-danger"
+  }, [_vm._v("You are about to stage "), _c('strong', [_vm._v("ALL")]), _vm._v(" results. "), _c('strong', [_vm._v("Click again to confirm")])]) : _vm._e(), _vm._v(" "), (_vm.stageAllConfirm) ? _c('span', {
+    staticClass: "label label-primary"
+  }, [_vm._v(_vm._s(_vm.results.meta.total_count) + " files")]) : _vm._e()])])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _vm._l((_vm.visibleColumns), function(col) {
     return _c('th', [_c("table-header", {

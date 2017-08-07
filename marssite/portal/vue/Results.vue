@@ -51,11 +51,16 @@
                         </div>
                       <div class="row">
                           <div class="col-sm-3">
-                            <label><input class="" name="" type="checkbox" value="" v-on:change="toggleResults"> Select all</label>
+                            <label><input class="" name="" type="checkbox" value="" v-on:change="toggleResults"> Select all visible</label>
                           </div>
                           <div class="col-sm-9 text-right">
-                              <button class="btn btn-default" v-bind:disabled="selected.length == 0">Stage Selected</button>
-                              <button class="btn btn-default" v-bind:class="{ confirm : stageAllConfirm }" v-on:click="confirmStage">Stage ALL results</button>
+
+                              <button class="btn btn-default" v-bind:disabled="selected.length == 0">Stage selected files</button>
+                              <button class="btn btn-default" v-bind:class="{ 'btn-danger' : stageAllConfirm }" v-on:click="confirmStage">{{ stageButtonText }}</button>
+                          <div class="text-small help-block">
+                            <span class="text-danger" v-if="stageAllConfirm">You are about to stage <strong>ALL</strong> results. <strong>Click again to confirm</strong></span>
+                              <span class="label label-primary" v-if="stageAllConfirm">{{ results.meta.total_count }} files</span>
+                          </div>
                           </div>
                       </div>
                         <table class="results" v-if="(results.resultset.length > 0)">

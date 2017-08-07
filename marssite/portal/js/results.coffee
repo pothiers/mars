@@ -76,6 +76,8 @@ export default {
       # This should be set based on some session/local storage set
       visibleColumns : []
       allColumns: config.allColumns
+      stageAllConfirm: false
+      stageButtonText: "Stage ALL results"
       visible: false
       pageNum: 1
       isLoading: false
@@ -110,6 +112,20 @@ export default {
       column.checked = !column.checked
 
     confirmStage: ()->
+      if @stageAllConfirm is true
+        # this is second click, stage all files
+        console.log "second confirm is true"
+      else
+        # first click, ask for confirmation
+        @stageButtonText = "OK, continue"
+        @stageAllConfirm = true
+        #send to staging with the current api search request
+        searchObj = @stripData()
+        # TODO: post a requst with the searchObj to staging
+        # so it can then get all the filenames
+
+        # window.location.href = "/portal/staging/?stage=all"
+        console.dir searchObj
 
     toggleResults: ()->
       @toggle = !@toggle
