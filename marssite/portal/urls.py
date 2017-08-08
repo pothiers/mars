@@ -6,6 +6,4 @@ urlpatterns = [
         views.search, name='search'),
     url(r'^staging/?$',
         views.staging, name='staging'),
-    url(r'^staged/?$',
-        views.staged, name='staged'),
 ]

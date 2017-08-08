@@ -32,15 +32,16 @@
             <div class="container">
                 <div class="row">
                     <div class="col-xs-12 results-wrapper">
-                        <div class="collapsible container fluid">
+                        <div class="collapsible">
 
-                            <div class="filters panel">
+                            <div class="filters panel panel-default">
                                 <div class="panel-heading section-heading clearfix">
-                                    <h4 class="pull-left">Toggle visibility of columns</h4>
-                                    <div class="section-toggle pull-right">
+                                    <strong class="">Toggle visibility of columns
+                                    </strong>
+
+                                    <div class="section-toggle">
                                         <span class="icon open"></span>
                                     </div>
-
                                 </div>
                                 <div class="panel-body section-content ">
                                     <ul class="list-unstyled columns">
@@ -55,7 +56,7 @@
                           </div>
                           <div class="col-sm-9 text-right">
 
-                              <button class="btn btn-default" v-bind:disabled="selected.length == 0">Stage selected files</button>
+                              <button class="btn btn-default" v-bind:disabled="selected.length == 0" v-on:click="stageSelected">Stage selected files</button>
                               <button class="btn btn-default" v-bind:class="{ 'btn-danger' : stageAllConfirm }" v-on:click="confirmStage">{{ stageButtonText }}</button>
                           <div class="text-small help-block">
                             <span class="text-danger" v-if="stageAllConfirm">You are about to stage <strong>ALL</strong> results. <strong>Click again to confirm</strong></span>

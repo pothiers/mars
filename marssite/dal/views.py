@@ -52,7 +52,7 @@ COMMENTED_response_fields = '''
     obstype as observation_type,    -- observation_type
     obsmode as observation_mode,    -- observation_mode
     prodtype as product,            -- product ???
-    proctype,    
+    proctype,
     seeing,
     depth
 '''
@@ -63,12 +63,12 @@ response_fields = '''
     dec,
     prop_id,
     surveyid as survey_id,
-    date_obs as obs_date, 
-    dtpi as pi,           
+    date_obs as obs_date,
+    dtpi as pi,
     telescope,
     instrument,
     release_date,
-    rawfile as flag_raw,  
+    rawfile as flag_raw,
     proctype,
     filter,
     filesize,
@@ -76,10 +76,10 @@ response_fields = '''
     dtacqnam as original_filename,
     md5sum,
     exposure,
-    obstype as observation_type,  
-    obsmode as observation_mode,  
-    prodtype as product,          
-    proctype,    
+    obstype as observation_type,
+    obsmode as observation_mode,
+    prodtype as product,
+    proctype,
     seeing,
     depth
 '''
@@ -101,7 +101,7 @@ def remove_leading(thestring, lead):
     return thestring
 
 def db_float_range(range_value, field):
-    """range_value:: [minVal, maxVal, bounds] 
+    """range_value:: [minVal, maxVal, bounds]
     see: https://www.postgresql.org/docs/9.3/static/functions-range.html
     """
     if isinstance(range_value, list):
@@ -167,7 +167,7 @@ proc_LUT = dict(raw = 'raw',
                 master_calibration = 'mastercal',
                 image_tiles = 'tiled',
                 sky_subtracted = 'skysub')
-               
+
 
 def fake_error_response(request, error_type):
     fake_err_types = ['bad_numeric',
@@ -200,7 +200,7 @@ def search_by_json(request):
     if gen_error != None:
         return fake_error_response(request, gen_error)
 
-        
+
     # !!! Verify values (e.g. telescope) are valid. Avoid SQL injection hit.
     page_limit = int(request.GET.get('limit','100')) # num of records per page
     limit_clause = 'LIMIT {}'.format(page_limit)
@@ -260,13 +260,13 @@ def search_by_json(request):
             #print('DBG: Extra fields ({}) in search'.format(unavail))
             raise dex.UnknownSearchField('Extra fields ({}) in search'.format(unavail))
         assert(avail_fields >= used_fields)
-        
+
         # Query Legacy Science Archive
         cursor = connections['archive'].cursor()
         # Force material view refresh
         #!cursor.execute('SELECT * FROM refresh_voi_material_views()')
         where = '' # WHERE clause innards
-        
+
         slop = jsearch.get('search_box_min', .001)
         if 'coordinates' in jsearch:
             coord = jsearch['coordinates']
@@ -283,18 +283,18 @@ def search_by_json(request):
             where += db_exact(jsearch['prop_id'], 'dtpropid')
         if 'obs_date' in jsearch:
             where += db_time_range(jsearch['obs_date'], 'date_obs')
-        if 'filename' in jsearch: 
+        if 'filename' in jsearch:
             where += db_exact(jsearch['filename'], 'dtnsanam')
-        if 'original_filename' in jsearch: 
+        if 'original_filename' in jsearch:
             where += db_exact(jsearch['original_filename'], 'dtacqnam')
         #!if 'telescope' in jsearch:
         #!    where += db_oneof(jsearch['telescope'], 'telescope')
-        #!if 'instrument' in jsearch: 
+        #!if 'instrument' in jsearch:
         #!    where += db_oneof(jsearch['instrument'], 'instrument')
         # NEW api (0.1.7): "telescope_instrument":[["ct4m", "cosmos"], ["soar","osiris"]]
         if 'telescope_instrument' in jsearch:
             where += db_ti_oneof(jsearch['telescope_instrument'])
-        if 'release_date' in jsearch: 
+        if 'release_date' in jsearch:
             where += db_time_range(jsearch['release_date'], 'release_date')
         if 'flag_raw' in jsearch:
             where += db_exact(jsearch['flag_raw'], 'rawfile')
@@ -345,17 +345,47 @@ def search_by_json(request):
         return JsonResponse(resp)
     elif request.method == 'GET':
         return HttpResponse('Requires POST with json payload')
-    
+
+@csrf_exempt
+def staging(request):
+    query = ""
+    # check if files exist
+    query = json.loads(request.body.decode('utf-8'))
+    request = request.get(reverse('get_associations'),
+                                data=json.dumps({"search":query}),
+                                content_type='application/json')
+    res = search_by_json(request)
+    return JsonResponse(res)
+
+def fetchAllFiles(request):
+    # query used to generate results is in post
+    query = request.POST.get("query")
+    page = request.GET.get("page", 1)
+    # build API request
+    # Only need filenames
+    # all results
+    host = request.get_host()
+    host = settings.MACHINE_IP
+    offset = (page-1)*100
+    files = []
+    request.body = json.dumps({"search":json.loads(query)})
+    result = search_by_json(request)
+    resultset = result['resultset']
+    for n in resultset:
+        # check if file exists
+        files.append(n['reference'])
+    return files
+
 
 @csrf_exempt
 @api_view(['GET'])
 def tele_inst_pairs(request):
     """
-    Retrieve all valid telescope/instrument pairs. 
+    Retrieve all valid telescope/instrument pairs.
     Determined by TADA file prefix table.
 
     Response will be an array of **telescope**, **instrument** pairs
-    
+
     `[ [\"telescope1\", \"instrument1\"], [\"telescope2\", \"instrument2\"] ]`
     """
     qs = FilePrefix.objects.all().order_by('pk').values('telescope',
@@ -369,7 +399,7 @@ def tele_inst_pairs(request):
 schema = coreapi.Document(
     title="Search API",
     url="http://localhost:8000",
-    
+
     content={
         "search": coreapi.Link(
             url="/dal/search/",
@@ -404,7 +434,7 @@ schema = coreapi.Document(
             NOAO Search API
 
 Requests need to be wrapped in a root `search` paramater
-            
+
             {
               \"search\":{
                  \"obs_date\":\"2015-09-06\"

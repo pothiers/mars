@@ -1,8 +1,11 @@
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
 from os import listdir, path, mkdir
+from django.conf import settings
 from os.path import isfile, join, abspath
 import json
+import requests
 """
 Assume there are some mount points on this machine
 one will have the archive files
@@ -45,13 +48,6 @@ def search(request):
     r = _getResources("app.bundle")
     return render(request, "search.html", {"jsResources":r })
 
-
 def staging(request):
     r = _getResources("staging.bundle")
     return render(request, "staging.html", {'jsResources':r})
-
-def staged(request):
-    # create user dir
-
-    # mkdir(path.join(ftpdirs, "elmasbueno"), 755)
-    return render(request, "staging.html", {})

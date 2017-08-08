@@ -7,6 +7,7 @@ Original file: results.coffee
 
 import Vue from "vue"
 import Shared from "./mixins.coffee"
+import "./components.coffee"
 
 ###
   Helper functions
@@ -16,52 +17,6 @@ Number.prototype.pad = (size, char='0')->
   while (s.length < (size || 2))
     s = "0" + s
   return s
-
-###
-   Vue components
-###
-Vue.component "table-header",
-  props: ['name']
-  template: "<span>{{ name }}</span>"
-
-Vue.component "table-cell",
-  props: ['data', 'field']
-  template: "<td v-if='data' v-bind:rel='field'>{{ format }}</td><td class='empty' v-else></td>"
-  computed:
-      format: ()->
-        if @data is null
-          return @data
-        if @field is 'obs_date' or @field is 'release_date'
-          try
-            d = moment(@data)
-            dateStr = d.format("YYYY-MM-DD")
-            return dateStr
-          catch
-            return @data
-        else
-          return @data
-
-Vue.component "table-row",
-  props: ['row', 'cols']
-  template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' v-bind:field='vis.mapping' :key='row.id'></table-cell></tr>"
-  data: ()->
-    return
-      isSelected: false
-  created: ()->
-    bus.$on "toggleselected", (onoff)=>
-      this.isSelected = onoff
-  methods:
-    selectRow: ()->
-      this.isSelected = !this.isSelected
-      bus.$emit("rowselected", {isSelected:this.isSelected, row:this.row, vueobject:this})
-
-Vue.component "table-body",
-   props: ['data', 'visibleCols']
-   template: "<tbody ><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>"
-   methods:
-     iheardthat: ()->
-       console.log "I heard that"
-       console.log arguments
 
 ###
    App - Results
@@ -111,21 +66,22 @@ export default {
           @visibleColumns.push(column)
       column.checked = !column.checked
 
+    stageSelected: ()->
+      localStorage.setItem("stage", "selectedFiles")
+      localStorage.setItem("selectedFiles", JSON.stringify(@selected))
+
+      window.location.href=config.stagingUrl+"?stage=selected"
+
     confirmStage: ()->
       if @stageAllConfirm is true
         # this is second click, stage all files
         console.log "second confirm is true"
+        localStorage.setItem("stage", "all")
+        window.location.href=config.stagingUrl+"?stage=all"
       else
         # first click, ask for confirmation
         @stageButtonText = "OK, continue"
         @stageAllConfirm = true
-        #send to staging with the current api search request
-        searchObj = @stripData()
-        # TODO: post a requst with the searchObj to staging
-        # so it can then get all the filenames
-
-        # window.location.href = "/portal/staging/?stage=all"
-        console.dir searchObj
 
     toggleResults: ()->
       @toggle = !@toggle

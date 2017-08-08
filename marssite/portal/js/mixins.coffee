@@ -1,4 +1,5 @@
 _config =
+  stagingUrl: "/portal/staging/"
   apiUrl: "/dal/search/"
   rangeInputs: ["obs_date", "exposure_time", "release_date"]
 
@@ -68,8 +69,6 @@ export default {
       stripData: ()->
         # strip out anything that wasn't modified
         newFormData = if @search isnt undefined then JSON.parse(JSON.stringify(@search)) else JSON.parse(localStorage.getItem("searchData"))
-        console.dir newFormData
-        console.log @search
         for key of newFormData
           if _.isEqual(newFormData[key], @config.formData[key])
             delete(newFormData[key])

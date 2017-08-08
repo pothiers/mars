@@ -19,6 +19,11 @@ import os
 #!    RuntimeWarning, r'django\.db\.models\.fields',
 #!)
 
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.4.4", 80))
+MACHINE_IP = s.getsockname()[0]
+s.close()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
