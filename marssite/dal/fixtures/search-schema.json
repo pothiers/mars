@@ -28,112 +28,106 @@
         }
     },
     "properties": {
-        "search": {
+        "coordinates": {
             "additionalProperties": false,
             "properties": {
-                "coordinates": {
-                    "additionalProperties": false,
-                    "properties": {
-                        "dec": {
-                            "description": "An explanation about the purpose of this instance.",
-                            "title": "The Dec Schema",
-                            "type": "number"
-                        },
-                        "ra": {
-                            "description": "An explanation about the purpose of this instance.",
-                            "title": "The Ra Schema",
-                            "type": "number"
-                        }
-                    },
-                    "type": "object"
-                },
-                "exposure_time": {
-                    "additionalItems": false,
-                    "oneOf": [
-                        {
-                            "type": "number"
-                        },
-                        {
-                            "type": "array",
-                            "items": [
-                                {
-                                    "description": "Miniumum bound",
-                                    "type": "number"
-                                },
-                                {
-                                    "description": "Miniumum bound",
-                                    "type": "number"
-                                },
-                                {
-                                    "default": "[)",
-                                    "description": "Lower/Upper Bound limit specification",
-                                    "type": "string"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "filename": {
+                "dec": {
                     "description": "An explanation about the purpose of this instance.",
-                    "type": "string"
-                },
-                "image_filter": {
-                    "additionalItems": true,
-                    "items": {
-                        "description": "An explanation about the purpose of this instance.",
-                        "type": "string"
-                    },
-                    "type": "array",
-                    "uniqueItems": true
-                },
-                "obs_date": {
-                    "anyOf": [
-                        { "$ref": "#/definitions/date" }
-                    ]
-                },
-                "original_filename": {
-                    "description": "An explanation about the purpose of this instance.",
-                    "type": "string"
-                },
-                "pi": {
-                    "description": "An explanation about the purpose of this instance.",
-                    "type": "string"
-                },
-                "prop_id": {
-                    "description": "An explanation about the purpose of this instance.",
-                    "type": "string"
-                },
-                "release_date":  {
-                    "anyOf": [
-                        { "$ref": "#/definitions/date" }
-                    ]
-                },
-                "search_box_min": {
-                    "description": "An explanation about the purpose of this instance.",
-                    "minimum": 0.0,
+                    "title": "The Dec Schema",
                     "type": "number"
                 },
-                "telescope_instrument": {
-                    "additionalItems": true,
-                    "items": {
-                        "additionalItems": true,
-                        "type": "array",
-                        "items": [
-                            {
-                                "description": "Telescope",
-                                "type": "string"
-                            },
-                            {
-                                "description": "Instrument",
-                                "type": "string"
-                            }
-                        ]
-                    },
-                    "type": "array",
-                    "uniqueItems": true
+                "ra": {
+                    "description": "An explanation about the purpose of this instance.",
+                    "title": "The Ra Schema",
+                    "type": "number"
                 }
             },
             "type": "object"
+        },
+        "exposure_time": {
+            "additionalItems": false,
+            "oneOf": [
+                {
+                    "type": "number"
+                },
+                {
+                    "type": "array",
+                    "items": [
+                        {
+                            "description": "Miniumum bound",
+                            "type": "number"
+                        },
+                        {
+                            "description": "Miniumum bound",
+                            "type": "number"
+                        },
+                        {
+                            "default": "[)",
+                            "description": "Lower/Upper Bound limit specification",
+                            "type": "string"
+                        }
+                    ]
+                }
+            ]
+        },
+        "filename": {
+            "description": "An explanation about the purpose of this instance.",
+            "type": "string"
+        },
+        "image_filter": {
+            "additionalItems": true,
+            "items": {
+                "description": "An explanation about the purpose of this instance.",
+                "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true
+        },
+        "obs_date": {
+            "anyOf": [
+                { "$ref": "#/definitions/date" }
+            ]
+        },
+        "original_filename": {
+            "description": "An explanation about the purpose of this instance.",
+            "type": "string"
+        },
+        "pi": {
+            "description": "An explanation about the purpose of this instance.",
+            "type": "string"
+        },
+        "prop_id": {
+            "description": "An explanation about the purpose of this instance.",
+            "type": "string"
+        },
+        "release_date":  {
+            "anyOf": [
+                { "$ref": "#/definitions/date" }
+            ]
+        },
+        "search_box_min": {
+            "description": "An explanation about the purpose of this instance.",
+            "minimum": 0.0,
+            "type": "number"
+        },
+        "telescope_instrument": {
+            "additionalItems": true,
+            "items": {
+                "additionalItems": true,
+                "type": "array",
+                "items": [
+                    {
+                        "description": "Telescope",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Instrument",
+                        "type": "string"
+                    }
+                ]
+            },
+            "type": "array",
+            "uniqueItems": true
         }
     },
     "type": "object"

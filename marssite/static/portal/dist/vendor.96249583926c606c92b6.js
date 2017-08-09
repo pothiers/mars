@@ -303,9 +303,7 @@ _config = {
           url: url,
           method: "post",
           accept: "json",
-          data: {
-            search: newFormData
-          },
+          data: newFormData,
           success: function(data) {
             var saveData;
             window.location.hash = "#query";

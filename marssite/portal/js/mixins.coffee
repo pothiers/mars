@@ -106,8 +106,7 @@ export default {
             url: url
             method: "post"
             accept: "json"
-            data:
-              search: newFormData
+            data: newFormData
             success: (data)->
               window.location.hash = "#query"
               self.loading = false

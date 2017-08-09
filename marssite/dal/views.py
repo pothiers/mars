@@ -191,7 +191,7 @@ def fake_error_response(request, error_type):
 # curl -H "Content-Type: application/json" -X POST -d @fixtures/search-sample.json http://localhost:8000/dal/search/ > ~/response.json
 # curl -H "Content-Type: application/json" -X POST -d @request.json http://localhost:8000/dal/search/ | python -m json.tool
 @csrf_exempt
-def search_by_json(request):
+def search_by_json(request, query=None):
     """
     Search the NOAO Archive, returns a list of image resource metadata
     """
@@ -216,11 +216,13 @@ def search_by_json(request):
     #!print('EXECUTING: views<dal>:search_by_file; method={}, content_type={}'
     #!      .format(request.method, request.content_type))
     if request.method == 'POST':
-        root = ET.Element('search')
+        #root = ET.Element('search')
         #!print('DBG body str={}'.format(request.body.decode('utf-8')))
         if request.content_type == "application/json":
-            body = json.loads(request.body.decode('utf-8'))
-            jsearch = body['search']
+            if query != None:
+                jsearch = query
+            else:
+                jsearch = json.loads(request.body.decode('utf-8'))
             #xml = dicttoxml.dicttoxml(body)
             #!validate_by_xmlstr(xmlstr)
             # Validate against schema
@@ -228,7 +230,7 @@ def search_by_json(request):
                 schemafile = '/etc/mars/search-schema.json'
                 with open(schemafile) as f:
                     schema = json.load(f)
-                    jsonschema.validate(body, schema)
+                    jsonschema.validate(jsearch, schema)
             except Exception as err:
                 raise dex.BadSearchSyntax('JSON did not validate against /etc/mars/search-schema.json'
                                           '; {}'.format(err))
@@ -351,11 +353,8 @@ def staging(request):
     query = ""
     # check if files exist
     query = json.loads(request.body.decode('utf-8'))
-    request = request.get(reverse('get_associations'),
-                                data=json.dumps({"search":query}),
-                                content_type='application/json')
-    res = search_by_json(request)
-    return JsonResponse(res)
+    res = search_by_json(request, query)
+    return res
 
 def fetchAllFiles(request):
     # query used to generate results is in post
