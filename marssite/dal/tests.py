@@ -18,7 +18,7 @@ class SearchTest(TestCase):
 
     def test_search_0(self):
         "No filter. Verify: API version."
-        req = '{ "search" : { } }'
+        req = '{ }'
         #print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
@@ -48,12 +48,12 @@ class SearchTest(TestCase):
                          '"0.1.7"',
                          msg='Unexpected API version')
         self.assertEqual(response.status_code, 200)
-        
+
     def test_search_1(self):
         "MVP-1. Basics. No validation of input"
         #! "filename": "foo",
-        req = '''{ "search":{
-        "coordinates": { 
+        req = '''{
+        "coordinates": {
             "ra": 181.368791666667,
             "dec": -45.5396111111111
         },
@@ -67,7 +67,7 @@ class SearchTest(TestCase):
         "release_date": "2010-10-01T00:00:00",
         "image_filter":["raw", "calibrated"]
     }
-}'''
+'''
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
@@ -79,7 +79,7 @@ class SearchTest(TestCase):
 
     def test_search_fakeerror_0(self):
         "Fake Error for client testing: unknown type (return allowables)"
-        req = '{ "search":{ } }'
+        req = '{ }'
         response = self.client.post('/dal/search/?error=foobar',
                                     content_type='application/json',
                                     data=req)
@@ -91,7 +91,7 @@ class SearchTest(TestCase):
 
     def test_search_fakeerror_1(self):
         "Fake Error for client testing: bad_numeric"
-        req = '{ "search":{ } }'
+        req = '{ }'
         response = self.client.post('/dal/search/?error=bad_numeric',
                                     content_type='application/json',
                                     data=req)
@@ -101,36 +101,34 @@ class SearchTest(TestCase):
 
     def test_search_error_1(self):
         "Error in request content: extra fields sent"
-        req = '''{ "search":{
-        "coordinates": { 
+        req = '''{"coordinates": {
             "ra": 181.368791666667,
             "dec": -45.5396111111111
         },
         "TRY_FILENAME": "foo.fits",
         "image_filter":["raw", "calibrated"]
         }
-        }'''
+        '''
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
         expected = {"errorMessage": "Extra fields ({'TRY_FILENAME'}) in search"}
         #!print('DBG0-tse-1: response={}'.format(response.content.decode()))
         #!self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
-        self.assertIn('JSON did not validate against /etc/mars/search-schema.json',
+        self.assertIn('Extra fields ({\'TRY_FILENAME\'}) in search',
                       json.dumps(response.json()['errorMessage']))
         self.assertEqual(response.status_code, 400)
 
 
     def test_search_error_2(self):
         "Error in request content: non-decimal RA"
-        req = '''{ "search":{
-        "coordinates": { 
+        req = '''{ "coordinates": {
             "ra": "somethingbad",
             "dec": -45.5396111111111
         },
         "image_filter":["raw", "calibrated"]
         }
-        }'''
+        '''
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
@@ -140,10 +138,10 @@ class SearchTest(TestCase):
         self.assertIn('JSON did not validate against /etc/mars/search-schema.json',
                       json.dumps(response.json()['errorMessage']))
         self.assertEqual(response.status_code, 400)
-        
+
     def test_search_error_3(self):
         "Error in request content: obs_date is numeric (not valid per schema)"
-        req = '{ "search":{ "obs_date": 99 } }'
+        req = '{  "obs_date": 99  }'
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
@@ -162,7 +160,7 @@ class SearchTest(TestCase):
         self.assertIn('JSON did not validate against /etc/mars/search-schema.json',
                       json.dumps(response.json()['errorMessage']))
         self.assertEqual(response.status_code, 400)
-        
+
     def test_tipairs_0(self):
         "Return telescope/instrument pairs."
         #print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
@@ -171,5 +169,4 @@ class SearchTest(TestCase):
         #!print('DBG: expected={}'.format(exp.tipairs_0))
         self.assertJSONEqual(json.dumps(response.json()),
                              json.dumps(exp.tipairs_0))
-        self.assertEqual(response.status_code, 200)        
-        
+        self.assertEqual(response.status_code, 200)
