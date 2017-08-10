@@ -17,6 +17,14 @@ generateResultsSet = ()->
 
 stagingComponent = {
   mixins:[Shared.mixin]
+  data: ()->
+      return
+        stagingAllFiles: false
+        loading: false
+        selectAll: false
+        results: []
+        selected: []
+
   created: ()->
     window.staging = @
     console.log "Staging created"
@@ -37,9 +45,10 @@ stagingComponent = {
         method: "post"
         accept: "json"
         data: query
-        success: (data)->
+        success: (data)=>
           console.log "got this data back from the request"
           console.log data
+          @loading = false
         fail: (statusMsg, status, xhr)->
           console.log "ajax failed"
 
@@ -65,13 +74,6 @@ stagingComponent = {
         indx = _.indexOf(@selected, item)
         @selected.splice(indx, 1)
 
-  data: ()->
-    return
-      stagingAllFiles: false
-      loading: false
-      selectAll: false
-      results: []
-      selected: []
 }
 
 

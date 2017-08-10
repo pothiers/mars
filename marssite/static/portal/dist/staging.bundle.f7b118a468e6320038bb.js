@@ -275,6 +275,15 @@ generateResultsSet = function() {
 
 stagingComponent = {
   mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_coffee__["a" /* default */].mixin],
+  data: function() {
+    return {
+      stagingAllFiles: false,
+      loading: false,
+      selectAll: false,
+      results: [],
+      selected: []
+    };
+  },
   created: function() {
     window.staging = this;
     return console.log("Staging created");
@@ -303,10 +312,13 @@ stagingComponent = {
         method: "post",
         accept: "json",
         data: query,
-        success: function(data) {
-          console.log("got this data back from the request");
-          return console.log(data);
-        },
+        success: (function(_this) {
+          return function(data) {
+            console.log("got this data back from the request");
+            console.log(data);
+            return _this.loading = false;
+          };
+        })(this),
         fail: function(statusMsg, status, xhr) {
           return console.log("ajax failed");
         }
@@ -345,15 +357,6 @@ stagingComponent = {
         return this.selected.splice(indx, 1);
       }
     }
-  },
-  data: function() {
-    return {
-      stagingAllFiles: false,
-      loading: false,
-      selectAll: false,
-      results: [],
-      selected: []
-    };
   }
 };
 
