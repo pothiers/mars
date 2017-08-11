@@ -67,15 +67,17 @@ searchFormComponent = {
       oldSearch = JSON.parse(localStorage.getItem("searchData"))
       @search = oldSearch
     else if window.location.hash.indexOf("query") > -1
-      this.$emit("displayform", ["results", []]) 
+      this.$emit("displayform", ["results", []])
     window.base.bindEvents()
 
     $("input.date").datepicker({
+            changeMonth: true,
+            changeYear: true,
             onSelect: (dateText, datePicker)=>
               fieldName = datePicker.input[0].name
               field = this.search[dateLookup[fieldName].field]
               field[dateLookup[fieldName].index] = dateText
-              e = new CustomEvent("datechanged", {'detail':{'date':dateText} }) 
+              e = new CustomEvent("datechanged", {'detail':{'date':dateText} })
               document.dispatchEvent(e)
               # this value is updated to force the computed values to refresh
               # for the code sample view
@@ -98,7 +100,7 @@ searchFormComponent = {
         this.codeView = JSON.stringify({search:@stripData()}, null, 2)
         return this.codeView
       set: (update)->
-        # for some reason, the code view won't update unless we go through this mess 
+        # for some reason, the code view won't update unless we go through this mess
         this.codeUpdate = update
         this.codeView = JSON.stringify({search:@stripData()}, null, 2)
         return null

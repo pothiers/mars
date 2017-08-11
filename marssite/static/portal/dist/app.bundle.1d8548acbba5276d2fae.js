@@ -453,6 +453,8 @@ searchFormComponent = {
     }
     window.base.bindEvents();
     $("input.date").datepicker({
+      changeMonth: true,
+      changeYear: true,
       onSelect: (function(_this) {
         return function(dateText, datePicker) {
           var e, field, fieldName;
