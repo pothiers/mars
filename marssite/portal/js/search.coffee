@@ -108,6 +108,7 @@ searchFormComponent = {
     return {
       url: config.apiUrl
       visible: true
+      displaySidebar: false
       loading: false
       codeUpdate: 0
       codeView: ""
@@ -141,6 +142,8 @@ searchFormComponent = {
       # clear current search and storage
       @search = JSON.parse(JSON.stringify(@config.formData))
       localStorage.setItem("searchData", JSON.stringify(@search))
+    toggleCodeSidebar: ()->
+      @displaySidebar = !@displaySidebar
     getTelescopes: ()->
       # check if we have a cached set to use
       telescopes = JSON.parse(localStorage.getItem("telescopes")||"0")

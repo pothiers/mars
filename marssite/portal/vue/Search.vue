@@ -25,7 +25,7 @@
                               </select>
                           </label>
                           <button class="btn btn-primary" id="submit-form" type="submit" v-on:click="submitForm">Search</button>
-                          <div><a class="" href="#" v-on:click="newSearch">Clear Search</a></div> 
+                          <div><a class="" href="#" v-on:click="newSearch">Clear Search</a></div>
                       </div>
                   </div><!-- /form-submit -->
               </div>
@@ -70,7 +70,7 @@
                                           <span class="error-message" v-if="errors.has('dec')">
                                               {{errors.first('dec')}}
                                           </span>
-                                      </div> 
+                                      </div>
                                   </div>
                               </div>
                           </div> <!-- /section-content -->
@@ -101,7 +101,7 @@
                                       <input class="form-control" name="program-number" id="program-number" placeholder="Program Number (Prop ID)" type="text" value="" v-model="search.prop_id">
                                   </div>
                                   <div class="form-group">
-                                      <label class="floating" for="principle-investigator">Principle Investigator</label> 
+                                      <label class="floating" for="principle-investigator">Principle Investigator</label>
                                       <input class="form-control" name="principle-investigator" id="principle-investigator" placeholder="Principle Investigator" type="text" value="" v-model="search.pi">
                                   </div>
                                   <div class="form-group">
@@ -109,7 +109,7 @@
                                       <input class="form-control" id="original-filename" name="original-filename" type="text" value="" placeholder="Original Filename" v-model="search.original_filename">
                                   </div>
                                   <div class="form-group">
-                                      <label class="floating" for="archive-filename">Archive Filename</label> 
+                                      <label class="floating" for="archive-filename">Archive Filename</label>
                                       <input class="form-control" id="archive-filename" name="archive-filename" type="text" value="" placeholder="Archive Filename" v-model="search.filename">
                                   </div>
                               </div> <!-- /col -->
@@ -146,7 +146,7 @@
                                           <span class="error-message" v-if="errors.has('exposure')">{{ errors.first('exposure') }}</span>
                                           <span class="error-message" v-if="errors.has('exposure-max')">{{ errors.first('exposure-max') }}</span>
                                       </div><!-- /select-group -->
-                                  </div><!-- /form-group --> 
+                                  </div><!-- /form-group -->
 
                               </div>
 
@@ -213,7 +213,7 @@
                                       <div class="input-group">
                                           <label for="telescope">Telescope &amp; Intrument</label>
                                           <select id="telescope" name="telescope[]" class="form-control" multiple size="10" v-model="search.telescope_instrument">
-                                            <option value="" v-for="tel in telescopes" v-bind:value="tel[0]+','+tel[1]">{{ tel[0] }} + {{ tel[1] }}</option>                                            
+                                            <option value="" v-for="tel in telescopes" v-bind:value="tel[0]+','+tel[1]">{{ tel[0] }} + {{ tel[1] }}</option>
                                           </select>
                                       </div>
                                   </div>
@@ -224,9 +224,14 @@
               </div><!-- /row -->
           </form>
       </transition>
+      <div class="code-view-sidebar" v-bind:class="{open:displaySidebar}">
           <div class='code-view'>
             <pre class="code">{{ code }}</pre>
           </div>
+          <div class="toggle-tag">
+            <button class="btn btn-link" v-on:click="toggleCodeSidebar">Toggle Code View</button>
+          </div>
+      </div>
           <!-- Modal -->
           <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-labelledby="searchModelLabel">
             <div class="modal-dialog" role="document">
@@ -247,6 +252,6 @@
 </template>
 <script>
 import search from "../js/search.coffee";
- 
+
 export default search;
 </script>

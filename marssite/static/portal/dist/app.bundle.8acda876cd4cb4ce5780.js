@@ -359,6 +359,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -498,6 +503,7 @@ searchFormComponent = {
     return {
       url: config.apiUrl,
       visible: true,
+      displaySidebar: false,
       loading: false,
       codeUpdate: 0,
       codeView: "",
@@ -538,6 +544,9 @@ searchFormComponent = {
     newSearch: function() {
       this.search = JSON.parse(JSON.stringify(this.config.formData));
       return localStorage.setItem("searchData", JSON.stringify(this.search));
+    },
+    toggleCodeSidebar: function() {
+      return this.displaySidebar = !this.displaySidebar;
     },
     getTelescopes: function() {
       var now, self, telescopes;
@@ -1490,10 +1499,22 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v(_vm._s(tel[0]) + " + " + _vm._s(tel[1]))])
   }))])])])])])])])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "code-view-sidebar",
+    class: {
+      open: _vm.displaySidebar
+    }
+  }, [_c('div', {
     staticClass: "code-view"
   }, [_c('pre', {
     staticClass: "code"
   }, [_vm._v(_vm._s(_vm.code))])]), _vm._v(" "), _c('div', {
+    staticClass: "toggle-tag"
+  }, [_c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.toggleCodeSidebar
+    }
+  }, [_vm._v("Toggle Code View")])])]), _vm._v(" "), _c('div', {
     staticClass: "modal fade",
     attrs: {
       "id": "search-modal",

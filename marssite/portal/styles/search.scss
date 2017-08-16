@@ -6,9 +6,37 @@ $caret-down: "\f078";
 
 $error-color: #d85454;
 
+.code-view-sidebar{
+  position: fixed;
+  top: 0;
+  left:-303px;
+  width:300px;
+  height: 100%;
+  background: #464141;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  transition: all 0.4s ease-in-out;
+  .toggle-tag{
+    transform: rotate(-90deg);
+    position: absolute;
+    top: 231px;
+    left: 254px;
+    background: #464141;
+    button{
+      color: limegreen;
+    }
+  }
+}
+.code-view-sidebar.open{
+  left:0;
+}
 .code{
   font-size: 14px;
-  height: 400px;
+  height: 100%;
+  color: #ccc;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color:transparent;
 }
 
 div[rel=form-submit]{
@@ -27,7 +55,7 @@ div[rel=form-submit]{
     }
   }
 }
-.collapsible.open{
+.collapsible.collapsible.open{
   .section-toggle{
     .icon:after{
       content: $caret-up;
