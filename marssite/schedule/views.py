@@ -264,18 +264,21 @@ no PROPID.  These should probably be filled."""
 
 def setpropid(request, telescope, instrument, date, propid):
     """
-    Set a **propid** in the schedule for given `instrument` and `date`.
+    Append a **propid** to the schedule for given `instrument` and `date`.
     """
     try:
         prop = Proposal.objects.get(propid=propid)
+        tobj = Telescope.objects.get(pk=telescope)
+        iobj = Instrument.objects.get(pk=instrument)
+
         slot,created = Slot.objects.get_or_create(
-            telescope=telescope,
-            instrument=instrument,
+            telescope=tobj,
+            instrument=iobj,
             obsdate=date,
             frozen=True)
         slot.proposals.add(prop)
     except Exception as err:
-        return HttpResponse('ERROR\nCOULD NOT ADD: ({}, {}, {}, {})\n{}'
+        return HttpResponse('ERROR\nCOULD NOT ADD: ({}, {}, {}, {}); {}\n'
                             .format(telescope, instrument, date, propid, err),
                             content_type='text/plain')
         
