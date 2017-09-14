@@ -17,7 +17,7 @@ class LdapUser(ldapdb.models.Model):
     """
     # LDAP meta-data
     base_dn = "dc=sdm,dc=noao,dc=edu"
-    object_classes = ['person']
+    object_classes = ['person', 'noaoarchiveuser', 'top']
 
 
 
@@ -25,9 +25,9 @@ class LdapUser(ldapdb.models.Model):
     lastname = CharField(db_column='sn')
     password = CharField(db_column='userPassword')
     name = ListField(db_column='cn', primary_key=True)
-    classes = ListField(db_column='objectclass')
+    lastname = ListField(db_column='sn')
     def __str__(self):
-        return self.name
+        return self.name[0]
 
     def __unicode__(self):
         return self.lastname
