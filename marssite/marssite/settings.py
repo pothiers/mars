@@ -19,12 +19,6 @@ import os
 #!    RuntimeWarning, r'django\.db\.models\.fields',
 #!)
 
-import socket
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.connect(("8.8.4.4", 80))
-MACHINE_IP = s.getsockname()[0]
-s.close()
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -33,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_URL = "/admin/login/"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True# False
 #MEDIA_ROOT = '/var/mars/'
 
 # Static files (CSS, JavaScript, Images)
