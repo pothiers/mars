@@ -39,6 +39,8 @@ urlpatterns = [
 
     # eg: /schedule/propid/ct13m/2014-12-25/  => smarts
     #  kp4m/2014-01-01 =>  2013B-0142 
+    url(r'^dbpropid/(?P<telescope>.+)/(?P<instrument>.+)/(?P<date>.+)/(?P<hdrpid>.+)/$',
+        views.dbpropid, name='dbpropid'),
     url(r'^propid/(?P<telescope>.+)/(?P<instrument>.+)/(?P<date>.+)/$',
         views.getpropid, name='getpropid'),
     url(r'^setpropid/(?P<telescope>.+)/(?P<instrument>.+)/(?P<date>.+)/(?P<propid>.+)/$',

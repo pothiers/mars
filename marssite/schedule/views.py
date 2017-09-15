@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.views.generic import ListView, TodayArchiveView, DayArchiveView, WeekArchiveView, MonthArchiveView, ArchiveIndexView, DetailView
 from django.db.models import Value
+from django.db.models import Q
 
 from .forms import SlotSetForm
 from .models import Slot, EmptySlot, Proposal, DefaultPropid
@@ -244,8 +245,74 @@ def setpropid(request, telescope, instrument, date, propid):
                         .format(telescope, instrument, date, propid),
                         content_type='text/plain')
 
+
+def get_pid_list(date, tele, instrum):
+    global_default = 'NEED-DEFAULT.{}.{}'.format(tele, instrum)
+    slot = None
+    is_split = False
+    qset = Slot.objects.filter(obsdate=date, telescope=tele, instrument=instrum)
+    try:
+        slot = qset.get()
+        is_split = slot.split
+        return [p.propid for p in slot.proposals.all()], is_split
+    except:
+        pass
+    
+    # MARS schedule slot not found...
+    # ... try updating the date from TAC and trying to get the Slot again
+    apply_tac_update(date=date)
+    try:
+        slot = qset.get()
+        is_split = slot.split
+        return [p.propid for p in slot.proposals.all()], is_split
+    except:
+        pass
+
+    try:
+        obj = DefaultPropid.objects.get(obsdate=date, telescope=tele,
+                                        instrument=instrum)
+        return obj.propids, False
+    except:
+        return [global_default], False
+
+    return [], False
+    
+# Isolates special handling rules (e.g. split-night) so TADA doesn't have
+# bother with them.  Previously TADA got list of propids from schedule and
+# decided what propid assign for DB based on combo of list and value from hdr.
+#
 # EXAMPLE in bash:
-#  propid=`curl 'http://127.0.0.1:8000/schedule/propid/ct13m/2014-12-25/'`
+#  propid=`curl 'http://localhost:8000/schedule/dbpropid/ct4m/decam/2017-07-15/2016A-0366/'`
+@api_view(['GET'])
+def dbpropid(request, telescope, instrument, date, hdrpid):
+    """
+    Retrieve **propid** to use in DB.
+    """
+    tele = telescope.lower()
+    instrum = instrument.lower()
+    ignore_default = ('1' == request.GET.get('ignore_default'))
+    dtpropid = ''
+
+    pids,is_split = get_pid_list(date, tele, instrum)
+    logging.debug('pids={}, is_split={}'.format(pids, is_split))
+    if hdrpid in pids:
+        dtpropid = hdrpid
+    elif is_split: # is split night, hdrpid not in schedule
+        # header value of Propid must be in schedule propid list
+        msg = ('Propid from hdr ({}) not in scheduled list of Propids: {}'
+               .format(hdrpid, pids))
+        logging.error(msg)
+        return HttpResponseNotFound(msg+'\n')
+    else: # non-split night, hdrpid not in schedule
+        # use schedule for non-split nights (regardless of header content)
+        dtpropid = pids[0] if len(pids) > 0 else None
+        
+    logging.debug('dtpropid={}'.format(dtpropid))
+    return HttpResponse(dtpropid, content_type='text/plain')
+    
+
+# EXAMPLE in bash:
+#  propid=`curl 'http://localhost:8000/schedule/propid/ct4m/decam/2017-07-15/'`
 @api_view(['GET'])
 def getpropid(request, telescope, instrument, date):
     """
@@ -255,7 +322,7 @@ def getpropid(request, telescope, instrument, date):
                  .format(telescope, instrument, date))
 
     # Default PROPID to use when we don't have one for tele, instrum
-    serializer_class = SlotSerializer
+    #!serializer_class = SlotSerializer
     tele = telescope.lower()
     instrum = instrument.lower()
     ignore_default = ('1' == request.GET.get('ignore_default'))
