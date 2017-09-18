@@ -1,0 +1,8 @@
+<p>this is schedule/batch_add_propids.html</p>
+<form method="post" action="/schedule/batchaddpropids/" >
+  {% csrf_token %}
+  <table>
+    {{ form.as_table }}
+  </table>
+  <input type="submit" value="Submit" />
+</form>

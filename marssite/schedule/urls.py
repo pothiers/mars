@@ -45,6 +45,8 @@ urlpatterns = [
         views.getpropid, name='getpropid'),
     url(r'^setpropid/(?P<telescope>.+)/(?P<instrument>.+)/(?P<date>.+)/(?P<propid>.+)/$',
         views.setpropid, name='setpropid'),
+    url(r'^batchaddpropids/$',
+        views.batch_add_propids, name='batch_add_propids'),
     url(r'^slot/(?P<tele>.+)/(?P<date>.+)/$',
         views.SlotGet.as_view(), name='getslot'),
     url(r'^slot_detail/(?P<pk>[0-9]+)/$',

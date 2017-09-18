@@ -8,7 +8,7 @@ from django.views.generic import ListView, TodayArchiveView, DayArchiveView, Wee
 from django.db.models import Value
 from django.db.models import Q
 
-from .forms import SlotSetForm
+from .forms import SlotSetForm, BatchSlotSetForm
 from .models import Slot, EmptySlot, Proposal, DefaultPropid
 from natica.models import Telescope,Instrument
 from tada.models import TacInstrumentAlias
@@ -25,6 +25,7 @@ import random
 import json
 import subprocess
 from datetime import date, datetime, timedelta
+from dateutil.rrule import rrule, DAILY
 import xml.etree.ElementTree as ET
 import urllib.parse
 import urllib.request
@@ -222,6 +223,19 @@ no PROPID.  These should probably be filled."""
 ##    ---
 ##    omit_serializer: true
 
+def append_propid(telescope, instrument, date, prop,
+                  frozen=True, split=None):
+    slot,created = Slot.objects.get_or_create(
+        telescope=telescope,
+        instrument=instrument,
+        obsdate=date,
+        frozen=frozen,
+        split=split )
+    slot.proposals.add(prop)
+    #!if split == None:
+    #!    is_split = slot.proposals
+    return slot
+
 def setpropid(request, telescope, instrument, date, propid):
     """
     Append a **propid** in the schedule for given `instrument` and `date`.
@@ -230,12 +244,13 @@ def setpropid(request, telescope, instrument, date, propid):
         prop = Proposal.objects.get(propid=propid)
         tobj = Telescope.objects.get(pk=telescope)
         iobj = Instrument.objects.get(pk=instrument)
-        slot,created = Slot.objects.get_or_create(
-            telescope=tobj,
-            instrument=iobj,
-            obsdate=date,
-            frozen=True)
-        slot.proposals.add(prop)
+        #!slot,created = Slot.objects.get_or_create(
+        #!    telescope=tobj,
+        #!    instrument=iobj,
+        #!    obsdate=date,
+        #!    frozen=True)
+        #!slot.proposals.add(prop)
+        append_propid(tobj, iobm, date, prop, frozen=True)
     except Exception as err:
         return HttpResponse('ERROR\nCOULD NOT ADD: ({}, {}, {}, {});{}\n'
                             .format(telescope, instrument, date, propid, err),
@@ -622,3 +637,30 @@ def api_root(request, format=None):
     })
 
 
+def batch_add_propids(request):
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        form = BatchSlotSetForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            logging.debug('DBG: cleaned_data={}'.format(form.cleaned_data))
+            for slot_date in rrule(DAILY,
+                                   dtstart=form.cleaned_data['start_date'],
+                                   until=form.cleaned_data['end_date']):
+                logging.debug('DBG: date={}'
+                              .format(slot_date.strftime("%Y-%m-%d")))
+                append_propid(form.cleaned_data['telescope'],
+                              form.cleaned_data['instrument'],
+                              slot_date,
+                              form.cleaned_data['prop'],
+                              split=form.cleaned_data['split'])
+            # redirect to a new URL:
+            return HttpResponseRedirect('/admin/schedule/slot/')
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = BatchSlotSetForm()
+
+    context = {'form': form}
+    return render(request, 'schedule/batch_add_propids.html', context)    

@@ -72,10 +72,11 @@ class Slot(models.Model):
                                  help_text=('Protect against changing this '
                                             'slot during a bulk operation.'))
 
-    split = models.BooleanField(default=False,
-                                help_text=(
-                                    'Treat slot as Split Night '
-                                    '(hdr propid must be in schedule lists)'))
+    split = models.NullBooleanField(
+        default=None,
+        help_text=(
+            'Treat slot as Split Night '
+            '(hdr propid must be in schedule lists)'))
     
     def propid_list(self):
         #! return ', '.join([p.propid for p in self.proposals.all()[:4]])
