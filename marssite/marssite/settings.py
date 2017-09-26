@@ -34,7 +34,6 @@ DEBUG = False
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, 'bower_components'),
     os.path.join(BASE_DIR, 'theme'),
     #os.path.join(BASE_DIR, 'sass_out'),
@@ -47,7 +46,7 @@ STATICFILES_FINDERS = (
 )
 
 #STATIC_ROOT = '/var/www/mars/static/'
-#STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
 # Application definition
@@ -74,6 +73,8 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django_tables2',
     'audit',  # tada audit/status REST API
+    'users', # LDAP admin
+    'ldapdb',
 )
 
 
