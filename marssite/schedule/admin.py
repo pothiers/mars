@@ -25,8 +25,8 @@ class DefaultPropidAdmin(admin.ModelAdmin):
 @admin.register(Slot)
 class SlotAdmin(admin.ModelAdmin):
     list_display = ('obsdate', 'telescope', 'instrument',
-                    'propid_list', 'modified', 'frozen', 'split')
-    list_filter = ['frozen', 'split', 'obsdate', 'instrument', 'telescope']
+                    'propid_list', 'modified', 'frozen')
+    list_filter = ['frozen', 'obsdate', 'instrument', 'telescope']
     filter_horizontal = ['proposals']
     date_hierarchy = 'obsdate'
     inlines = (PropInline,)
