@@ -1,0 +1,14 @@
+table, th, td {
+    border: 1px solid gray;
+    padding: 5px 10px;
+    text-align:left;
+    border-color: gray;
+}
+table {
+    border-spacing: 0px;
+    font-size: 1rem;
+}
+
+table a{
+  color: blue;
+}
