@@ -66,6 +66,9 @@ stagingComponent = {
         for file in @results
           file.selected = false
         @selected = []
+
+    downloadSelected: ()->
+      console.log "downloading selected"
     toggleSelected:(item)->
       item.selected = !item.selected
       if item.selected

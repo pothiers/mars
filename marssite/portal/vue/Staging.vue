@@ -104,7 +104,7 @@
                     </label>
                 </div>
                 <div class="text-right col-xs-6">
-                    <button class="btn btn-default" v-bind:disabled="selected.length == 0">Download Selected</button> <button class="btn btn-default">Download All</button>
+                  <button class="btn btn-default" v-on:click="downloadSelected"  v-bind:disabled="selected.length == 0">Download Selected</button> <button class="btn btn-default">Download All</button>
                 </div>
             </div>
 
