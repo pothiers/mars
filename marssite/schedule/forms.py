@@ -1,6 +1,9 @@
 from django import forms
+from django.contrib.postgres.forms import DateRangeField
+
 from .models import SlotSet, Proposal
 from natica.models import Telescope,Instrument
+
 
 class UploadFileForm(forms.Form):
     comment = forms.CharField(max_length=150)
@@ -20,11 +23,13 @@ class BatchSlotSetForm(forms.Form):
                                         help_text='Pick one')
     prop = forms.ModelChoiceField(queryset=Proposal.objects.all(),
                                         help_text='Pick one')
-    split = forms.NullBooleanField(
-        help_text='Defaults to treating only multi-propid slots as Split')
+    split = forms.BooleanField(
+        initial=True, required=False,
+        help_text='Iff TRUE treat a slot as Split Night')
 
     start_date = forms.DateField(help_text='YYYY-MM-DD')
     end_date = forms.DateField(help_text='YYYY-MM-DD')
+
 
 #!    def __init__(self):
 #!        super(BatchSlotSetForm, self).__init__()

@@ -290,6 +290,7 @@ def get_pid_list(date, tele, instrum):
     except:
         return [global_default], False
 
+    # Not reachable
     return [], False
     
 # Isolates special handling rules (e.g. split-night) so TADA doesn't have
@@ -307,20 +308,33 @@ def dbpropid(request, telescope, instrument, date, hdrpid):
     instrum = instrument.lower()
     ignore_default = ('1' == request.GET.get('ignore_default'))
     dtpropid = ''
+    slottuple = 'Telescope={}, Instrument={}, Date={}'.format(
+        telescope, instrument, date)
 
     pids,is_split = get_pid_list(date, tele, instrum)
+    pids.sort()
     logging.debug('pids={}, is_split={}'.format(pids, is_split))
-    if hdrpid in pids:
-        dtpropid = hdrpid
-    elif is_split: # is split night, hdrpid not in schedule
-        # header value of Propid must be in schedule propid list
-        msg = ('Propid from hdr ({}) not in scheduled list of Propids: {}'
-               .format(hdrpid, pids))
+    if len(pids) == 0:
+        msg = 'No propids in schedule slot: {}'.format(slottuple)
         logging.error(msg)
         return HttpResponseNotFound(msg+'\n')
-    else: # non-split night, hdrpid not in schedule
+
+    if hdrpid in pids:
+        dtpropid = hdrpid
+    elif is_split == True: # is split night, hdrpid not in schedule
+        # header value of Propid must be in schedule propid list
+        msg = ('Propid from hdr ({}) not in scheduled list of Propids {}; {}'
+               .format(hdrpid, pids, slottuple))
+        logging.error(msg)
+        return HttpResponseNotFound(msg+'\n')
+    elif is_split == False: # NOT split-night, hdrpid not in schedule
         # use schedule for non-split nights (regardless of header content)
-        dtpropid = pids[0] if len(pids) > 0 else None
+        # !!! WARNING: Use propid from schedule, ignore hdrprid
+        dtpropid = pids[0]
+        if len(pids) > 1:
+            logging.warning(
+                'Found multiple propids {} for non-split. Use first ({}); {}'
+                .format(','.join(pids), dtpropid, slottuple))
         
     logging.debug('dtpropid={}'.format(dtpropid))
     return HttpResponse(dtpropid, content_type='text/plain')
