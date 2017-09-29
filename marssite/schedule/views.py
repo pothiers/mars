@@ -262,7 +262,7 @@ def setpropid(request, telescope, instrument, date, propid):
 
 
 def get_pid_list(date, tele, instrum):
-    global_default = 'NEED-DEFAULT.{}.{}'.format(tele, instrum)
+    #!global_default = 'NEED-DEFAULT.{}.{}'.format(tele, instrum)
     slot = None
     is_split = False
     qset = Slot.objects.filter(obsdate=date, telescope=tele, instrument=instrum)
@@ -283,12 +283,10 @@ def get_pid_list(date, tele, instrum):
     except:
         pass
 
-    try:
-        obj = DefaultPropid.objects.get(obsdate=date, telescope=tele,
-                                        instrument=instrum)
-        return obj.propids, False
-    except:
-        return [global_default], False
+    obj = DefaultPropid.objects.get(telescope=tele, instrument=instrum)
+    return obj.propids, False
+    #!except:
+    #!    return [global_default], False
 
     # Not reachable
     return [], False
@@ -311,13 +309,19 @@ def dbpropid(request, telescope, instrument, date, hdrpid):
     slottuple = 'Telescope={}, Instrument={}, Date={}'.format(
         telescope, instrument, date)
 
-    pids,is_split = get_pid_list(date, tele, instrum)
+    try:
+        pids,is_split = get_pid_list(date, tele, instrum)
+    except Exception as err:
+        msg = 'Could not get SLOT for ({}); {}'.format(slottuple, err)
+        logging.error(msg)
+        return HttpResponseNotFound(msg)
+        
     pids.sort()
     logging.debug('pids={}, is_split={}'.format(pids, is_split))
     if len(pids) == 0:
         msg = 'No propids in schedule slot: {}'.format(slottuple)
         logging.error(msg)
-        return HttpResponseNotFound(msg+'\n')
+        return HttpResponseNotFound(msg)
 
     if hdrpid in pids:
         dtpropid = hdrpid
@@ -326,7 +330,7 @@ def dbpropid(request, telescope, instrument, date, hdrpid):
         msg = ('Propid from hdr ({}) not in scheduled list of Propids {}; {}'
                .format(hdrpid, pids, slottuple))
         logging.error(msg)
-        return HttpResponseNotFound(msg+'\n')
+        return HttpResponseNotFound(msg)
     elif is_split == False: # NOT split-night, hdrpid not in schedule
         # use schedule for non-split nights (regardless of header content)
         # !!! WARNING: Use propid from schedule, ignore hdrprid

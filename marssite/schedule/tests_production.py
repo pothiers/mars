@@ -148,11 +148,29 @@ class ScheduleTest(TestCase):
     
     def test_dbpropid_1(self):
         "No Slot                                   => REJECT"
-        pass
+        tele = 'foobar'
+        instrum = 'kosmos'
+        date = '2015-09-03'
+        hdrpid = '2015B-0267'
+        expected = 'Could not get SLOT for (Telescope=foobar, Instrument=kosmos, Date=2015-09-03); DefaultPropid matching query does not exist.'
+        response = self.client.get('/schedule/dbpropid/{}/{}/{}/{}/'
+                                   .format(tele, instrum, date, hdrpid))
+        self.assertEqual(expected, response.content.decode())
+        self.assertEqual(404, response.status_code)
+
     
     def test_dbpropid_2(self):
         "Slot with no propids (null list)          => REJECT"
-        pass
+        tele = 'kp4m'
+        instrum = 'kosmos'
+        date = '2015-09-02'
+        hdrpid = '2015B-0267'
+        expected = 'No propids in schedule slot: Telescope=kp4m, Instrument=kosmos, Date=2015-09-02'
+        response = self.client.get('/schedule/dbpropid/{}/{}/{}/{}/'
+                                   .format(tele, instrum, date, hdrpid))
+        self.assertEqual(expected, response.content.decode())
+        self.assertEqual(404, response.status_code)
+
 
     def test_dbpropid_3_1(self):
         "slot cnt <> 0, split=True, HdrPid not in Slot => REJECT"
@@ -160,7 +178,7 @@ class ScheduleTest(TestCase):
         instrum = 'kosmos'
         date = '2015-09-03'
         hdrpid = 'foobar'
-        expected = "Propid from hdr (foobar) not in scheduled list of Propids ['2015B-0267']; Telescope=kp4m, Instrument=kosmos, Date=2015-09-03\n"
+        expected = "Propid from hdr (foobar) not in scheduled list of Propids ['2015B-0267']; Telescope=kp4m, Instrument=kosmos, Date=2015-09-03"
         response = self.client.get('/schedule/dbpropid/{}/{}/{}/{}/'
                                    .format(tele, instrum, date, hdrpid))
         self.assertEqual(expected, response.content.decode())

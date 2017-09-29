@@ -30,6 +30,16 @@
       frozen: false
       proposals: [2015B-0267]
 -  model: schedule.slot
+   pk: 3
+   fields:
+      telescope: kp4m
+      instrument: kosmos
+      obsdate: 2015-09-02
+      modified: "2016-04-21T00:06:41.286689+00:00"
+      split: true
+      frozen: false
+      proposals: []
+-  model: schedule.slot
    pk: 35299
    fields:
       telescope: kp4m
