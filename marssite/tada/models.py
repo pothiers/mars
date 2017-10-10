@@ -3,15 +3,12 @@ from django.contrib.postgres.fields import ArrayField
 from natica.models import Site,Telescope,Instrument
 
 class TacInstrumentAlias(models.Model):
-    tac = models.CharField(max_length=20,
+    tac = models.CharField(max_length=20, primary_key=True,
                            help_text='Name used by Dave Bells TAC Schedule')
     #!hdr = models.CharField(max_length=20, 
     #!                       help_text='Name used in FITS header')
     hdr = models.ForeignKey(Instrument,
                             help_text='Name used in FITS header')
-
-    class Meta:
-        unique_together = ('tac', 'hdr')
 
 #!class InstrumentAlias(models.Model):
 #!    reason = models.CharField(max_length=80)
