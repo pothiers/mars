@@ -122,7 +122,9 @@
                         <tbody>
                             <tr v-for="result in results" v-on:click="toggleSelected(result)">
                                 <td><input type="checkbox" name="selected[]" value="" v-bind:checked="result.selected" v-bind:value="result.file.reference"/></td>
-                                <td>{{ result.file.reference }}</td>
+                                <td>{{ result.file.reference }} <a title="download single file" href="#" v-bind:href="'#download_'+result.file.reference" v-on:click="downloadSingleFile(result.file, $event)">
+                                    <span class="fa fa-download"></span>
+                                </a> </td>
                                 <td>{{ result.file.filesize/1000 }} KB</td>
                                 <td>{{ result.file.md5sum }}</td>
                             </tr>

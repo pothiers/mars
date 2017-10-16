@@ -82,7 +82,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/mars/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -372,7 +372,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vee_validate__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_coffee__ = __webpack_require__(2);
 
 /*
@@ -413,7 +412,7 @@ config = __WEBPACK_IMPORTED_MODULE_2__mixins_coffee__["a" /* default */].config;
   validation = new __WEBPACK_IMPORTED_MODULE_1_vee_validate__["Validator"]({
     dependant: "dependson"
   });
-  return __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate___default.a, config.validatorConfig);
+  return __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate__["default"], config.validatorConfig);
 })();
 
 dateLookup = {
@@ -967,13 +966,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        var $$exp = _vm.search.obs_date,
-          $$idx = 2;
-        if (!Array.isArray($$exp)) {
-          _vm.search.obs_date[2] = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-        } else {
-          $$exp.splice($$idx, 1, $event.target.multiple ? $$selectedVal : $$selectedVal[0])
-        }
+        _vm.$set(_vm.search.obs_date, 2, $event.target.multiple ? $$selectedVal : $$selectedVal[0])
       }, function($event) {
         _vm.splitSelection('obs_date')
       }]
@@ -1022,13 +1015,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        var $$exp = _vm.search.obs_date,
-          $$idx = 0;
-        if (!Array.isArray($$exp)) {
-          _vm.search.obs_date[0] = $event.target.value
-        } else {
-          $$exp.splice($$idx, 1, $event.target.value)
-        }
+        _vm.$set(_vm.search.obs_date, 0, $event.target.value)
       }
     }
   }) : _vm._e(), _vm._v(" "), _c('input', {
@@ -1065,13 +1052,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        var $$exp = _vm.search.obs_date,
-          $$idx = 1;
-        if (!Array.isArray($$exp)) {
-          _vm.search.obs_date[1] = $event.target.value
-        } else {
-          $$exp.splice($$idx, 1, $event.target.value)
-        }
+        _vm.$set(_vm.search.obs_date, 1, $event.target.value)
       }
     }
   }), _vm._v(" "), (_vm.errors.has('obs-date')) ? _c('span', {
@@ -1110,13 +1091,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        var $$exp = _vm.search.exposure_time,
-          $$idx = 2;
-        if (!Array.isArray($$exp)) {
-          _vm.search.exposure_time[2] = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-        } else {
-          $$exp.splice($$idx, 1, $event.target.multiple ? $$selectedVal : $$selectedVal[0])
-        }
+        _vm.$set(_vm.search.exposure_time, 2, $event.target.multiple ? $$selectedVal : $$selectedVal[0])
       }, function($event) {
         _vm.splitSelection('exposure_time')
       }]
@@ -1164,13 +1139,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        var $$exp = _vm.search.exposure_time,
-          $$idx = 0;
-        if (!Array.isArray($$exp)) {
-          _vm.search.exposure_time[0] = $event.target.value
-        } else {
-          $$exp.splice($$idx, 1, $event.target.value)
-        }
+        _vm.$set(_vm.search.exposure_time, 0, $event.target.value)
       }
     }
   }) : _vm._e(), _vm._v(" "), _c('input', {
@@ -1207,13 +1176,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        var $$exp = _vm.search.exposure_time,
-          $$idx = 1;
-        if (!Array.isArray($$exp)) {
-          _vm.search.exposure_time[1] = $event.target.value
-        } else {
-          $$exp.splice($$idx, 1, $event.target.value)
-        }
+        _vm.$set(_vm.search.exposure_time, 1, $event.target.value)
       }
     }
   }), _vm._v(" "), (_vm.errors.has('exposure')) ? _c('span', {
@@ -1272,13 +1235,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        var $$exp = _vm.search.release_date,
-          $$idx = 2;
-        if (!Array.isArray($$exp)) {
-          _vm.search.release_date[2] = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-        } else {
-          $$exp.splice($$idx, 1, $event.target.multiple ? $$selectedVal : $$selectedVal[0])
-        }
+        _vm.$set(_vm.search.release_date, 2, $event.target.multiple ? $$selectedVal : $$selectedVal[0])
       }, function($event) {
         _vm.splitSelection('release_date')
       }]
@@ -1327,13 +1284,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        var $$exp = _vm.search.release_date,
-          $$idx = 0;
-        if (!Array.isArray($$exp)) {
-          _vm.search.release_date[0] = $event.target.value
-        } else {
-          $$exp.splice($$idx, 1, $event.target.value)
-        }
+        _vm.$set(_vm.search.release_date, 0, $event.target.value)
       }
     }
   }) : _vm._e(), _vm._v(" "), _c('input', {
@@ -1371,13 +1322,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        var $$exp = _vm.search.release_date,
-          $$idx = 1;
-        if (!Array.isArray($$exp)) {
-          _vm.search.release_date[1] = $event.target.value
-        } else {
-          $$exp.splice($$idx, 1, $event.target.value)
-        }
+        _vm.$set(_vm.search.release_date, 1, $event.target.value)
       }
     }
   })])])]), _vm._v(" "), _c('div', {
@@ -1572,7 +1517,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/mars/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -2143,7 +2088,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "data": _vm.results.resultset,
       "visible-cols": _vm.visibleColumns
     }
-  }), _vm._v(" "), _c('tfoot')], 1) : _c('div', [_c('h1', {
+  }), _vm._v(" "), _c('tfoot')]) : _c('div', [_c('h1', {
     staticClass: "text-center"
   }, [_vm._v("No results found")]), _vm._v(" "), (_vm.error) ? _c('div', {
     staticClass: "alert alert-danger text-center"

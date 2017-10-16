@@ -64,7 +64,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/peter/Workspace/NOAO/mars/mars/marssite/portal/vue/Staging.vue"
+Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Staging.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Staging.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -95,6 +95,8 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_staging_coffee__ = __webpack_require__(25);
+//
+//
 //
 //
 //
@@ -347,8 +349,30 @@ stagingComponent = {
         return this.selected = [];
       }
     },
+    downloadSingleFile: function() {
+      debugger;
+    },
     downloadSelected: function() {
-      return console.log("downloading selected");
+      var query;
+      console.log("downloading selected");
+      query = {
+        "files": this.selected
+      };
+      return new Ajax({
+        url: "/portal/stagefiles",
+        method: "post",
+        accept: "json",
+        data: query,
+        success: (function(_this) {
+          return function(data) {
+            console.log("Got this from the server");
+            return console.log(data);
+          };
+        })(this),
+        fail: function(statusmsg, status, xhr) {
+          return console.log("request failed");
+        }
+      });
     },
     toggleSelected: function(item) {
       var indx;
@@ -431,8 +455,20 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "checked": result.selected,
         "value": result.file.reference
       }
-    })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(result.file.reference))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(result.file.filesize / 1000) + " KB")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(result.file.md5sum))])])
-  })), _vm._v(" "), _c('tfoot')], 1)])])]) : _vm._e()])
+    })]), _vm._v(" "), _c('td', [_vm._v(_vm._s(result.file.reference) + " "), _c('a', {
+      attrs: {
+        "href": "#",
+        "href": '#download_' + result.file.reference
+      },
+      on: {
+        "click": function($event) {
+          _vm.downloadSingleFile(result.file)
+        }
+      }
+    }, [_c('span', {
+      staticClass: "fa fa-download"
+    })])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(result.file.filesize / 1000) + " KB")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(result.file.md5sum))])])
+  })), _vm._v(" "), _c('tfoot')])])])]) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container"

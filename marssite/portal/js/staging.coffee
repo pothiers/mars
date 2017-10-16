@@ -67,8 +67,25 @@ stagingComponent = {
           file.selected = false
         @selected = []
 
+    downloadSingleFile: (file, event)->
+      # identify which file...
+      event.stopPropagation()
+      window.open("/portal/downloadsinglefile/?f="+file.reference, "_blank")
+      return false # prevent bubbling up
+
     downloadSelected: ()->
       console.log "downloading selected"
+      query = {"files":@selected}
+      new Ajax
+        url: "/portal/stagefiles"
+        method: "post"
+        accept: "json"
+        data: query
+        success: (data)=>
+          console.log "Got this from the server"
+          console.log data
+        fail: (statusmsg, status, xhr)->
+          console.log "request failed"
     toggleSelected:(item)->
       item.selected = !item.selected
       if item.selected

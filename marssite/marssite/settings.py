@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_URL = "/admin/login/"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 #MEDIA_ROOT = '/var/mars/'
 
 # Static files (CSS, JavaScript, Images)
@@ -36,6 +36,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'bower_components'),
     os.path.join(BASE_DIR, 'theme'),
+    os.path.join(BASE_DIR, "static")
     #os.path.join(BASE_DIR, 'sass_out'),
     #os.path.join(BASE_DIR, 'schedule', 'static')
 )
@@ -46,7 +47,7 @@ STATICFILES_FINDERS = (
 )
 
 #STATIC_ROOT = '/var/www/mars/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+#STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 
 # Application definition
