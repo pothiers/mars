@@ -8,6 +8,7 @@ Original file: staging.coffee
 import Shared from './mixins.coffee'
 import Vue from 'vue'
 
+
 generateResultsSet = ()->
   results = []
   for x in [1..100]
@@ -73,11 +74,11 @@ stagingComponent = {
       window.open("/portal/downloadsinglefile/?f="+file.reference, "_blank")
       return false # prevent bubbling up
 
-    downloadSelected: ()->
-      console.log "downloading selected"
-      query = {"files":@selected}
+    _confirmDownloadSelected: ()->
+      selected = @selected # scope resolution
+      query = {"files":selected.slice(0, 10)}
       new Ajax
-        url: "/portal/stagefiles"
+        url: "/portal/downloadselected"
         method: "post"
         accept: "json"
         data: query
@@ -86,6 +87,22 @@ stagingComponent = {
           console.log data
         fail: (statusmsg, status, xhr)->
           console.log "request failed"
+
+
+
+    downloadSelected: ()->
+      console.log "downloading selected"
+      self = @
+      if @selected.length > 10
+        BootstrapDialog.confirm("Only ten files can be downloaded at one time. See download instructions for downloading more at one time",
+        (goAhead)->
+           if goAhead
+            self._confirmDownloadSelected()
+        )
+      else
+        self._confirmDownloadSelected()
+
+
     toggleSelected:(item)->
       item.selected = !item.selected
       if item.selected

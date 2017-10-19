@@ -19,6 +19,7 @@
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
     "fullcalendar": "^3.4.0",
-    "bootstrap-css": "^3.3.7"
+    "bootstrap-css": "^3.3.7",
+    "bootstrap3-dialog": "^1.35.4"
   }
 }

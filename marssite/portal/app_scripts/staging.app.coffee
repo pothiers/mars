@@ -2,7 +2,6 @@ import Staging from "../vue/Staging.vue"
 import Vue from 'vue'
 import AppStyles from "../styles/search.scss"
 
-
 class App
   constructor: ()->
     new Vue

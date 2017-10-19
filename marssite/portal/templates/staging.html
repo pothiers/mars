@@ -7,10 +7,12 @@
 query: {{ query }}
    -->
 <link rel="stylesheet" href="{% static "font-awesome/css/font-awesome.min.css" %}" type="text/css" media="screen">
+<link rel="stylesheet" href="{% static "bootstrap3-dialog/dist/css/bootstrap-dialog.css" %}" type="text/css" media="screen">
 {% endblock %}
 
 {% block extra_footer %}
 <script type="text/javascript" src="{% get_static_prefix %}lodash/lodash.core.min.js"></script>
+<script type="text/javascript" src="{% get_static_prefix %}bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
 {% for js in jsResources %}
 <script type="text/javascript" src="{% get_static_prefix %}portal/dist/{{js}}"></script>
 {% endfor %}

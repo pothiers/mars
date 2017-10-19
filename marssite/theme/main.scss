@@ -4,6 +4,16 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,600,600italic");
 
 /*
+  Style other components
+*/
+.bootstrap-dialog-message{
+  font-size:18px;
+}
+.bootstrap-dialog.type-primary .modal-header{
+  background-color: #37c0fb;
+}
+
+/*
   Arcana by HTML5 UP
   html5up.net | @ajlkn
   Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)

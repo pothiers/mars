@@ -69,8 +69,17 @@ export default {
     stageSelected: ()->
       localStorage.setItem("stage", "selectedFiles")
       localStorage.setItem("selectedFiles", JSON.stringify(@selected))
-
-      window.location.href=config.stagingUrl+"?stage=selected"
+      # send this list to backed to create symlinks in this step
+      form = document.createElement("form")
+      form.setAttribute("method", "POST")
+      form.setAttribute("action", "/portal/staging/?stage=selected")
+      data = document.createElement("input")
+      data.setAttribute("type", "hidden")
+      data.setAttribute("value", localStorage.getItem("selectedFiles"))
+      data.setAttribute("name", "selectedFiles")
+      form.appendChild(data)
+      document.querySelector("body").appendChild(form)
+      form.submit()
 
     confirmStage: ()->
       if @stageAllConfirm is true
