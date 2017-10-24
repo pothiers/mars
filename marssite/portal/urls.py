@@ -10,4 +10,6 @@ urlpatterns = [
         views.downloadsinglefile, name='downloadsinglefile'),
     url(r'^staging/?$',
         views.staging, name='staging'),
+    url(r'^stageall/?$',
+        views.stageall, name='stageall'),
 ]

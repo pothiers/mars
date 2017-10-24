@@ -3,14 +3,18 @@ from django.utils.encoding import smart_str
 from django.shortcuts import render
 from django.http import JsonResponse, HttpRequest, HttpResponse
 from django.conf import settings
-import datetime
-import hashlib
-import os
-from os import path
 from shutil import copyfile
+from os import path
+from siap import queries
+import datetime
+import tempfile
+
+import time
+import hashlib
+import zipfile
+import os
 import json
 import requests
-from siap import queries
 """
 Assume there are some mount points on this machine
 one will have the archive files
@@ -59,23 +63,34 @@ def _linkfile(fname, uname):
         pass
     return JsonResponse({'message':'done', 'status':'ok'})
 
+def getUserName():
+    return "user_123"
+
 @csrf_exempt
 def downloadselected(request):
     message = ""
     if len(request.body) > 0:
-        body = request.body.decode('utf-8')
-        data = json.loads(body)
+        data = json.loads(request.POST.get("selected","[]"))
         # create a zip for download
         # limit to 10 files
 
-        # make a temporary directory
-        t = datetime.datetime.now()
-        hash = hashlib.md5(str(t).encode("utf-8")).hexdigest()
-        tmpdir = "/tmp/{}".format(hash)
-        os.mkdir(tmpdir)
-        for f in data['files']:
+        tmp = tempfile.TemporaryFile()
+        zf = zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED)
+        for f in data[:10]:
             fpath = nfsmount+queries.get_fits_location(f['file']['reference'])
-            copyfile(fpath, os.path.join(tmpdir, f['file']['reference']))
+            zf.write(os.path.abspath(fpath), f['file']['reference'])
+
+        zf.close()
+
+        size = tmp.tell()
+        tmp.seek(0)
+        response = HttpResponse(tmp, content_type="application/zip")
+        response['Content-Disposition'] = "attachement; filename={}".format(getUserName()+".zip")
+        response['Content-Length'] = size
+        
+        response['X-Accel-Redirect'] = getUserName()+".zip"
+        return response
+        
     else:
         return JsonResponse({'message':'Error, no data provided', 'status':'error'})
 
@@ -93,7 +108,7 @@ def downloadsinglefile(request):
     filepath += queries.get_fits_location(filename)
     response = HttpResponse(filepath,content_type='application/force-download') # mimetype is replaced by content_type for django 1.7
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
-    response['X-Accel-Redirect'] = smart_str(filepath)
+    response['X-Accel-Redirect'] = filename
     # It's usually a good idea to set the 'Content-Length' header too.
     # You can also set any other required headers: Cache-Control, etc.
     return response
@@ -136,9 +151,8 @@ def staging(request):
     stageAll = True if request.GET.get("stage", "") == "all" else False
 
     if stageAll:
-        # get the query used to generate the last result set
-        # save the query in the user's session to pull it back out
-        # iterate through the results to generate links
+        # Load the page, it will then do an ajax callback to generate the links
+        #
         pass
     else:
         fileList = request.POST.get("selectedFiles")
@@ -156,3 +170,24 @@ def staging(request):
     r = _getResources("staging.bundle")
 
     return render(request, "staging.html", {'jsResources':r})
+
+@csrf_exempt
+def stageall(request):
+    # get the query used to generate the last result set
+    # save the query in the user's session to pull it back out
+    # iterate through the results to generate links
+    body = request.body.decode('utf-8')
+    
+    try:
+        postdata = json.loads(body)
+    except:
+        return JsonResponse({"message":"No/invalid data, original search data could not be parsed", "status":"error"})
+ 
+
+    # create links for the entire result set 
+
+    return JsonResponse(postdata)
+
+    # get the file list from dal
+
+ 

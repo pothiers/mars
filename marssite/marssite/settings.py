@@ -100,7 +100,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'dal.middleware.RequestExceptionHandler',
+#    'dal.middleware.RequestExceptionHandler',
     ]
 
 ROOT_URLCONF = 'marssite.urls'

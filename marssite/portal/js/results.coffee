@@ -86,7 +86,19 @@ export default {
         # this is second click, stage all files
         console.log "second confirm is true"
         localStorage.setItem("stage", "all")
-        window.location.href=config.stagingUrl+"?stage=all"
+        form = document.createElement("form")
+        form.setAttribute("method", "POST")
+        form.setAttribute("action", config.stagingUrl+ "?stage=all")
+        data = document.createElement("input")
+        data.setAttribute("type", "hidden")
+        searchObj = localStorage.getItem("searchData")
+        data.setAttribute("value", searchObj)
+        data.setAttribute("name", "searchData")
+        form.appendChild(data)
+        document.querySelector("body").appendChild(form)
+        form.submit()
+        #window.location.href=config.stagingUrl+"?stage=all"
+      
       else
         # first click, ask for confirmation
         @stageButtonText = "OK, continue"

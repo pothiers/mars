@@ -92,7 +92,7 @@ Base = (function() {
         return elem.addEventListener(e, fn, false);
       });
     };
-    if (window.location.hostname !== "localhost") {
+    if (window.location.hostname.indexOf('local') < 0) {
       nohup = function() {
         return "Console commands (log, info, dir, debug) have been mapped into `console.live` in production environments";
       };

@@ -72,7 +72,7 @@ class Base
         elem.addEventListener(e, fn, false)
 
     # disable console on live
-    if window.location.hostname isnt "localhost"
+    if window.location.hostname.indexOf('local') < 0
       nohup = ()->
         return "Console commands (log, info, dir, debug) have been mapped into `console.live` in production environments"
       console.live = 

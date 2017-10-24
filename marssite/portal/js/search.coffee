@@ -56,6 +56,23 @@ dateLookup = {
       }
 }
 
+scrollingWatcher = ()->
+  if document.querySelector("[rel=form-submit]") is null
+    return
+  
+  doc = document.documentElement
+  top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0)
+  element = document.querySelector("[rel=form-submit]")
+  elementTop = element.offsetTop
+   
+  # check offset
+  if top > elementTop
+    element.classList.add("scroll")
+  else
+    element.classList.remove("scroll")
+      
+  
+
 searchFormComponent = {
   mixins: [Shared.mixin]
   created: ()->
@@ -70,6 +87,8 @@ searchFormComponent = {
       this.$emit("displayform", ["results", []])
     window.base.bindEvents()
 
+    document.onscroll = scrollingWatcher
+    
     $("input.date").datepicker({
             changeMonth: true,
             changeYear: true,

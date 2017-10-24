@@ -28,6 +28,7 @@ var libraries = [
   "./marssite/bower_components/*jquery-ui/**/*",
   "./marssite/*theme/images/**/*",
   "./marssite/bower_components/*fullcalendar/**/*",
+  "./marssite/bower_components/**/bootstrap3-dialog/**/*",
 //  "./marssite/bower_components/*moment/**/*",
 //  "./node_modules/*vee-validate/dist/**/*",
 ];

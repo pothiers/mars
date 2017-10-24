@@ -38,14 +38,17 @@ stagingComponent = {
       for file in files
         @results.push {'selected':false, 'file':file}
     else
+      # show a loading screen
       @stagingAllFiles = true
       @loading = true
-      query = @stripData()# localStorage.getItem("search")
+      querydata = localStorage.getItem("searchData")
+
+      
       new Ajax
-        url: "/dal/staging/"
+        url: "/portal/stageall/"
         method: "post"
         accept: "json"
-        data: query
+        data: {searchData:JSON.parse(querydata)}
         success: (data)=>
           console.log "got this data back from the request"
           console.log data
@@ -77,6 +80,18 @@ stagingComponent = {
     _confirmDownloadSelected: ()->
       selected = @selected # scope resolution
       query = {"files":selected.slice(0, 10)}
+      form = document.createElement("form")
+      form.setAttribute("method", "post")
+      #form.setAttribute("target", "_blank")
+      form.setAttribute("action", "/portal/downloadselected")
+      data = document.createElement("input")
+      data.setAttribute("type", "hidden")
+      data.setAttribute("name", "selected")
+      data.setAttribute("value", JSON.stringify(selected.slice(0,10)))
+      form.appendChild(data)
+      document.querySelector("body").appendChild(form)
+      form.submit()
+      ###
       new Ajax
         url: "/portal/downloadselected"
         method: "post"
@@ -87,7 +102,7 @@ stagingComponent = {
           console.log data
         fail: (statusmsg, status, xhr)->
           console.log "request failed"
-
+      ###    
 
 
     downloadSelected: ()->
