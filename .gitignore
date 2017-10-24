@@ -9,6 +9,10 @@ OBSOLETE*/
 foo.*
 marssite/schedule/OBSOLETE-views.py
 .projectile
+GTAGS
+GRTAGS
+GPATH
+TAGS
 
 # smoke test leavings
 *.out
