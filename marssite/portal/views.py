@@ -8,7 +8,7 @@ from os import path
 from siap import queries
 import datetime
 import tempfile
-
+import dal
 import time
 import hashlib
 import zipfile
@@ -29,16 +29,18 @@ nfsmount = "/srv/ftp/nfsmount"
 ftppasswd = "/srv/ftp/ftp-passwd/pureftpd.passwd"
 dev = True if os.environ['ENVIRONMENT'] == "dev" else False
 
+missingFiles = []
+
+
 def _linkfile(fname, uname):
-    print("Current env is {}".format(dev))
     userdir = os.path.join(ftpdirs, 'anon', uname)
     if os.path.isdir(userdir) == False:
         os.mkdir(userdir)
     nfspath = queries.get_fits_location(fname)
     filepath = os.path.join(ftpdirs,'nfsmount')
     filepath +=  nfspath
-    print("##### filepath {}".format(filepath))
-    # make the file too for testing
+
+    # make the file for testing
     if dev:
         # create directories if not already made
         dirs = os.path.dirname(nfspath).split("/")
@@ -57,11 +59,14 @@ def _linkfile(fname, uname):
         # adjust the actual file pathname location to match mounted location
         f.close()
     try:
+        if False == os.path.isfile("/srv/ftp/nfsmount{}".format(nfspath)):
+            missingFiles.append(fname)
+            return False
         os.symlink("../../nfsmount{}".format(nfspath), "{}/{}".format(userdir,fname))
     except:
         # error is always present, not sure why...
         pass
-    return JsonResponse({'message':'done', 'status':'ok'})
+    return fname
 
 def getUserName():
     return "user_123"
@@ -87,10 +92,10 @@ def downloadselected(request):
         response = HttpResponse(tmp, content_type="application/zip")
         response['Content-Disposition'] = "attachement; filename={}".format(getUserName()+".zip")
         response['Content-Length'] = size
-        
+
         response['X-Accel-Redirect'] = getUserName()+".zip"
         return response
-        
+
     else:
         return JsonResponse({'message':'Error, no data provided', 'status':'error'})
 
@@ -177,17 +182,23 @@ def stageall(request):
     # save the query in the user's session to pull it back out
     # iterate through the results to generate links
     body = request.body.decode('utf-8')
-    
+
     try:
         postdata = json.loads(body)
+
     except:
         return JsonResponse({"message":"No/invalid data, original search data could not be parsed", "status":"error"})
- 
 
-    # create links for the entire result set 
 
-    return JsonResponse(postdata)
+    # create links for the entire result set
+    fnames = dal.views.get_all_filenames_for_query(postdata)
+    stagedfiles = []
+    for ref in fnames:
+       file = _linkfile(ref, getUserName())
+       if file:
+           stagedfiles.append(file)
+
+    return JsonResponse({'total_files':len(stagedfiles), 'missing_files':missingFiles})
+
 
     # get the file list from dal
-
- 

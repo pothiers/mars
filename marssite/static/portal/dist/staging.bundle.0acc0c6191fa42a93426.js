@@ -64,7 +64,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Staging.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Staging.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Staging.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -95,6 +95,27 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_staging_coffee__ = __webpack_require__(25);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -283,7 +304,9 @@ stagingComponent = {
       loading: false,
       selectAll: false,
       results: [],
-      selected: []
+      selected: [],
+      totalfiles: 0,
+      missingfiles: 0
     };
   },
   created: function() {
@@ -308,18 +331,18 @@ stagingComponent = {
     } else {
       this.stagingAllFiles = true;
       this.loading = true;
-      querydata = localStorage.getItem("searchData");
+      querydata = localStorage.getItem("search");
       return new Ajax({
         url: "/portal/stageall/",
         method: "post",
         accept: "json",
-        data: {
-          searchData: JSON.parse(querydata)
-        },
+        data: JSON.parse(querydata),
         success: (function(_this) {
           return function(data) {
             console.log("got this data back from the request");
             console.log(data);
+            _this.totalfiles = data.total_files;
+            _this.missingfiles = data.missing_files;
             return _this.loading = false;
           };
         })(this),
@@ -426,7 +449,19 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [(_vm.loading) ? _c('div', {
     staticClass: "row"
-  }, [_vm._m(1)]) : _vm._e()]) : _vm._e(), _vm._v(" "), (!_vm.stagingAllFiles) ? _c('div', {
+  }, [_vm._m(1)]) : _vm._e(), _vm._v(" "), (!_vm.loading) ? _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-12"
+  }, [_c('h2', [_vm._v("Done Staging Files")]), _vm._v(" "), _c('h5', [_vm._v("Please see downloading instructions for accessing your files.")]), _vm._v(" "), _c('div', {
+    staticClass: "panel panel-primary col-xs-12 col-md-6 col-md-offset-3"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('ul', {
+    staticClass: "list-unstyled"
+  }, [_c('li', [_vm._v("Total files staged: "), _c('span', [_vm._v(_vm._s(_vm.totalfiles))])]), _vm._v(" "), _c('li', [_vm._v("Missing files: "), _c('span', [_vm._v(_vm._s(_vm.missingfiles.length))])]), _vm._v(" "), _vm._l((_vm.missingfiles), function(file) {
+    return (_vm.missingfiles.length > 0) ? _c('ol', [_vm._v("\n                                " + _vm._s(file) + "\n                            ")]) : _vm._e()
+  })], 2)])])])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (!_vm.stagingAllFiles) ? _c('div', {
     staticClass: "container"
   }, [_c('div', {
     staticClass: "row"
@@ -464,7 +499,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-12"
-  }, [_c('table', [_vm._m(2), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(result) {
+  }, [_c('table', [_vm._m(3), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(result) {
     return _c('tr', {
       on: {
         "click": function($event) {
@@ -544,6 +579,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('div', {
     staticClass: "spinner"
   })])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('div', {
+    staticClass: "panel-title"
+  }, [_vm._v("File statistics")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _c('th', [_vm._v("File name")]), _vm._v(" "), _c('th', [_vm._v("File size")]), _vm._v(" "), _c('td', [_vm._v("MD5 sum")])])])
 }]}

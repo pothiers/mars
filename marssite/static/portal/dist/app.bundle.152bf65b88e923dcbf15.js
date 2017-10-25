@@ -82,7 +82,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -439,14 +439,14 @@ dateLookup = {
 
 scrollingWatcher = function() {
   var doc, element, elementTop, top;
-  if (document.querySelector("[rel=form-submit]").length === 0) {
+  if (document.querySelector("[rel=form-submit]") === null) {
     return;
   }
   doc = document.documentElement;
   top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
   element = document.querySelector("[rel=form-submit]");
   elementTop = element.offsetTop;
-  if (top > elementOffset) {
+  if (top > elementTop) {
     return element.classList.add("scroll");
   } else {
     return element.classList.remove("scroll");
@@ -467,6 +467,7 @@ searchFormComponent = {
       this.$emit("displayform", ["results", []]);
     }
     window.base.bindEvents();
+    document.onscroll = scrollingWatcher;
     $("input.date").datepicker({
       changeMonth: true,
       changeYear: true,
@@ -1533,7 +1534,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1785,10 +1786,21 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       return form.submit();
     },
     confirmStage: function() {
+      var data, form, searchObj;
       if (this.stageAllConfirm === true) {
         console.log("second confirm is true");
         localStorage.setItem("stage", "all");
-        return window.location.href = config.stagingUrl + "?stage=all";
+        form = document.createElement("form");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", config.stagingUrl + "?stage=all");
+        data = document.createElement("input");
+        data.setAttribute("type", "hidden");
+        searchObj = localStorage.getItem("searchData");
+        data.setAttribute("value", searchObj);
+        data.setAttribute("name", "searchData");
+        form.appendChild(data);
+        document.querySelector("body").appendChild(form);
+        return form.submit();
       } else {
         this.stageButtonText = "OK, continue";
         return this.stageAllConfirm = true;

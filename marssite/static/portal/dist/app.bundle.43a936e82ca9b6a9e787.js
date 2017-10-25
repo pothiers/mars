@@ -82,7 +82,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -380,7 +380,7 @@ Date: 2017-06-09
 Description: Serves functionality for submitting and displaying archive query forms/results
 Original file: search.coffee
  */
-var config, dateLookup, searchFormComponent, validateDependsOn;
+var config, dateLookup, scrollingWatcher, searchFormComponent, validateDependsOn;
 
 
 
@@ -437,6 +437,22 @@ dateLookup = {
   }
 };
 
+scrollingWatcher = function() {
+  var doc, element, elementTop, top;
+  if (document.querySelector("[rel=form-submit]") === null) {
+    return;
+  }
+  doc = document.documentElement;
+  top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
+  element = document.querySelector("[rel=form-submit]");
+  elementTop = element.offsetTop;
+  if (top > elementTop) {
+    return element.classList.add("scroll");
+  } else {
+    return element.classList.remove("scroll");
+  }
+};
+
 searchFormComponent = {
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_coffee__["a" /* default */].mixin],
   created: function() {
@@ -451,6 +467,7 @@ searchFormComponent = {
       this.$emit("displayform", ["results", []]);
     }
     window.base.bindEvents();
+    document.onscroll = scrollingWatcher;
     $("input.date").datepicker({
       changeMonth: true,
       changeYear: true,
@@ -1517,7 +1534,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1768,11 +1785,26 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       document.querySelector("body").appendChild(form);
       return form.submit();
     },
+    cancelStageAll: function() {
+      this.stageButtonText = 'Stage ALL results';
+      return this.stageAllConfirm = false;
+    },
     confirmStage: function() {
+      var data, form, searchObj;
       if (this.stageAllConfirm === true) {
         console.log("second confirm is true");
         localStorage.setItem("stage", "all");
-        return window.location.href = config.stagingUrl + "?stage=all";
+        form = document.createElement("form");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", config.stagingUrl + "?stage=all");
+        data = document.createElement("input");
+        data.setAttribute("type", "hidden");
+        searchObj = localStorage.getItem("searchData");
+        data.setAttribute("value", searchObj);
+        data.setAttribute("name", "searchData");
+        form.appendChild(data);
+        document.querySelector("body").appendChild(form);
+        return form.submit();
       } else {
         this.stageButtonText = "OK, continue";
         return this.stageAllConfirm = true;
@@ -2077,13 +2109,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.confirmStage
     }
-  }, [_vm._v(_vm._s(_vm.stageButtonText))]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.stageButtonText))]), _vm._v(" "), (_vm.stageAllConfirm) ? _c('div', {
     staticClass: "text-small help-block"
-  }, [(_vm.stageAllConfirm) ? _c('span', {
+  }, [_c('span', {
     staticClass: "text-danger"
-  }, [_vm._v("You are about to stage "), _c('strong', [_vm._v("ALL")]), _vm._v(" results. "), _c('strong', [_vm._v("Click again to confirm")])]) : _vm._e(), _vm._v(" "), (_vm.stageAllConfirm) ? _c('span', {
+  }, [_vm._v("You are about to stage "), _c('strong', [_vm._v("ALL")]), _vm._v(" results. "), _c('strong', [_vm._v("Click again to confirm")])]), _vm._v(" "), (_vm.stageAllConfirm) ? _c('span', {
     staticClass: "label label-primary"
-  }, [_vm._v(_vm._s(_vm.results.meta.total_count) + " files")]) : _vm._e()])])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
+  }, [_vm._v(_vm._s(_vm.results.meta.total_count) + " files")]) : _vm._e(), _vm._v(" | "), _c('button', {
+    staticClass: "btn btn-default btn-small",
+    on: {
+      "click": _vm.cancelStageAll
+    }
+  }, [_vm._v("Cancel")])]) : _vm._e()])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _vm._l((_vm.visibleColumns), function(col) {
     return _c('th', [_c("table-header", {

@@ -58,9 +58,9 @@
 
                               <button class="btn btn-default" v-bind:disabled="selected.length == 0" v-on:click="stageSelected">Stage selected files</button>
                               <button class="btn btn-default" v-bind:class="{ 'btn-danger' : stageAllConfirm }" v-on:click="confirmStage">{{ stageButtonText }}</button>
-                          <div class="text-small help-block">
-                            <span class="text-danger" v-if="stageAllConfirm">You are about to stage <strong>ALL</strong> results. <strong>Click again to confirm</strong></span>
-                              <span class="label label-primary" v-if="stageAllConfirm">{{ results.meta.total_count }} files</span>
+                          <div class="text-small help-block" v-if="stageAllConfirm" >
+                              <span class="text-danger">You are about to stage <strong>ALL</strong> results. <strong>Click again to confirm</strong> </span>
+                              <span class="label label-primary" v-if="stageAllConfirm">{{ results.meta.total_count }} files</span> | <button class="btn btn-default btn-small" v-on:click="cancelStageAll">Cancel</button>
                           </div>
                           </div>
                       </div>

@@ -87,7 +87,30 @@
                     </div>
                 </div>
             </div>
+            <div class="row" v-if="!loading">
+                <div class="col-xs-12">
+                    <h2>Done Staging Files</h2>
+                    <h5>Please see downloading instructions for accessing your files.</h5>
+                    <div class=" col-xs-12 col-md-6 ">
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading">
+                                <div class="panel-title">File statistics</div>
+                            </div>
+                            <div class="panel-body">
+                                <ul class="list-unstyled">
+                                    <li>Total files staged: <span>{{totalfiles}}</span></li>
+                                    <li>Missing files: <span>{{missingfiles.length}}</span></li>
+                                    <ol v-if="missingfiles.length > 0" v-for="file in missingfiles">
+                                        {{ file }}
+                                    </ol>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
         <div class="container" v-if="!stagingAllFiles">
             <div class="row">
                 <div class="col-xs-12">

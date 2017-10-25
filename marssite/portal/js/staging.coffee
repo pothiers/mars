@@ -25,6 +25,8 @@ stagingComponent = {
         selectAll: false
         results: []
         selected: []
+        totalfiles: 0
+        missingfiles:0
 
   created: ()->
     window.staging = @
@@ -41,17 +43,19 @@ stagingComponent = {
       # show a loading screen
       @stagingAllFiles = true
       @loading = true
-      querydata = localStorage.getItem("searchData")
+      querydata = localStorage.getItem("search")
 
-      
+
       new Ajax
         url: "/portal/stageall/"
         method: "post"
         accept: "json"
-        data: {searchData:JSON.parse(querydata)}
+        data: JSON.parse(querydata)
         success: (data)=>
           console.log "got this data back from the request"
           console.log data
+          @totalfiles = data.total_files
+          @missingfiles = data.missing_files
           @loading = false
         fail: (statusMsg, status, xhr)->
           console.log "ajax failed"
@@ -102,7 +106,7 @@ stagingComponent = {
           console.log data
         fail: (statusmsg, status, xhr)->
           console.log "request failed"
-      ###    
+      ###
 
 
     downloadSelected: ()->

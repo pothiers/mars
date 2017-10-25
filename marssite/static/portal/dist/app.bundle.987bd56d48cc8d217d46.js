@@ -82,7 +82,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1534,7 +1534,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -2109,7 +2109,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "text-small help-block"
   }, [(_vm.stageAllConfirm) ? _c('span', {
     staticClass: "text-danger"
-  }, [_vm._v("You are about to stage "), _c('strong', [_vm._v("ALL")]), _vm._v(" results. "), _c('strong', [_vm._v("Click again to confirm")])]) : _vm._e(), _vm._v(" "), (_vm.stageAllConfirm) ? _c('span', {
+  }, [_vm._v("You are about to stage "), _c('strong', [_vm._v("ALL")]), _vm._v(" results. "), _c('strong', [_vm._v("Click again to confirm")]), _vm._v(" | "), _c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.cancelStageAll
+    }
+  }, [_vm._v("Cancel")])]) : _vm._e(), _vm._v(" "), (_vm.stageAllConfirm) ? _c('span', {
     staticClass: "label label-primary"
   }, [_vm._v(_vm._s(_vm.results.meta.total_count) + " files")]) : _vm._e()])])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
     staticClass: "results"

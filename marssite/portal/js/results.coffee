@@ -81,6 +81,10 @@ export default {
       document.querySelector("body").appendChild(form)
       form.submit()
 
+    cancelStageAll:()->
+      @stageButtonText = 'Stage ALL results'
+      @stageAllConfirm = false
+
     confirmStage: ()->
       if @stageAllConfirm is true
         # this is second click, stage all files
@@ -98,7 +102,7 @@ export default {
         document.querySelector("body").appendChild(form)
         form.submit()
         #window.location.href=config.stagingUrl+"?stage=all"
-      
+
       else
         # first click, ask for confirmation
         @stageButtonText = "OK, continue"
