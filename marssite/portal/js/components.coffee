@@ -31,12 +31,15 @@ Vue.component "table-row",
     return
       isSelected: false
   created: ()->
+    bus.$on "selectrow", (_row)=>
+      if _row.reference == @row.reference
+        this.isSelected = true
     bus.$on "toggleselected", (onoff)=>
       this.isSelected = onoff
   methods:
-    selectRow: ()->
+    selectRow: (event)->
       this.isSelected = !this.isSelected
-      bus.$emit("rowselected", {isSelected:this.isSelected, row:this.row, vueobject:this})
+      bus.$emit("rowselected", {isSelected:this.isSelected, row:this.row, vueobject:this, event:event})
 
 Vue.component "table-body",
    props: ['data', 'visibleCols']

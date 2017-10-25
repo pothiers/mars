@@ -40,6 +40,7 @@ export default {
       recordsTo: 100
       results: []
       selected: []
+      lastSelected: null
       searchObj: JSON.parse(localStorage.getItem('search'))
       totalItems: 0
       toggle: false
@@ -155,6 +156,31 @@ export default {
       # if checked, push on the selected queue
       if data.isSelected
         @selected.push(data.row)
+        if data.event.shiftKey
+          prevIdx = null
+          curIdx = null
+          for obj,idx in @results.resultset
+            if obj == data.row
+              curIdx = idx
+              break
+          for obj, idx in @results.resultset
+            if obj == @lastSelected
+              prevIdx = idx
+              break
+
+          for idx in [prevIdx..curIdx]
+            row = @results.resultset[idx]
+            alreadySelected = false
+            for sel in @selected
+              if row.reference is sel.reference
+                alreadySelected = true
+                break
+
+            if alreadySelected is false
+              bus.$emit("selectrow",row )
+              @selected.push(row)
+
+        @lastSelected = data.row
       else
       # else find & remove from selected queue
         index = _.indexOf(@selected, data.row)

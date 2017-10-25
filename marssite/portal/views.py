@@ -68,8 +68,21 @@ def _linkfile(fname, uname):
         pass
     return fname
 
+def dirSorter(elem):
+    dir = elem.split("_")
+    if len(dir) < 2:
+        return 0
+    if dir[1].isdigit() == False:
+        return 0
+    return int(dir[1])
+
 def getUserName():
-    return "user_123"
+    dirs = os.listdir("/srv/ftp/anon")
+    topdir = sorted(dirs, key=dirSorter, reverse=True)[0]
+    nextdir = int(topdir.split("_")[1])
+
+    name = "user_{}".format(nextdir + 1)
+    return name
 
 @csrf_exempt
 def downloadselected(request):
