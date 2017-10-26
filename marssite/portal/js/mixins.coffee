@@ -96,12 +96,15 @@ export default {
           else
             page = localStorage.getItem("currentPage")
 
+
           newFormData = @stripData()
           msgs = @config.loadingMessages
           message = Math.floor(Math.random()*msgs.length)
           @loadingMessage = msgs[message]
           self = @
           url = @config.apiUrl+"?page=#{page}"
+          # Save a copy of the clean data
+          localStorage.setItem("search", JSON.stringify(newFormData))
           new Ajax
             url: url
             method: "post"

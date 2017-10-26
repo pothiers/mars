@@ -82,7 +82,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1534,7 +1534,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1734,6 +1734,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       recordsTo: 100,
       results: [],
       selected: [],
+      lastSelected: null,
       searchObj: JSON.parse(localStorage.getItem('search')),
       totalItems: 0,
       toggle: false,
@@ -1875,10 +1876,46 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
     })(this));
     bus.$on("rowselected", (function(_this) {
       return function(data) {
-        var index;
-        console.dir(data);
+        var alreadySelected, curIdx, i, idx, index, j, k, l, len, len1, len2, obj, prevIdx, ref, ref1, ref2, ref3, ref4, row, sel;
         if (data.isSelected) {
-          return _this.selected.push(data.row);
+          _this.selected.push(data.row);
+          if (data.event.shiftKey) {
+            prevIdx = null;
+            curIdx = null;
+            ref = _this.results.resultset;
+            for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
+              obj = ref[idx];
+              if (obj === data.row) {
+                curIdx = idx;
+                break;
+              }
+            }
+            ref1 = _this.results.resultset;
+            for (idx = j = 0, len1 = ref1.length; j < len1; idx = ++j) {
+              obj = ref1[idx];
+              if (obj === _this.lastSelected) {
+                prevIdx = idx;
+                break;
+              }
+            }
+            for (idx = k = ref2 = prevIdx, ref3 = curIdx; ref2 <= ref3 ? k <= ref3 : k >= ref3; idx = ref2 <= ref3 ? ++k : --k) {
+              row = _this.results.resultset[idx];
+              alreadySelected = false;
+              ref4 = _this.selected;
+              for (l = 0, len2 = ref4.length; l < len2; l++) {
+                sel = ref4[l];
+                if (row.reference === sel.reference) {
+                  alreadySelected = true;
+                  break;
+                }
+              }
+              if (alreadySelected === false) {
+                bus.$emit("selectrow", row);
+                _this.selected.push(row);
+              }
+            }
+          }
+          return _this.lastSelected = data.row;
         } else {
           index = _.indexOf(_this.selected, data.row);
           return _this.selected.splice(index, 1);
@@ -1958,6 +1995,13 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
     };
   },
   created: function() {
+    bus.$on("selectrow", (function(_this) {
+      return function(_row) {
+        if (_row.reference === _this.row.reference) {
+          return _this.isSelected = true;
+        }
+      };
+    })(this));
     return bus.$on("toggleselected", (function(_this) {
       return function(onoff) {
         return _this.isSelected = onoff;

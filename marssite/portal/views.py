@@ -15,6 +15,7 @@ import zipfile
 import os
 import json
 import requests
+import logging
 """
 Assume there are some mount points on this machine
 one will have the archive files
@@ -24,6 +25,7 @@ This needs to get a list of files (selected by the user) and create
 relative os.symlinks from the archive to the ftp directory owned by the user
 """
 
+logger = logging.getLogger(__name__)
 ftpdirs = "/srv/ftp"
 nfsmount = "/srv/ftp/nfsmount"
 ftppasswd = "/srv/ftp/ftp-passwd/pureftpd.passwd"
@@ -51,8 +53,6 @@ def _linkfile(fname, uname):
             if os.path.isdir(storagepath) == False:
                 os.mkdir(storagepath)
 
-        print("Final storagepath is {}".format(storagepath))
-        print("About to write to {}".format(filepath))
         f= open(filepath, 'w')
         f.write("the filename is {}".format(nfspath))
 
@@ -76,12 +76,19 @@ def dirSorter(elem):
         return 0
     return int(dir[1])
 
-def getUserName():
+def getUserName(request):
+    if request.session.get('username', False):
+        return request.session['username']
     dirs = os.listdir("/srv/ftp/anon")
-    topdir = sorted(dirs, key=dirSorter, reverse=True)[0]
-    nextdir = int(topdir.split("_")[1])
-
+    if len(dirs) == 0:
+        nextdir = 0
+    else:
+        topdir = sorted(dirs, key=dirSorter, reverse=True)[0]
+        nextdir = int(topdir.split("_")[1])
+   
     name = "user_{}".format(nextdir + 1)
+    logger.info("STAGING:NEWUSERCREATED:{}".format(name))
+    request.session['username'] = name
     return name
 
 @csrf_exempt
@@ -91,7 +98,7 @@ def downloadselected(request):
         data = json.loads(request.POST.get("selected","[]"))
         # create a zip for download
         # limit to 10 files
-
+        logger.info("STAGING:DOWNLOAD:{} Files requested:{}".format(len(data), getUserName(request)))
         tmp = tempfile.TemporaryFile()
         zf = zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED)
         for f in data[:10]:
@@ -103,10 +110,10 @@ def downloadselected(request):
         size = tmp.tell()
         tmp.seek(0)
         response = HttpResponse(tmp, content_type="application/zip")
-        response['Content-Disposition'] = "attachement; filename={}".format(getUserName()+".zip")
+        response['Content-Disposition'] = "attachement; filename={}".format(getUserName(request)+".zip")
         response['Content-Length'] = size
 
-        response['X-Accel-Redirect'] = getUserName()+".zip"
+        response['X-Accel-Redirect'] = getUserName(request)+".zip"
         return response
 
     else:
@@ -177,7 +184,7 @@ def staging(request):
         if len(fileList) > 0:
             data = json.loads(fileList)
             for record in data:
-                _linkfile(record['reference'], "user_123")
+                _linkfile(record['reference'], getUserName(request))
         else:
             response = render_to_response('500.html', {"message":"No files were selected"},
                                     context_instance=RequestContext(request))
@@ -207,7 +214,7 @@ def stageall(request):
     fnames = dal.views.get_all_filenames_for_query(postdata)
     stagedfiles = []
     for ref in fnames:
-       file = _linkfile(ref, getUserName())
+       file = _linkfile(ref, getUserName(request))
        if file:
            stagedfiles.append(file)
 
