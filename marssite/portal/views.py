@@ -27,7 +27,7 @@ relative os.symlinks from the archive to the ftp directory owned by the user
 
 logger = logging.getLogger(__name__)
 ftpdirs = "/srv/ftp"
-nfsmount = "/srv/ftp/nfsmount"
+nfsmount = "" # used to map the nfs dir, but this should be mounted at the default location
 ftppasswd = "/srv/ftp/ftp-passwd/pureftpd.passwd"
 dev = True if os.environ['ENVIRONMENT'] == "dev" else False
 
@@ -85,7 +85,7 @@ def getUserName(request):
     else:
         topdir = sorted(dirs, key=dirSorter, reverse=True)[0]
         nextdir = int(topdir.split("_")[1])
-   
+
     name = "user_{}".format(nextdir + 1)
     logger.info("STAGING:NEWUSERCREATED:{}".format(name))
     request.session['username'] = name

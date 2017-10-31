@@ -64,7 +64,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/web/mars/marssite/portal/vue/Staging.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Staging.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Staging.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -95,6 +95,9 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_staging_coffee__ = __webpack_require__(25);
+//
+//
+//
 //
 //
 //
@@ -497,9 +500,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.downloadSelected
     }
-  }, [_vm._v("Download Selected")]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-default"
-  }, [_vm._v("Download All")])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Download Selected")]), _vm._v(" "), _c('p', {
+    staticClass: "help-block hint"
+  }, [_vm._v("\n                  Up to 10 files may be downloaded at a time\n              ")])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-12"

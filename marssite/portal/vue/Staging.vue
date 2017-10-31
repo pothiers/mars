@@ -127,7 +127,10 @@
                     </label>
                 </div>
                 <div class="text-right col-xs-6">
-                  <button class="btn btn-default" v-on:click="downloadSelected"  v-bind:disabled="selected.length == 0">Download Selected</button> <button class="btn btn-default">Download All</button>
+                  <button class="btn btn-default" v-on:click="downloadSelected"  v-bind:disabled="selected.length == 0">Download Selected</button>
+                  <p class="help-block hint">
+                      Up to 10 files may be downloaded at a time
+                  </p>
                 </div>
             </div>
 
