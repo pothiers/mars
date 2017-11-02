@@ -80,17 +80,7 @@ INSTALLED_APPS = (
 
 
 
-#! MIDDLEWARE_CLASSES = (
-#!     'django.contrib.sessions.middleware.SessionMiddleware',
-#!     'django.middleware.common.CommonMiddleware',
-#!     'django.middleware.csrf.CsrfViewMiddleware',
-#!     'django.contrib.auth.middleware.AuthenticationMiddleware',
-#!     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-#!     'django.contrib.messages.middleware.MessageMiddleware',
-#!     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-#!     'django.middleware.security.SecurityMiddleware',
-#!     'django.contrib.admindocs.middleware.XViewMiddleware',
-#! )
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -207,22 +197,25 @@ if 'TRAVIS' not in os.environ:
                 'level': 'INFO',
                 'formatter': 'precise',
                 'filename': '/var/log/mars/mars.log',
-                #! 'maxBytes': 10000000,
-                #! 'backupCount': 5,
+                #'maxBytes': '16777216',
+                #'backupCount': '5',
             },
             'debugfile': {
                 'class' : 'logging.FileHandler',
                 'level': 'DEBUG',
                 'formatter': 'precise',
                 'filename': '/var/log/mars/mars-detail.log',
-                #! 'maxBytes': 10000000,
-                #! 'backupCount': 5,
+                #'maxBytes': '16777216',
+                #'backupCount': '5',
             },
-            #!'django.server': {
-            #!    'level': 'INFO',
-            #!    'class': 'logging.StreamHandler',
-            #!    'formatter': 'django.server',
-            #!},
+           'django.server': {
+                'level': 'INFO',
+                'class': 'logging.FileHandler',
+                'formatter': 'brief',
+                'filename':'/var/log/mars/console.log',
+                #'maxBytes':'16777216',
+                #'backupCount':'2'
+            },
         },
         'root': {
             'handlers': ['file', 'debugfile'],

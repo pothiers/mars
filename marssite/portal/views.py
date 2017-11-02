@@ -27,7 +27,11 @@ relative os.symlinks from the archive to the ftp directory owned by the user
 
 logger = logging.getLogger(__name__)
 ftpdirs = "/srv/ftp"
-nfsmount = "" # used to map the nfs dir, but this should be mounted at the default location
+
+# This is where the nfs mount exists inside this container/vm etc.
+# the path returned for each archive resource needs to be changed
+# to check if the file exists etc
+nfsmount = ""
 ftppasswd = "/srv/ftp/ftp-passwd/pureftpd.passwd"
 dev = True if os.environ['ENVIRONMENT'] == "dev" else False
 
@@ -39,15 +43,15 @@ def _linkfile(fname, uname):
     if os.path.isdir(userdir) == False:
         os.mkdir(userdir)
     nfspath = queries.get_fits_location(fname)
-    filepath = os.path.join(ftpdirs,'nfsmount')
-    filepath +=  nfspath
+    filepath = nfsmount + nfspath
 
     # make the file for testing
     if dev:
         # create directories if not already made
-        dirs = os.path.dirname(nfspath).split("/")
-        dirs = dirs[1:]
-        storagepath = os.path.join(ftpdirs,"nfsmount")
+        dirs = os.path.dirname(nfspath).split("/")[1:]
+        dirs.insert(0, "/")
+        storagepath = nfsmount
+        logger.debug("ooooo Making temp dev file in: {}".format(nfspath))
         for dr in dirs:
             storagepath = os.path.join(storagepath,dr)
             if os.path.isdir(storagepath) == False:
@@ -58,11 +62,12 @@ def _linkfile(fname, uname):
 
         # adjust the actual file pathname location to match mounted location
         f.close()
+        logger.debug("----- file made")
     try:
-        if False == os.path.isfile("/srv/ftp/nfsmount{}".format(nfspath)):
+        if False == os.path.isfile(nfsmount + nfspath):
             missingFiles.append(fname)
             return False
-        os.symlink("../../nfsmount{}".format(nfspath), "{}/{}".format(userdir,fname))
+        os.symlink(nfsmount + nfspath, "{}/{}".format(userdir,fname))
     except:
         # error is always present, not sure why...
         pass
@@ -98,8 +103,8 @@ def downloadselected(request):
         data = json.loads(request.POST.get("selected","[]"))
         # create a zip for download
         # limit to 10 files
-        logger.info("STAGING:DOWNLOAD:{} Files requested:{}".format(len(data), getUserName(request)))
-        tmp = tempfile.TemporaryFile()
+        logger.debug("STAGING:DOWNLOAD:{} Files requested:{}".format(len(data), getUserName(request)))
+        tmp = tempfile.NamedTemporaryFile()
         zf = zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED)
         for f in data[:10]:
             fpath = nfsmount+queries.get_fits_location(f['file']['reference'])
@@ -113,7 +118,7 @@ def downloadselected(request):
         response['Content-Disposition'] = "attachement; filename={}".format(getUserName(request)+".zip")
         response['Content-Length'] = size
 
-        response['X-Accel-Redirect'] = getUserName(request)+".zip"
+        response['X-Accel-Redirect'] = os.path.join("/download/zip", os.path.basename(tmp.name))
         return response
 
     else:
@@ -129,13 +134,13 @@ def downloadselected(request):
 
 def downloadsinglefile(request):
     filename = request.GET.get('f', '')
-    filepath = os.path.join(ftpdirs, 'nfsmount' )
+    filepath = nfsmount
     filepath += queries.get_fits_location(filename)
-    response = HttpResponse(filepath,content_type='application/force-download') # mimetype is replaced by content_type for django 1.7
+    response = HttpResponse(content_type='application/force-download') # mimetype is replaced by content_type for django 1.7
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
-    response['X-Accel-Redirect'] = filename
+    response['Content-Length'] = os.path.getsize(filename)
+    response['X-Accel-Redirect'] = "/archive/"+strfilename.replace("/net/archive/mtn", "")
     # It's usually a good idea to set the 'Content-Length' header too.
-    # You can also set any other required headers: Cache-Control, etc.
     return response
 
 # create the lookup paths for the various js resources
