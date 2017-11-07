@@ -104,7 +104,7 @@ def downloadselected(request):
         # create a zip for download
         # limit to 10 files
         logger.debug("STAGING:DOWNLOAD:{} Files requested:{}".format(len(data), getUserName(request)))
-        tmp = tempfile.NamedTemporaryFile()
+        tmp = tempfile.NamedTemporaryFile(delete=False)
         zf = zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED)
         for f in data[:10]:
             fpath = nfsmount+queries.get_fits_location(f['file']['reference'])
@@ -114,7 +114,9 @@ def downloadselected(request):
 
         size = tmp.tell()
         tmp.seek(0)
-        response = HttpResponse(tmp, content_type="application/zip")
+        os.chmod(tmp.name, 0o666)
+        logger.debug("STAGING:ZIPFILE:{}".format(", ".join(os.listdir("/tmp"))))
+        response = HttpResponse("", content_type="application/zip")
         response['Content-Disposition'] = "attachement; filename={}".format(getUserName(request)+".zip")
         response['Content-Length'] = size
 
