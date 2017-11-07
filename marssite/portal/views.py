@@ -38,7 +38,7 @@ dev = True if os.environ['ENVIRONMENT'] == "dev" else False
 missingFiles = []
 
 
-def _linkfile(fname, uname):
+def _link_file(fname, uname):
     userdir = os.path.join(ftpdirs, 'anon', uname)
     if os.path.isdir(userdir) == False:
         os.mkdir(userdir)
@@ -47,22 +47,7 @@ def _linkfile(fname, uname):
 
     # make the file for testing
     if dev:
-        # create directories if not already made
-        dirs = os.path.dirname(nfspath).split("/")[1:]
-        dirs.insert(0, "/")
-        storagepath = nfsmount
-        logger.debug("ooooo Making temp dev file in: {}".format(nfspath))
-        for dr in dirs:
-            storagepath = os.path.join(storagepath,dr)
-            if os.path.isdir(storagepath) == False:
-                os.mkdir(storagepath)
-
-        f= open(filepath, 'w')
-        f.write("the filename is {}".format(nfspath))
-
-        # adjust the actual file pathname location to match mounted location
-        f.close()
-        logger.debug("----- file made")
+        _make_dev_file(filepath)
     try:
         if False == os.path.isfile(nfsmount + nfspath):
             missingFiles.append(fname)
@@ -73,7 +58,28 @@ def _linkfile(fname, uname):
         pass
     return fname
 
-def dirSorter(elem):
+
+def _make_dev_file(filepath):
+    # create directories if not already made
+    dirs = os.path.dirname(filepath).split("/")[1:]
+    dirs.insert(0, "/")
+    storagepath = nfsmount
+    logger.debug("STAGING:Making temp dev file in: {}".format(filepath))
+    for dr in dirs:
+        storagepath = os.path.join(storagepath,dr)
+        if os.path.isdir(storagepath) == False:
+            os.mkdir(storagepath)
+
+    f= open(filepath, 'w')
+    f.write("the filename is {}".format(filepath))
+
+    # adjust the actual file pathname location to match mounted location
+    f.close()
+    logger.debug("----- file made")
+
+
+
+def dir_sorter(elem):
     dir = elem.split("_")
     if len(dir) < 2:
         return 0
@@ -81,14 +87,14 @@ def dirSorter(elem):
         return 0
     return int(dir[1])
 
-def getUserName(request):
+def get_user_name(request):
     if request.session.get('username', False):
         return request.session['username']
     dirs = os.listdir("/srv/ftp/anon")
     if len(dirs) == 0:
         nextdir = 0
     else:
-        topdir = sorted(dirs, key=dirSorter, reverse=True)[0]
+        topdir = sorted(dirs, key=dir_sorter, reverse=True)[0]
         nextdir = int(topdir.split("_")[1])
 
     name = "user_{}".format(nextdir + 1)
@@ -97,13 +103,13 @@ def getUserName(request):
     return name
 
 @csrf_exempt
-def downloadselected(request):
+def download_selected(request):
     message = ""
     if len(request.body) > 0:
         data = json.loads(request.POST.get("selected","[]"))
         # create a zip for download
         # limit to 10 files
-        logger.debug("STAGING:DOWNLOAD:{} Files requested:{}".format(len(data), getUserName(request)))
+        logger.debug("STAGING:DOWNLOAD:{} Files requested:{}".format(len(data), get_user_name(request)))
         tmp = tempfile.NamedTemporaryFile(delete=False)
         zf = zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED)
         for f in data[:10]:
@@ -117,7 +123,7 @@ def downloadselected(request):
         os.chmod(tmp.name, 0o666)
         logger.debug("STAGING:ZIPFILE:{}".format(", ".join(os.listdir("/tmp"))))
         response = HttpResponse("", content_type="application/zip")
-        response['Content-Disposition'] = "attachement; filename={}".format(getUserName(request)+".zip")
+        response['Content-Disposition'] = "attachement; filename={}".format(get_user_name(request)+".zip")
         response['Content-Length'] = size
 
         response['X-Accel-Redirect'] = os.path.join("/download/zip", os.path.basename(tmp.name))
@@ -134,19 +140,21 @@ def downloadselected(request):
     # directory
     return JsonResponse({'message':'ok', 'status':'ok'})
 
-def downloadsinglefile(request):
+def download_single_file(request):
     filename = request.GET.get('f', '')
     filepath = nfsmount
     filepath += queries.get_fits_location(filename)
-    response = HttpResponse(content_type='application/force-download') # mimetype is replaced by content_type for django 1.7
+    logger.debug("STAGING:DOWNLOADSIGNLEFILE:{}".format(filepath))
+    if dev:
+        _make_dev_file(filepath)
+    response = HttpResponse('',content_type='application/force-download')
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
-    response['Content-Length'] = os.path.getsize(filename)
-    response['X-Accel-Redirect'] = "/archive/"+strfilename.replace("/net/archive/mtn", "")
-    # It's usually a good idea to set the 'Content-Length' header too.
+    response['Content-Length'] = os.path.getsize(filepath)
+    response['X-Accel-Redirect'] = "/download/archive/"+filepath.replace("/net/archive/mtn", "")
     return response
 
 # create the lookup paths for the various js resources
-def _getResources(appname):
+def _get_resources(appname):
     # get the resource names for html
     curdir = os.path.dirname(__file__)
     resPath = os.path.join(curdir,"../static/portal/dist")
@@ -166,7 +174,7 @@ def _getResources(appname):
     return r
 
 def search(request):
-    r = _getResources("app.bundle")
+    r = _get_resources("app.bundle")
     return render(request, "search.html", {"jsResources":r })
 
 """
@@ -191,7 +199,7 @@ def staging(request):
         if len(fileList) > 0:
             data = json.loads(fileList)
             for record in data:
-                _linkfile(record['reference'], getUserName(request))
+                _link_file(record['reference'], get_user_name(request))
         else:
             response = render_to_response('500.html', {"message":"No files were selected"},
                                     context_instance=RequestContext(request))
@@ -199,7 +207,7 @@ def staging(request):
             return response
 
 
-    r = _getResources("staging.bundle")
+    r = _get_resources("staging.bundle")
 
     return render(request, "staging.html", {'jsResources':r})
 
@@ -221,7 +229,7 @@ def stageall(request):
     fnames = dal.views.get_all_filenames_for_query(postdata)
     stagedfiles = []
     for ref in fnames:
-       file = _linkfile(ref, getUserName(request))
+       file = _link_file(ref, get_user_name(request))
        if file:
            stagedfiles.append(file)
 
