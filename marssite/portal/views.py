@@ -6,6 +6,7 @@ from django.conf import settings
 from shutil import copyfile
 from os import path
 from siap import queries
+from .imports import utils
 import datetime
 import tempfile
 import dal
@@ -16,6 +17,7 @@ import os
 import json
 import requests
 import logging
+
 """
 Assume there are some mount points on this machine
 one will have the archive files
@@ -39,9 +41,9 @@ missingFiles = []
 
 
 def _link_file(fname, uname):
-    userdir = os.path.join(ftpdirs, 'anon', uname)
-    if os.path.isdir(userdir) == False:
-        os.mkdir(userdir)
+    # userdir = os.path.join(ftpdirs, 'anon', uname)
+    # if os.path.isdir(userdir) == False:
+    os.mkdir(userdir)
     nfspath = queries.get_fits_location(fname)
     filepath = nfsmount + nfspath
 
