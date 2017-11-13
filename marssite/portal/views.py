@@ -41,9 +41,9 @@ missingFiles = []
 
 
 def _link_file(fname, uname):
-    # userdir = os.path.join(ftpdirs, 'anon', uname)
-    # if os.path.isdir(userdir) == False:
-    os.mkdir(userdir)
+    userdir = os.path.join(ftpdirs, 'anon', uname)
+    if os.path.isdir(userdir) == False:
+        os.mkdir(userdir)
     nfspath = queries.get_fits_location(fname)
     filepath = nfsmount + nfspath
 
