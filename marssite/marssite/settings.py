@@ -74,8 +74,8 @@ INSTALLED_APPS = (
     'rest_framework_swagger',
     'django_tables2',
     'audit',  # tada audit/status REST API
-    'users', # LDAP admin
-    'ldapdb',
+    #'users', # LDAP admin
+    #'ldapdb',
 )
 
 
