@@ -21,6 +21,9 @@
                         <span class="fa fa-spinner fa-spin fa-1x fa-fw" v-if="isLoading"></span>
                    </div>
                     <div class="col-sm-7 ">
+                        <ul class="list-unstyled">
+                            <li><button class="btn btn-link" v-on:click="toggleFilters"><span class="fa fa-filter"></span> Toggle Filters</button></li>
+                        </ul>
                         <!--control button/dropdown placeholder-->
                     </div>
                 </div>
@@ -31,10 +34,25 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-xs-12 results-wrapper">
+                    <div class="col-md-3 col-xs-12 results-filters" v-if="filtersVisible">
+                       <h3>Filter results by:</h3>
+                       <ul class="list-group">
+                           <li class="list-group-item"><button class="btn btn-link">Proposal ID</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Survey ID</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">PI</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Telescope</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Intrument</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Filter</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Observation Type</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Observation Mode</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Processing</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Product</button></li>
+                       </ul> 
+                    </div> 
+                    <div class="col-xs-12 results-wrapper" v-bind:class="{'col-md-9':filtersVisible}" >
                         <div class="collapsible">
 
-                            <div class="filters panel panel-default">
+                            <div class="column-toggle panel panel-default">
                                 <div class="panel-heading section-heading clearfix">
                                     <strong class="">Toggle visibility of columns
                                     </strong>

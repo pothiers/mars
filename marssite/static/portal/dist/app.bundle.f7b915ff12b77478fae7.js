@@ -82,7 +82,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1534,7 +1534,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/mars/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1564,6 +1564,21 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_coffee__ = __webpack_require__(15);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2092,11 +2107,35 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-12 results-wrapper"
+    staticClass: "col-md-3 col-xs-12 results-filters"
+  }, [_c('h3', [_vm._v("Filter results by:")]), _vm._v(" "), _c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Proposal ID")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Survey ID")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("PI")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Telescope")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Intrument")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Filter")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Observation Type")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Observation Mode")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Processing")])]), _vm._v(" "), _c('li', [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Product")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-9 col-xs-12 results-wrapper"
   }, [_c('div', {
     staticClass: "collapsible"
   }, [_c('div', {
-    staticClass: "filters panel panel-default"
+    staticClass: "column-toggle panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading section-heading clearfix"
   }, [_c('strong', {}, [_vm._v("Toggle visibility of columns\n                                ")]), _vm._v(" "), _c('div', {

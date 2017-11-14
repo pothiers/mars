@@ -30,6 +30,7 @@ export default {
     return {
       # This should be set based on some session/local storage set
       visibleColumns : []
+      filtersVisible: false
       allColumns: config.allColumns
       stageAllConfirm: false
       stageButtonText: "Stage ALL results"
@@ -47,6 +48,8 @@ export default {
       error: ""
     }
   methods:
+    toggleFilters: ()->
+      @filtersVisible = !@filtersVisible
     toggleColumn: (column)->
 
       if column.checked
