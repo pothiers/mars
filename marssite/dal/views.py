@@ -10,7 +10,8 @@ from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
 from tada.models import FilePrefix
 
 from . import exceptions as dex
-from .imports import utils
+from . import externals
+from . import utils
 from .serializers import FilePrefixSerializer
 
 dal_version = '0.1.7' # MVP. mostly untested

@@ -116,11 +116,14 @@ proc_LUT = dict(raw = 'raw',
                 image_tiles = 'tiled',
                 sky_subtracted = 'skysub')
 
-###
-# Processing of the query
-#
 def process_query(jsearch, page, page_limit, order_fields):
-
+    """
+    Processing of the query
+        jsearch         - json query
+        page            - natural number index of page
+        page_limit      - limit of results
+        order_fields    - a string of fieldnames to order by: separated by space
+    """
     limit_clause = 'LIMIT {}'.format(page_limit)
     offset = (page-1) * page_limit
     offset_clause = 'OFFSET {}'.format(offset)
@@ -232,13 +235,3 @@ def process_query(jsearch, page, page_limit, order_fields):
     resp.update( meta = meta, resultset = results)
     return resp
 
-def get_all_filenames_for_query(query):
-    # all results
-    files = []
-    # transform the query data into a query object we can process
-    result = process_query(query, 1, 50000, "+reference")
-    resultset = result['resultset']
-    for n in resultset:
-        # check if file exists
-        files.append(n['reference'])
-    return files

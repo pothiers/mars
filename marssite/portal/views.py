@@ -6,10 +6,10 @@ from django.conf import settings
 from shutil import copyfile
 from os import path
 from siap import queries
-from .imports import utils
+from . import utils
 import datetime
 import tempfile
-import dal
+from dal import externals as dalx
 import time
 import hashlib
 import zipfile
@@ -213,6 +213,7 @@ def staging(request):
 
     return render(request, "staging.html", {'jsResources':r})
 
+
 @csrf_exempt
 def stageall(request):
     # get the query used to generate the last result set
@@ -228,7 +229,8 @@ def stageall(request):
 
 
     # create links for the entire result set
-    fnames = dal.views.get_all_filenames_for_query(postdata)
+    # call dal's external...
+    fnames = dalx.get_all_filenames_for_query(postdata)
     stagedfiles = []
     for ref in fnames:
        file = _link_file(ref, get_user_name(request))
