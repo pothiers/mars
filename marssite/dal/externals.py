@@ -1,7 +1,9 @@
 from . import utils
 ######
-#  Provides a library of calls made from external references i.e. not from a http request
-#  Allows for interal access to dal functionality
+#  Provides a library of calls made from external references i.e. not from a http request.
+#  Allows for interal access to dal functionality.
+#
+#  Changes to anything here may REQUIRE CORRESPONDING CHANGE in the calling routing.
 ######
 
 
