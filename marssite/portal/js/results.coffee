@@ -148,6 +148,16 @@ export default {
   mounted:()->
     window.results = @
     console.log "Results mounted"
+    q = localStorage.getItem("search")
+    new Ajax
+      url: window.location.origin+"/dal/get-filters"
+      data: JSON.parse(q)
+      method: "post"
+      accept: "json"
+      success: (data)->
+        console.log "got this for filters", data
+
+
     # listen to bus toggle selected notifications
     bus.$on "toggleselected", (onoff)=>
       if onoff

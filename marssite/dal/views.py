@@ -146,6 +146,15 @@ def tele_inst_pairs(request):
     return JsonResponse([(d['telescope'],d['instrument']) for d in list(serialized.data)],
                          safe=False)
 
+@csrf_exempt
+def get_filters_for_query(query):
+    """
+    Get a list of unique values for the following columns:
+    Proposal Id, Survey Id, PI, Telescope, instrument, filter, observation type,
+    observation mode, processing, product
+    """
+    return HttpResponse("hi")
+    pass
 
 ###
 # API Schema Metadata
