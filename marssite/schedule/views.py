@@ -250,7 +250,7 @@ def setpropid(request, telescope, instrument, date, propid):
         #!    obsdate=date,
         #!    frozen=True)
         #!slot.proposals.add(prop)
-        append_propid(tobj, iobm, date, prop, frozen=True)
+        append_propid(tobj, iobj, date, prop, frozen=True)
     except Exception as err:
         return HttpResponse('ERROR\nCOULD NOT ADD: ({}, {}, {}, {});{}\n'
                             .format(telescope, instrument, date, propid, err),
