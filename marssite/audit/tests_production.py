@@ -1,3 +1,5 @@
+# ./manage.py test --keepdb audit.tests_production audit.tests_operations
+# ./manage.py test --keepdb audit.tests_production.AuditTest.test_update
 from django.test import TestCase, Client
 #from .models import AuditRecord
 
@@ -50,3 +52,28 @@ class AuditTest(TestCase):
                                 .format(md5sum, tag, host))
         #print('response={}'.format(resp.content))
         self.assertContains(resp, 'Updated FSTOP;')
+
+
+    def test_update(self):
+        req =  '''
+        {
+        "telescope": "kp4m",
+        "instrument": "mosaic3",
+        "archerr": "Error (404) in MARS webservice call (http://mars.host:8000/schedule/dbpropid/kp4m/mosaic3/2016-08-18/2016A-0023/); Propid from hdr (2016A-0023) not in scheduled list of Propids ['2012B-0001']; Telescope=kp4m, Instrument=mosaic3, Date=2016-08-18.",
+        "errcode": "NOSCHED",
+        "updated": "2017-11-09T16:15:58.535067",
+        "success": "False",
+        "md5sum": "faux-checksum-NOT_IN_DB",
+        "obsday": "2016-08-18",
+        "srcpath": "/home/mcmanus/Data/Syncnight_Smoke/20160818/kp4m-mosaic3/mos397672.fits",
+        "archfile": "",
+        "metadata": {},
+        "submitted": "2017-11-09T16:15:58.535067"
+        }'''
+        expected = '/audit/update/ DONE. created=True, obj=faux-checksum-NOT_IN_DB'
+        resp = self.client.post('/audit/update/',
+                                content_type='application/json',
+                                data=req  )
+        print('response={}'.format(resp.content))
+        self.assertContains(resp, expected)
+        

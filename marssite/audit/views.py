@@ -300,7 +300,14 @@ def re_audit(request, orig_md5sum, new_md5sum):
 def update(request, format='yaml'):
     """Update audit record"""
     if request.method == 'POST':  
+        all = set([f.name for f in AuditRecord._meta.get_fields()])
         rdict = request.data.copy()
+        rdict['telescope'] = Telescope.objects.get(pk=rdict['telescope'])
+        rdict['instrument'] = Instrument.objects.get(pk=rdict['instrument'])
+
+        logging.debug('uDBG-1')
+        logging.debug('uDBG-rdict={}'.format(rdict))
+        
         md5 = rdict['md5sum']
         #!try:
         #!    obj = AuditRecord.objects.get(md5)
@@ -319,43 +326,52 @@ def update(request, format='yaml'):
         #!                telescope=tobj,
         #!                instrument=iobj,
         #!                srcpath=rdict['srcpath'] )
-        newdefs = dict(submitted=make_aware(dp.parse(rdict['submitted'])),
-                       success=rdict['success'],
-                       fstop=fstop,
-                       errcode=ec.errcode(rdict['archerr']), # rdict['errcode'],
-                       archerr=rdict['archerr'],
-                       archfile=rdict['archfile'],
-                       #!metadata=rdict['metadata'],
-                       updated=make_aware(dp.parse(rdict['updated'])) )
-        logging.debug('newdefs={}'.format(newdefs))
+        #!newdefs = dict(obsday=rdict.get('obsday',now().date()),
+        #!               telescope=tobj,
+        #!               instrument=iobj,
+        #!               srcpath=rdict['srcpath'],
+        #!               #
+        #!               submitted=make_aware(dp.parse(rdict['submitted'])),
+        #!               success=rdict['success'],
+        #!               fstop=fstop,
+        #!               errcode=ec.errcode(rdict['archerr']), # rdict['errcode'],
+        #!               archerr=rdict['archerr'],
+        #!               archfile=rdict['archfile'],
+        #!               #!metadata=rdict['metadata'],
+        #!               updated=make_aware(dp.parse(rdict['updated'])) )
+        logging.debug('uDBG-2')
+        # Create new DB values from request dictionary
+        newdefs = dict()
+        for k in all & rdict.keys() - {'md5sum'}:
+            newdefs[k] = rdict[k]
+        newdefs['fstop'] = 'archive' if rdict.get('success','NA')==True \
+                           else 'valley:cache'
+        if 'submitted' in rdict:
+            newdefs['submitted']=make_aware(dp.parse(rdict['submitted']))
+        if 'archerr' in rdict:
+            newdefs['errcode']=ec.errcode(rdict['archerr'])
+        if 'updated' in rdict:
+            newdefs['updated']=make_aware(dp.parse(rdict['updated']))
+            
+        logging.debug('uDBG-3')
+        logging.debug('uDBG-newdefs={}'.format(newdefs))
 
         #obj,created = AuditRecord.objects.get_or_create(md5sum=md5, defaults=initdefs)
-        obj,created = AuditRecord.objects.update_or_create(md5sum=md5, defaults=newdefs)
+        obj,created = AuditRecord.objects.update_or_create(md5sum=md5,
+                                                           defaults=newdefs)
+        logging.debug('uDBG-4')
 
         if created:
             logging.warning(('WARNING: Ingest requested, '
                    'but there was no previous dome record! '
                    'Adding: {} {}'.format(md5,rdict['srcpath'])))
-        else:
-            #print('Good, audit file already existed.  Updating it.')
-            pass
 
-        #!# Update with new values
-        #!for key,val in newdefs.items():
-        #!    setattr(obj, key, val)
-
-        # DEBUG
-        #!for fname in set(['md5sum']
-        #!                 + list(newdefs.keys())
-        #!                 + list(initdefs.keys())  ):
-        #!    print('DBG: changed attr[{}]={}'
-        #!          .format(fname,getattr(obj,fname)))
         logging.debug('/audit/update/ saving obj={}, attrs={}'.format(obj.md5sum,dir(obj)))
         obj.save()
         #!print('/audit/update/ saved obj={}'.format(obj))
 
-    return HttpResponse ('Update finished. created={}, obj={}\n'
-                         .format(created, obj.md5sum))
+        return HttpResponse ('/audit/update/ DONE. created={}, obj={}'
+                             .format(created, obj.md5sum))
 
 def add_ingested():
     "Update Audit records using matching Ingest records from SIAP"
