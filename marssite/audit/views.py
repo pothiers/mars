@@ -22,7 +22,7 @@ from django.utils.timezone import make_aware, now
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, render_to_response
 from django.views.generic import ListView
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 from django.core import serializers
 from django.db import connection
@@ -353,24 +353,22 @@ def update(request, format='yaml'):
         if 'updated' in rdict:
             newdefs['updated']=make_aware(dp.parse(rdict['updated']))
             
-        logging.debug('uDBG-3')
         logging.debug('uDBG-newdefs={}'.format(newdefs))
-
-        #obj,created = AuditRecord.objects.get_or_create(md5sum=md5, defaults=initdefs)
-        obj,created = AuditRecord.objects.update_or_create(md5sum=md5,
-                                                           defaults=newdefs)
-        logging.debug('uDBG-4')
-
+        try:
+            obj,created = AuditRecord.objects.update_or_create(md5sum=md5,
+                                                               defaults=newdefs)
+        except Exception as err:
+            return HttpResponseBadRequest(err)
+            
         if created:
             logging.warning(('WARNING: Ingest requested, '
                    'but there was no previous dome record! '
                    'Adding: {} {}'.format(md5,rdict['srcpath'])))
 
         logging.debug('/audit/update/ saving obj={}, attrs={}'.format(obj.md5sum,dir(obj)))
-        obj.save()
         #!print('/audit/update/ saved obj={}'.format(obj))
 
-        return HttpResponse ('/audit/update/ DONE. created={}, obj={}'
+        return HttpResponse('/audit/update/ DONE. created={}, obj={}'
                              .format(created, obj.md5sum))
 
 def add_ingested():

@@ -1,5 +1,5 @@
 # ./manage.py test --keepdb audit.tests_production audit.tests_operations
-# ./manage.py test --keepdb audit.tests_production.AuditTest.test_update
+# ./manage.py test --keepdb audit.tests_production.AuditTest.test_update_1
 from django.test import TestCase, Client
 #from .models import AuditRecord
 
@@ -54,7 +54,7 @@ class AuditTest(TestCase):
         self.assertContains(resp, 'Updated FSTOP;')
 
 
-    def test_update(self):
+    def test_update_1(self):
         req =  '''
         {
         "telescope": "kp4m",
@@ -65,7 +65,7 @@ class AuditTest(TestCase):
         "success": "False",
         "md5sum": "faux-checksum-NOT_IN_DB",
         "obsday": "2016-08-18",
-        "srcpath": "/home/mcmanus/Data/Syncnight_Smoke/20160818/kp4m-mosaic3/mos397672.fits",
+        "srcpath": "/Data/Syncnight_Smoke/20160818/kp4m-mosaic3/mos397672.fits",
         "archfile": "",
         "metadata": {},
         "submitted": "2017-11-09T16:15:58.535067"
@@ -77,3 +77,25 @@ class AuditTest(TestCase):
         print('response={}'.format(resp.content))
         self.assertContains(resp, expected)
         
+    def test_update_2(self):
+        req =  '''
+        {
+        "telescope": "kp4m",
+        "instrument": "mosaic3",
+        "archerr": "TOO-LONG.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789.123456789",
+        "errcode": "NOSCHED",
+        "updated": "2017-11-09T16:15:58.535067",
+        "success": "False",
+        "md5sum": "faux-checksum-NOT_IN_DB",
+        "obsday": "2016-08-18",
+        "srcpath": "/home/mcmanus/Data/Syncnight_Smoke/20160818/kp4m-mosaic3/mos397672.fits",
+        "archfile": "",
+        "metadata": {},
+        "submitted": "2017-11-09T16:15:58.535067"
+        }'''
+        expected = 'value too long for type character varying(256)\n'
+        resp = self.client.post('/audit/update/',
+                                content_type='application/json',
+                                data=req  )
+        print('response={}'.format(resp.content))
+        self.assertContains(resp, expected, status_code=400)
