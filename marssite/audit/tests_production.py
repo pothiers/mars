@@ -55,6 +55,7 @@ class AuditTest(TestCase):
 
 
     def test_update_1(self):
+        """Update audit successfully"""
         req =  '''
         {
         "telescope": "kp4m",
@@ -78,6 +79,7 @@ class AuditTest(TestCase):
         self.assertContains(resp, expected)
         
     def test_update_2(self):
+        """Fail to update audit do to bad Request data"""
         req =  '''
         {
         "telescope": "kp4m",

@@ -31,19 +31,11 @@ from natica.models import Site,Telescope,Instrument
 
 
 class AuditRecord(models.Model):
-    # THESE ONLY GET UPDATED when django is started. Use foreign key intead.
-    #!telescopes = [obj.name for obj in Telescope.objects.all()]
-    #!instruments = [obj.name for obj in Instrument.objects.all()]
-
     # Field values provided by DOME
     md5sum = models.CharField(max_length=40, primary_key=True, db_index=True,
                               help_text='MD5SUM of FITS file')
     obsday = models.DateField(null=True, # allow no Dome info, only Submit
                               help_text='Observation Day')
-#!    telescope = models.CharField(max_length=10, # default='unknown',
-#!                                 choices=[(val,val) for val in telescopes] )
-#!    instrument = models.CharField(max_length=25, # default='unknown',
-#!                                 choices=[(val,val) for val in instruments] )
     telescope = models.ForeignKey(Telescope)
     instrument = models.ForeignKey(Instrument)    
     srcpath = models.CharField(max_length=256, 
