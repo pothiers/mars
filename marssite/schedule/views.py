@@ -339,7 +339,11 @@ def dbpropid(request, telescope, instrument, date, hdrpid):
             logging.warning(
                 'Found multiple propids {} for non-split. Use first ({}); {}'
                 .format(','.join(pids), dtpropid, slottuple))
-        
+        else:
+            logging.warning(
+                'Using Schedule pid ({}) instead of Hdr () for: {}'
+                .format(pids[0], dtpropid, slottuple))
+            
     logging.debug('dtpropid={}'.format(dtpropid))
     return HttpResponse(dtpropid, content_type='text/plain')
     
