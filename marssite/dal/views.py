@@ -153,7 +153,7 @@ def get_filters_for_query(query):
     Proposal Id, Survey Id, PI, Telescope, instrument, filter, observation type,
     observation mode, processing, product
     """
-    return HttpResponse("hi")
+    return JsonResponse([], safe=False)
     pass
 
 ###
