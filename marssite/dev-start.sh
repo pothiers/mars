@@ -3,7 +3,7 @@
 #LOG=$HOME/mars.log
 LOG=/var/log/mars/server.log
 
-pkill -f gunicorn
+#pkill -f gunicorn
 
 pushd /sandbox/mars/marssite
 # NB: "unbuffer" is a small script that comes with the "excpect" package

@@ -138,9 +138,8 @@ class ScheduleTest(TestCase):
     ###
     ### 1.   No Slot                                   => REJECT
     ### 2.   Slot with no propids (null list)          => REJECT
-    ### 3.1  slot cnt <> 0, split=True, HdrPid not in Slot => REJECT
-    ### 3.2  slot cnt <> 0, split=True, HdrPid in Slot => HdrPid
-
+    ### 3.1  slot cnt <> 0, split=True, HdrPid NOT in Slot => REJECT
+    ### 3.2  slot cnt <> 0, split=True, HdrPid IS in Slot => HdrPid
     ### 4.   slot cnt == 1, split=False                => slot[0]
     ### 5.   slot cnt >  1, split=False                => slot[0], WARN multipid
 
