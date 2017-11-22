@@ -47,8 +47,8 @@
                            <li class="list-group-item"><button class="btn btn-link">Observation Mode</button></li>
                            <li class="list-group-item"><button class="btn btn-link">Processing</button></li>
                            <li class="list-group-item"><button class="btn btn-link">Product</button></li>
-                       </ul> 
-                    </div> 
+                       </ul>
+                    </div>
                     <div class="col-xs-12 results-wrapper" v-bind:class="{'col-md-9':filtersVisible}" >
                         <div class="collapsible">
 
@@ -116,7 +116,6 @@
 </template>
 
 <script>
-  import results from "../js/results.coffee";
-
-  export default results;
+  import Results from "../js/results.js";
+  export default Results;
 </script>

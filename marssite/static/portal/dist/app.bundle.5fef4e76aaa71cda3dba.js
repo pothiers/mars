@@ -1,4 +1,4 @@
-webpackJsonp([1],[
+webpackJsonp([2],[
 /* 0 */,
 /* 1 */,
 /* 2 */,
@@ -10,39 +10,31 @@ webpackJsonp([1],[
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__vue_Search_vue__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__vue_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__vue_Search_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_Results_vue__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_Results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__vue_Results_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_search_scss__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__styles_search_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__styles_search_scss__);
-var App;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Search_vue__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_Search_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__vue_Results_vue__);
+var Vue = __webpack_require__(0);
+var moment = __webpack_require__(1);
 
 
 
 
+var AppStyles = __webpack_require__(5);
 
+//import Main from "../vue/Main.vue";
 
-
-
-
-
-
-App = (function() {
-  function App() {
-    window.moment = __WEBPACK_IMPORTED_MODULE_1_moment___default.a;
-    new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+class App {
+  constructor(){
+    window.moment = moment;
+    new Vue({
       el: "#content",
       template: "<component compdata='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
       methods: {
-        switchComponent: function(data) {
+        switchComponent(data){
           this.componentData = data[1];
           this.currentView = data[0];
-          return window.base.bindEvents();
+          window.base.bindEvents();
         }
       },
       data: {
@@ -50,15 +42,12 @@ App = (function() {
         componentData: []
       },
       components: {
-        search: __WEBPACK_IMPORTED_MODULE_2__vue_Search_vue___default.a,
-        results: __WEBPACK_IMPORTED_MODULE_3__vue_Results_vue___default.a
+        search: __WEBPACK_IMPORTED_MODULE_0__vue_Search_vue___default.a,
+        results: __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue___default.a
       }
     });
   }
-
-  return App;
-
-})();
+}
 
 new App();
 
@@ -70,7 +59,7 @@ new App();
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(10),
   /* template */
@@ -82,7 +71,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/web/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -111,7 +100,9 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_search_coffee__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_search_js__ = __webpack_require__(11);
+//
+//
 //
 //
 //
@@ -361,8 +352,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
-
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_search_coffee__["a" /* default */]);
+/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_search_js__["a" /* default */]);
+///module.exports = search;
 
 /***/ }),
 /* 11 */
@@ -371,146 +362,143 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_coffee__ = __webpack_require__(2);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(3);
 /*
 Author: Peter Peterson
 Date: 2017-06-09
 Description: Serves functionality for submitting and displaying archive query forms/results
-Original file: search.coffee
- */
-var config, dateLookup, scrollingWatcher, searchFormComponent, validateDependsOn;
+*/
+
+//import Vue from 'vue';
 
 
 
+var shared = __webpack_require__(4);
 
-
-
-
-validateDependsOn = {
-  getMessage: function(field, params, data) {
-    var dependsOn, id;
-    id = params[0].replace("#", "");
-    dependsOn = document.querySelector("label[for=" + id + "]").innerText;
-    return (data && data.message) || ("This field depends on " + dependsOn);
+const validateDependsOn = {
+  getMessage(field, params, data){
+    const id = params[0].replace("#", "");
+    const dependsOn = document.querySelector(`label[for=${id}]`).innerText;
+    return (data && data.message) || `This field depends on ${dependsOn}`;
   },
-  validate: function(value, args) {
-    return document.querySelector(args[0]).value !== "";
+  validate(value, args){
+    return (document.querySelector(args[0]).value !== "");
   }
 };
 
-config = __WEBPACK_IMPORTED_MODULE_2__mixins_coffee__["a" /* default */].config;
+var config = shared.default.config;
 
-(function() {
-  var validation;
-  window.addEventListener('searchLoaded', function(e) {
+(function(){
+  // This gets called after the component has been mounted
+  window.addEventListener('searchLoaded', function(e){
     console.log("Search loaded", e);
+    // re-bind since the template will render after the page is loaded.
     return window.base.bindEvents();
   });
   __WEBPACK_IMPORTED_MODULE_1_vee_validate__["Validator"].extend('dependson', validateDependsOn);
-  validation = new __WEBPACK_IMPORTED_MODULE_1_vee_validate__["Validator"]({
-    dependant: "dependson"
-  });
-  return __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate__["default"], config.validatorConfig);
+  const validation = new __WEBPACK_IMPORTED_MODULE_1_vee_validate__["Validator"]({dependant:"dependson"});
+  // Use vee-validate, and assign before component is loaded
+  __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate__["default"], config.validatorConfig); // validation plugin
 })();
 
-dateLookup = {
-  "obs-date": {
-    "field": "obs_date",
-    "index": 0
-  },
-  "obs-date-max": {
-    "field": 'obs_date',
-    "index": 1
-  },
-  "release-date": {
-    "field": "release_date",
-    "index": 0
-  },
-  "release-date-max": {
-    "field": "release_date",
-    "index": 1
-  },
-  "parent": {
-    "obj": this
-  }
+const dateLookup = {
+      "obs-date": {
+        "field" : "obs_date",
+        "index" : 0
+      },
+      "obs-date-max": {
+        "field" : 'obs_date',
+        "index" : 1
+      },
+      "release-date": {
+        "field": "release_date",
+        "index": 0
+      },
+      "release-date-max":{
+        "field": "release_date",
+        "index": 1
+      },
+      "parent":{
+        "obj": this
+      }
 };
 
-scrollingWatcher = function() {
-  var doc, element, elementTop, top;
+const scrollingWatcher = function(){
   if (document.querySelector("[rel=form-submit]") === null) {
     return;
   }
-  doc = document.documentElement;
-  top = (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-  element = document.querySelector("[rel=form-submit]");
-  elementTop = element.offsetTop;
+
+  const doc = document.documentElement;
+  const top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+  const element = document.querySelector("[rel=form-submit]");
+  const elementTop = element.offsetTop;
+
+  // check offset
   if (top > elementTop) {
-    return element.classList.add("scroll");
+    element.classList.add("scroll");
   } else {
-    return element.classList.remove("scroll");
+    element.classList.remove("scroll");
   }
 };
 
-searchFormComponent = {
-  mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_coffee__["a" /* default */].mixin],
-  created: function() {
-    return this.getTelescopes();
+/* harmony default export */ __webpack_exports__["a"] = ({
+  mixins: [shared.default.mixin],
+  created(){
+    this.getTelescopes();
   },
-  mounted: function() {
-    var oldSearch;
+
+  mounted(){
+    // check if this is a new search
     if (window.location.hash.indexOf("search_again") > -1) {
-      oldSearch = JSON.parse(localStorage.getItem("searchData"));
+      const oldSearch = JSON.parse(localStorage.getItem("searchData"));
       this.search = oldSearch;
     } else if (window.location.hash.indexOf("query") > -1) {
       this.$emit("displayform", ["results", []]);
     }
     window.base.bindEvents();
+
     document.onscroll = scrollingWatcher;
+
     $("input.date").datepicker({
-      changeMonth: true,
-      changeYear: true,
-      onSelect: (function(_this) {
-        return function(dateText, datePicker) {
-          var e, field, fieldName;
-          fieldName = datePicker.input[0].name;
-          field = _this.search[dateLookup[fieldName].field];
-          field[dateLookup[fieldName].index] = dateText;
-          e = new CustomEvent("datechanged", {
-            'detail': {
-              'date': dateText
+            changeMonth: true,
+            changeYear: true,
+            onSelect: (dateText, datePicker)=> {
+              const fieldName = datePicker.input[0].name;
+              const field = this.search[dateLookup[fieldName].field];
+              field[dateLookup[fieldName].index] = dateText;
+              const e = new CustomEvent("datechanged", {'detail':{'date':dateText} });
+              document.dispatchEvent(e);
+              // this value is updated to force the computed values to refresh
+              // for the code sample view
+              return this.code = new Date().getTime();
             }
-          });
-          document.dispatchEvent(e);
-          return _this.code = new Date().getTime();
-        };
-      })(this)
-    });
+              //nothing = this.code
+      });
     $("input.date").datepicker("option", "dateFormat", "yy-mm-dd");
+
+    // for debugging/testing in the browser
     window.searchVue = this;
-    return document.addEventListener("datechanged", function() {
-      return console.log("update code view");
-    });
+
+    // Datepicker doesn't trigger change in the model data, so...
+    // bind to datepicker changes
+    document.addEventListener("datechanged", ()=> console.log("update code view"));
   },
+
   computed: {
     code: {
-      get: function() {
-        this.codeView = JSON.stringify({
-          search: this.stripData()
-        }, null, 2);
+      get(){
+        this.codeView = JSON.stringify({search:this.stripData()}, null, 2);
         return this.codeView;
       },
-      set: function(update) {
+      set(update){
+        // for some reason, the code view won't update unless we go through this mess
         this.codeUpdate = update;
-        this.codeView = JSON.stringify({
-          search: this.stripData()
-        }, null, 2);
+        this.codeView = JSON.stringify({search:this.stripData()}, null, 2);
         return null;
       }
     }
   },
-  data: function() {
+  data(){
     return {
       url: config.apiUrl,
       visible: true,
@@ -520,7 +508,7 @@ searchFormComponent = {
       modalTitle: "",
       modalBody: "",
       loadingMessage: "Sweeping up star dust...",
-      search: JSON.parse(JSON.stringify(config.formData)),
+      search: JSON.parse(JSON.stringify(config.formData)), // deep copy
       showExposureMax: false,
       showObsDateMax: false,
       showReleaseDateMax: false,
@@ -528,65 +516,64 @@ searchFormComponent = {
       showBothObsDateFields: false,
       showBothReleaseDateFields: false,
       telescopes: [],
-      relatedSplitFieldFlags: {
-        "exposure_time": {
-          "fieldFlag": 'showExposureMax',
-          "bothFieldFlag": "showBothExposureFields"
-        },
-        "obs_date": {
-          "fieldFlag": "showObsDateMax",
-          "bothFieldFlag": "showBothObsDateFields"
-        },
-        "release_date": {
-          "fieldFlag": "showReleaseDateMax",
-          "bothFieldFlag": "showBothReleaseDateFields"
-        }
+      relatedSplitFieldFlags : {
+        "exposure_time":
+          {"fieldFlag":'showExposureMax', "bothFieldFlag":"showBothExposureFields"},
+        "obs_date":
+          {"fieldFlag":"showObsDateMax", "bothFieldFlag":"showBothObsDateFields"},
+        "release_date":
+          {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
       },
-      option: {
+      option:{
         format: 'YYYY-MM-DD'
       }
     };
   },
+
   methods: {
-    closeModal: function() {
-      return ToggleModal("#search-modal");
+    closeModal(){
+      ToggleModal("#search-modal");
     },
-    newSearch: function() {
+    newSearch(){
+      // clear current search and storage
       this.search = JSON.parse(JSON.stringify(this.config.formData));
-      return localStorage.setItem("searchData", JSON.stringify(this.search));
+      localStorage.setItem("searchData", JSON.stringify(this.search));
     },
-    getTelescopes: function() {
-      var now, self, telescopes;
-      telescopes = JSON.parse(localStorage.getItem("telescopes") || "0");
-      self = this;
-      now = moment();
-      if (telescopes && moment(telescopes != null ? telescopes.expires : void 0) > now) {
-        return self.telescopes = telescopes.telescopes;
+    getTelescopes(){
+      // check if we have a cached set to use
+      let telescopes = JSON.parse(localStorage.getItem("telescopes")||"0");
+      const self = this;
+      const now = moment();
+      if (telescopes && (moment(telescopes != null ? telescopes.expires : undefined) > now)) {
+        self.telescopes = telescopes.telescopes;
       } else {
-        return new Ajax({
-          url: window.location.origin + "/dal/ti-pairs",
+        new Ajax({
+          url: window.location.origin+"/dal/ti-pairs",
           method: "get",
           accept: "json",
-          success: function(data) {
+          success(data){
             self.telescopes = data;
             telescopes = {
-              expires: moment().add(7, 'days'),
+              expires: moment().add(7,'days'),
               telescopes: data
             };
-            return localStorage.setItem("telescopes", JSON.stringify(telescopes));
+            localStorage.setItem("telescopes", JSON.stringify(telescopes));
           }
         });
       }
     },
-    splitSelection: function(val) {
-      var bothFlag, fieldFlag;
-      fieldFlag = this.relatedSplitFieldFlags[val]['fieldFlag'];
-      bothFlag = this.relatedSplitFieldFlags[val]['bothFieldFlag'];
-      if (this.search[val][2] === "(]" || this.search[val][2] === "[]") {
+
+    splitSelection(val){
+      // for toggling conditional form inputs, one and sometimes both
+      const fieldFlag = this.relatedSplitFieldFlags[val]['fieldFlag'];
+      const bothFlag = this.relatedSplitFieldFlags[val]['bothFieldFlag'];
+
+      if ((this.search[val][2] === "(]") || (this.search[val][2] === "[]")) {
         this[fieldFlag] = true;
       } else {
         this[fieldFlag] = false;
       }
+
       if (this.search[val][2] === "[]") {
         return this[bothFlag] = true;
       } else {
@@ -594,9 +581,8 @@ searchFormComponent = {
       }
     }
   }
-};
 
-/* harmony default export */ __webpack_exports__["a"] = (searchFormComponent);
+});
 
 
 /***/ }),
@@ -764,9 +750,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.search.coordinates.ra = $event.target.value
       }
     }
-  }), _vm._v(" "), (_vm.errors.has('ra')) ? _c('span', {
-    staticClass: "error-message"
-  }, [_vm._v("\n                                            " + _vm._s(_vm.errors.first('ra')) + "\n                                        ")]) : _vm._e()])]), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "col-md-6"
   }, [_c('div', {
     staticClass: "form-group"
@@ -804,9 +788,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.search.coordinates.dec = $event.target.value
       }
     }
-  }), _vm._v(" "), (_vm.errors.has('dec')) ? _c('span', {
-    staticClass: "error-message"
-  }, [_vm._v("\n                                            " + _vm._s(_vm.errors.first('dec')) + "\n                                        ")]) : _vm._e()])])])])])])]), _vm._v(" "), _c('div', {
+  })])])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-12 form-section"
@@ -1072,11 +1054,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$set(_vm.search.obs_date, 1, $event.target.value)
       }
     }
-  }), _vm._v(" "), (_vm.errors.has('obs-date')) ? _c('span', {
-    staticClass: "error-message"
-  }, [_vm._v(_vm._s(_vm.errors.first('obs-date')))]) : _vm._e(), _vm._v(" "), (_vm.errors.has('obs-date-max')) ? _c('span', {
-    staticClass: "error-message"
-  }, [_vm._v(_vm._s(_vm.errors.first('obs-date-max')))]) : _vm._e()])]), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('div', {
     staticClass: "input-group select-group split-val",
@@ -1196,11 +1174,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.$set(_vm.search.exposure_time, 1, $event.target.value)
       }
     }
-  }), _vm._v(" "), (_vm.errors.has('exposure')) ? _c('span', {
-    staticClass: "error-message"
-  }, [_vm._v(_vm._s(_vm.errors.first('exposure')))]) : _vm._e(), _vm._v(" "), (_vm.errors.has('exposure-max')) ? _c('span', {
-    staticClass: "error-message"
-  }, [_vm._v(_vm._s(_vm.errors.first('exposure-max')))]) : _vm._e()])])])])])])]), _vm._v(" "), _c('div', {
+  })])])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-xs-12 form-section panel panel-default"
@@ -1518,15 +1492,26 @@ if (false) {
 }
 
 /***/ }),
-/* 13 */
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(14),
+  __webpack_require__(25),
   /* template */
-  __webpack_require__(17),
+  __webpack_require__(28),
   /* styles */
   null,
   /* scopeId */
@@ -1534,7 +1519,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/web/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1558,12 +1543,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 14 */
+/* 25 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_coffee__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_js__ = __webpack_require__(26);
 //
 //
 //
@@ -1683,30 +1668,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 
-
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_coffee__["a" /* default */]);
+/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_js__["a" /* default */]);
 
 /***/ }),
-/* 15 */
+/* 26 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_coffee__ = __webpack_require__(16);
-
-/*
-Author: Peter Peterson
-Date: 2017-06-09
-Description: Serves functionality for displaying and filtering result sets
-Original file: results.coffee
- */
-var config;
-
-
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_js__);
 
 
 
@@ -1714,6 +1687,7 @@ var config;
 /*
   Helper functions
  */
+var config;
 
 Number.prototype.pad = function(size, char) {
   var s;
@@ -1729,16 +1703,16 @@ Number.prototype.pad = function(size, char) {
 
 
 /*
-   App - Results
+  App - Results
  */
 
-config = __WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].config;
+config = __WEBPACK_IMPORTED_MODULE_1__mixins_js__["default"].config;
 
 window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   props: ['componentData'],
-  mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_coffee__["a" /* default */].mixin],
+  mixins: [__WEBPACK_IMPORTED_MODULE_1__mixins_js__["default"].mixin],
   data: function() {
     return {
       visibleColumns: [],
@@ -1762,7 +1736,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
   },
   methods: {
     toggleFilters: function() {
-      return this.filtersVisible = !this.filtersVisible;
+      this.filtersVisible = !this.filtersVisible;
     },
     toggleColumn: function(column) {
       var col, first, found, i, j, last, len, len1, n, ref, ref1;
@@ -1791,7 +1765,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
           this.visibleColumns.push(column);
         }
       }
-      return column.checked = !column.checked;
+      column.checked = !column.checked;
     },
     stageSelected: function() {
       var data, form;
@@ -1806,11 +1780,11 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       data.setAttribute("name", "selectedFiles");
       form.appendChild(data);
       document.querySelector("body").appendChild(form);
-      return form.submit();
+      form.submit();
     },
     cancelStageAll: function() {
       this.stageButtonText = 'Stage ALL results';
-      return this.stageAllConfirm = false;
+      this.stageAllConfirm = false;
     },
     confirmStage: function() {
       var data, form, searchObj;
@@ -1827,29 +1801,29 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         data.setAttribute("name", "searchData");
         form.appendChild(data);
         document.querySelector("body").appendChild(form);
-        return form.submit();
+        form.submit();
       } else {
         this.stageButtonText = "OK, continue";
-        return this.stageAllConfirm = true;
+        this.stageAllConfirm = true;
       }
     },
     toggleResults: function() {
       this.toggle = !this.toggle;
       console.log("toggle");
-      return bus.$emit("toggleselected", this.toggle);
+      rebus.$emit("toggleselected", this.toggle);
     },
     displayForm: function() {
       window.location.hash = "#search_again";
-      return this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
+      this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
     },
     handleError: function(e) {
-      return console.log("There was an error", e);
+      console.log("There was an error", e);
     },
     pageNext: function() {
-      return this.pageTo(this.pageNum + 1);
+      this.pageTo(this.pageNum + 1);
     },
     pageBack: function() {
-      return this.pageTo(this.pageNum - 1);
+      this.pageTo(this.pageNum - 1);
     },
     pageTo: function(page) {
       var self;
@@ -1858,11 +1832,11 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       this.$emit("pageto", page);
       this.isLoading = true;
       self = this;
-      return this.submitForm(null, "paging", function(data) {
+      this.submitForm(null, "paging", function(data) {
         self.isLoading = false;
         self.results = data;
         self.recordsFrom = data.meta.to_here_count - data.meta.page_result_count + 1;
-        return self.recordsTo = data.meta.to_here_count;
+        self.recordsTo = data.meta.to_here_count;
       });
     }
   },
@@ -1881,7 +1855,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
     return results;
   },
   updated: function() {
-    return window.base.bindEvents();
+    window.base.bindEvents();
   },
   mounted: function() {
     var e, q, ref;
@@ -1894,15 +1868,15 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       method: "post",
       accept: "json",
       success: function(data) {
-        return console.log("got this for filters", data);
+        console.log("got this for filters", data);
       }
     });
     bus.$on("toggleselected", (function(_this) {
       return function(onoff) {
         if (onoff) {
-          return _this.selected = [].concat(_this.results.resultset);
+          _this.selected = [].concat(_this.results.resultset);
         } else {
-          return _this.selected = [];
+          _this.selected = [];
         }
       };
     })(this));
@@ -1947,10 +1921,10 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
               }
             }
           }
-          return _this.lastSelected = data.row;
+          _this.lastSelected = data.row;
         } else {
           index = _.indexOf(_this.selected, data.row);
-          return _this.selected.splice(index, 1);
+          _this.selected.splice(index, 1);
         }
       };
     })(this));
@@ -1960,8 +1934,8 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         this.totalItems = (ref = this.results) != null ? ref.meta.total_count : void 0;
         this.visible = true;
         this.pageNum = parseInt(localStorage.getItem("currentPage"));
-      } catch (error) {
-        e = error;
+      } catch (_error) {
+        e = _error;
         this.results = [];
         this.totalItems = 0;
         this.visible = true;
@@ -1969,104 +1943,91 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         this.handleError(e);
       }
     }
-    return console.log(document.querySelectorAll(".collapsible"));
   }
 });
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-
-
+var Vue = __webpack_require__(0);
 
 /*
    Vue components
    For rendering results table
- */
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-header", {
+*/
+Vue.component("table-header", {
   props: ['name'],
   template: "<span>{{ name }}</span>"
-});
+}
+);
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-cell", {
+Vue.component("table-cell", {
   props: ['data', 'field'],
   template: "<td v-if='data' v-bind:rel='field'>{{ format }}</td><td class='empty' v-else></td>",
   computed: {
-    format: function() {
-      var d, dateStr;
-      if (this.data === null) {
-        return this.data;
-      }
-      if (this.field === 'obs_date' || this.field === 'release_date') {
-        try {
-          d = moment(this.data);
-          dateStr = d.format("YYYY-MM-DD");
-          return dateStr;
-        } catch (error) {
+      format(){
+        if (this.data === null) {
           return this.data;
         }
-      } else {
-        return this.data;
+        if ((this.field === 'obs_date') || (this.field === 'release_date')) {
+          try {
+            const d = moment(this.data);
+            const dateStr = d.format("YYYY-MM-DD");
+            return dateStr;
+          } catch (error) {
+            return this.data;
+          }
+        } else {
+          return this.data;
+        }
       }
     }
-  }
-});
+}
+);
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-row", {
+Vue.component("table-row", {
   props: ['row', 'cols'],
   template: "<tr v-on:click='selectRow' v-bind:class='{selected:isSelected}'><td class='select-row'><input type='checkbox' name='' v-bind:checked='isSelected' v-bind:name='row.reference'></td><table-cell v-for='vis in cols' v-bind:data='row[vis.mapping]' v-bind:field='vis.mapping' :key='row.id'></table-cell></tr>",
-  data: function() {
+  data(){
     return {
       isSelected: false
     };
   },
-  created: function() {
-    bus.$on("selectrow", (function(_this) {
-      return function(_row) {
-        if (_row.reference === _this.row.reference) {
-          return _this.isSelected = true;
-        }
-      };
-    })(this));
-    return bus.$on("toggleselected", (function(_this) {
-      return function(onoff) {
-        return _this.isSelected = onoff;
-      };
-    })(this));
+  created(){
+    bus.$on("selectrow", _row=> {
+      if (_row.reference === this.row.reference) {
+        this.isSelected = true;
+      }
+    });
+    return bus.$on("toggleselected", onoff=> {
+      this.isSelected = onoff;
+    });
   },
   methods: {
-    selectRow: function(event) {
+    selectRow(event){
       this.isSelected = !this.isSelected;
-      return bus.$emit("rowselected", {
-        isSelected: this.isSelected,
-        row: this.row,
-        vueobject: this,
-        event: event
-      });
+      bus.$emit("rowselected", {isSelected:this.isSelected, row:this.row, vueobject:this, event});
     }
   }
-});
+}
+);
 
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component("table-body", {
-  props: ['data', 'visibleCols'],
-  template: "<tbody ><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>",
-  methods: {
-    iheardthat: function() {
-      console.log("I heard that");
-      return console.log(arguments);
-    }
-  }
-});
+Vue.component("table-body", {
+   props: ['data', 'visibleCols'],
+   template: "<tbody ><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>",
+   methods: {
+     iheardthat(){
+       console.log("I heard that");
+     }
+   }
+ }
+);
 
 
 /***/ }),
-/* 17 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

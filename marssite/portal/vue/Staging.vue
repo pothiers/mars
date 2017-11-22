@@ -166,7 +166,6 @@
 </template>
 
 <script>
-    import staging from "../js/staging.coffee";
-
-    export default staging;
+    import Staging from "../js/staging.js";
+    export default Staging;
 </script>

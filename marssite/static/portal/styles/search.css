@@ -5,6 +5,22 @@
 
 div[rel=form-submit] {
   padding-top: 12px; }
+  div[rel=form-submit] div.form-inline {
+    padding: 5px; }
+
+div[rel=form-submit].scroll div.form-inline {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: #fff;
+  postition: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: #fff;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3); }
 
 .collapsible .section-toggle, .form-section .section-toggle {
   text-align: right;
@@ -33,6 +49,11 @@ div[rel=form-submit] {
 
 .results-wrapper {
   overflow-x: auto; }
+
+.results tbody {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none; }
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s; }
@@ -70,7 +91,7 @@ div[rel=form-submit] {
 /*
    Results
 */
-.filters li {
+.column-toggle li {
   display: inline-block;
   font-size: 14px;
   padding: 10px; }

@@ -202,6 +202,7 @@ def process_query(jsearch, page, page_limit, order_fields):
     #! print('DBG-6: search_by_json; sql0=',sql0)
     cursor.execute(sql0)
     total_count = cursor.fetchone()[0]
+
     sql = ('SELECT {} FROM voi.siap {} {} {} {}'
             .format(' '.join(response_fields.split()),
                     where_clause,
@@ -211,6 +212,8 @@ def process_query(jsearch, page, page_limit, order_fields):
     #! print('DBG-2 sql={}'.format(sql))
     cursor.execute(sql)
     results = dictfetchall(cursor)
+
+
     #print('DBG results={}'.format(results))
     meta = OrderedDict.fromkeys(['dal_version',
                                     'timestamp',
@@ -234,4 +237,3 @@ def process_query(jsearch, page, page_limit, order_fields):
     resp = OrderedDict.fromkeys(['meta','resultset'])
     resp.update( meta = meta, resultset = results)
     return resp
-

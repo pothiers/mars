@@ -1,32 +1,28 @@
-webpackJsonp([2],{
+webpackJsonp([1],{
 
-/***/ 22:
+/***/ 17:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Staging_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Staging_vue__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Staging_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_Staging_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_search_scss__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_search_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__styles_search_scss__);
-var App;
 
 
 
 
-
-
-
-App = (function() {
-  function App() {
+class App {
+  constructor(){
     new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
       el: "#content",
       template: "<component compdata='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
       methods: {
-        switchComponent: function(data) {
-          return this.currentView = data[0];
+        switchComponent(data){
+          this.currentView = data[0];
         }
       },
       data: {
@@ -38,25 +34,21 @@ App = (function() {
       }
     });
   }
-
-  return App;
-
-})();
-
+}
 new App();
 
 
 /***/ }),
 
-/***/ 23:
+/***/ 18:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(1)(
+var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(24),
+  __webpack_require__(19),
   /* template */
-  __webpack_require__(26),
+  __webpack_require__(21),
   /* styles */
   null,
   /* scopeId */
@@ -64,7 +56,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/web/mars/marssite/portal/vue/Staging.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Staging.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Staging.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -89,12 +81,11 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 24:
+/***/ 19:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_staging_coffee__ = __webpack_require__(25);
 //
 //
 //
@@ -263,144 +254,131 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-
-
-/* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_staging_coffee__["a" /* default */]);
+var staging = __webpack_require__(20);
+/* harmony default export */ __webpack_exports__["default"] = (staging);
 
 /***/ }),
 
-/***/ 25:
+/***/ 20:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_coffee__ = __webpack_require__(2);
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_js__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-
 /*
 Author: Peter Peterson
 Date: 2017-07-24
 Description: Code for interactions with the staging page
-Original file: staging.coffee
- */
-var generateResultsSet, stagingComponent;
+*/
 
 
 
 
-
-generateResultsSet = function() {
-  var i, results, x;
-  results = [];
-  for (x = i = 1; i <= 100; x = ++i) {
-    results.push({
-      count: x,
-      filename: Math.random().toString(36).substring(7)
-    });
+const generateResultsSet = function(){
+  const results = [];
+  for (let x = 1; x <= 100; x++) {
+    results.push({count:x, filename: Math.random().toString(36).substring(7)});
   }
+
   return results;
 };
 
-stagingComponent = {
-  mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_coffee__["a" /* default */].mixin],
-  data: function() {
-    return {
-      stagingAllFiles: false,
-      loading: false,
-      selectAll: false,
-      results: [],
-      selected: [],
-      totalfiles: 0,
-      missingfiles: 0
-    };
-  },
-  created: function() {
+const stagingComponent = {
+  mixins:[__WEBPACK_IMPORTED_MODULE_0__mixins_js__["a" /* default */].mixin],
+  data(){
+      return {
+        stagingAllFiles: false,
+        loading: false,
+        selectAll: false,
+        results: [],
+        selected: [],
+        totalfiles: 0,
+        missingfiles:0
+      };
+    },
+  created(){
     window.staging = this;
-    return console.log("Staging created");
+    console.log("Staging created");
   },
-  mounted: function() {
-    var file, files, i, len, querydata, results1;
+  mounted(){
     console.log("Component mounted");
     window.base.bindEvents();
     if (localStorage.getItem("stage") === "selectedFiles") {
-      files = JSON.parse(localStorage.getItem("selectedFiles"));
-      results1 = [];
-      for (i = 0, len = files.length; i < len; i++) {
-        file = files[i];
-        results1.push(this.results.push({
-          'selected': false,
-          'file': file
-        }));
-      }
-      return results1;
+      // Files array is generated by the staging django template
+      const files = JSON.parse(localStorage.getItem("selectedFiles"));
+      Array.from(files).map((file) =>
+        this.results.push({'selected':false, 'file':file}));
     } else {
+      // show a loading screen
       this.stagingAllFiles = true;
       this.loading = true;
-      querydata = localStorage.getItem("search");
-      return new Ajax({
+      const querydata = localStorage.getItem("search");
+
+
+      new Ajax({
         url: "/portal/stageall/",
         method: "post",
         accept: "json",
         data: JSON.parse(querydata),
-        success: (function(_this) {
-          return function(data) {
-            console.log("got this data back from the request");
-            console.log(data);
-            _this.totalfiles = data.total_files;
-            _this.missingfiles = data.missing_files;
-            return _this.loading = false;
-          };
-        })(this),
-        fail: function(statusMsg, status, xhr) {
-          return console.log("ajax failed");
+        success: data=> {
+          this.totalfiles = data.total_files;
+          this.missingfiles = data.missing_files;
+          this.loading = false;
+        },
+        fail(statusMsg, status, xhr){
+          console.log("ajax failed");
+          console.info("TODO: Add a fail message and option to try again/or stage less files");
         }
       });
     }
   },
+
+
+      // call api to start staging process...
+
   methods: {
-    toggleAll: function() {
-      var file, i, j, len, len1, ref, ref1, results1;
+    toggleAll(){
       this.selectAll = !this.selectAll;
       if (this.selectAll) {
-        ref = this.results;
-        results1 = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          file = ref[i];
-          file.selected = true;
-          results1.push(this.selected.push(file));
-        }
-        return results1;
+        return (() => {
+          const result = [];
+          for (let file of Array.from(this.results)) {
+            file.selected = true;
+            result.push(this.selected.push(file));
+          }
+          return result;
+        })();
       } else {
-        ref1 = this.results;
-        for (j = 0, len1 = ref1.length; j < len1; j++) {
-          file = ref1[j];
+        for (let file of Array.from(this.results)) {
           file.selected = false;
         }
         return this.selected = [];
       }
     },
-    downloadSingleFile: function(file, event) {
+
+    downloadSingleFile(file, event){
+      // identify which file...
       event.stopPropagation();
-      window.open("/portal/downloadsinglefile/?f=" + file.reference, "_blank");
+      window.open(`/portal/downloadsinglefile/?f=${file.reference}`, "_blank");
       return false;
-    },
-    _confirmDownloadSelected: function() {
-      var data, form, query, selected;
-      selected = this.selected;
-      query = {
-        "files": selected.slice(0, 10)
-      };
-      form = document.createElement("form");
+    }, // prevent bubbling up
+
+    _confirmDownloadSelected(){
+      const { selected } = this; // scope resolution
+      const query = {"files":selected.slice(0, 10)};
+      const form = document.createElement("form");
       form.setAttribute("method", "post");
+      //form.setAttribute("target", "_blank")
       form.setAttribute("action", "/portal/downloadselected");
-      data = document.createElement("input");
+      const data = document.createElement("input");
       data.setAttribute("type", "hidden");
       data.setAttribute("name", "selected");
-      data.setAttribute("value", JSON.stringify(selected.slice(0, 10)));
+      data.setAttribute("value", JSON.stringify(selected.slice(0,10)));
       form.appendChild(data);
       document.querySelector("body").appendChild(form);
       return form.submit();
-
       /*
       new Ajax
         url: "/portal/downloadselected"
@@ -412,41 +390,47 @@ stagingComponent = {
           console.log data
         fail: (statusmsg, status, xhr)->
           console.log "request failed"
-       */
+      */
     },
-    downloadSelected: function() {
-      var self;
+
+
+    downloadSelected(){
       console.log("downloading selected");
-      self = this;
+      const self = this;
       if (this.selected.length > 10) {
-        return BootstrapDialog.confirm("Only ten files can be downloaded at one time. See download instructions for downloading more at one time", function(goAhead) {
-          if (goAhead) {
-            return self._confirmDownloadSelected();
+        BootstrapDialog.confirm("Only ten files can be downloaded at one time. See download instructions for downloading more at one time",
+        function(goAhead){
+           if (goAhead) {
+            self._confirmDownloadSelected();
           }
         });
       } else {
-        return self._confirmDownloadSelected();
+        self._confirmDownloadSelected();
       }
     },
-    toggleSelected: function(item) {
-      var indx;
+
+
+    toggleSelected(item){
       item.selected = !item.selected;
       if (item.selected) {
-        return this.selected.push(item);
+        this.selected.push(item);
       } else {
-        indx = _.indexOf(this.selected, item);
-        return this.selected.splice(indx, 1);
+        const indx = _.indexOf(this.selected, item);
+        this.selected.splice(indx, 1);
       }
     }
   }
+
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (stagingComponent);
+
+/* harmony default export */ __webpack_exports__["default"] = (stagingComponent);
+//module.exports(stagingComponent);
 
 
 /***/ }),
 
-/***/ 26:
+/***/ 21:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -605,4 +589,4 @@ if (false) {
 
 /***/ })
 
-},[22]);
+},[17]);

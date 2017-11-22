@@ -13,6 +13,11 @@
   background-color: #37c0fb;
 }
 
+/* Tweak to get calendar icons to show in firefox */
+.ui-icon {
+  background-image: url(/static/jquery-ui/themes/base/images/ui-icons_444444_256x240.png) !important;
+}
+
 /*
   Arcana by HTML5 UP
   html5up.net | @ajlkn

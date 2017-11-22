@@ -153,6 +153,25 @@ def get_filters_for_query(query):
     Proposal Id, Survey Id, PI, Telescope, instrument, filter, observation type,
     observation mode, processing, product
     """
+    # TODO: Need to get the filter from the request
+    # TODO: Modify process_query to return the "Where" clause to run sql from here
+    # get uniques for filters
+    filter_fields = [
+        "prop_id",
+        "surveyid as survey_id",
+        "dtpi as pi",
+        "telescope",
+        "instrument",
+        "filter",
+        "obstype as observation_type",
+        "obsmode as observation_mode",
+        "prodtype as product",
+        "proctype as processing"
+    ]
+    sql1 = ('SELECT distinct {} FROM voi.siap {}'.format(", ".join(filter_fields), where_clause))
+    cursor.execute(sql1)
+    filter_results = dictfetchall(cursor)
+
     return JsonResponse([], safe=False)
     pass
 

@@ -25,7 +25,7 @@
                               </select>
                           </label>
                           <button class="btn btn-primary" id="submit-form" type="submit" v-on:click="submitForm">Search</button>
-                          <div><a class="" href="#" v-on:click="newSearch">Clear Search</a></div> 
+                          <div><a class="" href="#" v-on:click="newSearch">Clear Search</a></div>
                       </div>
                   </div><!-- /form-submit -->
               </div>
@@ -58,19 +58,20 @@
                                       <div class="form-group">
                                           <label for="ra" class="floating">Ra</label>
                                           <input class="form-control" placeholder="RA" name="ra" id="ra" type="text" value="" v-model="search.coordinates.ra" v-validate="'decimal|dependson:#dec'">
-                                          <span class="error-message" v-if="errors.has('ra')">
-                                              {{errors.first('ra')}}
-                                          </span>
+                                          <!-- <span class="error-message" v-if="errors.has('ra')">
+                                               {{errors.first('ra')}}
+                                               </span> -->
                                       </div>
                                   </div>
                                   <div class="col-md-6">
                                       <div class="form-group">
                                           <label for="dec" class="floating">Dec</label>
                                           <input class="form-control" placeholder="Dec" name="dec" id="dec" type="text" value="" v-model="search.coordinates.dec" v-validate="'decimal|dependson:#ra'">
-                                          <span class="error-message" v-if="errors.has('dec')">
-                                              {{errors.first('dec')}}
-                                          </span>
-                                      </div> 
+
+                                          <!-- <span class="error-message" v-if="errors.has('dec')">
+                                               {{errors.first('dec')}}
+                                               </span>  -->
+                                      </div>
                                   </div>
                               </div>
                           </div> <!-- /section-content -->
@@ -101,7 +102,7 @@
                                       <input class="form-control" name="program-number" id="program-number" placeholder="Program Number (Prop ID)" type="text" value="" v-model="search.prop_id">
                                   </div>
                                   <div class="form-group">
-                                      <label class="floating" for="principle-investigator">Principle Investigator</label> 
+                                      <label class="floating" for="principle-investigator">Principle Investigator</label>
                                       <input class="form-control" name="principle-investigator" id="principle-investigator" placeholder="Principle Investigator" type="text" value="" v-model="search.pi">
                                   </div>
                                   <div class="form-group">
@@ -109,7 +110,7 @@
                                       <input class="form-control" id="original-filename" name="original-filename" type="text" value="" placeholder="Original Filename" v-model="search.original_filename">
                                   </div>
                                   <div class="form-group">
-                                      <label class="floating" for="archive-filename">Archive Filename</label> 
+                                      <label class="floating" for="archive-filename">Archive Filename</label>
                                       <input class="form-control" id="archive-filename" name="archive-filename" type="text" value="" placeholder="Archive Filename" v-model="search.filename">
                                   </div>
                               </div> <!-- /col -->
@@ -127,8 +128,9 @@
                                           </select>
                                           <input id="obs-date" class="date form-control" data-polyfill="all" name="obs-date" type="text" value="" placeholder="Obervation date" v-model="search.obs_date[0]" v-if="search.obs_date[2] !== '(]'" v-validate="'date_format:YYYY-MM-DD'">
                                           <input id="obs-date-max" class="date form-control" v-bind:class="{ 'hidden-split':showBothObsDateFields }" name="obs-date-max" type="text" value="" placeholder="Max Observation Date" v-model="search.obs_date[1]" v-show="showObsDateMax" v-validate="'date_format:YYYY-MM-DD'">
-                                          <span class="error-message" v-if="errors.has('obs-date')">{{ errors.first('obs-date') }}</span>
-                                          <span class="error-message" v-if="errors.has('obs-date-max')">{{ errors.first('obs-date-max') }}</span>
+
+                                          <!-- <span class="error-message" v-if="errors.has('obs-date')">{{ errors.first('obs-date') }}</span>
+                                               <span class="error-message" v-if="errors.has('obs-date-max')">{{ errors.first('obs-date-max') }}</span> -->
                                       </div><!-- /input-group -->
                                   </div><!-- /form-group -->
                                   <div class="form-group">
@@ -143,10 +145,10 @@
                                           </select>
                                           <input id="exposure" class="form-control" name="exposure" type="text" value="" placeholder="Exposure in seconds" v-model="search.exposure_time[0]" v-if="search.exposure_time[2] !== '(]'" v-validate="'numeric'">
                                           <input id="exposure-max" class="form-control" v-bind:class="{ 'hidden-split':showBothExposureFields }" name="exposure-max" type="text" value="" placeholder="Max exposure" v-model="search.exposure_time[1]" v-show="showExposureMax" v-validate="'numeric'">
-                                          <span class="error-message" v-if="errors.has('exposure')">{{ errors.first('exposure') }}</span>
-                                          <span class="error-message" v-if="errors.has('exposure-max')">{{ errors.first('exposure-max') }}</span>
+                                          <!-- <span class="error-message" v-if="errors.has('exposure')">{{ errors.first('exposure') }}</span>
+                                               <span class="error-message" v-if="errors.has('exposure-max')">{{ errors.first('exposure-max') }}</span>  -->
                                       </div><!-- /select-group -->
-                                  </div><!-- /form-group --> 
+                                  </div><!-- /form-group -->
 
                               </div>
 
@@ -213,7 +215,7 @@
                                       <div class="input-group">
                                           <label for="telescope">Telescope &amp; Intrument</label>
                                           <select id="telescope" name="telescope[]" class="form-control" multiple size="10" v-model="search.telescope_instrument">
-                                            <option value="" v-for="tel in telescopes" v-bind:value="tel[0]+','+tel[1]">{{ tel[0] }} + {{ tel[1] }}</option>                                            
+                                            <option value="" v-for="tel in telescopes" v-bind:value="tel[0]+','+tel[1]">{{ tel[0] }} + {{ tel[1] }}</option>
                                           </select>
                                       </div>
                                   </div>
@@ -246,7 +248,7 @@
   </div>
 </template>
 <script>
-import search from "../js/search.coffee";
- 
-export default search;
+  import Search from "../js/search.js";
+  export default Search;
+ ///module.exports = search;
 </script>
