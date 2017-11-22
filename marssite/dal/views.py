@@ -2,6 +2,7 @@ import json
 
 import coreapi
 import jsonschema
+from django.db import connections
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import response
@@ -10,7 +11,6 @@ from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
 from tada.models import FilePrefix
 
 from . import exceptions as dex
-from . import externals
 from . import utils
 from .serializers import FilePrefixSerializer
 
@@ -147,7 +147,7 @@ def tele_inst_pairs(request):
                          safe=False)
 
 @csrf_exempt
-def get_filters_for_query(query):
+def get_filters_for_query(request):
     """
     Get a list of unique values for the following columns:
     Proposal Id, Survey Id, PI, Telescope, instrument, filter, observation type,
@@ -156,6 +156,8 @@ def get_filters_for_query(query):
     # TODO: Need to get the filter from the request
     # TODO: Modify process_query to return the "Where" clause to run sql from here
     # get uniques for filters
+    query = json.loads(request.body.decode('utf-8'))
+    cursor = connections['archive'].cursor()
     filter_fields = [
         "prop_id",
         "surveyid as survey_id",
@@ -168,12 +170,16 @@ def get_filters_for_query(query):
         "prodtype as product",
         "proctype as processing"
     ]
-    sql1 = ('SELECT distinct {} FROM voi.siap {}'.format(", ".join(filter_fields), where_clause))
-    cursor.execute(sql1)
-    filter_results = dictfetchall(cursor)
 
-    return JsonResponse([], safe=False)
-    pass
+    where_clause = utils.process_query(jsearch=query, page=1, page_limit=50000, order_fields='', return_where_clause=True)
+    filters = {}
+    for filtr in filter_fields:
+        sql1 = ('SELECT distinct {} FROM voi.siap {}'.format(filtr, where_clause))
+        cursor.execute(sql1)
+        indx = filtr.split(" as ").pop()
+        filters[indx] = utils.dictfetchall(cursor)
+
+    return JsonResponse(filters, safe=False)
 
 ###
 # API Schema Metadata

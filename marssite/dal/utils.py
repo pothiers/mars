@@ -116,7 +116,7 @@ proc_LUT = dict(raw = 'raw',
                 image_tiles = 'tiled',
                 sky_subtracted = 'skysub')
 
-def process_query(jsearch, page, page_limit, order_fields):
+def process_query(jsearch, page, page_limit, order_fields, return_where_clause=False):
     """
     Processing of the query
         jsearch         - json query
@@ -198,6 +198,10 @@ def process_query(jsearch, page, page_limit, order_fields):
     where = remove_leading(where, ' AND ')
     #print('DBG-2 where="{}"'.format(where))
     where_clause = '' if len(where) == 0 else 'WHERE {}'.format(where)
+
+    if return_where_clause:
+        return where_clause
+
     sql0 = 'SELECT count(reference) FROM voi.siap {}'.format(where_clause)
     #! print('DBG-6: search_by_json; sql0=',sql0)
     cursor.execute(sql0)
