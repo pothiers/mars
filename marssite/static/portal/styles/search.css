@@ -35,7 +35,7 @@ div[rel=form-submit].scroll div.form-inline {
   content: ""; }
 
 .form-section {
-  background-color: #D9EDF7;
+  background-color: #b1def5;
   border: 1px solid #BCE8F1;
   border-radius: 10px;
   padding: 1em;
@@ -112,7 +112,7 @@ table.results {
       border-top: 0 transparent solid;
       border-bottom: 0 transparent; }
   table.results tbody td {
-    font-size: 0.8em;
+    font-size: 0.9em;
     overflow: hidden;
     padding: 2px 7px;
     border: 1px solid transparent; }

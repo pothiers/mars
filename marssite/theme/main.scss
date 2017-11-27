@@ -94,8 +94,8 @@
 
   body, input, select, textarea {
     color: _palette(fg);
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 12pt;
+    font-family: 'Helvetica Neue', 'Arial', sans-serif;
+    font-size: 12px;
     font-weight: 300;
     line-height: 1.65em;
   }
@@ -142,7 +142,7 @@
 
     & + .lead{
         margin-bottom: 0px;
-        margin-top: -2.8rem;
+        margin-top: -2rem;
     }
   }
 
@@ -246,6 +246,9 @@
           line-height: 1.8em;
           font-size: 12px;
       }
+  }
+  label > input[type=radio]{
+    vertical-align: top;
   }
   .select-group{
       width: 100%;
@@ -937,7 +940,7 @@
     /* Basic */
 
       body, input, select, textarea {
-        font-size: 12pt;
+        font-size: 12px;
         line-height: 1.5em;
       }
 
@@ -956,7 +959,7 @@
     /* Basic */
 
       body, input, select, textarea {
-        font-size: 12pt;
+        font-size: 12px;
         line-height: 1.5em;
       }
 
@@ -1030,7 +1033,7 @@
     /* Basic */
 
       body, input, select, textarea {
-        font-size: 12pt;
+        font-size: 12px;
         line-height: 1.5em;
       }
 

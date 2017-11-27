@@ -37,16 +37,96 @@
                     <div class="col-md-3 col-xs-12 results-filters" v-if="filtersVisible">
                        <h3>Filter results by:</h3>
                        <ul class="list-group">
-                           <li class="list-group-item"><button class="btn btn-link">Proposal ID</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">Survey ID</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">PI</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">Telescope</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">Intrument</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">Filter</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">Observation Type</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">Observation Mode</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">Processing</button></li>
-                           <li class="list-group-item"><button class="btn btn-link">Product</button></li>
+                           <li class="list-group-item"><button class="btn btn-link">Proposal ID</button>
+                               <ul class="filter-sublist" v-for="item in filters.prop_id" >
+                                   <li class="checkbox" v-if="item.prop_id != null">
+                                       <label>
+                                           <input type="radio" name="prop_id_filter"> {{ item.prop_id }}
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">Survey ID</button>
+                               <ul class="filter-sublist" v-for="item in filters.survey_id">
+                                   <li class="checkbox" v-if="item.survey_id != null">
+                                       <label>
+                                           <input name="survey_id_filter" type="radio" value=""> {{ item.survey_id }}
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">PI</button>
+                               <ul class="filter-sublist" v-for="item in filters.pi">
+                                   <li class="checkbox" v-if="item.pi != null">
+                                       <label>
+                                           <input name="pi_filter" type="radio" value=""> {{ item.pi }}
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">Telescope</button>
+                               <ul class="filter-sublist" v-for="item in filters.telescope">
+                                <li class="checkbox" v-if="item.telescope != null">
+                                    <label for="">
+                                        <input name="telescope_filter" type="radio" value=""> {{item.telescope}}
+                                    </label>
+                                </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">Intrument</button>
+                               <ul class="filter-sublist" v-for="item in filters.instrument">
+                                   <li class="checkbox" v-if="item.instrument">
+                                       <label>
+                                           <input name="instrument_filter" type="radio" value=""> {{ item.instrument }}
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">Filter</button>
+                               <ul class="filter-sublist" v-for="item in filters.filter">
+                                   <li class="checkbox" v-if="item.filter != null">
+                                       <label for="">
+                                           <input type="radio" name="filter_filter"> {{ item.filter }}
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">Observation Type</button>
+                               <ul class="filter-sublist" v-for="item in filters.observation_type" >
+                                   <li class="checkbox" v-if="item.observation_type != null">
+                                       <label for="">
+                                           <input name="observation_type_filter" type="radio" value="">
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">Observation Mode</button>
+                               <ul class="filter-sublist" v-for="item in filters.observation_mode">
+                                   <li class="checkbox" v-if="item.observation_mode != null">
+                                       <label for="">
+                                           <input name="observation_mode_filter" type="radio" value=""> {{ item.observation_mode }}
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">Processing</button>
+                               <ul class="filter-sublist" v-for="item in filters.processing">
+                                   <li class="checkbox" v-if="item.processing != null">
+                                       <label for="">
+                                           <input name="processing_filter" type="radio" value=""> {{ item.processing }}
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
+                           <li class="list-group-item"><button class="btn btn-link">Product</button>
+                               <ul class="filter-sublist" v-for="item in filters.product">
+                                   <li class="checkbox" v-if="item.product != null">
+                                       <label for="">
+                                           <input name="product_filter" type="radio" value=""> {{ item.product }}
+                                       </label>
+                                   </li>
+                               </ul>
+                           </li>
                        </ul>
                     </div>
                     <div class="col-xs-12 results-wrapper" v-bind:class="{'col-md-9':filtersVisible}" >

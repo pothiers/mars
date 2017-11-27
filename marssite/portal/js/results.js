@@ -36,6 +36,7 @@ export default {
     return {
       visibleColumns: [],
       filtersVisible: false,
+      filters: [],
       allColumns: config.allColumns,
       stageAllConfirm: false,
       stageButtonText: "Stage ALL results",
@@ -54,6 +55,21 @@ export default {
     };
   },
   methods: {
+    getFilters: function(query){
+      self = this
+      new Ajax({
+        url: window.location.origin + "/dal/get-filters",
+        data: JSON.parse(query),
+        method: "post",
+        accept: "json",
+        success: function(data) {
+          if (data.status == "success"){
+            self.filters = data.filters;
+            console.log("got this for filters", data);
+          }
+        }
+      });
+    },
     toggleFilters: function() {
       this.filtersVisible = !this.filtersVisible;
     },
@@ -181,15 +197,10 @@ export default {
     window.results = this;
     console.log("Results mounted");
     q = localStorage.getItem("search");
-    new Ajax({
-      url: window.location.origin + "/dal/get-filters",
-      data: JSON.parse(q),
-      method: "post",
-      accept: "json",
-      success: function(data) {
-        console.log("got this for filters", data);
-      }
-    });
+
+    // get filters for this query
+    this.getFilters(q);
+
     bus.$on("toggleselected", (function(_this) {
       return function(onoff) {
         if (onoff) {

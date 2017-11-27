@@ -879,8 +879,8 @@ body {
 
 body, input, select, textarea {
   color: #474747;
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 12pt;
+  font-family: 'Helvetica Neue', 'Arial', sans-serif;
+  font-size: 12px;
   font-weight: 300;
   line-height: 1.65em; }
 
@@ -918,7 +918,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 300; }
   h1 + .lead, h2 + .lead, h3 + .lead, h4 + .lead, h5 + .lead, h6 + .lead {
     margin-bottom: 0px;
-    margin-top: -2.8rem; }
+    margin-top: -2rem; }
 
 h1 {
   font-size: 2em;
@@ -995,6 +995,9 @@ footer {
   cursor: pointer;
   line-height: 1.8em;
   font-size: 12px; }
+
+label > input[type=radio] {
+  vertical-align: top; }
 
 .select-group {
   width: 100%; }
@@ -1517,7 +1520,7 @@ input[type="button"],
 @media screen and (max-width: 1680px) {
   /* Basic */
   body, input, select, textarea {
-    font-size: 12pt;
+    font-size: 12px;
     line-height: 1.5em; }
   /* Banner */
   #banner {
@@ -1527,7 +1530,7 @@ input[type="button"],
 @media screen and (max-width: 1280px) {
   /* Basic */
   body, input, select, textarea {
-    font-size: 12pt;
+    font-size: 12px;
     line-height: 1.5em; }
   /* Lists */
   ol.default {
@@ -1561,7 +1564,7 @@ input[type="button"],
 @media screen and (max-width: 980px) {
   /* Basic */
   body, input, select, textarea {
-    font-size: 12pt;
+    font-size: 12px;
     line-height: 1.5em; } }
 
 /* Narrower */

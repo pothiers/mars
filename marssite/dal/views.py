@@ -179,7 +179,8 @@ def get_filters_for_query(request):
         indx = filtr.split(" as ").pop()
         filters[indx] = utils.dictfetchall(cursor)
 
-    return JsonResponse(filters, safe=False)
+    resp = {"status":"success", "filters":filters}
+    return JsonResponse(resp, safe=False)
 
 ###
 # API Schema Metadata
