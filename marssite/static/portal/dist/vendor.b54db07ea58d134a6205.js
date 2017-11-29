@@ -1,6 +1,343 @@
 webpackJsonp([0],[
 /* 0 */,
 /* 1 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _config;
+
+_config = {
+  stagingUrl: "/portal/staging/",
+  apiUrl: "/dal/search/",
+  rangeInputs: ["obs_date", "exposure_time", "release_date"],
+  validatorConfig: {
+    delay: 800,
+    events: "input|blur",
+    inject: true,
+    dependsOn: "dependson"
+  },
+  allColumns: [
+    {
+      "checked": true,
+      "mapping": "prop_id",
+      "name": "Program Number",
+      "num": 1
+    }, {
+      "checked": true,
+      "mapping": "obs_date",
+      "name": "Observed date",
+      "num": 2
+    }, {
+      "checked": false,
+      "mapping": "pi",
+      "name": "Principle Investigator",
+      "num": 3
+    }, {
+      "checked": false,
+      "mapping": "ra",
+      "name": "RA",
+      "num": 4
+    }, {
+      "checked": false,
+      "mapping": "dec",
+      "name": "Dec",
+      "num": 5
+    }, {
+      "checked": false,
+      "mapping": "product",
+      "name": "Product",
+      "num": 6
+    }, {
+      "checked": false,
+      "mapping": "depth",
+      "name": "Depth",
+      "num": 7
+    }, {
+      "checked": true,
+      "mapping": "exposure",
+      "name": "Exposure",
+      "num": 8
+    }, {
+      "checked": true,
+      "mapping": "filter",
+      "name": "Filter",
+      "num": 9
+    }, {
+      "checked": true,
+      "mapping": "telescope",
+      "name": "Telescope",
+      "num": 10
+    }, {
+      "checked": true,
+      "mapping": "instrument",
+      "name": "Instrument",
+      "num": 11
+    }, {
+      "checked": false,
+      "mapping": "image_type",
+      "name": "Image Type",
+      "num": 12
+    }, {
+      "checked": false,
+      "mapping": "filename",
+      "name": "Filename",
+      "num": 13
+    }, {
+      "checked": false,
+      "mapping": "md5sum",
+      "name": "MD5 sum",
+      "num": 14
+    }, {
+      "checked": false,
+      "mapping": "filesize",
+      "name": "File size",
+      "num": 15
+    }, {
+      "checked": false,
+      "mapping": "original_filename",
+      "name": "Original filename",
+      "num": 16
+    }, {
+      "checked": false,
+      "mapping": "reference",
+      "name": "Reference",
+      "num": 17
+    }, {
+      "checked": true,
+      "mapping": "survey_id",
+      "name": "Survey Id",
+      "num": 18
+    }, {
+      "checked": false,
+      "mapping": "release_date",
+      "name": "Release Date",
+      "num": 19
+    }, {
+      "checked": false,
+      "mapping": "seeing",
+      "name": "Seeing",
+      "num": 20
+    }
+  ],
+  formData: {
+    coordinates: {
+      ra: "",
+      dec: ""
+    },
+    pi: null,
+    search_box_min: null,
+    prop_id: null,
+    obs_date: ['', '', "="],
+    filename: null,
+    original_filename: null,
+    telescope_instrument: [],
+    exposure_time: ['', '', "="],
+    release_date: ['', '', "="],
+    image_filter: []
+  },
+  loadingMessages: ["Searching the cosmos...", "Deploying deep space probes...", "There's so much S P A C E!"]
+};
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  config: _config,
+  mixin: {
+    data: function() {
+      return {
+        config: _config // local access within methods
+      };
+    },
+    config: _config,
+    methods: {
+      stripData: function() {
+        var key, newFormData, ref;
+        newFormData = this.search !== void 0 ? JSON.parse(JSON.stringify(this.search)) : JSON.parse(localStorage.getItem("searchData"));
+        for (key in newFormData) {
+          if (_.isEqual(newFormData[key], this.config.formData[key])) {
+            delete newFormData[key];
+          } else {
+            if (this.config.rangeInputs.indexOf(key) >= 0) {
+              if (newFormData[key][2] === "=") {
+                newFormData[key] = newFormData[key][0];
+              }
+            }
+          }
+        }
+        if (newFormData.telescope_instrument) {
+          newFormData.telescope_instrument = _.map(newFormData.telescope_instrument, function(item) {
+              return item.split(",");
+          });
+        }
+        if ((ref = newFormData.coordinates) != null ? ref.ra : void 0) {
+          newFormData.coordinates.ra = parseFloat(newFormData.coordinates.ra);
+          newFormData.coordinates.dec = parseFloat(newFormData.coordinates.dec);
+        }
+        return newFormData;
+        },
+
+      submitForm: function(event, paging, cb) {
+
+        var message, msgs, newFormData, page, self, url;
+        if (paging == null) {
+          paging = null;
+        }
+        if (cb == null) {
+          cb = null;
+        }
+        if (event != null) {
+          event.preventDefault();
+        }
+        if (!paging) {
+          this.loading = true;
+
+          this.url = this.config.apiUrl;
+          window.location.hash = "";
+          this.$emit('setpagenum', 1);
+          page = 1;
+          localStorage.setItem("currentPage", 1);
+          localStorage.setItem("searchData", JSON.stringify(this.search));
+        } else {
+          page = localStorage.getItem("currentPage");
+        }
+        newFormData = this.stripData();
+        msgs = this.config.loadingMessages;
+        message = Math.floor(Math.random() * msgs.length);
+        this.loadingMessage = msgs[message];
+        self = this;
+        url = this.config.apiUrl + ("?page=" + page);
+        localStorage.setItem("search", JSON.stringify(newFormData));
+        return new Ajax({
+          url: url,
+          method: "post",
+          accept: "json",
+          data: newFormData,
+          success: function(data) {
+            var saveData;
+            window.location.hash = "#query";
+            self.loading = false;
+            saveData = typeof data === "object" ? JSON.stringify(data) : data;
+            localStorage.setItem('results', saveData);
+            self.$emit("displayform", ["results", saveData]);
+            if (cb) {
+              cb(data);
+            }
+          },
+          fail: function(statusMsg, status, xhr) {
+            console.log("Request failed, got this");
+            message = "" + statusMsg;
+            if (xhr.response) {
+              message += ":  " + xhr.response.errorMessage;
+            }
+            self.loading = false;
+            self.modalTitle = "Request Error";
+            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
+            ToggleModal("#search-modal");
+          }
+        });
+      }
+    }
+  }
+});
+
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module) {//! moment.js
@@ -4470,118 +4807,14 @@ return hooks;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-/* globals __VUE_SSR_CONTEXT__ */
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  injectStyles,
-  scopeId,
-  moduleIdentifier /* server only */
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  var hook
-  if (moduleIdentifier) { // server build
-    hook = function (context) {
-      // 2.3 injection
-      context =
-        context || // cached call
-        (this.$vnode && this.$vnode.ssrContext) || // stateful
-        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
-      // 2.2 with runInNewContext: true
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__
-      }
-      // inject component styles
-      if (injectStyles) {
-        injectStyles.call(this, context)
-      }
-      // register component module identifier for async chunk inferrence
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier)
-      }
-    }
-    // used by ssr in case component is cached and beforeCreate
-    // never gets called
-    options._ssrRegister = hook
-  } else if (injectStyles) {
-    hook = injectStyles
-  }
-
-  if (hook) {
-    var functional = options.functional
-    var existing = functional
-      ? options.render
-      : options.beforeCreate
-    if (!functional) {
-      // inject component registration as beforeCreate hook
-      options.beforeCreate = existing
-        ? [].concat(existing, hook)
-        : [hook]
-    } else {
-      // register for functioal component in vue file
-      options.render = function renderWithStyleInjection (h, context) {
-        hook.call(context)
-        return existing(h, context)
-      }
-    }
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 3 */,
-/* 4 */
-/***/ (function(module, __webpack_exports__) {
-
-"use strict";
-throw new Error("Module parse failed: /home/peter/Workspace/NOAO/portal/mars/marssite/portal/js/mixins.js Unexpected token (144:4)\nYou may need an appropriate loader to handle this file type.\n|     },\n|     config: _config\n|     methods: {\n|       stripData: ()=> {\n|         var key, newFormData, ref;");
-
-/***/ }),
+/* 4 */,
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(13);
+var content = __webpack_require__(18);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -4589,7 +4822,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(15)(content, options);
+var update = __webpack_require__(20)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -4640,21 +4873,26 @@ module.exports = function(module) {
 /* 10 */,
 /* 11 */,
 /* 12 */,
-/* 13 */
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(14)(undefined);
+exports = module.exports = __webpack_require__(19)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n.code {\n  font-size: 14px;\n  height: 400px; }\n\ndiv[rel=form-submit] {\n  padding-top: 12px; }\n  div[rel=form-submit] div.form-inline {\n    padding: 5px; }\n\ndiv[rel=form-submit].scroll div.form-inline {\n  position: fixed;\n  width: 100%;\n  top: 0;\n  left: 0;\n  z-index: 1000;\n  background-color: #fff;\n  postition: fixed;\n  top: 0;\n  left: 0;\n  z-index: 1000;\n  background-color: #fff;\n  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3); }\n\n.collapsible .section-toggle, .form-section .section-toggle {\n  text-align: right;\n  float: right; }\n  .collapsible .section-toggle .icon:after, .form-section .section-toggle .icon:after {\n    font-family: \"FontAwesome\";\n    display: inline-block;\n    font-size: 1.2em;\n    content: \"\\F078\"; }\n\n.collapsible.open .section-toggle .icon:after, .open.form-section .section-toggle .icon:after {\n  content: \"\\F077\"; }\n\n.form-section {\n  background-color: #D9EDF7;\n  border: 1px solid #BCE8F1;\n  border-radius: 10px;\n  padding: 1em;\n  margin-top: 2em; }\n  .form-section .error-message {\n    color: #d85454;\n    font-size: 14px;\n    line-height: 1.23em;\n    position: relative;\n    display: inline-block; }\n\n.results-wrapper {\n  overflow-x: auto; }\n\n.results tbody {\n  user-select: none;\n  -webkit-user-select: none;\n  -moz-user-select: none; }\n\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n\n.loading {\n  display: block;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.8);\n  background-image: url(/static/img/galaxy-loading.gif);\n  background-size: cover;\n  opacity: 1; }\n  .loading .loading-message {\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    width: 500px;\n    margin-left: -250px;\n    text-align: center;\n    font-size: 2.3em;\n    color: yellow;\n    line-height: 1.25em; }\n    .loading .loading-message small {\n      font-size: 0.5em; }\n\n/*\n   Results\n*/\n.column-toggle li {\n  display: inline-block;\n  font-size: 14px;\n  padding: 10px; }\n\ntable.results {\n  overflow: auto;\n  padding: 20px;\n  border: 2px solid #333; }\n  table.results thead {\n    background-color: #8cdbfd; }\n    table.results thead tr {\n      border-bottom: 2px solid #666; }\n    table.results thead th {\n      font-size: 14px;\n      white-space: nowrap;\n      padding: 5px;\n      border: 1px solid paleturquoise;\n      border-top: 0 transparent solid;\n      border-bottom: 0 transparent; }\n  table.results tbody td {\n    font-size: 0.8em;\n    overflow: hidden;\n    padding: 2px 7px;\n    border: 1px solid transparent; }\n  table.results tbody td.empty {\n    background-color: #ccc;\n    border-color: #fff; }\n  table.results tbody tr:nth-child(even) {\n    background-color: aliceblue; }\n  table.results tbody tr.selected {\n    background-color: #37c0fb; }\n    table.results tbody tr.selected td.empty {\n      background-color: rgba(0, 0, 0, 0.3); }\n\nlabel.floating {\n  position: relative !important;\n  font-size: 12px;\n  top: 1em;\n  left: 1em;\n  opacity: 0;\n  transition: all 0.2s linear; }\n\nlabel.open {\n  opacity: 1;\n  top: 0; }\n\n.collapsible .section-content, .form-section .section-content {\n  height: 0;\n  opacity: 0;\n  overflow: hidden;\n  transition: all 0.3s ease-in-out; }\n\n.collapsible.open .section-content, .open.form-section .section-content {\n  height: initial;\n  opacity: 1; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.code {\n  font-size: 14px;\n  height: 400px; }\n\ndiv[rel=form-submit] {\n  padding-top: 12px; }\n  div[rel=form-submit] div.form-inline {\n    padding: 5px; }\n\ndiv[rel=form-submit].scroll div.form-inline {\n  position: fixed;\n  width: 100%;\n  top: 0;\n  left: 0;\n  z-index: 1000;\n  background-color: #fff;\n  postition: fixed;\n  top: 0;\n  left: 0;\n  z-index: 1000;\n  background-color: #fff;\n  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3); }\n\n.collapsible .section-toggle, .form-section .section-toggle {\n  text-align: right;\n  float: right; }\n  .collapsible .section-toggle .icon:after, .form-section .section-toggle .icon:after {\n    font-family: \"FontAwesome\";\n    display: inline-block;\n    font-size: 1.2em;\n    content: \"\\F078\"; }\n\n.collapsible.open .section-toggle .icon:after, .open.form-section .section-toggle .icon:after {\n  content: \"\\F077\"; }\n\n.form-section {\n  background-color: #b1def5;\n  border: 1px solid #BCE8F1;\n  border-radius: 10px;\n  padding: 1em;\n  margin-top: 2em; }\n  .form-section .error-message {\n    color: #d85454;\n    font-size: 14px;\n    line-height: 1.23em;\n    position: relative;\n    display: inline-block; }\n\n.results-wrapper {\n  overflow-x: auto; }\n\n.results tbody {\n  user-select: none;\n  -webkit-user-select: none;\n  -moz-user-select: none; }\n\n.fade-enter-active, .fade-leave-active {\n  transition: opacity .5s; }\n\n.fade-enter, .fade-leave-to {\n  opacity: 0; }\n\n.loading {\n  display: block;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  padding: 0;\n  margin: 0;\n  z-index: 1000;\n  background-color: rgba(0, 0, 0, 0.8);\n  background-image: url(/static/img/galaxy-loading.gif);\n  background-size: cover;\n  opacity: 1; }\n  .loading .loading-message {\n    position: absolute;\n    top: 30%;\n    left: 50%;\n    width: 500px;\n    margin-left: -250px;\n    text-align: center;\n    font-size: 2.3em;\n    color: yellow;\n    line-height: 1.25em; }\n    .loading .loading-message small {\n      font-size: 0.5em; }\n\n/*\n   Results\n*/\n.column-toggle li {\n  display: inline-block;\n  font-size: 14px;\n  padding: 10px; }\n\ntable.results {\n  overflow: auto;\n  padding: 20px;\n  border: 2px solid #333; }\n  table.results thead {\n    background-color: #8cdbfd; }\n    table.results thead tr {\n      border-bottom: 2px solid #666; }\n    table.results thead th {\n      font-size: 14px;\n      white-space: nowrap;\n      padding: 5px;\n      border: 1px solid paleturquoise;\n      border-top: 0 transparent solid;\n      border-bottom: 0 transparent; }\n  table.results tbody td {\n    font-size: 0.9em;\n    overflow: hidden;\n    padding: 2px 7px;\n    border: 1px solid transparent; }\n  table.results tbody td.empty {\n    background-color: #ccc;\n    border-color: #fff; }\n  table.results tbody tr:nth-child(even) {\n    background-color: aliceblue; }\n  table.results tbody tr.selected {\n    background-color: #37c0fb; }\n    table.results tbody tr.selected td.empty {\n      background-color: rgba(0, 0, 0, 0.3); }\n\nlabel.floating {\n  position: relative !important;\n  font-size: 12px;\n  top: 1em;\n  left: 1em;\n  opacity: 0;\n  transition: all 0.2s linear; }\n\nlabel.open {\n  opacity: 1;\n  top: 0; }\n\n.collapsible .section-content, .form-section .section-content {\n  height: 0;\n  opacity: 0;\n  overflow: hidden;\n  transition: all 0.3s ease-in-out; }\n\n.collapsible.open .section-content, .open.form-section .section-content {\n  height: initial;\n  opacity: 1; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 14 */
+/* 19 */
 /***/ (function(module, exports) {
 
 /*
@@ -4736,7 +4974,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 15 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -4782,7 +5020,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(16);
+var	fixUrls = __webpack_require__(21);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -5095,7 +5333,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 16 */
+/* 21 */
 /***/ (function(module, exports) {
 
 
@@ -5190,17 +5428,17 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
 /* 22 */,
-/* 23 */
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(1);
+module.exports = __webpack_require__(3);
 
 
 /***/ })
-],[23]);
+],[28]);

@@ -1,4 +1,4 @@
-webpackJsonp([2],[
+webpackJsonp([1],[
 /* 0 */,
 /* 1 */,
 /* 2 */,
@@ -12,10 +12,10 @@ webpackJsonp([2],[
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Search_vue__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_Search_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__vue_Results_vue__);
 var Vue = __webpack_require__(0);
-var moment = __webpack_require__(1);
+var moment = __webpack_require__(3);
 
 
 
@@ -59,7 +59,7 @@ new App();
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(2)(
+var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(10),
   /* template */
@@ -71,7 +71,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -362,8 +362,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_js__ = __webpack_require__(2);
 /*
 Author: Peter Peterson
 Date: 2017-06-09
@@ -1491,26 +1491,15 @@ if (false) {
 }
 
 /***/ }),
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(2)(
+var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(25),
+  __webpack_require__(14),
   /* template */
-  __webpack_require__(28),
+  __webpack_require__(17),
   /* styles */
   null,
   /* scopeId */
@@ -1518,7 +1507,7 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1542,12 +1531,67 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 25 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_js__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_js__ = __webpack_require__(15);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1695,15 +1739,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_js__["a" /* default */]);
 
 /***/ }),
-/* 26 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_js__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_js__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_js__ = __webpack_require__(2);
 
 
 
@@ -1761,6 +1805,10 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
     };
   },
   methods: {
+    filterResults: function(filter){
+      // Request new data set
+      debugger
+    },
     getFilters: function(query){
       self = this
       new Ajax({
@@ -1984,7 +2032,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 
 
 /***/ }),
-/* 27 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Vue = __webpack_require__(0);
@@ -2063,7 +2111,7 @@ Vue.component("table-body", {
 
 
 /***/ }),
-/* 28 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -2146,6 +2194,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "type": "radio",
         "name": "prop_id_filter"
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.prop_id) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2162,21 +2215,81 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "survey_id_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.survey_id) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('button', {
     staticClass: "btn btn-link"
-  }, [_vm._v("PI")])]), _vm._v(" "), _c('li', {
+  }, [_vm._v("PI")]), _vm._v(" "), _vm._l((_vm.filters.pi), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.pi != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', [_c('input', {
+      attrs: {
+        "name": "pi_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.pi) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('button', {
     staticClass: "btn btn-link"
-  }, [_vm._v("Telescope")])]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Telescope")]), _vm._v(" "), _vm._l((_vm.filters.telescope), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.telescope != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "telescope_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.telescope) + "\n                                ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('button', {
     staticClass: "btn btn-link"
-  }, [_vm._v("Intrument")])]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Intrument")]), _vm._v(" "), _vm._l((_vm.filters.instrument), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.instrument) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', [_c('input', {
+      attrs: {
+        "name": "instrument_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.instrument) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('button', {
     staticClass: "btn btn-link"
@@ -2193,25 +2306,114 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "type": "radio",
         "name": "filter_filter"
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.filter) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('button', {
     staticClass: "btn btn-link"
-  }, [_vm._v("Observation Type")])]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Observation Type")]), _vm._v(" "), _vm._l((_vm.filters.observation_type), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.observation_type != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "observation_type_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
+      }
+    })])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('button', {
     staticClass: "btn btn-link"
-  }, [_vm._v("Observation Mode")])]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Observation Mode")]), _vm._v(" "), _vm._l((_vm.filters.observation_mode), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.observation_mode != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "observation_mode_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.observation_mode) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('button', {
     staticClass: "btn btn-link"
-  }, [_vm._v("Processing")])]), _vm._v(" "), _c('li', {
+  }, [_vm._v("Processing")]), _vm._v(" "), _vm._l((_vm.filters.processing), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.processing != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "processing_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.processing) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
     staticClass: "list-group-item"
   }, [_c('button', {
     staticClass: "btn btn-link"
-  }, [_vm._v("Product")])])])]) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_vm._v("Product")]), _vm._v(" "), _vm._l((_vm.filters.product), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.product != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "product_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.filterResults(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.product) + "\n                                   ")])]) : _vm._e()])
+  })], 2)])]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12 results-wrapper",
     class: {
       'col-md-9': _vm.filtersVisible

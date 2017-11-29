@@ -41,7 +41,7 @@
                                <ul class="filter-sublist" v-for="item in filters.prop_id" >
                                    <li class="checkbox" v-if="item.prop_id != null">
                                        <label>
-                                           <input type="radio" name="prop_id_filter"> {{ item.prop_id }}
+                                           <input type="radio" v-on:click="filterResults(item)" name="prop_id_filter"> {{ item.prop_id }}
                                        </label>
                                    </li>
                                </ul>
@@ -50,7 +50,7 @@
                                <ul class="filter-sublist" v-for="item in filters.survey_id">
                                    <li class="checkbox" v-if="item.survey_id != null">
                                        <label>
-                                           <input name="survey_id_filter" type="radio" value=""> {{ item.survey_id }}
+                                           <input name="survey_id_filter" type="radio" v-on:click="filterResults(item)" value=""> {{ item.survey_id }}
                                        </label>
                                    </li>
                                </ul>
@@ -59,7 +59,7 @@
                                <ul class="filter-sublist" v-for="item in filters.pi">
                                    <li class="checkbox" v-if="item.pi != null">
                                        <label>
-                                           <input name="pi_filter" type="radio" value=""> {{ item.pi }}
+                                           <input name="pi_filter" type="radio" v-on:click="filterResults(item)" value=""> {{ item.pi }}
                                        </label>
                                    </li>
                                </ul>
@@ -68,7 +68,7 @@
                                <ul class="filter-sublist" v-for="item in filters.telescope">
                                 <li class="checkbox" v-if="item.telescope != null">
                                     <label for="">
-                                        <input name="telescope_filter" type="radio" value=""> {{item.telescope}}
+                                        <input name="telescope_filter" type="radio" v-on:click="filterResults(item)" value=""> {{item.telescope}}
                                     </label>
                                 </li>
                                </ul>
@@ -77,7 +77,7 @@
                                <ul class="filter-sublist" v-for="item in filters.instrument">
                                    <li class="checkbox" v-if="item.instrument">
                                        <label>
-                                           <input name="instrument_filter" type="radio" value=""> {{ item.instrument }}
+                                           <input name="instrument_filter" type="radio" v-on:click="filterResults(item)" value=""> {{ item.instrument }}
                                        </label>
                                    </li>
                                </ul>
@@ -86,7 +86,7 @@
                                <ul class="filter-sublist" v-for="item in filters.filter">
                                    <li class="checkbox" v-if="item.filter != null">
                                        <label for="">
-                                           <input type="radio" name="filter_filter"> {{ item.filter }}
+                                           <input type="radio" v-on:click="filterResults(item)" name="filter_filter"> {{ item.filter }}
                                        </label>
                                    </li>
                                </ul>
@@ -95,7 +95,7 @@
                                <ul class="filter-sublist" v-for="item in filters.observation_type" >
                                    <li class="checkbox" v-if="item.observation_type != null">
                                        <label for="">
-                                           <input name="observation_type_filter" type="radio" value="">
+                                           <input name="observation_type_filter" type="radio" v-on:click="filterResults(item)" value="">
                                        </label>
                                    </li>
                                </ul>
@@ -104,7 +104,7 @@
                                <ul class="filter-sublist" v-for="item in filters.observation_mode">
                                    <li class="checkbox" v-if="item.observation_mode != null">
                                        <label for="">
-                                           <input name="observation_mode_filter" type="radio" value=""> {{ item.observation_mode }}
+                                           <input name="observation_mode_filter" type="radio" v-on:click="filterResults(item)" value=""> {{ item.observation_mode }}
                                        </label>
                                    </li>
                                </ul>
@@ -113,7 +113,7 @@
                                <ul class="filter-sublist" v-for="item in filters.processing">
                                    <li class="checkbox" v-if="item.processing != null">
                                        <label for="">
-                                           <input name="processing_filter" type="radio" value=""> {{ item.processing }}
+                                           <input name="processing_filter" type="radio" v-on:click="filterResults(item)" value=""> {{ item.processing }}
                                        </label>
                                    </li>
                                </ul>
@@ -122,7 +122,7 @@
                                <ul class="filter-sublist" v-for="item in filters.product">
                                    <li class="checkbox" v-if="item.product != null">
                                        <label for="">
-                                           <input name="product_filter" type="radio" value=""> {{ item.product }}
+                                           <input name="product_filter" type="radio" v-on:click="filterResults(item)" value=""> {{ item.product }}
                                        </label>
                                    </li>
                                </ul>

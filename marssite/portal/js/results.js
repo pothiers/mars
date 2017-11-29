@@ -55,6 +55,10 @@ export default {
     };
   },
   methods: {
+    filterResults: function(filter){
+      // Request new data set
+      debugger
+    },
     getFilters: function(query){
       self = this
       new Ajax({
