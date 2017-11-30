@@ -1520,7 +1520,7 @@ input[type="button"],
 @media screen and (max-width: 1680px) {
   /* Basic */
   body, input, select, textarea {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5em; }
   /* Banner */
   #banner {
@@ -1530,7 +1530,7 @@ input[type="button"],
 @media screen and (max-width: 1280px) {
   /* Basic */
   body, input, select, textarea {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5em; }
   /* Lists */
   ol.default {
@@ -1564,7 +1564,7 @@ input[type="button"],
 @media screen and (max-width: 980px) {
   /* Basic */
   body, input, select, textarea {
-    font-size: 12px;
+    font-size: 16px;
     line-height: 1.5em; } }
 
 /* Narrower */
@@ -1576,7 +1576,7 @@ input[type="button"],
   html, body {
     overflow-x: hidden; }
   body, input, select, textarea {
-    font-size: 13pt; }
+    font-size: 16pt; }
   h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0.5em; }
   header p {

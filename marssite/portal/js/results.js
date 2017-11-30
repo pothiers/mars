@@ -36,7 +36,8 @@ export default {
     return {
       visibleColumns: [],
       filtersVisible: false,
-      filters: [],
+      filters: {},
+      activeTab: 'main',
       allColumns: config.allColumns,
       stageAllConfirm: false,
       stageButtonText: "Stage ALL results",
@@ -55,8 +56,27 @@ export default {
     };
   },
   methods: {
+    setFilter: function (filter) {
+      var key = Object.keys(filter)[0];
+      var value = filter[key];
+      // set the filter in the original search query
+      var query = localStorage.getItem("search");
+      query = JSON.parse(query);
+      query[key] = value;
+      // save this new query for future (paging etc)
+      localStorage.setItem("filter_"+key, JSON.stringify(query));
+
+      // get the filtered results from the server...
+      this.submitQuery(config.apiUrl, query, key, (data)=>{
+        console.log("got this filtered resultset", data);
+        // create  a new tab and place results there
+
+
+      });
+    },
+
     getFilters: function(query){
-      self = this
+      var self = this
       new Ajax({
         url: window.location.origin + "/dal/get-filters",
         data: JSON.parse(query),
