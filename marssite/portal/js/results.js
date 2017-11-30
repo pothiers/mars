@@ -69,9 +69,8 @@ export default {
       // get the filtered results from the server...
       this.submitQuery(config.apiUrl, query, key, (data)=>{
         console.log("got this filtered resultset", data);
-        // create  a new tab and place results there
-
-
+        // create a new tab and place results there
+        this.results = data;
       });
     },
 
@@ -90,9 +89,11 @@ export default {
         }
       });
     },
+
     toggleFilters: function() {
       this.filtersVisible = !this.filtersVisible;
     },
+
     toggleColumn: function(column) {
       var col, first, found, i, j, last, len, len1, n, ref, ref1;
       if (column.checked) {
@@ -122,6 +123,7 @@ export default {
       }
       column.checked = !column.checked;
     },
+
     stageSelected: function() {
       var data, form;
       localStorage.setItem("stage", "selectedFiles");
@@ -137,10 +139,12 @@ export default {
       document.querySelector("body").appendChild(form);
       form.submit();
     },
+
     cancelStageAll: function() {
       this.stageButtonText = 'Stage ALL results';
       this.stageAllConfirm = false;
     },
+
     confirmStage: function() {
       var data, form, searchObj;
       if (this.stageAllConfirm === true) {
@@ -162,24 +166,30 @@ export default {
         this.stageAllConfirm = true;
       }
     },
+
     toggleResults: function() {
       this.toggle = !this.toggle;
       console.log("toggle");
       rebus.$emit("toggleselected", this.toggle);
     },
+
     displayForm: function() {
       window.location.hash = "#search_again";
       this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
     },
+
     handleError: function(e) {
       console.log("There was an error", e);
     },
+
     pageNext: function() {
       this.pageTo(this.pageNum + 1);
     },
+
     pageBack: function() {
       this.pageTo(this.pageNum - 1);
     },
+
     pageTo: function(page) {
       var self;
       this.pageNum = page;
@@ -195,6 +205,7 @@ export default {
       });
     }
   },
+
   created: function() {
     var col, i, len, ref, results;
     ref = this.allColumns;
@@ -209,9 +220,11 @@ export default {
     }
     return results;
   },
+
   updated: function() {
     window.base.bindEvents();
   },
+
   mounted: function() {
     var e, q, ref;
     window.results = this;
