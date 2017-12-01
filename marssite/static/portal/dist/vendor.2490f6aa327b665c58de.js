@@ -235,7 +235,8 @@ _config = {
   loadingMessages: ["Searching the cosmos...", "Deploying deep space probes...", "There's so much S P A C E!"]
 };
 
-/* harmony default export */ __webpack_exports__["a"] = ({
+var Mixin;
+/* harmony default export */ __webpack_exports__["a"] = (Mixin = {
   config: _config,
   mixin: {
     data: function() {
@@ -271,15 +272,11 @@ _config = {
         return newFormData;
         },
 
+      /**
+       *  Preps data for sending the query to the server
+       */
       submitForm: function(event, paging, cb) {
-
-        var message, msgs, newFormData, page, self, url;
-        if (paging == null) {
-          paging = null;
-        }
-        if (cb == null) {
-          cb = null;
-        }
+        var newFormData, page, self, url;
         if (event != null) {
           event.preventDefault();
         }
@@ -296,41 +293,56 @@ _config = {
           page = localStorage.getItem("currentPage");
         }
         newFormData = this.stripData();
-        msgs = this.config.loadingMessages;
-        message = Math.floor(Math.random() * msgs.length);
-        this.loadingMessage = msgs[message];
-        self = this;
         url = this.config.apiUrl + ("?page=" + page);
         localStorage.setItem("search", JSON.stringify(newFormData));
-        return new Ajax({
-          url: url,
-          method: "post",
-          accept: "json",
-          data: newFormData,
-          success: function(data) {
-            var saveData;
-            window.location.hash = "#query";
-            self.loading = false;
-            saveData = typeof data === "object" ? JSON.stringify(data) : data;
-            localStorage.setItem('results', saveData);
-            self.$emit("displayform", ["results", saveData]);
-            if (cb) {
-              cb(data);
-            }
-          },
-          fail: function(statusMsg, status, xhr) {
-            console.log("Request failed, got this");
-            message = "" + statusMsg;
-            if (xhr.response) {
-              message += ":  " + xhr.response.errorMessage;
-            }
-            self.loading = false;
-            self.modalTitle = "Request Error";
-            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
-            ToggleModal("#search-modal");
+        this.submitQuery(url, newFormData, null, cb);
+      },
+
+      /**
+       * Async submits query to the server
+       */
+      submitQuery: function (url, query, filter, cb) {
+        var resultsStorage = "results";
+        var msgs = this.config.loadingMessages;
+        var message = Math.floor(Math.random() * msgs.length);
+        this.loadingMessage = msgs[message];
+
+        if( typeof(filter) !== "undefined" && filter !== null){
+          resultsStorage = "filter_results_"+filter;
+        }
+        self = this;
+
+        new Ajax({
+        url: url,
+        method: "post",
+        accept: "json",
+        data: query,
+        success: function(data) {
+          var saveData;
+          window.location.hash = "#query";
+          self.loading = false;
+          saveData = typeof data === "object" ? JSON.stringify(data) : data;
+          localStorage.setItem(resultsStorage, saveData);
+          self.$emit("displayform", ["results", saveData]);
+          if (cb) {
+            cb(data);
           }
-        });
+        },
+        fail: function(statusMsg, status, xhr) {
+          console.log("Request failed, got this");
+          message = "" + statusMsg;
+          if (xhr.response) {
+            message += ":  " + xhr.response.errorMessage;
+          }
+          self.loading = false;
+          self.modalTitle = "Request Error";
+          self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
+          ToggleModal("#search-modal");
+        }
+      });
+
       }
+
     }
   }
 });

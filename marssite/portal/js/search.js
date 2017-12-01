@@ -75,7 +75,8 @@ const scrollingWatcher = function(){
   }
 };
 
-export default {
+var Search;
+export default Search = {
   mixins: [Shared.mixin],
   created(){
     this.getTelescopes();

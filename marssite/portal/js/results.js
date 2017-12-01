@@ -29,7 +29,9 @@ config = Shared.config;
 
 window.bus = new Vue();
 
-export default {
+var Results;
+
+export default Results = {
   props: ['componentData'],
   mixins: [Shared.mixin],
   data: function() {

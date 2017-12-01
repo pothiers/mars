@@ -1739,7 +1739,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_js__["a" /* default */]);
@@ -1785,7 +1784,7 @@ config = __WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].config;
 
 window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 
-/* harmony default export */ __webpack_exports__["a"] = ({
+/* harmony default export */ __webpack_exports__["a"] = (Results = {
   props: ['componentData'],
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].mixin],
   data: function() {
@@ -1825,7 +1824,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       // get the filtered results from the server...
       this.submitQuery(config.apiUrl, query, key, (data)=>{
         console.log("got this filtered resultset", data);
-        // create  a new tab and place results there
+        // create a new tab and place results there
         this.results = data;
       });
     },
@@ -2149,7 +2148,414 @@ Vue.component("table-body", {
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports={render:function(){},staticRenderFns:[]}
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    attrs: {
+      "id": "query-results"
+    }
+  }, [_c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [(_vm.visible) ? _c('div', [_c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row heading"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('h2', {
+    staticClass: "text-warn"
+  }, [_vm._v("Query returned "), _c('em', [_vm._v(_vm._s(_vm.totalItems))]), _vm._v(" records")]), _vm._v(" "), _c('ul', {
+    staticClass: "list-unstyled"
+  }, [_c('li', [_c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.toggleFilters
+    }
+  }, [_c('span', {
+    staticClass: "fa fa-filter"
+  }), _vm._v(" Toggle Filters")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-2 text-right"
+  }, [_c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": _vm.displayForm
+    }
+  }, [_vm._v("Search Again")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [(_vm.filtersVisible) ? _c('div', {
+    staticClass: "col-md-3 col-xs-12 results-filters"
+  }, [_c('h3', [_vm._v("Filter results by:")]), _vm._v(" "), _c('ul', {
+    staticClass: "list-group"
+  }, [_c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Proposal ID")]), _vm._v(" "), _vm._l((_vm.filters.prop_id), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.prop_id != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', [_c('input', {
+      attrs: {
+        "type": "radio",
+        "name": "prop_id_filter"
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.prop_id) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Survey ID")]), _vm._v(" "), _vm._l((_vm.filters.survey_id), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.survey_id != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', [_c('input', {
+      attrs: {
+        "name": "survey_id_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.survey_id) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("PI")]), _vm._v(" "), _vm._l((_vm.filters.pi), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.pi != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', [_c('input', {
+      attrs: {
+        "name": "pi_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.pi) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Telescope")]), _vm._v(" "), _vm._l((_vm.filters.telescope), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.telescope != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "telescope_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.telescope) + "\n                                ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Intrument")]), _vm._v(" "), _vm._l((_vm.filters.instrument), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.instrument) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', [_c('input', {
+      attrs: {
+        "name": "instrument_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.instrument) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Filter")]), _vm._v(" "), _vm._l((_vm.filters.filter), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.filter != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "type": "radio",
+        "name": "filter_filter"
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.filter) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Observation Type")]), _vm._v(" "), _vm._l((_vm.filters.observation_type), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.observation_type != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "observation_type_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    })])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Observation Mode")]), _vm._v(" "), _vm._l((_vm.filters.observation_mode), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.observation_mode != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "observation_mode_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.observation_mode) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Processing")]), _vm._v(" "), _vm._l((_vm.filters.processing), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.processing != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "processing_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.processing) + "\n                                   ")])]) : _vm._e()])
+  })], 2), _vm._v(" "), _c('li', {
+    staticClass: "list-group-item"
+  }, [_c('button', {
+    staticClass: "btn btn-link"
+  }, [_vm._v("Product")]), _vm._v(" "), _vm._l((_vm.filters.product), function(item) {
+    return _c('ul', {
+      staticClass: "filter-sublist"
+    }, [(item.product != null) ? _c('li', {
+      staticClass: "checkbox"
+    }, [_c('label', {
+      attrs: {
+        "for": ""
+      }
+    }, [_c('input', {
+      attrs: {
+        "name": "product_filter",
+        "type": "radio",
+        "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
+      }
+    }), _vm._v(" " + _vm._s(item.product) + "\n                                   ")])]) : _vm._e()])
+  })], 2)])]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-12 results-wrapper",
+    class: {
+      'col-md-9': _vm.filtersVisible
+    }
+  }, [_c('div', {
+    staticClass: "collapsible"
+  }, [_c('div', {
+    staticClass: "column-toggle panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading section-heading clearfix"
+  }, [_c('strong', {}, [_vm._v("Toggle visibility of columns\n                                ")]), _vm._v(" "), _c('div', {
+    staticClass: "section-toggle"
+  }, [_c('span', {
+    staticClass: "icon open"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body section-content "
+  }, [_c('ul', {
+    staticClass: "list-unstyled columns"
+  }, _vm._l((_vm.allColumns), function(column) {
+    return _c('li', [_c('label', [_c('input', {
+      attrs: {
+        "name": "",
+        "type": "checkbox",
+        "value": "",
+        "name": column.mapping
+      },
+      domProps: {
+        "checked": column.checked
+      },
+      on: {
+        "change": function($event) {
+          _vm.toggleColumn(column)
+        }
+      }
+    }), _vm._v(" " + _vm._s(column.name))])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "row results-controls"
+  }, [_c('div', {
+    staticClass: "col-sm-5"
+  }, [_c('button', {
+    staticClass: "btn-link btn page-prev",
+    on: {
+      "click": _vm.pageBack
+    }
+  }, [_vm._v("Prev")]), _vm._v(" "), _c('span', {
+    staticClass: "page-num"
+  }, [_vm._v(_vm._s(_vm.pageNum))]), _vm._v(" "), _c('button', {
+    staticClass: "btn-link btn page-next",
+    on: {
+      "click": _vm.pageNext
+    }
+  }, [_vm._v("Next")]), _vm._v(" "), _c('span', {
+    staticClass: "records-from"
+  }, [_vm._v(_vm._s(_vm.recordsFrom))]), _vm._v(" to "), _c('span', {
+    staticClass: "records-to"
+  }, [_vm._v(_vm._s(_vm.recordsTo))]), _vm._v(" "), (_vm.isLoading) ? _c('span', {
+    staticClass: "fa fa-spinner fa-spin fa-1x fa-fw"
+  }) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-7 "
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-3"
+  }, [_c('label', [_c('input', {
+    attrs: {
+      "name": "",
+      "type": "checkbox",
+      "value": ""
+    },
+    on: {
+      "change": _vm.toggleResults
+    }
+  }), _vm._v(" Select all visible")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-9 text-right"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "disabled": _vm.selected.length == 0
+    },
+    on: {
+      "click": _vm.stageSelected
+    }
+  }, [_vm._v("Stage selected files")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    class: {
+      'btn-danger': _vm.stageAllConfirm
+    },
+    on: {
+      "click": _vm.confirmStage
+    }
+  }, [_vm._v(_vm._s(_vm.stageButtonText))]), _vm._v(" "), (_vm.stageAllConfirm) ? _c('div', {
+    staticClass: "text-small help-block"
+  }, [_c('span', {
+    staticClass: "text-danger"
+  }, [_vm._v("You are about to stage "), _c('strong', [_vm._v("ALL")]), _vm._v(" results. "), _c('strong', [_vm._v("Click again to confirm")])]), _vm._v(" "), (_vm.stageAllConfirm) ? _c('span', {
+    staticClass: "label label-primary"
+  }, [_vm._v(_vm._s(_vm.results.meta.total_count) + " files")]) : _vm._e(), _vm._v(" | "), _c('button', {
+    staticClass: "btn btn-default btn-small",
+    on: {
+      "click": _vm.cancelStageAll
+    }
+  }, [_vm._v("Cancel")])]) : _vm._e()])]), _vm._v(" "), ((_vm.results.resultset.length > 0)) ? _c('table', {
+    staticClass: "results"
+  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Selected")]), _vm._v(" "), _vm._l((_vm.visibleColumns), function(col) {
+    return _c('th', [_c("table-header", {
+      tag: "span",
+      attrs: {
+        "name": col.name
+      }
+    })])
+  })], 2)]), _vm._v(" "), _c("table-body", {
+    tag: "tbody",
+    attrs: {
+      "data": _vm.results.resultset,
+      "visible-cols": _vm.visibleColumns
+    }
+  }), _vm._v(" "), _c('tfoot')]) : _c('div', [_c('h1', {
+    staticClass: "text-center"
+  }, [_vm._v("No results found")]), _vm._v(" "), (_vm.error) ? _c('div', {
+    staticClass: "alert alert-danger text-center"
+  }, [_vm._v(_vm._s(_vm.error))]) : _vm._e(), _vm._v(" "), _c('pre', {
+    staticClass: "code"
+  }, [_vm._v(_vm._s(_vm.searchObj) + "\n                    ")]), _vm._v(" "), _c('div', {
+    staticClass: "text-center"
+  }, [_c('h5', [_vm._v("You might try and adjust your paramaters and search again")]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-success",
+    on: {
+      "click": _vm.displayForm
+    }
+  }, [_vm._v("Adjust Paramaters")])])])])])])]) : _vm._e()])], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {

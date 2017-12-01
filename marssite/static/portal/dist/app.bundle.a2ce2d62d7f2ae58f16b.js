@@ -71,7 +71,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1507,7 +1507,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1537,6 +1537,11 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_js__ = __webpack_require__(15);
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1779,7 +1784,9 @@ config = __WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].config;
 
 window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 
-/* harmony default export */ __webpack_exports__["a"] = ({
+var Results;
+
+/* harmony default export */ __webpack_exports__["a"] = (Results = {
   props: ['componentData'],
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].mixin],
   data: function() {
@@ -1787,6 +1794,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       visibleColumns: [],
       filtersVisible: false,
       filters: {},
+      activeTab: 'main',
       allColumns: config.allColumns,
       stageAllConfirm: false,
       stageButtonText: "Stage ALL results",
@@ -1806,14 +1814,25 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
   },
   methods: {
     setFilter: function (filter) {
-      key = Object.keys(filter)[0];
-      value = filter[key];
+      var key = Object.keys(filter)[0];
+      var value = filter[key];
+      // set the filter in the original search query
+      var query = localStorage.getItem("search");
+      query = JSON.parse(query);
+      query[key] = value;
+      // save this new query for future (paging etc)
+      localStorage.setItem("filter_"+key, JSON.stringify(query));
 
-      console.log("Applying this filter...", key, value);
+      // get the filtered results from the server...
+      this.submitQuery(config.apiUrl, query, key, (data)=>{
+        console.log("got this filtered resultset", data);
+        // create a new tab and place results there
+        this.results = data;
+      });
     },
 
     getFilters: function(query){
-      self = this
+      var self = this
       new Ajax({
         url: window.location.origin + "/dal/get-filters",
         data: JSON.parse(query),
@@ -1827,9 +1846,11 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         }
       });
     },
+
     toggleFilters: function() {
       this.filtersVisible = !this.filtersVisible;
     },
+
     toggleColumn: function(column) {
       var col, first, found, i, j, last, len, len1, n, ref, ref1;
       if (column.checked) {
@@ -1859,6 +1880,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       }
       column.checked = !column.checked;
     },
+
     stageSelected: function() {
       var data, form;
       localStorage.setItem("stage", "selectedFiles");
@@ -1874,10 +1896,12 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       document.querySelector("body").appendChild(form);
       form.submit();
     },
+
     cancelStageAll: function() {
       this.stageButtonText = 'Stage ALL results';
       this.stageAllConfirm = false;
     },
+
     confirmStage: function() {
       var data, form, searchObj;
       if (this.stageAllConfirm === true) {
@@ -1899,24 +1923,30 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
         this.stageAllConfirm = true;
       }
     },
+
     toggleResults: function() {
       this.toggle = !this.toggle;
       console.log("toggle");
       rebus.$emit("toggleselected", this.toggle);
     },
+
     displayForm: function() {
       window.location.hash = "#search_again";
       this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
     },
+
     handleError: function(e) {
       console.log("There was an error", e);
     },
+
     pageNext: function() {
       this.pageTo(this.pageNum + 1);
     },
+
     pageBack: function() {
       this.pageTo(this.pageNum - 1);
     },
+
     pageTo: function(page) {
       var self;
       this.pageNum = page;
@@ -1932,6 +1962,7 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
       });
     }
   },
+
   created: function() {
     var col, i, len, ref, results;
     ref = this.allColumns;
@@ -1946,9 +1977,11 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
     }
     return results;
   },
+
   updated: function() {
     window.base.bindEvents();
   },
+
   mounted: function() {
     var e, q, ref;
     window.results = this;
@@ -2134,38 +2167,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-xs-10"
   }, [_c('h2', {
     staticClass: "text-warn"
-  }, [_vm._v("Query returned "), _c('em', [_vm._v(_vm._s(_vm.totalItems))]), _vm._v(" records")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-xs-2 text-right"
-  }, [_c('button', {
-    staticClass: "btn btn-primary",
-    on: {
-      "click": _vm.displayForm
-    }
-  }, [_vm._v("Search Again")])])]), _vm._v(" "), _c('div', {
-    staticClass: "row results-controls"
-  }, [_c('div', {
-    staticClass: "col-sm-5"
-  }, [_c('button', {
-    staticClass: "btn-link btn page-prev",
-    on: {
-      "click": _vm.pageBack
-    }
-  }, [_vm._v("Prev")]), _vm._v(" "), _c('span', {
-    staticClass: "page-num"
-  }, [_vm._v(_vm._s(_vm.pageNum))]), _vm._v(" "), _c('button', {
-    staticClass: "btn-link btn page-next",
-    on: {
-      "click": _vm.pageNext
-    }
-  }, [_vm._v("Next")]), _vm._v(" "), _c('span', {
-    staticClass: "records-from"
-  }, [_vm._v(_vm._s(_vm.recordsFrom))]), _vm._v(" to "), _c('span', {
-    staticClass: "records-to"
-  }, [_vm._v(_vm._s(_vm.recordsTo))]), _vm._v(" "), (_vm.isLoading) ? _c('span', {
-    staticClass: "fa fa-spinner fa-spin fa-1x fa-fw"
-  }) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "col-sm-7 "
-  }, [_c('ul', {
+  }, [_vm._v("Query returned "), _c('em', [_vm._v(_vm._s(_vm.totalItems))]), _vm._v(" records")]), _vm._v(" "), _c('ul', {
     staticClass: "list-unstyled"
   }, [_c('li', [_c('button', {
     staticClass: "btn btn-link",
@@ -2174,9 +2176,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "fa fa-filter"
-  }), _vm._v(" Toggle Filters")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "row table-filters"
-  }), _vm._v(" "), _c('hr')]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Toggle Filters")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-2 text-right"
+  }, [_c('button', {
+    staticClass: "btn btn-primary",
+    on: {
+      "click": _vm.displayForm
+    }
+  }, [_vm._v("Search Again")])])])]), _vm._v(" "), _c('div', {
     staticClass: "container"
   }, [_c('div', {
     staticClass: "row"
@@ -2197,6 +2204,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "type": "radio",
         "name": "prop_id_filter"
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.prop_id) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2213,6 +2225,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "survey_id_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.survey_id) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2229,6 +2246,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "pi_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.pi) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2249,6 +2271,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "telescope_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.telescope) + "\n                                ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2265,6 +2292,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "instrument_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.instrument) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2284,6 +2316,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "type": "radio",
         "name": "filter_filter"
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.filter) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2304,6 +2341,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "observation_type_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     })])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2324,6 +2366,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "observation_mode_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.observation_mode) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2344,6 +2391,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "processing_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.processing) + "\n                                   ")])]) : _vm._e()])
   })], 2), _vm._v(" "), _c('li', {
@@ -2364,6 +2416,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "name": "product_filter",
         "type": "radio",
         "value": ""
+      },
+      on: {
+        "click": function($event) {
+          _vm.setFilter(item)
+        }
       }
     }), _vm._v(" " + _vm._s(item.product) + "\n                                   ")])]) : _vm._e()])
   })], 2)])]) : _vm._e(), _vm._v(" "), _c('div', {
@@ -2403,6 +2460,32 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }), _vm._v(" " + _vm._s(column.name))])])
   }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "row results-controls"
+  }, [_c('div', {
+    staticClass: "col-sm-5"
+  }, [_c('button', {
+    staticClass: "btn-link btn page-prev",
+    on: {
+      "click": _vm.pageBack
+    }
+  }, [_vm._v("Prev")]), _vm._v(" "), _c('span', {
+    staticClass: "page-num"
+  }, [_vm._v(_vm._s(_vm.pageNum))]), _vm._v(" "), _c('button', {
+    staticClass: "btn-link btn page-next",
+    on: {
+      "click": _vm.pageNext
+    }
+  }, [_vm._v("Next")]), _vm._v(" "), _c('span', {
+    staticClass: "records-from"
+  }, [_vm._v(_vm._s(_vm.recordsFrom))]), _vm._v(" to "), _c('span', {
+    staticClass: "records-to"
+  }, [_vm._v(_vm._s(_vm.recordsTo))]), _vm._v(" "), (_vm.isLoading) ? _c('span', {
+    staticClass: "fa fa-spinner fa-spin fa-1x fa-fw"
+  }) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-7 "
+  })])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-sm-3"
@@ -2465,7 +2548,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "alert alert-danger text-center"
   }, [_vm._v(_vm._s(_vm.error))]) : _vm._e(), _vm._v(" "), _c('pre', {
     staticClass: "code"
-  }, [_vm._v(_vm._s(_vm.searchObj) + "\n                      ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v(_vm._s(_vm.searchObj) + "\n                    ")]), _vm._v(" "), _c('div', {
     staticClass: "text-center"
   }, [_c('h5', [_vm._v("You might try and adjust your paramaters and search again")]), _vm._v(" "), _c('button', {
     staticClass: "btn btn-success",

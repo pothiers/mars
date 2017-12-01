@@ -132,7 +132,8 @@ _config = {
   loadingMessages: ["Searching the cosmos...", "Deploying deep space probes...", "There's so much S P A C E!"]
 };
 
-export default {
+var Mixin;
+export default Mixin = {
   config: _config,
   mixin: {
     data: function() {
