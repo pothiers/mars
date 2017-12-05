@@ -89,7 +89,14 @@ Base = (function() {
     var nohup;
     window.addMultiEventListener = function(elem, events, fn) {
       return events.split(' ').forEach(function(e) {
-        return elem.addEventListener(e, fn, false);
+        if (elem.events && elem.events[e]) {
+          elem.removeEventListener(e, elem.events[e], false);
+        }
+        elem.addEventListener(e, fn, false);
+        if (!elem.events) {
+          elem.events = [];
+        }
+        return elem.events[e] = fn;
       });
     };
     if (window.location.hostname.indexOf('local') < 0) {
@@ -136,9 +143,16 @@ Base = (function() {
       section = sections[j];
       toggle = section.querySelector(".section-toggle");
       results.push((function(thisSection) {
-        return toggle.addEventListener("click", function(e) {
+        var colsection, fn;
+        colsection = thisSection.querySelector(".section-heading");
+        fn = function(e) {
           return thisSection.classList.toggle("open");
-        });
+        };
+        if (colsection.clickevent) {
+          colsection.removeEventListener("click", colsection.clickevent, false);
+        }
+        colsection.addEventListener("click", fn, false);
+        return colsection.clickevent = fn;
       })(section));
     }
     return results;

@@ -37,8 +37,8 @@ export default Results = {
   data: function() {
     return {
       visibleColumns: [],
-      filtersVisible: false,
-      filters: {},
+      categoriesVisible: false,
+      categories: {},
       activeTab: 'main',
       allColumns: config.allColumns,
       stageAllConfirm: false,
@@ -58,42 +58,67 @@ export default Results = {
     };
   },
   methods: {
-    setFilter: function (filter) {
-      var key = Object.keys(filter)[0];
-      var value = filter[key];
-      // set the filter in the original search query
+    setCategory: function (category_key, category_value) {
+      console.log("category_key:", category_key, "cat_value", category_value);
+      //split instrument/telescope
+      var key = category_key;
+      var value = category_value;
+
+      if( key == "telescope_instrument"){
+        value = [value.split(",")]
+      }
+      // set the category in the original search query
       var query = localStorage.getItem("search");
       query = JSON.parse(query);
       query[key] = value;
       // save this new query for future (paging etc)
-      localStorage.setItem("filter_"+key, JSON.stringify(query));
+      localStorage.setItem("category_"+key, JSON.stringify(query));
 
-      // get the filtered results from the server...
+      // get the category results from the server...
       this.submitQuery(config.apiUrl, query, key, (data)=>{
-        console.log("got this filtered resultset", data);
+        console.log("got this category resultset", data);
         // create a new tab and place results there
         this.results = data;
       });
     },
 
-    getFilters: function(query){
+    getCategory: function(query){
       var self = this
       new Ajax({
-        url: window.location.origin + "/dal/get-filters",
+        url: window.location.origin + "/dal/get-categories",
         data: JSON.parse(query),
         method: "post",
         accept: "json",
         success: function(data) {
+
           if (data.status == "success"){
-            self.filters = data.filters;
-            console.log("got this for filters", data);
+            var cats = {};
+            /*
+              categories: {
+                'name': [
+                   {'name':'value'}
+                   ...
+                   n{'name':'value'}
+                ]
+              }
+            */
+            for(var item in data.categories){
+              for(var val in data.categories[item]){
+                if(data.categories[item][val][item] !== null &&data.categories[item][val][item] !== ""){
+                  if(cats[item] == undefined){ cats[item] = []}
+                  cats[item].push(data.categories[item][val][item]);
+                }
+              }
+            }
+            console.log("formated categories", cats);
+            self.categories = cats;
           }
         }
       });
     },
 
-    toggleFilters: function() {
-      this.filtersVisible = !this.filtersVisible;
+    toggleCategories: function() {
+      this.categoriesVisible = !this.categoriesVisible;
     },
 
     toggleColumn: function(column) {
@@ -233,8 +258,8 @@ export default Results = {
     console.log("Results mounted");
     q = localStorage.getItem("search");
 
-    // get filters for this query
-    this.getFilters(q);
+    // get categories for this query
+    this.getCategory(q);
 
     bus.$on("toggleselected", (function(_this) {
       return function(onoff) {

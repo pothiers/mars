@@ -441,7 +441,8 @@ const scrollingWatcher = function(){
   }
 };
 
-/* harmony default export */ __webpack_exports__["a"] = ({
+var Search;
+/* harmony default export */ __webpack_exports__["a"] = (Search = {
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].mixin],
   created(){
     this.getTelescopes();
@@ -1659,86 +1660,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_js__["a" /* default */]);
@@ -1792,8 +1713,8 @@ var Results;
   data: function() {
     return {
       visibleColumns: [],
-      filtersVisible: false,
-      filters: {},
+      categoriesVisible: false,
+      categories: {},
       activeTab: 'main',
       allColumns: config.allColumns,
       stageAllConfirm: false,
@@ -1813,42 +1734,67 @@ var Results;
     };
   },
   methods: {
-    setFilter: function (filter) {
-      var key = Object.keys(filter)[0];
-      var value = filter[key];
-      // set the filter in the original search query
+    setCategory: function (category_key, category_value) {
+      console.log("category_key:", category_key, "cat_value", category_value);
+      //split instrument/telescope
+      var key = category_key;
+      var value = category_value;
+
+      if( key == "telescope_instrument"){
+        value = [value.split(",")]
+      }
+      // set the category in the original search query
       var query = localStorage.getItem("search");
       query = JSON.parse(query);
       query[key] = value;
       // save this new query for future (paging etc)
-      localStorage.setItem("filter_"+key, JSON.stringify(query));
+      localStorage.setItem("category_"+key, JSON.stringify(query));
 
-      // get the filtered results from the server...
+      // get the category results from the server...
       this.submitQuery(config.apiUrl, query, key, (data)=>{
-        console.log("got this filtered resultset", data);
+        console.log("got this category resultset", data);
         // create a new tab and place results there
         this.results = data;
       });
     },
 
-    getFilters: function(query){
+    getCategory: function(query){
       var self = this
       new Ajax({
-        url: window.location.origin + "/dal/get-filters",
+        url: window.location.origin + "/dal/get-categories",
         data: JSON.parse(query),
         method: "post",
         accept: "json",
         success: function(data) {
+
           if (data.status == "success"){
-            self.filters = data.filters;
-            console.log("got this for filters", data);
+            var cats = {};
+            /*
+              categories: {
+                'name': [
+                   {'name':'value'}
+                   ...
+                   n{'name':'value'}
+                ]
+              }
+            */
+            for(var item in data.categories){
+              for(var val in data.categories[item]){
+                if(data.categories[item][val][item] !== null &&data.categories[item][val][item] !== ""){
+                  if(cats[item] == undefined){ cats[item] = []}
+                  cats[item].push(data.categories[item][val][item]);
+                }
+              }
+            }
+            console.log("formated categories", cats);
+            self.categories = cats;
           }
         }
       });
     },
 
-    toggleFilters: function() {
-      this.filtersVisible = !this.filtersVisible;
+    toggleCategories: function() {
+      this.categoriesVisible = !this.categoriesVisible;
     },
 
     toggleColumn: function(column) {
@@ -1988,8 +1934,8 @@ var Results;
     console.log("Results mounted");
     q = localStorage.getItem("search");
 
-    // get filters for this query
-    this.getFilters(q);
+    // get categories for this query
+    this.getCategory(q);
 
     bus.$on("toggleselected", (function(_this) {
       return function(onoff) {
@@ -2170,13 +2116,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Query returned "), _c('em', [_vm._v(_vm._s(_vm.totalItems))]), _vm._v(" records")]), _vm._v(" "), _c('ul', {
     staticClass: "list-unstyled"
   }, [_c('li', [_c('button', {
-    staticClass: "btn btn-link",
+    staticClass: "btn btn-default",
     on: {
-      "click": _vm.toggleFilters
+      "click": _vm.toggleCategories
     }
   }, [_c('span', {
-    staticClass: "fa fa-filter"
-  }), _vm._v(" Toggle Filters")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "fa fa-bars"
+  }), _vm._v(" Toggle Categories")])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-2 text-right"
   }, [_c('button', {
     staticClass: "btn btn-primary",
@@ -2187,246 +2133,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "container"
   }, [_c('div', {
     staticClass: "row"
-  }, [(_vm.filtersVisible) ? _c('div', {
-    staticClass: "col-md-3 col-xs-12 results-filters"
-  }, [_c('h3', [_vm._v("Filter results by:")]), _vm._v(" "), _c('ul', {
-    staticClass: "list-group"
-  }, [_c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Proposal ID")]), _vm._v(" "), _vm._l((_vm.filters.prop_id), function(item) {
+  }, [(_vm.categoriesVisible) ? _c('div', {
+    staticClass: "col-md-3 col-xs-12 results-categories"
+  }, [_c('h3', [_vm._v("Category results by:")]), _vm._v(" "), _vm._l((_vm.categories), function(cat, indx) {
     return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.prop_id != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', [_c('input', {
-      attrs: {
-        "type": "radio",
-        "name": "prop_id_filter"
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
+      staticClass: "list-group"
+    }, [_c('li', {
+      staticClass: "list-group-item"
+    }, [_c('h4', {
+      staticClass: "text-primary"
+    }, [_vm._v(_vm._s(indx.replace("_", " ")))]), _vm._v(" "), _vm._l((cat), function(item) {
+      return _c('ul', {
+        staticClass: "category-sublist"
+      }, [_c('li', {
+        staticClass: "checkbox"
+      }, [_c('label', [_c('input', {
+        attrs: {
+          "type": "radio",
+          "name": 'category_' + indx
+        },
+        on: {
+          "click": function($event) {
+            _vm.setCategory(indx, item)
+          }
         }
-      }
-    }), _vm._v(" " + _vm._s(item.prop_id) + "\n                                   ")])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Survey ID")]), _vm._v(" "), _vm._l((_vm.filters.survey_id), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.survey_id != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', [_c('input', {
-      attrs: {
-        "name": "survey_id_filter",
-        "type": "radio",
-        "value": ""
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    }), _vm._v(" " + _vm._s(item.survey_id) + "\n                                   ")])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("PI")]), _vm._v(" "), _vm._l((_vm.filters.pi), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.pi != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', [_c('input', {
-      attrs: {
-        "name": "pi_filter",
-        "type": "radio",
-        "value": ""
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    }), _vm._v(" " + _vm._s(item.pi) + "\n                                   ")])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Telescope")]), _vm._v(" "), _vm._l((_vm.filters.telescope), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.telescope != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', {
-      attrs: {
-        "for": ""
-      }
-    }, [_c('input', {
-      attrs: {
-        "name": "telescope_filter",
-        "type": "radio",
-        "value": ""
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    }), _vm._v(" " + _vm._s(item.telescope) + "\n                                ")])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Intrument")]), _vm._v(" "), _vm._l((_vm.filters.instrument), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.instrument) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', [_c('input', {
-      attrs: {
-        "name": "instrument_filter",
-        "type": "radio",
-        "value": ""
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    }), _vm._v(" " + _vm._s(item.instrument) + "\n                                   ")])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Filter")]), _vm._v(" "), _vm._l((_vm.filters.filter), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.filter != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', {
-      attrs: {
-        "for": ""
-      }
-    }, [_c('input', {
-      attrs: {
-        "type": "radio",
-        "name": "filter_filter"
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    }), _vm._v(" " + _vm._s(item.filter) + "\n                                   ")])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Observation Type")]), _vm._v(" "), _vm._l((_vm.filters.observation_type), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.observation_type != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', {
-      attrs: {
-        "for": ""
-      }
-    }, [_c('input', {
-      attrs: {
-        "name": "observation_type_filter",
-        "type": "radio",
-        "value": ""
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    })])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Observation Mode")]), _vm._v(" "), _vm._l((_vm.filters.observation_mode), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.observation_mode != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', {
-      attrs: {
-        "for": ""
-      }
-    }, [_c('input', {
-      attrs: {
-        "name": "observation_mode_filter",
-        "type": "radio",
-        "value": ""
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    }), _vm._v(" " + _vm._s(item.observation_mode) + "\n                                   ")])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Processing")]), _vm._v(" "), _vm._l((_vm.filters.processing), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.processing != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', {
-      attrs: {
-        "for": ""
-      }
-    }, [_c('input', {
-      attrs: {
-        "name": "processing_filter",
-        "type": "radio",
-        "value": ""
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    }), _vm._v(" " + _vm._s(item.processing) + "\n                                   ")])]) : _vm._e()])
-  })], 2), _vm._v(" "), _c('li', {
-    staticClass: "list-group-item"
-  }, [_c('button', {
-    staticClass: "btn btn-link"
-  }, [_vm._v("Product")]), _vm._v(" "), _vm._l((_vm.filters.product), function(item) {
-    return _c('ul', {
-      staticClass: "filter-sublist"
-    }, [(item.product != null) ? _c('li', {
-      staticClass: "checkbox"
-    }, [_c('label', {
-      attrs: {
-        "for": ""
-      }
-    }, [_c('input', {
-      attrs: {
-        "name": "product_filter",
-        "type": "radio",
-        "value": ""
-      },
-      on: {
-        "click": function($event) {
-          _vm.setFilter(item)
-        }
-      }
-    }), _vm._v(" " + _vm._s(item.product) + "\n                                   ")])]) : _vm._e()])
-  })], 2)])]) : _vm._e(), _vm._v(" "), _c('div', {
+      }), _vm._v(" " + _vm._s(item) + "\n                                   ")])])])
+    })], 2)])
+  })], 2) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12 results-wrapper",
     class: {
-      'col-md-9': _vm.filtersVisible
+      'col-md-9': _vm.categoriesVisible
     }
   }, [_c('div', {
     staticClass: "collapsible"

@@ -147,23 +147,20 @@ def tele_inst_pairs(request):
                          safe=False)
 
 @csrf_exempt
-def get_filters_for_query(request):
+def get_categories_for_query(request):
     """
     Get a list of unique values for the following columns:
     Proposal Id, Survey Id, PI, Telescope, instrument, filter, observation type,
     observation mode, processing, product
     """
-    # TODO: Need to get the filter from the request
-    # TODO: Modify process_query to return the "Where" clause to run sql from here
     # get uniques for filters
     query = json.loads(request.body.decode('utf-8'))
     cursor = connections['archive'].cursor()
-    filter_fields = [
+    category_fields = [
         "prop_id",
         "surveyid as survey_id",
         "dtpi as pi",
-        "telescope",
-        "instrument",
+        "concat(telescope, ',', instrument) as telescope_instrument",
         "filter",
         "obstype as observation_type",
         "obsmode as observation_mode",
@@ -172,14 +169,14 @@ def get_filters_for_query(request):
     ]
 
     where_clause = utils.process_query(jsearch=query, page=1, page_limit=50000, order_fields='', return_where_clause=True)
-    filters = {}
-    for filtr in filter_fields:
-        sql1 = ('SELECT distinct {} FROM voi.siap {}'.format(filtr, where_clause))
+    categories = {}
+    for category in category_fields:
+        sql1 = ('SELECT distinct {} FROM voi.siap {}'.format(category, where_clause))
         cursor.execute(sql1)
-        indx = filtr.split(" as ").pop()
-        filters[indx] = utils.dictfetchall(cursor)
+        indx = category.split(" as ").pop()
+        categories[indx] = utils.dictfetchall(cursor)
 
-    resp = {"status":"success", "filters":filters}
+    resp = {"status":"success", "categories":categories}
     return JsonResponse(resp, safe=False)
 
 ###

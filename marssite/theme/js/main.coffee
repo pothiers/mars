@@ -59,7 +59,7 @@ class Ajax
       .join('&')
       path += "?"+params
     ###
-    
+
 
 class Base
   constructor: ()->
@@ -69,13 +69,18 @@ class Base
     ###
     window.addMultiEventListener = (elem, events, fn)->
       events.split(' ').forEach (e) ->
+        if elem.events && elem.events[e]
+          elem.removeEventListener(e, elem.events[e], false)
         elem.addEventListener(e, fn, false)
+        if !elem.events
+          elem.events = []
+        elem.events[e] = fn
 
     # disable console on live
     if window.location.hostname.indexOf('local') < 0
       nohup = ()->
         return "Console commands (log, info, dir, debug) have been mapped into `console.live` in production environments"
-      console.live = 
+      console.live =
         log: console.log
         info: console.info
         dir: console.dir
@@ -105,8 +110,15 @@ class Base
     for section in sections
       toggle = section.querySelector(".section-toggle")
       ((thisSection)->
-        toggle.addEventListener "click", (e)->
+        colsection = thisSection.querySelector(".section-heading")
+        fn = (e)->
           thisSection.classList.toggle("open")
+        # remove first to prevent more than one binding at a time
+        if colsection.clickevent
+          colsection.removeEventListener("click", colsection.clickevent, false)
+
+        colsection.addEventListener("click", fn, false)
+        colsection.clickevent = fn
       ) section
 ###
     splitVals = document.querySelectorAll(".split-val")

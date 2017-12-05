@@ -72,7 +72,9 @@ div[rel=form-submit].scroll{
       display: inline-block;
   }
 }
-
+.results-categories h4{
+  text-transform: capitalize;
+}
 .results-wrapper{
   overflow-x: auto;
 }
