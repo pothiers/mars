@@ -72,18 +72,7 @@ div[rel=form-submit].scroll{
       display: inline-block;
   }
 }
-.results-categories h4{
-  text-transform: capitalize;
-}
-.results-wrapper{
-  overflow-x: auto;
-}
 
-.results tbody{
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-}
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
@@ -125,6 +114,22 @@ div[rel=form-submit].scroll{
 /*
    Results
 */
+.results-categories h4{
+  text-transform: capitalize;
+}
+.results-wrapper{
+  overflow-x: auto;
+}
+
+.results tbody{
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+}
+.category-sublist{
+  overflow-y: auto;
+  max-height:400px;
+}
 .column-toggle li{
   display: inline-block;
   font-size: 14px;

@@ -23,8 +23,8 @@
                        <h3>Category results by:</h3>
                        <ul class="list-group" v-for="(cat, indx) in categories">
                             <li class="list-group-item"><h4 class="text-primary" >{{ indx.replace("_"," ") }}</h4>
-                               <ul class="category-sublist" v-for="item in cat" >
-                                   <li class="checkbox">
+                               <ul class="category-sublist" >
+                                   <li class="checkbox" v-for="item in cat" >
                                        <label>
                                            <!-- Send setCategory key, value  -->
                                            <input type="radio" v-on:click="setCategory(indx,item)" v-bind:name="'category_'+indx"> {{ item }}
