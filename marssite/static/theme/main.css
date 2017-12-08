@@ -1041,10 +1041,8 @@ textarea {
   -webkit-transition: all 0.2s linear;
   -ms-transition: all 0.2s linear;
   transition: all 0.2s linear;
-  background: rgba(255, 255, 255, 0.5);
-  border: solid 0px transparent;
-  border-bottom: 2px solid rgba(31, 154, 183, 0.28);
-  border-radius: 0 !important;
+  background: white;
+  border: 1px solid #ddd;
   color: inherit;
   display: block;
   outline: 0;
@@ -1056,7 +1054,6 @@ textarea {
   input[type="email"]:focus,
   textarea:focus {
     border-bottom-color: #36bffa;
-    border-bottom-width: 3px;
     background-color: rgba(255, 255, 255, 0.8);
     box-shadow: 0 0 3px rgba(54, 189, 248, 0.3); }
 
@@ -1772,7 +1769,7 @@ input[type="button"],
 @media screen and (max-width: 736px) {
   /* Basic */
   body, input, select, textarea {
-    font-size: 11pt;
+    font-size: 16px;
     line-height: 1.35em; }
   h2 {
     font-size: 1.25em;

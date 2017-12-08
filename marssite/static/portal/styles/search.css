@@ -35,8 +35,7 @@ div[rel=form-submit].scroll div.form-inline {
   content: ""; }
 
 .form-section {
-  background-color: #b1def5;
-  border: 1px solid #BCE8F1;
+  background-color: #f5f5f5;
   border-radius: 10px;
   padding: 1em;
   margin-top: 2em; }
@@ -46,14 +45,6 @@ div[rel=form-submit].scroll div.form-inline {
     line-height: 1.23em;
     position: relative;
     display: inline-block; }
-
-.results-wrapper {
-  overflow-x: auto; }
-
-.results tbody {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none; }
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s; }
@@ -91,6 +82,21 @@ div[rel=form-submit].scroll div.form-inline {
 /*
    Results
 */
+.results-categories h4 {
+  text-transform: capitalize; }
+
+.results-wrapper {
+  overflow-x: auto; }
+
+.results tbody {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none; }
+
+.category-sublist {
+  overflow-y: auto;
+  max-height: 400px; }
+
 .column-toggle li {
   display: inline-block;
   font-size: 14px;

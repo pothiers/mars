@@ -82,7 +82,7 @@
 
               <!-- Observation section -->
               <div class="row">
-                  <div class="col-xs-12 form-section">
+                  <div class="col-xs-12 form-section panel panel-default">
                       <div class="collapsible open container-fluid">
                           <div class="section-heading row">
                               <div class="col-xs-6">

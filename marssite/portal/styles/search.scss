@@ -1,5 +1,5 @@
 // Styles for search forms/results
-$section-bg: #b1def5;
+$section-bg: #f5f5f5; // #b1def5;
 $section-border-color: #BCE8F1;
 $caret-up: "\f077";
 $caret-down: "\f078";
@@ -58,7 +58,7 @@ div[rel=form-submit].scroll{
 
 .form-section{
   background-color: $section-bg;
-  border: 1px solid $section-border-color;
+ // border: 1px solid $section-border-color;
   border-radius: 10px;
   padding: 1em;
   margin-top: 2em;

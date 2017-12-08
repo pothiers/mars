@@ -7,9 +7,16 @@
                     <div class="col-xs-10">
 
                         <h2 class="text-warn">Query returned <em>{{totalItems}}</em> records</h2>
-                         <ul class="list-unstyled">
+                         <ul class="list-inline">
                             <li><button class="btn btn-default" v-on:click="toggleCategories"><span class="fa fa-bars"></span> Toggle Categories</button></li>
-                        </ul>
+                            <li>
+                               <div class="form-inline">
+                                    <div class="form-group">
+                                        <input class="form-control" name="" type="text" value="" placeholder="Filter">
+                                    </div>
+                               </div>
+                            </li>
+                         </ul>
                     </div>
                     <div class="col-xs-2 text-right">
                         <button class="btn btn-primary" v-on:click="displayForm">Search Again</button>
