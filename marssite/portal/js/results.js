@@ -1,6 +1,6 @@
-import Vue from "vue"
-import "./components.js"
-import Shared from "./mixins.js"
+import Vue from "vue";
+import "./components.js";
+import Shared from "./mixins.js";
 
 
 /*
@@ -39,6 +39,7 @@ export default Results = {
       visibleColumns: [],
       categoriesVisible: false,
       categories: {},
+      categoryApplied: false,
       activeTab: 'main',
       allColumns: config.allColumns,
       stageAllConfirm: false,
@@ -58,6 +59,10 @@ export default Results = {
     };
   },
   methods: {
+    clearCategory: function(){
+      this.categoryApplied = false;
+      this.results = JSON.parse(localStorage.getItem("results"));
+    },
     setCategory: function (category_key, category_value) {
       console.log("category_key:", category_key, "cat_value", category_value);
       //split instrument/telescope
@@ -65,7 +70,7 @@ export default Results = {
       var value = category_value;
 
       if( key == "telescope_instrument"){
-        value = [value.split(",")]
+        value = [value.split(",")];
       }
       // set the category in the original search query
       var query = localStorage.getItem("search");
@@ -79,6 +84,7 @@ export default Results = {
         console.log("got this category resultset", data);
         // create a new tab and place results there
         this.results = data;
+        this.categoryApplied = true;
       });
     },
 
@@ -121,6 +127,38 @@ export default Results = {
           }
         });
       }
+    },
+
+    // TODO: finish implementation
+    setRefinementHistory: function(){
+       // save this new query for future (paging etc)
+      // refinedsearch is an array - a stack/history of the refinements
+      var rs = localStorage.getItem('refinedsearch');
+      var refinedSearch = [];
+      if( rs ){
+        refinedSearch = JSON.parse(rs);
+      }else{
+        var origQuery = localStorage.getItem("search");
+        refinedSearch.push( JSON.parse(origQuery) );
+      }
+      var lastQuery = refinedSearch[refinedSearch.length - 1] || [];
+      lastQuery[key] = value;
+
+      refinedSearch.push(lastQuery);
+      localStorage.setItem("refinedSearch", JSON.stringify(refinedSearch));
+
+
+      // set the category in the original search query
+      var query = lastQuery;
+      localStorage.setItem("search", JSON.stringify(query));
+
+      // get the category results from the server...
+      this.submitQuery(config.apiUrl, query, key, (data)=>{
+        console.log("got this category resultset", data);
+        // create a new tab and place results there
+        this.results = data;
+      });
+
     },
 
     toggleCategories: function() {

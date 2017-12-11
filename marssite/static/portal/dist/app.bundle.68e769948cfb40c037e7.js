@@ -71,7 +71,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -791,7 +791,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-12 form-section"
+    staticClass: "col-xs-12 form-section panel panel-default"
   }, [_c('div', {
     staticClass: "collapsible open container-fluid"
   }, [_c('div', {
@@ -1508,7 +1508,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1538,6 +1538,16 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_js__ = __webpack_require__(15);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1715,6 +1725,7 @@ var Results;
       visibleColumns: [],
       categoriesVisible: false,
       categories: {},
+      categoryApplied: false,
       activeTab: 'main',
       allColumns: config.allColumns,
       stageAllConfirm: false,
@@ -1734,6 +1745,10 @@ var Results;
     };
   },
   methods: {
+    clearCategory: function(){
+      this.categoryApplied = false;
+      this.results = JSON.parse(localStorage.getItem("results"));
+    },
     setCategory: function (category_key, category_value) {
       console.log("category_key:", category_key, "cat_value", category_value);
       //split instrument/telescope
@@ -1741,7 +1756,7 @@ var Results;
       var value = category_value;
 
       if( key == "telescope_instrument"){
-        value = [value.split(",")]
+        value = [value.split(",")];
       }
       // set the category in the original search query
       var query = localStorage.getItem("search");
@@ -1755,6 +1770,7 @@ var Results;
         console.log("got this category resultset", data);
         // create a new tab and place results there
         this.results = data;
+        this.categoryApplied = true;
       });
     },
 
@@ -1797,6 +1813,38 @@ var Results;
           }
         });
       }
+    },
+
+    // TODO: finish implementation
+    setRefinementHistory: function(){
+       // save this new query for future (paging etc)
+      // refinedsearch is an array - a stack/history of the refinements
+      var rs = localStorage.getItem('refinedsearch');
+      var refinedSearch = [];
+      if( rs ){
+        refinedSearch = JSON.parse(rs);
+      }else{
+        var origQuery = localStorage.getItem("search");
+        refinedSearch.push( JSON.parse(origQuery) );
+      }
+      var lastQuery = refinedSearch[refinedSearch.length - 1] || [];
+      lastQuery[key] = value;
+
+      refinedSearch.push(lastQuery);
+      localStorage.setItem("refinedSearch", JSON.stringify(refinedSearch));
+
+
+      // set the category in the original search query
+      var query = lastQuery;
+      localStorage.setItem("search", JSON.stringify(query));
+
+      // get the category results from the server...
+      this.submitQuery(config.apiUrl, query, key, (data)=>{
+        console.log("got this category resultset", data);
+        // create a new tab and place results there
+        this.results = data;
+      });
+
     },
 
     toggleCategories: function() {
@@ -2120,7 +2168,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('h2', {
     staticClass: "text-warn"
   }, [_vm._v("Query returned "), _c('em', [_vm._v(_vm._s(_vm.totalItems))]), _vm._v(" records")]), _vm._v(" "), _c('ul', {
-    staticClass: "list-unstyled"
+    staticClass: "list-inline"
   }, [_c('li', [_c('button', {
     staticClass: "btn btn-default",
     on: {
@@ -2128,7 +2176,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "fa fa-bars"
-  }), _vm._v(" Toggle Categories")])])])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" Toggle Categories")]), _vm._v(" "), _c('div', [(_vm.categoryApplied) ? _c('button', {
+    staticClass: "btn btn-link btn-sm",
+    on: {
+      "click": _vm.clearCategory
+    }
+  }, [_vm._v("Clear Categories")]) : _vm._e()])]), _vm._v(" "), _c('li', [_c('div', {
+    staticClass: "form-inline"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "name": "",
+      "type": "text",
+      "value": "",
+      "placeholder": "Filter"
+    }
+  })])])])])]), _vm._v(" "), _c('div', {
     staticClass: "col-xs-2 text-right"
   }, [_c('button', {
     staticClass: "btn btn-primary",

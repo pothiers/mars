@@ -184,6 +184,7 @@ export default Mixin = {
           window.location.hash = "";
           this.$emit('setpagenum', 1);
           page = 1;
+          localStorage.removeItem("categories");
           localStorage.setItem("currentPage", 1);
           localStorage.setItem("searchData", JSON.stringify(this.search));
         } else {
