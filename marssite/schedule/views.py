@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.template import loader
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
@@ -330,7 +330,7 @@ def dbpropid(request, telescope, instrument, date, hdrpid):
         msg = ('Propid from hdr ({}) not in scheduled list of Propids {}; {}'
                .format(hdrpid, pids, slottuple))
         logging.error(msg)
-        return HttpResponseNotFound(msg)
+        return HttpResponseBadRequest(msg)
     elif is_split == False: # NOT split-night, hdrpid not in schedule
         # use schedule for non-split nights (regardless of header content)
         # !!! WARNING: Use propid from schedule, ignore hdrprid

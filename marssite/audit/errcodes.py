@@ -1,5 +1,5 @@
-"""Transform error messages from dataq, tada, archive into something
-suitable for AUDIT.
+"""Transform error messages from dataq, tada, archive, mars (schedule)
+into something suitable for AUDIT.
 """
 
 import re
