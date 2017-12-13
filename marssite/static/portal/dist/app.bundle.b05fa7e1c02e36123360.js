@@ -71,7 +71,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1508,7 +1508,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1748,6 +1748,12 @@ var Results;
     clearCategory: function(){
       this.categoryApplied = false;
       this.results = JSON.parse(localStorage.getItem("results"));
+      this.totalItems = this.results.meta.total_count;
+      // clear the selected categories
+      var selected = document.querySelectorAll(".results-categories input:checked");
+      for( var input of selected){
+        input.checked = false;
+      }
     },
     setCategory: function (category_key, category_value) {
       console.log("category_key:", category_key, "cat_value", category_value);
@@ -1763,7 +1769,7 @@ var Results;
       query = JSON.parse(query);
       query[key] = value;
       // save this new query for future (paging etc)
-      localStorage.setItem("category_"+key, JSON.stringify(query));
+      localStorage.setItem("category_selection", JSON.stringify(query));
 
       // get the category results from the server...
       this.submitQuery(config.apiUrl, query, key, (data)=>{
@@ -1771,6 +1777,7 @@ var Results;
         // create a new tab and place results there
         this.results = data;
         this.categoryApplied = true;
+        this.totalItems = data.meta.total_count;
       });
     },
 
@@ -2168,7 +2175,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('h2', {
     staticClass: "text-warn"
   }, [_vm._v("Query returned "), _c('em', [_vm._v(_vm._s(_vm.totalItems))]), _vm._v(" records")]), _vm._v(" "), _c('ul', {
-    staticClass: "list-inline"
+    staticClass: "list-inline category-filter-controls"
   }, [_c('li', [_c('button', {
     staticClass: "btn btn-default",
     on: {
@@ -2221,7 +2228,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }, [_c('label', [_c('input', {
         attrs: {
           "type": "radio",
-          "name": 'category_' + indx
+          "name": "category_selection"
         },
         on: {
           "click": function($event) {

@@ -62,6 +62,12 @@ export default Results = {
     clearCategory: function(){
       this.categoryApplied = false;
       this.results = JSON.parse(localStorage.getItem("results"));
+      this.totalItems = this.results.meta.total_count;
+      // clear the selected categories
+      var selected = document.querySelectorAll(".results-categories input:checked");
+      for( var input of selected){
+        input.checked = false;
+      }
     },
     setCategory: function (category_key, category_value) {
       console.log("category_key:", category_key, "cat_value", category_value);
@@ -77,7 +83,7 @@ export default Results = {
       query = JSON.parse(query);
       query[key] = value;
       // save this new query for future (paging etc)
-      localStorage.setItem("category_"+key, JSON.stringify(query));
+      localStorage.setItem("category_selection", JSON.stringify(query));
 
       // get the category results from the server...
       this.submitQuery(config.apiUrl, query, key, (data)=>{
@@ -85,6 +91,7 @@ export default Results = {
         // create a new tab and place results there
         this.results = data;
         this.categoryApplied = true;
+        this.totalItems = data.meta.total_count;
       });
     },
 

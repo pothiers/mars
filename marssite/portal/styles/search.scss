@@ -114,7 +114,14 @@ div[rel=form-submit].scroll{
 /*
    Results
 */
+.category-filter-controls{
+  li{
+    vertical-align: top;
+  }
+}
+
 .results-categories h4{
+
   text-transform: capitalize;
 }
 .results-wrapper{

@@ -7,7 +7,7 @@
                     <div class="col-xs-10">
 
                         <h2 class="text-warn">Query returned <em>{{totalItems}}</em> records</h2>
-                         <ul class="list-inline">
+                         <ul class="list-inline category-filter-controls">
                              <li>
                                  <button class="btn btn-default" v-on:click="toggleCategories"><span class="fa fa-bars"></span> Toggle Categories</button>
                                  <div><button class="btn btn-link btn-sm" v-if="categoryApplied" v-on:click="clearCategory" >Clear Categories</button></div>
@@ -37,7 +37,7 @@
                                    <li class="checkbox" v-for="item in cat" >
                                        <label>
                                            <!-- Send setCategory key, value  -->
-                                           <input type="radio" v-on:click="setCategory(indx,item)" v-bind:name="'category_'+indx"> {{ item }}
+                                           <input type="radio" v-on:click="setCategory(indx,item)" name="category_selection"> {{ item }}
                                        </label>
                                    </li>
                                </ul>
