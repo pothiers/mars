@@ -16,6 +16,9 @@ import re
 import datetime
 import logging
 from pathlib import PurePath
+import subprocess
+from collections import defaultdict, Counter, OrderedDict
+
 
 import csv
 from django.utils.timezone import make_aware, now
@@ -294,52 +297,33 @@ def re_audit(request, orig_md5sum, new_md5sum):
                         .format(orig_md5sum, new_md5sum))
     
 
+def truncate(longstr, maxlen=255):
+    shortstr = longstr
+    if len(longstr) > maxlen:
+        shortstr = longstr[:maxlen-3]+'...'
+    return shortstr
+
 @csrf_exempt
 @api_view(['POST'])
 @parser_classes((JSONParser,))
 def update(request, format='yaml'):
-    """Update audit record"""
+    """Update audit record.
+EXAMPLE:   
+   curl -v -H "Content-Type: application/json" -X POST \
+      -d '{"success": false, "telescope": "unknown", "md5sum": "0ebde3dc1ed3ee6bb674ee0d30c5e984", "updated": "2017-12-15T21:46:15.084178", "archerr": "Rejected ingest of /tmp/changed2.fits.fz. REASON: Failed Propid lookup via mars for tele=kp4m, instr=mosaic3, date=2001-01-01, hdrpid=2016A-0453", "obsday": "2017-12-15", "submitted": "2017-12-15T21:46:15.084178", "srcpath": "/tmp/changed2.fits.fz", "metadata": {"DTACQNAM": "/tmp/changed2.fits.fz"}, "instrument": "unknown", "errcode": "NOSCHED", "archfile": ""}' \
+       http://localhost:8000/audit/update/; echo 
+"""
+    logging.debug('audit.views.py:update()')
     if request.method == 'POST':  
         all = set([f.name for f in AuditRecord._meta.get_fields()])
         rdict = request.data.copy()
         rdict['telescope'] = Telescope.objects.get(pk=rdict['telescope'])
         rdict['instrument'] = Instrument.objects.get(pk=rdict['instrument'])
 
-        logging.debug('uDBG-1')
         logging.debug('uDBG-rdict={}'.format(rdict))
         
         md5 = rdict['md5sum']
-        #!try:
-        #!    obj = AuditRecord.objects.get(md5)
-        #!except:
-        #!    return HttpResponse('Audit record for md5sum'
-        #!                        '={} does not exist. Ignored'
-        #!                        .format(md5))
-        
-        #rdict['metadata']['nothing_here'] = 'NA' # was: 0 (not a string)
-        
-        #!for k,v in rdict['metadata'].items():
-        #!    rdict['metadata'][k] = str(v) # required for HStoreField
-        #! print('/audit/update: defaults={}'.format(rdict)) 
         fstop = 'archive' if rdict['success']==True else 'valley:cache'
-        #!initdefs = dict(obsday=rdict.get('obsday',now().date()),
-        #!                telescope=tobj,
-        #!                instrument=iobj,
-        #!                srcpath=rdict['srcpath'] )
-        #!newdefs = dict(obsday=rdict.get('obsday',now().date()),
-        #!               telescope=tobj,
-        #!               instrument=iobj,
-        #!               srcpath=rdict['srcpath'],
-        #!               #
-        #!               submitted=make_aware(dp.parse(rdict['submitted'])),
-        #!               success=rdict['success'],
-        #!               fstop=fstop,
-        #!               errcode=ec.errcode(rdict['archerr']), # rdict['errcode'],
-        #!               archerr=rdict['archerr'],
-        #!               archfile=rdict['archfile'],
-        #!               #!metadata=rdict['metadata'],
-        #!               updated=make_aware(dp.parse(rdict['updated'])) )
-        logging.debug('uDBG-2')
         # Create new DB values from request dictionary
         newdefs = dict()
         for k in all & rdict.keys() - {'md5sum'}:
@@ -348,16 +332,24 @@ def update(request, format='yaml'):
                            else 'valley:cache'
         if 'submitted' in rdict:
             newdefs['submitted']=make_aware(dp.parse(rdict['submitted']))
-        if 'archerr' in rdict:
-            newdefs['errcode']=ec.errcode(rdict['archerr'])
         if 'updated' in rdict:
             newdefs['updated']=make_aware(dp.parse(rdict['updated']))
-            
+        if 'archerr' in rdict:
+            newdefs['errcode']=ec.errcode(rdict['archerr'])
+            newdefs['archerr']=truncate(rdict['archerr'])
+        if 'srcpath' in rdict:
+            newdefs['srcpath']=truncate(rdict['srcpath'])
+        newdefs['hide'] = False # unhide anything that gets updated
+        newdefs['metadata'] = None # not useful enough to keep
+        
         logging.debug('uDBG-newdefs={}'.format(newdefs))
         try:
             obj,created = AuditRecord.objects.update_or_create(md5sum=md5,
                                                                defaults=newdefs)
         except Exception as err:
+            logging.error('Failed to update_or_create AuditRecord with'
+                          ' md5sum={}, defaults={}'.format(md5,newdefs))
+            logging.error('Exception={}'.format(err))
             return HttpResponseBadRequest(err)
             
         if created:
@@ -693,3 +685,71 @@ def get_recent(request):
                          ar.srcpath, ar.errcode, ar.archfile,
                          ])
     return response
+
+# json returned: {"telescope.ct4m": 1, "success.False": 5, "instrument.ir_imager": 1, "success.True": 4, "errcode.ETLKEY": 2, "errcode.MISSREQ": 3, "errcode.NOPROP": 1, "instrument.newfirm": 3, "instrument.arcoiris": 1, "instrument.whirc": 2, "errcode.": 2, "instrument.90prime": 1, "telescope.wiyn": 2, "telescope.bok23m": 2, "instrument.kosmos": 1, "telescope.kp4m": 4, "errcode.DUPFITS": 1}
+def get_recent_count(request):
+    today = now()
+    yesterday = (today - datetime.timedelta(days=1))
+    success_cnt = Counter()
+    telescope_cnt = Counter()
+    instrument_cnt = Counter()
+    errcode_cnt = Counter()
+    
+    for ar in (AuditRecord.objects
+               .filter(updated__gte=yesterday).order_by('-updated')):
+        success_cnt.update([ar.success])
+        telescope_cnt.update([ar.telescope.name])
+        instrument_cnt.update([ar.instrument.name])
+        errcode_cnt.update([ar.errcode])
+    cntdict = dict(success=dict(success_cnt),
+                   telescope=dict(telescope_cnt),
+                   instrument=dict(instrument_cnt),
+                   errcode=dict(errcode_cnt))
+    
+    od = OrderedDict(sorted([(k1+'_'+str(k2),v)
+                             for k1 in cntdict.keys()
+                             for (k2,v) in cntdict[k1].items()],
+                            key=lambda x: x[0]))
+    return JsonResponse(od)
+
+def get_unhide_count(request):
+    success_cnt = Counter()
+    telescope_cnt = Counter()
+    instrument_cnt = Counter()
+    errcode_cnt = Counter()
+    
+    for ar in (AuditRecord.objects
+               .filter(hide=False).order_by('-updated')):
+        success_cnt.update([ar.success])
+        telescope_cnt.update([ar.telescope.name])
+        instrument_cnt.update([ar.instrument.name])
+        errcode_cnt.update([ar.errcode])
+    cntdict = dict(success=dict(success_cnt),
+                   telescope=dict(telescope_cnt),
+                   instrument=dict(instrument_cnt),
+                   errcode=dict(errcode_cnt))
+    
+    od = OrderedDict(sorted([(k1+'_'+str(k2),v)
+                             for k1 in cntdict.keys()
+                             for (k2,v) in cntdict[k1].items()],
+                            key=lambda x: x[0]))
+    return JsonResponse(od)
+
+def clear_mars_log(request):
+    try:
+        with open('/var/log/mars/mars-detail.log', 'w') as log:
+            subprocess.run('date', stdout=log, shell=True)
+    except Exception as err:
+        JsonResponse({'exception': err})
+    return JsonResponse({'msg':'cleared mars-detail.log'}) 
+    
+def get_mars_log_count(request):
+    logfile='/var/log/mars/mars-detail.log'
+    tags=sorted(['INFO','WARNING','ERROR'])
+    count = defaultdict(int)
+    for line in open(logfile):
+        for tag in tags:
+            if tag in line:
+                count[tag] += 1
+    od = OrderedDict(sorted(count.items(), key=lambda x: x[0]))
+    return JsonResponse(od) 

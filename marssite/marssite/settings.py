@@ -71,12 +71,14 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_swagger',
     'django_tables2',
-    'audit',  # tada audit/status REST API
+    'audit',  # tada audit and status REST API
+    'debug_toolbar',
 )
 
 
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -84,8 +86,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.admindocs.middleware.XViewMiddleware',
+    #'django.contrib.admindocs.middleware.XViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'middleware.RequestExceptionHandler',
 )
 
 ROOT_URLCONF = 'marssite.urls'
@@ -119,6 +122,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+INTERNAL_IPS = ['127.0.0.1',  '10.0.2.2'] # '0.0.0.0', '192.168.1.45',
 
 SWAGGER_SETTINGS = {
 #!    'exclude_namespaces': [],
@@ -216,6 +220,13 @@ if 'TRAVIS' not in os.environ:
             'django': {
                 'handlers': ['file', 'debugfile'],
                 'level': 'DEBUG',
+                'propagate': True,
+            },
+            # Hide annoying admin "DEBUG, Exception":
+            #  e.g "Exception while resolving variable 'errors' in template 'admin/change_list.html'."
+            'django.template': {
+                'handlers': ['file'],
+                'level': 'INFO',
                 'propagate': True,
             },
             #!'django.server': {

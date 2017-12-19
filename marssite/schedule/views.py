@@ -63,6 +63,7 @@ logger = logging.getLogger(__name__)
 
 
 def apply_tac_update(**query):
+    deadtac='BCHAN,FLMN,MOSAIC,OTHER,pODI,RCSPL+T2KB,VIS'.split(',')
     """Update/add object unless it already exists and is FROZEN. """
     logger.debug('apply tac update for query={}'.format(query))
     params = urllib.parse.urlencode(query)
@@ -92,8 +93,9 @@ def apply_tac_update(**query):
         logger.debug('DBG-2.1')
  
         if instrument not in sched2hdr:
-            logger.error('No TAC alias found for {}. Use MARS to add one.'
-                         .format(instrument))
+            logger.error(('No TAC alias found for "{}"; query="{}". Use MARS'
+                          ' /admin/tada/tacinstrumentalias/ to add one.')
+                         .format(instrument, query))
             continue
         instrument = sched2hdr.get(instrument)
         logger.debug('DBG-2.2')
