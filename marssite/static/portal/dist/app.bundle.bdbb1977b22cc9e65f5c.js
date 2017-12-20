@@ -1713,6 +1713,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_js__["a" /* default */]);
@@ -1768,6 +1776,7 @@ var Results;
       visibleColumns: [],
       categoriesVisible: false,
       categories: {},
+      categorizeFirst: false,
       categoryApplied: false,
       activeTab: 'main',
       allColumns: config.allColumns,
@@ -1788,6 +1797,10 @@ var Results;
     };
   },
   methods: {
+    showResultsTable: function(){
+      this.categorizeFirst = false;
+      this.categoriesVisible = false;
+    },
     clearCategory: function(){
       this.categoryApplied = false;
       this.results = JSON.parse(localStorage.getItem("results"));
@@ -1803,6 +1816,10 @@ var Results;
       //split instrument/telescope
       var key = category_key;
       var value = category_value;
+
+      if( this.categorizeFirst ){
+        this.categorizeFirst = false;
+      }
 
       if( key == "telescope_instrument"){
         value = [value.split(",")];
@@ -2108,7 +2125,11 @@ var Results;
         this.totalItems = (ref = this.results) != null ? ref.meta.total_count : void 0;
         this.visible = true;
         this.pageNum = parseInt(localStorage.getItem("currentPage"));
-      } catch (_error) {
+        if(this.totalItems > 1000){
+          this.categorizeFirst = true;
+          this.categoriesVisible = true;
+        }
+        } catch (_error) {
         e = _error;
         this.results = [];
         this.totalItems = 0;
@@ -2192,9 +2213,6 @@ Vue.component("table-body", {
    props: ['data', 'visibleCols'],
    template: "<tbody ><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>",
    methods: {
-     iheardthat(){
-       console.log("I heard that");
-     }
    }
  }
 );
@@ -2259,8 +2277,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "row"
   }, [(_vm.categoriesVisible) ? _c('div', {
-    staticClass: "col-md-3 col-xs-12 results-categories"
-  }, [_c('h3', [_vm._v("Category results by:")]), _vm._v(" "), _vm._l((_vm.categories), function(cat, indx) {
+    staticClass: "col-md-3 col-xs-12 results-categories",
+    class: {
+      'full-width': _vm.categorizeFirst
+    }
+  }, [_c('h3', [_vm._v("Results by Category:")]), _vm._v(" "), (_vm.categorizeFirst) ? _c('div', {
+    staticClass: "alert alert-info text-center"
+  }, [_vm._v("\n                        There are too many results to effecttively display here. Consider refining results further.\n                        "), _c('br'), _vm._v(" "), _c('br'), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary btn-sm",
+    on: {
+      "click": _vm.showResultsTable
+    }
+  }, [_vm._v("No thanks, show me the results table")])]) : _vm._e(), _vm._v(" "), _vm._l((_vm.categories), function(cat, indx) {
     return _c('ul', {
       staticClass: "list-group"
     }, [_c('li', {
@@ -2289,7 +2317,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })], 2) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12 results-wrapper",
     class: {
-      'col-md-9': _vm.categoriesVisible
+      'col-md-9': _vm.categoriesVisible, 'hidden': _vm.categorizeFirst
     }
   }, [_c('div', {
     staticClass: "collapsible"

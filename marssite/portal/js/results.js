@@ -39,6 +39,7 @@ export default Results = {
       visibleColumns: [],
       categoriesVisible: false,
       categories: {},
+      categorizeFirst: false,
       categoryApplied: false,
       activeTab: 'main',
       allColumns: config.allColumns,
@@ -59,6 +60,10 @@ export default Results = {
     };
   },
   methods: {
+    showResultsTable: function(){
+      this.categorizeFirst = false;
+      this.categoriesVisible = false;
+    },
     clearCategory: function(){
       this.categoryApplied = false;
       this.results = JSON.parse(localStorage.getItem("results"));
@@ -74,6 +79,10 @@ export default Results = {
       //split instrument/telescope
       var key = category_key;
       var value = category_value;
+
+      if( this.categorizeFirst ){
+        this.categorizeFirst = false;
+      }
 
       if( key == "telescope_instrument"){
         value = [value.split(",")];
@@ -379,7 +388,11 @@ export default Results = {
         this.totalItems = (ref = this.results) != null ? ref.meta.total_count : void 0;
         this.visible = true;
         this.pageNum = parseInt(localStorage.getItem("currentPage"));
-      } catch (_error) {
+        if(this.totalItems > 1000){
+          this.categorizeFirst = true;
+          this.categoriesVisible = true;
+        }
+        } catch (_error) {
         e = _error;
         this.results = [];
         this.totalItems = 0;

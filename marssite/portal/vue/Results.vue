@@ -29,8 +29,14 @@
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 col-xs-12 results-categories" v-if="categoriesVisible">
-                       <h3>Category results by:</h3>
+                    <div class="col-md-3 col-xs-12 results-categories" v-if="categoriesVisible" v-bind:class="{'full-width':categorizeFirst}">
+                        <h3>Results by Category:</h3>
+                        <div class="alert alert-info text-center" v-if="categorizeFirst">
+                            There are too many results to effecttively display here. Consider refining results further.
+                            <br>
+                            <br>
+                            <button class="btn btn-primary btn-sm" v-on:click="showResultsTable">No thanks, show me the results table</button>
+                        </div>
                        <ul class="list-group" v-for="(cat, indx) in categories">
                             <li class="list-group-item"><h4 class="text-primary" >{{ indx.replace("_"," ") }}</h4>
                                <ul class="category-sublist" >
@@ -46,7 +52,7 @@
                     </div>
 
                     <!-- Begin main results table -->
-                    <div class="col-xs-12 results-wrapper" v-bind:class="{'col-md-9':categoriesVisible}" >
+                    <div class="col-xs-12 results-wrapper" v-bind:class="{'col-md-9':categoriesVisible, 'hidden':categorizeFirst}"  >
                         <div class="collapsible">
 
                             <div class="column-toggle panel panel-default">
@@ -121,6 +127,8 @@
                         </div>
                     </div>
                     <!-- end results table -->
+
+                    <!-- Category view -->
 
 
                 </div>

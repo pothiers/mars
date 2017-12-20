@@ -65,9 +65,6 @@ Vue.component("table-body", {
    props: ['data', 'visibleCols'],
    template: "<tbody ><table-row v-for='(item,idx) in data' v-bind:cols='visibleCols' v-bind:row='item' :key='item.id'></table-row></tbody>",
    methods: {
-     iheardthat(){
-       console.log("I heard that");
-     }
    }
  }
 );
