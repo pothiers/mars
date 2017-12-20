@@ -171,9 +171,9 @@ def get_categories_for_query(request):
     where_clause = utils.process_query(jsearch=query, page=1, page_limit=50000, order_fields='', return_where_clause=True)
     categories = {}
     for category in category_fields:
-        sql1 = ('SELECT distinct {} FROM voi.siap {}'.format(category, where_clause))
-        cursor.execute(sql1)
         indx = category.split(" as ").pop()
+        sql1 = ('SELECT {}, count(*) as total  FROM voi.siap {} group by {}'.format(category, where_clause, indx))
+        cursor.execute(sql1)
         categories[indx] = utils.dictfetchall(cursor)
 
     resp = {"status":"success", "categories":categories}

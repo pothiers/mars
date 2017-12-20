@@ -71,7 +71,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1508,7 +1508,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1784,7 +1784,7 @@ var Results;
     getCategory: function(query){
       var self = this;
       var localCats = null;
-      if ( (localCats = localStorage.getItem("categories")) !== null){
+      if ( (localCats = localStorage.getItem("categories")) !== null && false){
         self.categories = JSON.parse(localCats);
       }else{
         new Ajax({
@@ -1799,18 +1799,22 @@ var Results;
               /*
                 categories: {
                   'name': [
-                    {'name':'value'}
+                    {'name':'value', 'total': ###}
                     ...
-                    n{'name':'value'}
+                    n{'name':'value', 'total': ###}
                   ]
                 }
               */
               for(var item in data.categories){
                 for(var val in data.categories[item]){
-                  if(data.categories[item][val][item] !== null &&data.categories[item][val][item] !== ""){
-                    if(cats[item] == undefined){ cats[item] = []}
-                    cats[item].push(data.categories[item][val][item]);
-                  }
+                  // null is a valid & possible value
+                  if(cats[item] == undefined){ cats[item] = [];}
+                  var detail = {
+                    "name": data.categories[item][val][item],
+                    "total": data.categories[item][val]['total']
+                  };
+                  cats[item].push(detail);
+
                 }
               }
               console.log("formated categories", cats);
@@ -2232,10 +2236,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         },
         on: {
           "click": function($event) {
-            _vm.setCategory(indx, item)
+            _vm.setCategory(indx, item.name)
           }
         }
-      }), _vm._v(" " + _vm._s(item) + "\n                                   ")])])
+      }), _vm._v(" " + _vm._s(item.name || "Uncategorized") + " "), _c('span', {
+        staticClass: "badge alert-info"
+      }, [_vm._v(_vm._s(item.total))])])])
     }))])])
   })], 2) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "col-xs-12 results-wrapper",

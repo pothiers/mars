@@ -37,7 +37,7 @@
                                    <li class="checkbox" v-for="item in cat" >
                                        <label>
                                            <!-- Send setCategory key, value  -->
-                                           <input type="radio" v-on:click="setCategory(indx,item)" name="category_selection"> {{ item }}
+                                           <input type="radio" v-on:click="setCategory(indx,item.name)" name="category_selection"> {{ item.name || "Uncategorized" }} <span class="badge alert-info">{{ item.total }}</span>
                                        </label>
                                    </li>
                                </ul>

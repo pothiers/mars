@@ -98,7 +98,7 @@ export default Results = {
     getCategory: function(query){
       var self = this;
       var localCats = null;
-      if ( (localCats = localStorage.getItem("categories")) !== null){
+      if ( (localCats = localStorage.getItem("categories")) !== null && false){
         self.categories = JSON.parse(localCats);
       }else{
         new Ajax({
@@ -113,18 +113,22 @@ export default Results = {
               /*
                 categories: {
                   'name': [
-                    {'name':'value'}
+                    {'name':'value', 'total': ###}
                     ...
-                    n{'name':'value'}
+                    n{'name':'value', 'total': ###}
                   ]
                 }
               */
               for(var item in data.categories){
                 for(var val in data.categories[item]){
-                  if(data.categories[item][val][item] !== null &&data.categories[item][val][item] !== ""){
-                    if(cats[item] == undefined){ cats[item] = []}
-                    cats[item].push(data.categories[item][val][item]);
-                  }
+                  // null is a valid & possible value
+                  if(cats[item] == undefined){ cats[item] = [];}
+                  var detail = {
+                    "name": data.categories[item][val][item],
+                    "total": data.categories[item][val]['total']
+                  };
+                  cats[item].push(detail);
+
                 }
               }
               console.log("formated categories", cats);
