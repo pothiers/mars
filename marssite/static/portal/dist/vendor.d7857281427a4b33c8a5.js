@@ -320,7 +320,7 @@ var Mixin;
         data: query,
         success: function(data) {
           var saveData;
-          window.location.hash = "#query";
+          //window.location.hash = "#query";
           self.loading = false;
           saveData = typeof data === "object" ? JSON.stringify(data) : data;
           localStorage.setItem(resultsStorage, saveData);

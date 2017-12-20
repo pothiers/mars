@@ -256,8 +256,8 @@ export default Results = {
     },
 
     displayForm: function() {
-      window.location.hash = "#search_again";
-      this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
+      window.search_again = true;
+      this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search')), "search_again"]);
     },
 
     handleError: function(e) {
@@ -373,7 +373,7 @@ export default Results = {
         }
       };
     })(this));
-    if (window.location.hash === "#query") {
+    if (window.location.hash === "#query" || window.location.pathname.match("/portal/search/results") !== null) {
       try {
         this.results = JSON.parse(localStorage.getItem('results')) || [];
         this.totalItems = (ref = this.results) != null ? ref.meta.total_count : void 0;

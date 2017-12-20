@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     url(r'^search/?$',
         views.search, name='search'),
+    url(r'^search/results/?$',
+        views.search, name='search results'),
     url(r'^downloadselected/?$',
         views.download_selected, name='downloadselected'),
     url(r'^downloadsinglefile/?$',

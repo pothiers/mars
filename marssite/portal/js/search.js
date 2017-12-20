@@ -83,9 +83,10 @@ export default Search = {
   },
   mounted(){
     // check if this is a new search
-    if (window.location.hash.indexOf("search_again") > -1) {
+    if (window.search_again) {
       const oldSearch = JSON.parse(localStorage.getItem("searchData"));
       this.search = oldSearch;
+      window.search_again = false;
     } else if (window.location.hash.indexOf("query") > -1) {
       this.$emit("displayform", ["results", []]);
     }

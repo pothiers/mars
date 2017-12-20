@@ -23,6 +23,7 @@ var moment = __webpack_require__(3);
 var AppStyles = __webpack_require__(5);
 
 //import Main from "../vue/Main.vue";
+var initDone = false;
 
 class App {
   constructor(){
@@ -30,10 +31,51 @@ class App {
     new Vue({
       el: "#content",
       template: "<component compdata='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
+      created: function(){
+        this.pushState();
+        console.log("setting popstate function");
+        window.onpopstate = this.popState;
+      },
       methods: {
-        switchComponent(data){
+        popState(state){
+          console.log("state changed", state);
+          // replace state...
+          if( state.state ){
+            var data = [state.state.view, state.state.data];
+            this.switchComponent(data, false);
+            return true;
+          }
+          return true;
+        },
+        pushState(){
+          var url = window.location.pathname;
+          if( url.endsWith("/") == false){ url += "/";}
+
+          console.log("Pushstate called", {"initstate:":initDone, "url": url});
+          // the only time this doesn't fit is when the "Search Again" button is clicked in the results
+          if( this.currentView === "search" && url.match("results") !== null && window.search_again !== true){
+            this.currentView = "results";
+          }
+          if( this.currentView === "results" && url.match("results") === null){
+            url += "results/";
+          }
+          // check for condition where we want to search again
+          if( window.search_again === true){
+            url = "/portal/search/";
+          }
+          if( initDone == false){
+            initDone = true;
+            history.replaceState({'view':this.currentView, data:this.componentData}, this.currentView, url);
+          }else{
+            history.pushState({'view':this.currentView, data:this.componentData}, this.currentView, url);
+          }
+        },
+        switchComponent(data, doPushState){
           this.componentData = data[1];
           this.currentView = data[0];
+          if( doPushState !== false){
+            this.pushState();
+          }
           window.base.bindEvents();
         }
       },
@@ -449,9 +491,10 @@ var Search;
   },
   mounted(){
     // check if this is a new search
-    if (window.location.hash.indexOf("search_again") > -1) {
+    if (window.search_again) {
       const oldSearch = JSON.parse(localStorage.getItem("searchData"));
       this.search = oldSearch;
+      window.search_again = false;
     } else if (window.location.hash.indexOf("query") > -1) {
       this.$emit("displayform", ["results", []]);
     }
@@ -1942,8 +1985,8 @@ var Results;
     },
 
     displayForm: function() {
-      window.location.hash = "#search_again";
-      this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search'))]);
+      window.search_again = true;
+      this.$emit("displayform", ["search", JSON.parse(localStorage.getItem('search')), "search_again"]);
     },
 
     handleError: function(e) {
@@ -2059,7 +2102,7 @@ var Results;
         }
       };
     })(this));
-    if (window.location.hash === "#query") {
+    if (window.location.hash === "#query" || window.location.pathname.match("/portal/search/results") !== null) {
       try {
         this.results = JSON.parse(localStorage.getItem('results')) || [];
         this.totalItems = (ref = this.results) != null ? ref.meta.total_count : void 0;
