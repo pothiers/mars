@@ -1,6 +1,11 @@
 #!/bin/bash
+# EXAMPLE:
+#   ~/sandbox/mars/smoke-test.sh
+
 SCRIPT=$(readlink -e $0)     #Absolute path to this script
 SCRIPTDIR=$(dirname $SCRIPT) #Absolute path this script is in
+
+source $SCRIPTDIR/venv/bin/activate
 
 cd $SCRIPTDIR/marssite
 

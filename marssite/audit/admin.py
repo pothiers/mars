@@ -228,7 +228,8 @@ class AuditRecordAdmin(admin.ModelAdmin):
                    InstrumFilter,
                    #!TeleFilter,
                    'staged')
-    search_fields = ['telescope', 'instrument','srcpath', 'archerr', 'md5sum']
+    search_fields = ['telescope__name', 'instrument__name',
+                     'srcpath', 'archerr', 'md5sum']
     actions = [stage,
                unstage,
                hide,

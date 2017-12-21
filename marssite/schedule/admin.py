@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Slot, EmptySlot, SlotSet, Proposal, DefaultPropid
+from django.db.models import Count
 
 class PropInline(admin.TabularInline):
 #class PropInline(admin.StackedInline):
@@ -25,14 +26,14 @@ class DefaultPropidAdmin(admin.ModelAdmin):
 @admin.register(Slot)
 class SlotAdmin(admin.ModelAdmin):
     list_display = ('obsdate', 'telescope', 'instrument',
-                    'propid_list', 'modified', 'frozen')
-    list_filter = ['frozen', 'obsdate', 'instrument', 'telescope']
+                    'propid_list', 'modified', 'frozen', 'split')
+    list_filter = ['frozen', 'split', 'obsdate', 'instrument', 'telescope']
     filter_horizontal = ['proposals']
     date_hierarchy = 'obsdate'
     inlines = (PropInline,)
     exclude = ('proposals',)
-    actions = ['freeze', 'unfreeze']
-    list_editable = ['frozen',]
+    actions = ['freeze', 'unfreeze', 'split', 'unsplit', 'maybesplit']
+    list_editable = ['frozen','split']
 
     def freeze(self, request, queryset):
         count = queryset.update(frozen=True)
@@ -46,6 +47,32 @@ class SlotAdmin(admin.ModelAdmin):
         self.message_user(request, '%s thawed' % msg)
     unfreeze.short_description = 'Allow bulk updates to change slot'
 
+    def split(self, request, queryset):
+        count = queryset.update(split=True)
+        msg = "1 slot was" if count == 1 else '%s slots were'%count
+        self.message_user(request, '%s set to use Split Night' % msg)
+    split.short_description = 'Set to use Split Night'
+
+    def unsplit(self, request, queryset):
+        count = queryset.update(split=False)
+        msg = "1 slot was" if count == 1 else '%s slots were'%count
+        self.message_user(request, '%s set to NOT use Split Night' % msg)
+    unsplit.short_description = 'Set to NOT use Split Night'
+
+    def maybesplit(self, request, queryset):
+        f_inner = queryset.annotate(c=Count('proposals')).filter(c__lt=2)
+        f_count = queryset.filter(pk__in=f_inner).update(split=False)
+
+        t_inner = queryset.annotate(c=Count('proposals')).filter(c__gt=1)
+        t_count = queryset.filter(pk__in=t_inner).update(split=True)
+        #!msg = "1 slot was" if count == 1 else '%s slots were'%count
+        #!self.message_user(request, '%s set to use Split Night' % msg)
+        self.message_user(request,
+                          'Set Split of {} slots to False, {} slots to True.'
+                          .format(f_count, t_count))
+    maybesplit.short_description = ('Set to use Split Night IFF'
+                                    ' slot has more than 1 propid right now.')
+        
     def save_model(self, request, obj, form, change):
         obj.frozen = True
         obj.save()

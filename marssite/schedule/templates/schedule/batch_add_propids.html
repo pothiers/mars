@@ -1,0 +1,11 @@
+{# <p>this is schedule/batch_add_propids.html</p> #}
+                                                     
+<h2>Add a proposal to a range of schedule nights.</h2>
+<form method="post" action="/schedule/batchaddpropids/" >
+  {% csrf_token %}
+  <table border="1" cellpadding="15", cellspacing="1">
+    {{ form.as_table }}
+  </table>
+  <p/>
+  <input type="submit" value="Submit" />
+</form>
