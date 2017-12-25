@@ -712,6 +712,10 @@ def get_recent_count(request):
                             key=lambda x: x[0]))
     return JsonResponse(od)
 
+def hide_all(request):
+    AuditRecord.objects.all().update(hide=True)
+    return HttpResponse('All audit record set to HIDE=True')
+        
 def get_unhide_count(request):
     success_cnt = Counter()
     telescope_cnt = Counter()

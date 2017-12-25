@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^miss/$', views.get_rejected_missing,  name='get_rejected_missing'),
     url(r'^recent/$', views.get_recent, name='get_recent'),
     url(r'^recentcnt/$', views.get_recent_count, name='get_recent_count'),
+    url(r'^hideall/$', views.hide_all, name='hide_all'),
     url(r'^unhidecnt/$', views.get_unhide_count, name='get_unhide_count'),
     url(r'^marsclearlog/$', views.clear_mars_log, name='clear_mars_log'),
     url(r'^marslogcnt/$', views.get_mars_log_count, name='get_mars_log_count'),
