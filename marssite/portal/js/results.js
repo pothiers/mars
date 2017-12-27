@@ -41,6 +41,7 @@ export default Results = {
       categories: {},
       categorizeFirst: false,
       categoryApplied: false,
+      categoryHistory: [],
       activeTab: 'main',
       allColumns: config.allColumns,
       stageAllConfirm: false,
@@ -68,11 +69,13 @@ export default Results = {
       this.categoryApplied = false;
       this.results = JSON.parse(localStorage.getItem("results"));
       this.totalItems = this.results.meta.total_count;
+      this.categoryHistory = [];
       // clear the selected categories
       var selected = document.querySelectorAll(".results-categories input:checked");
       for( var input of selected){
         input.checked = false;
       }
+      this.getCategory(localStorage.getItem("search"));
     },
     setCategory: function (category_key, category_value) {
       console.log("category_key:", category_key, "cat_value", category_value);
@@ -88,11 +91,20 @@ export default Results = {
         value = [value.split(",")];
       }
       // set the category in the original search query
-      var query = localStorage.getItem("search");
+      var query = "";
+      if( this.categoryHistory.length === 0){
+        query = localStorage.getItem("search");
+      }else{
+        query = this.categoryHistory[this.categoryHistory.length - 1].query;
+      }
       query = JSON.parse(query);
       query[key] = value;
       // save this new query for future (paging etc)
       localStorage.setItem("category_selection", JSON.stringify(query));
+
+      // Set history...
+      // also allow for back/forward so push into browser history
+      this.categoryHistory.push({"category":value, "query":JSON.stringify(query)});
 
       // get the category results from the server...
       this.submitQuery(config.apiUrl, query, key, (data)=>{
@@ -102,6 +114,8 @@ export default Results = {
         this.categoryApplied = true;
         this.totalItems = data.meta.total_count;
       });
+      // get updated categories for this resultset....
+      this.getCategory(JSON.stringify(query));
     },
 
     getCategory: function(query){
@@ -149,37 +163,6 @@ export default Results = {
       }
     },
 
-    // TODO: finish implementation
-    setRefinementHistory: function(){
-       // save this new query for future (paging etc)
-      // refinedsearch is an array - a stack/history of the refinements
-      var rs = localStorage.getItem('refinedsearch');
-      var refinedSearch = [];
-      if( rs ){
-        refinedSearch = JSON.parse(rs);
-      }else{
-        var origQuery = localStorage.getItem("search");
-        refinedSearch.push( JSON.parse(origQuery) );
-      }
-      var lastQuery = refinedSearch[refinedSearch.length - 1] || [];
-      lastQuery[key] = value;
-
-      refinedSearch.push(lastQuery);
-      localStorage.setItem("refinedSearch", JSON.stringify(refinedSearch));
-
-
-      // set the category in the original search query
-      var query = lastQuery;
-      localStorage.setItem("search", JSON.stringify(query));
-
-      // get the category results from the server...
-      this.submitQuery(config.apiUrl, query, key, (data)=>{
-        console.log("got this category resultset", data);
-        // create a new tab and place results there
-        this.results = data;
-      });
-
-    },
 
     toggleCategories: function() {
       this.categoriesVisible = !this.categoriesVisible;

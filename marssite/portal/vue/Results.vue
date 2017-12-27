@@ -3,14 +3,21 @@
     <transition name="fade">
         <div v-if="visible">
             <div class="container" >
-                <div class="row heading">
+               <div class="row breadcrumb-wrapper">
+                    <div class="category-history" v-if="categoryHistory.length > 0">
+                        <ol class="breadcrumb">
+                            <li><button class="btn btn-link" v-on:click="clearCategory">Original Results</button></li>
+                            <li v-for="hist in categoryHistory"><button class="btn btn-link">{{ hist.category }}</button></li>
+                        </ol>
+                    </div>
+               </div>
+               <div class="row heading">
                     <div class="col-xs-10">
 
                         <h2 class="text-warn">Query returned <em>{{totalItems}}</em> records</h2>
                          <ul class="list-inline category-filter-controls">
                              <li>
                                  <button class="btn btn-default" v-on:click="toggleCategories"><span class="fa fa-bars"></span> Toggle Categories</button>
-                                 <div><button class="btn btn-link btn-sm" v-if="categoryApplied" v-on:click="clearCategory" >Clear Categories</button></div>
                              </li>
                             <li>
                                <div class="form-inline">
@@ -20,11 +27,13 @@
                                </div>
                             </li>
                          </ul>
+
                     </div>
                     <div class="col-xs-2 text-right">
                         <button class="btn btn-primary" v-on:click="displayForm">Search Again</button>
                     </div>
-                </div>
+
+                </div><!-- /heading -->
 
             </div>
             <div class="container">
@@ -32,7 +41,7 @@
                     <div class="col-md-3 col-xs-12 results-categories" v-if="categoriesVisible" v-bind:class="{'full-width':categorizeFirst}">
                         <h3>Results by Category:</h3>
                         <div class="alert alert-info text-center" v-if="categorizeFirst">
-                            There are too many results to effecttively display here. Consider refining results further.
+                            There are too many results to effectively display here. Consider refining results further.
                             <br>
                             <br>
                             <button class="btn btn-primary btn-sm" v-on:click="showResultsTable">No thanks, show me the results table</button>

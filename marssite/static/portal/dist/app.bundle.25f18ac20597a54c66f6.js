@@ -1721,6 +1721,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_js__["a" /* default */]);
@@ -1778,6 +1787,7 @@ var Results;
       categories: {},
       categorizeFirst: false,
       categoryApplied: false,
+      categoryHistory: [],
       activeTab: 'main',
       allColumns: config.allColumns,
       stageAllConfirm: false,
@@ -1805,11 +1815,13 @@ var Results;
       this.categoryApplied = false;
       this.results = JSON.parse(localStorage.getItem("results"));
       this.totalItems = this.results.meta.total_count;
+      this.categoryHistory = [];
       // clear the selected categories
       var selected = document.querySelectorAll(".results-categories input:checked");
       for( var input of selected){
         input.checked = false;
       }
+      this.getCategory(localStorage.getItem("search"));
     },
     setCategory: function (category_key, category_value) {
       console.log("category_key:", category_key, "cat_value", category_value);
@@ -1825,11 +1837,20 @@ var Results;
         value = [value.split(",")];
       }
       // set the category in the original search query
-      var query = localStorage.getItem("search");
+      var query = "";
+      if( this.categoryHistory.length === 0){
+        query = localStorage.getItem("search");
+      }else{
+        query = this.categoryHistory[this.categoryHistory.length - 1].query;
+      }
       query = JSON.parse(query);
       query[key] = value;
       // save this new query for future (paging etc)
       localStorage.setItem("category_selection", JSON.stringify(query));
+
+      // Set history...
+      // also allow for back/forward so push into browser history
+      this.categoryHistory.push({"category":value, "query":JSON.stringify(query)});
 
       // get the category results from the server...
       this.submitQuery(config.apiUrl, query, key, (data)=>{
@@ -1839,6 +1860,8 @@ var Results;
         this.categoryApplied = true;
         this.totalItems = data.meta.total_count;
       });
+      // get updated categories for this resultset....
+      this.getCategory(JSON.stringify(query));
     },
 
     getCategory: function(query){
@@ -1886,37 +1909,6 @@ var Results;
       }
     },
 
-    // TODO: finish implementation
-    setRefinementHistory: function(){
-       // save this new query for future (paging etc)
-      // refinedsearch is an array - a stack/history of the refinements
-      var rs = localStorage.getItem('refinedsearch');
-      var refinedSearch = [];
-      if( rs ){
-        refinedSearch = JSON.parse(rs);
-      }else{
-        var origQuery = localStorage.getItem("search");
-        refinedSearch.push( JSON.parse(origQuery) );
-      }
-      var lastQuery = refinedSearch[refinedSearch.length - 1] || [];
-      lastQuery[key] = value;
-
-      refinedSearch.push(lastQuery);
-      localStorage.setItem("refinedSearch", JSON.stringify(refinedSearch));
-
-
-      // set the category in the original search query
-      var query = lastQuery;
-      localStorage.setItem("search", JSON.stringify(query));
-
-      // get the category results from the server...
-      this.submitQuery(config.apiUrl, query, key, (data)=>{
-        console.log("got this category resultset", data);
-        // create a new tab and place results there
-        this.results = data;
-      });
-
-    },
 
     toggleCategories: function() {
       this.categoriesVisible = !this.categoriesVisible;
@@ -2234,6 +2226,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [(_vm.visible) ? _c('div', [_c('div', {
     staticClass: "container"
   }, [_c('div', {
+    staticClass: "row breadcrumb-wrapper"
+  }, [(_vm.categoryHistory.length > 0) ? _c('div', {
+    staticClass: "category-history"
+  }, [_c('ol', {
+    staticClass: "breadcrumb"
+  }, [_c('li', [_c('button', {
+    staticClass: "btn btn-link",
+    on: {
+      "click": _vm.clearCategory
+    }
+  }, [_vm._v("Original Results")])]), _vm._v(" "), _vm._l((_vm.categoryHistory), function(hist) {
+    return _c('li', [_c('button', {
+      staticClass: "btn btn-link"
+    }, [_vm._v(_vm._s(hist.category))])])
+  })], 2)]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "row heading"
   }, [_c('div', {
     staticClass: "col-xs-10"
@@ -2248,12 +2255,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('span', {
     staticClass: "fa fa-bars"
-  }), _vm._v(" Toggle Categories")]), _vm._v(" "), _c('div', [(_vm.categoryApplied) ? _c('button', {
-    staticClass: "btn btn-link btn-sm",
-    on: {
-      "click": _vm.clearCategory
-    }
-  }, [_vm._v("Clear Categories")]) : _vm._e()])]), _vm._v(" "), _c('li', [_c('div', {
+  }), _vm._v(" Toggle Categories")])]), _vm._v(" "), _c('li', [_c('div', {
     staticClass: "form-inline"
   }, [_c('div', {
     staticClass: "form-group"
@@ -2283,7 +2285,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('h3', [_vm._v("Results by Category:")]), _vm._v(" "), (_vm.categorizeFirst) ? _c('div', {
     staticClass: "alert alert-info text-center"
-  }, [_vm._v("\n                        There are too many results to effecttively display here. Consider refining results further.\n                        "), _c('br'), _vm._v(" "), _c('br'), _vm._v(" "), _c('button', {
+  }, [_vm._v("\n                        There are too many results to effectively display here. Consider refining results further.\n                        "), _c('br'), _vm._v(" "), _c('br'), _vm._v(" "), _c('button', {
     staticClass: "btn btn-primary btn-sm",
     on: {
       "click": _vm.showResultsTable
