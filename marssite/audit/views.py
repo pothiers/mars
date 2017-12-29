@@ -33,6 +33,7 @@ from django.db.models import Count, Q, Sum, Case, When, IntegerField
 from django.template import Context, Template
 from django.template.loader import get_template
 from django.core.exceptions import ValidationError
+from django.forms import model_to_dict
 
 import django_tables2 as tables
 from django_tables2 import RequestConfig
@@ -362,6 +363,38 @@ EXAMPLE:
 
         return HttpResponse('/audit/update/ DONE. created={}, obj={}'
                              .format(created, obj.md5sum))
+
+
+# EXAMPLE:
+#  curl -s "http://localhost:8000/audit/query/20161229/soar/goodman/0084.leia.fits/"    
+def query(request, obsday, tele, inst, base):
+    "Get audit record matching SRCPATH query"
+
+    objs = AuditRecord.objects.filter(obsday='{}-{}-{}'.format(obsday[0:4],obsday[4:6],obsday[6:8]),
+                                      telescope=tele,
+                                      instrument=inst,
+                                      srcpath__endswith=base)
+
+    if len(objs) == 0:
+        return HttpResponseBadRequest('No srcpath matches against "{}"'.format(srcpath))
+    if len(objs) > 1:
+        return HttpResponseBadRequest('Multiople ({}) srcpath matches against "{}"'
+                                      .format(len(objs), srcpath))
+    rec = model_to_dict(objs[0],
+                        fields=['obsday',
+                                'telescope',
+                                'instrument',
+                                'srcpath',
+                                'updated',
+                                'submitted',
+                                'success',
+                                'errcode',
+                                'archfile',
+                                'staged',
+                                'hide'
+                        ])
+    msg = '\n'.join([k+'='+str(v) for k,v in rec.items()]) + '\n'
+    return HttpResponse(msg, content_type='text/plain/')
 
 def add_ingested():
     "Update Audit records using matching Ingest records from SIAP"

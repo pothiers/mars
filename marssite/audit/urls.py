@@ -21,6 +21,8 @@ urlpatterns = [
     #url(r'^fstop/(?P<md5sum>\w+)/(?P<fstop>[:\w]+)/(?P<host>.+)$',
     #    views.update_fstop, name='update_fstop'),
     url(r'^update/$', views.update, name='update'),
+    url(r'^query/(?P<obsday>[0-9]+)/(?P<tele>[:\w]+)/(?P<inst>[:\w]+)/(?P<base>.+)/$',
+        views.query, name='query'),
     url(r'^missing/$', views.not_ingested, name='not_ingested'),
     url(r'^failed/$', views.failed_ingest, name='failed_ingest'),
     url(r'^stagedarc/$',
