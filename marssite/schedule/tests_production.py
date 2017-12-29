@@ -181,7 +181,7 @@ class ScheduleTest(TestCase):
         response = self.client.get('/schedule/dbpropid/{}/{}/{}/{}/'
                                    .format(tele, instrum, date, hdrpid))
         self.assertEqual(expected, response.content.decode())
-        self.assertEqual(404, response.status_code)
+        self.assertEqual(400, response.status_code)
 
     def test_dbpropid_3_2(self):
         "slot cnt <> 0, split=True, HdrPid in Slot => HdrPid"

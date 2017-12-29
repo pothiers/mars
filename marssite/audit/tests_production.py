@@ -79,7 +79,7 @@ class AuditTest(TestCase):
         self.assertContains(resp, expected)
         
     def test_update_2(self):
-        """Fail to update audit do to bad Request data"""
+        """Truncate ARCHERR input string that is too long"""
         req =  '''
         {
         "telescope": "kp4m",
@@ -95,9 +95,9 @@ class AuditTest(TestCase):
         "metadata": {},
         "submitted": "2017-11-09T16:15:58.535067"
         }'''
-        expected = 'value too long for type character varying(256)\n'
+        expected = '/audit/update/ DONE. created=True, obj=faux-checksum-NOT_IN_DB'
         resp = self.client.post('/audit/update/',
                                 content_type='application/json',
                                 data=req  )
-        #print('response={}'.format(resp.content))
-        self.assertContains(resp, expected, status_code=400)
+        print('response={}'.format(resp.content))
+        self.assertContains(resp, expected)

@@ -366,7 +366,7 @@ EXAMPLE:
 
 
 # EXAMPLE:
-#  curl -s "http://localhost:8000/audit/query/20161229/soar/goodman/0084.leia.fits/"    
+# curl -s --fail "http://localhost:8000/audit/query/20161229/soar/goodman/0084.leia.fits/" >audit.out
 def query(request, obsday, tele, inst, base):
     "Get audit record matching SRCPATH query"
 
