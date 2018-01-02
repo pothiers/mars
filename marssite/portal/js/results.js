@@ -1,7 +1,7 @@
 import Vue from "vue";
 import "./components.js";
 import Shared from "./mixins.js";
-
+import _ from "lodash";
 
 /*
   Helper functions
@@ -20,7 +20,7 @@ Number.prototype.pad = function(size, char) {
   return s;
 };
 
-
+console.log("results.js lodash?", _);
 /*
   App - Results
  */
@@ -60,10 +60,15 @@ export default Results = {
       error: ""
     };
   },
+  computed: {
+    categoriesLoaded: function(){
+      return !_.isEmpty(this.categories);
+    }
+  },
   methods: {
     showResultsTable: function(){
       this.categorizeFirst = false;
-      this.categoriesVisible = false;
+      //this.categoriesVisible = false;
     },
     clearCategory: function(){
       this.categoryApplied = false;
@@ -99,6 +104,7 @@ export default Results = {
       }
       query = JSON.parse(query);
       query[key] = value;
+
       // save this new query for future (paging etc)
       localStorage.setItem("category_selection", JSON.stringify(query));
 
@@ -120,10 +126,11 @@ export default Results = {
 
     getCategory: function(query){
       var self = this;
-      var localCats = null;
-      if ( (localCats = localStorage.getItem("categories")) !== null && false){
-        self.categories = JSON.parse(localCats);
+      var localCats = localStorage.getItem("categories");
+      if ( (localCats = JSON.parse(localCats)) !== null && !_.isEmpty(localCats) ){
+        self.categories = localCats; 
       }else{
+        console.log("Categories...",self.categories.length);
         new Ajax({
           url: window.location.origin + "/dal/get-categories",
           data: JSON.parse(query),
@@ -146,8 +153,9 @@ export default Results = {
                 for(var val in data.categories[item]){
                   // null is a valid & possible value
                   if(cats[item] == undefined){ cats[item] = [];}
+                  var name = data.categories[item][val][item];
                   var detail = {
-                    "name": data.categories[item][val][item],
+                    "name": name,
                     "total": data.categories[item][val]['total']
                   };
                   cats[item].push(detail);
@@ -166,6 +174,9 @@ export default Results = {
 
     toggleCategories: function() {
       this.categoriesVisible = !this.categoriesVisible;
+      if( this.categoriesVisible ){
+        this.categorizeFirst = false;
+      }
     },
 
     toggleColumn: function(column) {
@@ -373,7 +384,6 @@ export default Results = {
         this.pageNum = parseInt(localStorage.getItem("currentPage"));
         if(this.totalItems > 1000){
           this.categorizeFirst = true;
-          this.categoriesVisible = true;
         }
         } catch (_error) {
         e = _error;

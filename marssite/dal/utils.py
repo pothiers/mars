@@ -1,5 +1,5 @@
 from collections import OrderedDict
-
+from . import exceptions as dex
 from django.db import connections
 import datetime
 
@@ -84,6 +84,10 @@ def db_time_range(range_value, field):
         clause = " AND ({} = '{}')".format(field, range_value)
     return clause
 
+def db_null(field):
+    clause = " AND (({} is null) OR ({} = ''))".format(field, field)
+    return clause
+
 def db_exact(value, field):
     clause = " AND ({} = '{}')".format(field, value)
     return clause
@@ -139,6 +143,9 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
         'filename',
         'original_filename',
         'telescope_instrument',
+        'observation_type',
+        'observation_mode',
+        'survey_id',
         'release_date',
         'flag_raw',
         'image_filter',
@@ -168,16 +175,42 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
                             coord['dec'] + slop,
                             coord['dec'] - slop))
     if 'pi' in jsearch:
-        where += db_exact(jsearch['pi'], 'dtpi')
+        pi = jsearch['pi']
+        if pi is None:
+            where += db_null('dtpi')
+        else:
+            where += db_exact(pi, 'dtpi')
     if 'prop_id' in jsearch:
-        #where += "(dtpropid = '{}')".format(jsearch['prop_id'])
-        where += db_exact(jsearch['prop_id'], 'dtpropid')
+        prop_id = jsearch['prop_id']
+        if prop_id is None:
+            where += db_null('dtpropid')
+        else:
+            where += db_exact(prop_id, 'dtpropid')
     if 'obs_date' in jsearch:
         where += db_time_range(jsearch['obs_date'], 'date_obs')
     if 'filename' in jsearch:
         where += db_exact(jsearch['filename'], 'dtnsanam')
     if 'original_filename' in jsearch:
         where += db_exact(jsearch['original_filename'], 'dtacqnam')
+    if 'observation_type' in jsearch:
+        obstype = jsearch['observation_type']
+        if obstype is None:
+            where += db_null('obstype')
+        else:
+            where += db_exact(obstype, 'obstype')
+    if 'observation_mode' in jsearch:
+        obsmode = jsearch['observation_mode']    
+        if obsmode is None:
+            where += db_null('obsmode')
+        else:
+            where += db_exact(obsmode, 'obsmode')
+        
+    if 'survey_id' in jsearch:
+        surveyid = jsearch['survey_id']
+        if surveyid is None:
+            where += db_null("surveyid")
+        else:
+            where += db_exact(jsearch['survey_id'], 'surveyid')
     #!if 'telescope' in jsearch:
     #!    where += db_oneof(jsearch['telescope'], 'telescope')
     #!if 'instrument' in jsearch:

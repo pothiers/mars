@@ -7,7 +7,7 @@
                     <div class="category-history" v-if="categoryHistory.length > 0">
                         <ol class="breadcrumb">
                             <li><button class="btn btn-link" v-on:click="clearCategory">Original Results</button></li>
-                            <li v-for="hist in categoryHistory"><button class="btn btn-link">{{ hist.category }}</button></li>
+                            <li v-for="hist in categoryHistory"><button class="btn btn-link">{{ hist.category.toString() }}</button></li>
                         </ol>
                     </div>
                </div>
@@ -34,19 +34,27 @@
                     </div>
 
                 </div><!-- /heading -->
+                <div class="row">
+                    <div class="col-xs-12 results-categories" v-if="categorizeFirst">
+                        <h3>Results by Category:</h3>
+                        <div class="alert alert-info text-center" v-if="categorizeFirst">
+                            There are too many results to effectively display here. Consider refining results further by categorizing.
+                            <br>
+                            <button class="btn btn-primary btn-sm" v-on:click="toggleCategories">Show Categories</button>
+                        </div>
+                       
+                    </div>
+                </div>
 
             </div>
             <div class="container">
                 <div class="row">
-                    <div class="col-md-3 col-xs-12 results-categories" v-if="categoriesVisible" v-bind:class="{'full-width':categorizeFirst}">
-                        <h3>Results by Category:</h3>
-                        <div class="alert alert-info text-center" v-if="categorizeFirst">
-                            There are too many results to effectively display here. Consider refining results further.
-                            <br>
-                            <br>
-                            <button class="btn btn-primary btn-sm" v-on:click="showResultsTable">No thanks, show me the results table</button>
+                    <div class="col-md-3 col-xs-12" v-if="categoriesVisible">
+                        <div class="loading-wrapper text-center" v-if="!categoriesLoaded">
+                            <h4>Analyzing results. Loading categories...</h4>
+                            <div class="fa fa-spin fa-spinner fa-3x fa-fw"></div>
                         </div>
-                       <ul class="list-group" v-for="(cat, indx) in categories">
+                        <ul class="list-group" v-for="(cat, indx) in categories">
                             <li class="list-group-item"><h4 class="text-primary" >{{ indx.replace("_"," ") }}</h4>
                                <ul class="category-sublist" >
                                    <li class="checkbox" v-for="item in cat" >
@@ -58,10 +66,10 @@
                                </ul>
                            </li>
                        </ul>
-                    </div>
+                    </div>    
 
                     <!-- Begin main results table -->
-                    <div class="col-xs-12 results-wrapper" v-bind:class="{'col-md-9':categoriesVisible, 'hidden':categorizeFirst}"  >
+                    <div class="col-xs-12 results-wrapper" v-bind:class="{'col-md-9':categoriesVisible}"  >
                         <div class="collapsible">
 
                             <div class="column-toggle panel panel-default">
