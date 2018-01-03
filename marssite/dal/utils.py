@@ -176,13 +176,13 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
                             coord['dec'] - slop))
     if 'pi' in jsearch:
         pi = jsearch['pi']
-        if pi is None:
+        if pi is None or pi is '':
             where += db_null('dtpi')
         else:
             where += db_exact(pi, 'dtpi')
     if 'prop_id' in jsearch:
         prop_id = jsearch['prop_id']
-        if prop_id is None:
+        if prop_id is None or pi is '':
             where += db_null('dtpropid')
         else:
             where += db_exact(prop_id, 'dtpropid')
@@ -194,20 +194,20 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
         where += db_exact(jsearch['original_filename'], 'dtacqnam')
     if 'observation_type' in jsearch:
         obstype = jsearch['observation_type']
-        if obstype is None:
+        if obstype is None or obstype is '':
             where += db_null('obstype')
         else:
             where += db_exact(obstype, 'obstype')
     if 'observation_mode' in jsearch:
         obsmode = jsearch['observation_mode']    
-        if obsmode is None:
+        if obsmode is None or obsmode is '':
             where += db_null('obsmode')
         else:
             where += db_exact(obsmode, 'obsmode')
         
     if 'survey_id' in jsearch:
         surveyid = jsearch['survey_id']
-        if surveyid is None:
+        if surveyid is None or surveyid is '':
             where += db_null("surveyid")
         else:
             where += db_exact(jsearch['survey_id'], 'surveyid')

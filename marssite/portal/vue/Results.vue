@@ -7,7 +7,7 @@
                     <div class="category-history" v-if="categoryHistory.length > 0">
                         <ol class="breadcrumb">
                             <li><button class="btn btn-link" v-on:click="clearCategory">Original Results</button></li>
-                            <li v-for="hist in categoryHistory"><button class="btn btn-link">{{ hist.category.toString() }}</button></li>
+                            <li v-for="hist in categoryHistory"><button class="btn btn-link">{{ hist.category ? hist.category.toString() :  "Uncategorized" }}</button></li>
                         </ol>
                     </div>
                </div>

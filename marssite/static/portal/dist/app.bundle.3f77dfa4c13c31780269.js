@@ -113,7 +113,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1551,7 +1551,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1776,7 +1776,6 @@ Number.prototype.pad = function(size, char) {
   return s;
 };
 
-console.log("results.js lodash?", __WEBPACK_IMPORTED_MODULE_3_lodash___default.a);
 /*
   App - Results
  */
@@ -1788,32 +1787,32 @@ window.bus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 var Results;
 
 /* harmony default export */ __webpack_exports__["a"] = (Results = {
-  props: ['componentData'],
+  props : ['componentData'],
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].mixin],
-  data: function() {
+  data  : function() {
     return {
-      visibleColumns: [],
+      visibleColumns   : [],
       categoriesVisible: false,
-      categories: {},
-      categorizeFirst: false,
-      categoryApplied: false,
-      categoryHistory: [],
-      activeTab: 'main',
-      allColumns: config.allColumns,
-      stageAllConfirm: false,
-      stageButtonText: "Stage ALL results",
-      visible: false,
-      pageNum: 1,
-      isLoading: false,
-      recordsFrom: 1,
-      recordsTo: 100,
-      results: [],
-      selected: [],
-      lastSelected: null,
-      searchObj: JSON.parse(localStorage.getItem('search')),
-      totalItems: 0,
-      toggle: false,
-      error: ""
+      categories       : {},
+      categorizeFirst  : false,
+      categoryApplied  : false,
+      categoryHistory  : [],
+      activeTab        : 'main',
+      allColumns       : config.allColumns,
+      stageAllConfirm  : false,
+      stageButtonText  : "Stage ALL results",
+      visible          : false,
+      pageNum          : 1,
+      isLoading        : false,
+      recordsFrom      : 1,
+      recordsTo        : 100,
+      results          : [],
+      selected         : [],
+      lastSelected     : null,
+      searchObj        : JSON.parse(localStorage.getItem('search')),
+      totalItems       : 0,
+      toggle           : false,
+      error            : ""
     };
   },
   computed: {
@@ -1828,8 +1827,8 @@ var Results;
     },
     clearCategory: function(){
       this.categoryApplied = false;
-      this.results = JSON.parse(localStorage.getItem("results"));
-      this.totalItems = this.results.meta.total_count;
+      this.results         = JSON.parse(localStorage.getItem("results"));
+      this.totalItems      = this.results.meta.total_count;
       this.categoryHistory = [];
       // clear the selected categories
       var selected = document.querySelectorAll(".results-categories input:checked");
@@ -1841,7 +1840,7 @@ var Results;
     setCategory: function (category_key, category_value) {
       console.log("category_key:", category_key, "cat_value", category_value);
       //split instrument/telescope
-      var key = category_key;
+      var key   = category_key;
       var value = category_value;
 
       if( this.categorizeFirst ){
@@ -1851,15 +1850,24 @@ var Results;
       if( key == "telescope_instrument"){
         value = [value.split(",")];
       }
+
+      // Some values can be null or '' in the db, but not all values will
+      // validate on null, so....
+      if( value == null){
+        value = '';
+      }
+
       // set the category in the original search query
       var query = "";
+      console.log("categoryHistory has this:");
+      console.dir(this.categoryHistory);
       if( this.categoryHistory.length === 0){
         query = localStorage.getItem("search");
       }else{
         query = this.categoryHistory[this.categoryHistory.length - 1].query;
       }
       query = JSON.parse(query);
-      query[key] = value;
+      query[key]  = value;
 
       // save this new query for future (paging etc)
       localStorage.setItem("category_selection", JSON.stringify(query));
@@ -1872,26 +1880,26 @@ var Results;
       this.submitQuery(config.apiUrl, query, key, (data)=>{
         console.log("got this category resultset", data);
         // create a new tab and place results there
-        this.results = data;
+        this.results         = data;
         this.categoryApplied = true;
-        this.totalItems = data.meta.total_count;
+        this.totalItems      = data.meta.total_count;
       });
       // get updated categories for this resultset....
       this.getCategory(JSON.stringify(query));
     },
 
     getCategory: function(query){
-      var self = this;
+      var self      = this;
       var localCats = localStorage.getItem("categories");
       if ( (localCats = JSON.parse(localCats)) !== null && !__WEBPACK_IMPORTED_MODULE_3_lodash___default.a.isEmpty(localCats) ){
-        self.categories = localCats; 
+        self.categories = localCats;
       }else{
         console.log("Categories...",self.categories.length);
         new Ajax({
-          url: window.location.origin + "/dal/get-categories",
-          data: JSON.parse(query),
-          method: "post",
-          accept: "json",
+          url    : window.location.origin + "/dal/get-categories",
+          data   : JSON.parse(query),
+          method : "post",
+          accept : "json",
           success: function(data) {
 
             if (data.status == "success"){
@@ -1909,9 +1917,9 @@ var Results;
                 for(var val in data.categories[item]){
                   // null is a valid & possible value
                   if(cats[item] == undefined){ cats[item] = [];}
-                  var name = data.categories[item][val][item];
+                  var name   = data.categories[item][val][item];
                   var detail = {
-                    "name": name,
+                    "name" : name,
                     "total": data.categories[item][val]['total']
                   };
                   cats[item].push(detail);
@@ -1947,14 +1955,14 @@ var Results;
         }
       } else {
         found = false;
-        ref1 = this.visibleColumns;
+        ref1  = this.visibleColumns;
         for (n = j = 0, len1 = ref1.length; j < len1; n = ++j) {
           col = ref1[n];
           if (column.num < col.num) {
-            first = this.visibleColumns.slice(0, n);
-            last = this.visibleColumns.slice(n);
+            first               = this.visibleColumns.slice(0, n);
+            last                = this.visibleColumns.slice(n);
             this.visibleColumns = first.concat(column, last);
-            found = true;
+            found               = true;
             break;
           }
         }
@@ -2037,19 +2045,19 @@ var Results;
       localStorage.setItem('currentPage', page);
       this.$emit("pageto", page);
       this.isLoading = true;
-      self = this;
+      self           = this;
       this.submitForm(null, "paging", function(data) {
-        self.isLoading = false;
-        self.results = data;
+        self.isLoading   = false;
+        self.results     = data;
         self.recordsFrom = data.meta.to_here_count - data.meta.page_result_count + 1;
-        self.recordsTo = data.meta.to_here_count;
+        self.recordsTo   = data.meta.to_here_count;
       });
     }
   },
 
   created: function() {
     var col, i, len, ref, results;
-    ref = this.allColumns;
+    ref     = this.allColumns;
     results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       col = ref[i];
@@ -2091,8 +2099,8 @@ var Results;
           _this.selected.push(data.row);
           if (data.event.shiftKey) {
             prevIdx = null;
-            curIdx = null;
-            ref = _this.results.resultset;
+            curIdx  = null;
+            ref     = _this.results.resultset;
             for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
               obj = ref[idx];
               if (obj === data.row) {
@@ -2109,9 +2117,9 @@ var Results;
               }
             }
             for (idx = k = ref2 = prevIdx, ref3 = curIdx; ref2 <= ref3 ? k <= ref3 : k >= ref3; idx = ref2 <= ref3 ? ++k : --k) {
-              row = _this.results.resultset[idx];
+              row             = _this.results.resultset[idx];
               alreadySelected = false;
-              ref4 = _this.selected;
+              ref4            = _this.selected;
               for (l = 0, len2 = ref4.length; l < len2; l++) {
                 sel = ref4[l];
                 if (row.reference === sel.reference) {
@@ -2134,19 +2142,19 @@ var Results;
     })(this));
     if (window.location.hash === "#query" || window.location.pathname.match("/portal/search/results") !== null) {
       try {
-        this.results = JSON.parse(localStorage.getItem('results')) || [];
+        this.results    = JSON.parse(localStorage.getItem('results')) || [];
         this.totalItems = (ref = this.results) != null ? ref.meta.total_count : void 0;
-        this.visible = true;
-        this.pageNum = parseInt(localStorage.getItem("currentPage"));
+        this.visible    = true;
+        this.pageNum    = parseInt(localStorage.getItem("currentPage"));
         if(this.totalItems > 1000){
           this.categorizeFirst = true;
         }
         } catch (_error) {
-        e = _error;
-        this.results = [];
+        e               = _error;
+        this.results    = [];
         this.totalItems = 0;
-        this.visible = true;
-        this.error = "There was an error parsing results from server";
+        this.visible    = true;
+        this.error      = "There was an error parsing results from server";
         this.handleError(e);
       }
     }
@@ -19351,7 +19359,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Original Results")])]), _vm._v(" "), _vm._l((_vm.categoryHistory), function(hist) {
     return _c('li', [_c('button', {
       staticClass: "btn btn-link"
-    }, [_vm._v(_vm._s(hist.category.toString()))])])
+    }, [_vm._v(_vm._s(hist.category ? hist.category.toString() : "Uncategorized"))])])
   })], 2)]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "row heading"
   }, [_c('div', {
