@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.utils.html import format_html
 from django.contrib.postgres.fields import HStoreField
 from natica.models import Site,Telescope,Instrument
-
+from django.forms import model_to_dict
 
 #!  fstops = [
 #!    'dome',

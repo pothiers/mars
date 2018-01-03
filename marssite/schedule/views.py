@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect, JsonResponse, HttpResponseBadRequest
 from django.template import loader
 from django.shortcuts import render_to_response
 from django.template.context_processors import csrf
@@ -96,6 +96,7 @@ def tac_webservice(base_url='http://www.noao.edu/noaoprop/schedule.mpl',
     
 
 def apply_tac_update(**query):
+    deadtac='BCHAN,FLMN,MOSAIC,OTHER,pODI,RCSPL+T2KB,VIS'.split(',')
     """Update/add object unless it already exists and is FROZEN. """
     logger.debug('apply tac update for query={}'.format(query))
 
@@ -117,8 +118,9 @@ def apply_tac_update(**query):
         logger.debug('DBG-2.1')
  
         if instrument not in sched2hdr:
-            logger.error('No TAC alias found for {}. Use MARS to add one.'
-                         .format(instrument))
+            logger.error(('No TAC alias found for "{}"; query="{}". Use MARS'
+                          ' /admin/tada/tacinstrumentalias/ to add one.')
+                         .format(instrument, query))
             continue
         instrument = sched2hdr.get(instrument)
         if not FilePrefix.objects.filter(
@@ -371,7 +373,7 @@ def dbpropid(request, telescope, instrument, date, hdrpid):
         msg = ('Propid from hdr ({}) not in scheduled list of Propids {}; {}'
                .format(hdrpid, pids, slottuple))
         logging.error(msg)
-        return HttpResponseNotFound(msg)
+        return HttpResponseBadRequest(msg)
     elif is_split == False: # NOT split-night, hdrpid not in schedule
         # use schedule for non-split nights (regardless of header content)
         # !!! WARNING: Use propid from schedule, ignore hdrprid

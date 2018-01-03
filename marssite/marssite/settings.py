@@ -73,7 +73,8 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework_swagger',
     'django_tables2',
-    'audit',  # tada audit/status REST API
+    'audit',  # tada audit and status REST API
+    'debug_toolbar',
     #'users', # LDAP admin
     #'ldapdb',
 )
@@ -81,17 +82,19 @@ INSTALLED_APPS = (
 
 
 
-MIDDLEWARE = [
+MIDDLEWARE = (
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-#    'dal.middleware.RequestExceptionHandler',
-    ]
+    #'django.contrib.admindocs.middleware.XViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'middleware.RequestExceptionHandler',
+)
 
 ROOT_URLCONF = 'marssite.urls'
 
@@ -106,7 +109,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'marssite.context_processors.project_status',
                 #'django.core.context_processors.request',
             ],
         },
@@ -125,6 +127,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+INTERNAL_IPS = ['127.0.0.1',  '10.0.2.2'] # '0.0.0.0', '192.168.1.45',
 
 SWAGGER_SETTINGS = {
 #!    'exclude_namespaces': [],
@@ -197,25 +200,22 @@ if 'TRAVIS' not in os.environ:
                 'level': 'INFO',
                 'formatter': 'precise',
                 'filename': '/var/log/mars/mars.log',
-                #'maxBytes': '16777216',
-                #'backupCount': '5',
+                #! 'maxBytes': 10000000,
+                #! 'backupCount': 5,
             },
             'debugfile': {
                 'class' : 'logging.FileHandler',
                 'level': 'DEBUG',
                 'formatter': 'precise',
                 'filename': '/var/log/mars/mars-detail.log',
-                #'maxBytes': '16777216',
-                #'backupCount': '5',
+                #! 'maxBytes': 10000000,
+                #! 'backupCount': 5,
             },
-           'django.server': {
-                'level': 'INFO',
-                'class': 'logging.FileHandler',
-                'formatter': 'brief',
-                'filename':'/var/log/mars/console.log',
-                #'maxBytes':'16777216',
-                #'backupCount':'2'
-            },
+            #!'django.server': {
+            #!    'level': 'INFO',
+            #!    'class': 'logging.StreamHandler',
+            #!    'formatter': 'django.server',
+            #!},
         },
         'root': {
             'handlers': ['file', 'debugfile'],
@@ -225,6 +225,13 @@ if 'TRAVIS' not in os.environ:
             'django': {
                 'handlers': ['file', 'debugfile'],
                 'level': 'DEBUG',
+                'propagate': True,
+            },
+            # Hide annoying admin "DEBUG, Exception":
+            #  e.g "Exception while resolving variable 'errors' in template 'admin/change_list.html'."
+            'django.template': {
+                'handlers': ['file'],
+                'level': 'INFO',
                 'propagate': True,
             },
             #!'django.server': {
@@ -252,3 +259,4 @@ if 'TRAVIS' in os.environ:
     }
 else:
     exec(open('/etc/mars/django_local_settings.py').read())
+
