@@ -35,7 +35,7 @@ ftpdirs = "/srv/ftp"
 # to check if the file exists etc
 nfsmount = ""
 ftppasswd = "/srv/ftp/ftp-passwd/pureftpd.passwd"
-dev = True if os.environ['ENVIRONMENT'] == "dev" else False
+dev = os.environ.get('ENVIRONMENT', False)
 
 missingFiles = []
 
