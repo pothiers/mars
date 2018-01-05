@@ -74,7 +74,7 @@ class SearchTest(TestCase):
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
-       #!print('DBG: response={}'.format(response.content.decode()))
+        #!print('DBG: response={}'.format(response.content.decode()))
         self.assertJSONEqual(json.dumps(response.json()['resultset']),
                              json.dumps(json.loads(exp.search_1)['resultset']),
                              msg='Unexpected resultset')
@@ -117,9 +117,7 @@ class SearchTest(TestCase):
                                     data=req  )
         expected = {"errorMessage": "Extra fields ({'TRY_FILENAME'}) in search"}
         #!print('DBG0-tse-1: response={}'.format(response.content.decode()))
-        #!self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
-        self.assertIn('JSON did not validate against /etc/mars/search-schema.json',
-                      json.dumps(response.json()['errorMessage']))
+        self.assertJSONEqual(json.dumps(response.json()), json.dumps(expected))
         self.assertEqual(response.status_code, 400)
 
 

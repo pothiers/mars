@@ -99,5 +99,5 @@ class AuditTest(TestCase):
         resp = self.client.post('/audit/update/',
                                 content_type='application/json',
                                 data=req  )
-        print('response={}'.format(resp.content))
+        #print('response={}'.format(resp.content))
         self.assertContains(resp, expected)
