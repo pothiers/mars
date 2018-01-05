@@ -19,10 +19,13 @@ class SearchTest(TestCase):
     def test_search_0(self):
         "No filter. Verify: API version."
         req = '{}'
-        print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
+       #!print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
+        
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
+
+       #!print('DBG: Response for empty request: {}'.format(response))
         meta = {"dal_version": "0.1.6",
                 "timestamp": "2017-07-05T11:44:05.946",
                 "comment": "WARNING: Has not been tested much. Does not use IMAGE_FILTER.",
@@ -30,7 +33,7 @@ class SearchTest(TestCase):
                 "page_result_count": 100,
                 "to_here_count": 100,
                 "total_count": 11583954}
-        print('DBG: response={}'.format(response.content.decode()))
+       #!print('DBG: response={}'.format(response.content.decode()))
         self.assertIn('meta', response.json())
         self.assertIn('timestamp', response.json()['meta'])
         self.assertIn('comment', response.json()['meta'])
@@ -71,7 +74,7 @@ class SearchTest(TestCase):
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
-        print('DBG: response={}'.format(response.content.decode()))
+       #!print('DBG: response={}'.format(response.content.decode()))
         self.assertJSONEqual(json.dumps(response.json()['resultset']),
                              json.dumps(json.loads(exp.search_1)['resultset']),
                              msg='Unexpected resultset')

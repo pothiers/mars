@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from . import exceptions as dex
 from django.db import connections
+from django.conf import settings
 import datetime
 
 response_fields = '''
@@ -128,6 +129,7 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
         page_limit      - limit of results
         order_fields    - a string of fieldnames to order by: separated by space
     """
+    #!print("DBG: Process Query using db host '{}'".format(settings.DATABASES['archive']['HOST']))
     limit_clause = 'LIMIT {}'.format(page_limit)
     offset = (page-1) * page_limit
     offset_clause = 'OFFSET {}'.format(offset)
@@ -236,7 +238,7 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
         return where_clause
 
     sql0 = 'SELECT count(reference) FROM voi.siap {}'.format(where_clause)
-    #! print('DBG-6: search_by_json; sql0=',sql0)
+    #!print('DBG-6: search_by_json; sql0=',sql0)
     cursor.execute(sql0)
     total_count = cursor.fetchone()[0]
 
@@ -246,7 +248,8 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
                     order_clause,
                     limit_clause,
                     offset_clause  ))
-    #! print('DBG-2 sql={}'.format(sql))
+    #!print('DBG-2 sql={}'.format(sql))
+    #!print('DBG-2.1 cursor={}'.format(cursor))
     cursor.execute(sql)
     results = dictfetchall(cursor)
 
