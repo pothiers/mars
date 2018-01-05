@@ -1,0 +1,12 @@
+<schedule>
+  <proposal telescope="kp4m" instrument="MOSA" date="2015-09-03" half="1" propid="2015B-0059"/>
+  <proposal telescope="kp4m" instrument="MOSA" date="2015-09-03" half="2" propid="2015B-0059"/>
+  <proposal telescope="wiyn" instrument="HYDRR+STA1" date="2015-09-03" half="1" propid="2015B-0053"/>
+  <proposal telescope="wiyn" instrument="HYDRR+STA1" date="2015-09-03" half="2" propid="2015B-0031"/>
+  <proposal telescope="ct4m" instrument="DECam" date="2015-09-03" half="1" propid="2015B-0307"/>
+  <proposal telescope="ct4m" instrument="DECam" date="2015-09-03" half="2" propid="2012B-0001"/>
+  <proposal telescope="ct09m" instrument="CFIM+T2K" date="2015-09-03" half="1" propid="2015B-0118"/>
+  <proposal telescope="ct09m" instrument="CFIM+T2K" date="2015-09-03" half="2" propid="2015B-0118"/>
+  <proposal telescope="soar" instrument="Spartan" date="2015-09-03" half="1" propid="2015B-0617"/>
+  <proposal telescope="soar" instrument="Spartan" date="2015-09-03" half="2" propid="2015B-0617"/>
+</schedule>
