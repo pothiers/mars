@@ -18,8 +18,9 @@ class SearchTest(TestCase):
 
     def test_search_0(self):
         "No filter. Verify: API version."
-        req = '{ "search" : { } }'
-        #print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
+        req = '{}'
+        print(settings.DATABASES['archive'])
+        print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
@@ -30,7 +31,7 @@ class SearchTest(TestCase):
                 "page_result_count": 100,
                 "to_here_count": 100,
                 "total_count": 11583954}
-        #!print('DBG: response={}'.format(response.content.decode()))
+        print('DBG: response={}'.format(response.content.decode()))
         self.assertIn('meta', response.json())
         self.assertIn('timestamp', response.json()['meta'])
         self.assertIn('comment', response.json()['meta'])
@@ -52,7 +53,7 @@ class SearchTest(TestCase):
     def test_search_1(self):
         "MVP-1. Basics. No validation of input"
         #! "filename": "foo",
-        req = '''{ "search":{
+        req = '''{
         "coordinates": { 
             "ra": 181.368791666667,
             "dec": -45.5396111111111
@@ -66,12 +67,12 @@ class SearchTest(TestCase):
         "exposure_time": 15,
         "release_date": "2010-10-01T00:00:00",
         "image_filter":["raw", "calibrated"]
-    }
+    
 }'''
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
-        #print('DBG: response={}'.format(response.content.decode()))
+        print('DBG: response={}'.format(response.content.decode()))
         self.assertJSONEqual(json.dumps(response.json()['resultset']),
                              json.dumps(json.loads(exp.search_1)['resultset']),
                              msg='Unexpected resultset')
@@ -79,7 +80,7 @@ class SearchTest(TestCase):
 
     def test_search_fakeerror_0(self):
         "Fake Error for client testing: unknown type (return allowables)"
-        req = '{ "search":{ } }'
+        req = '{ }'
         response = self.client.post('/dal/search/?error=foobar',
                                     content_type='application/json',
                                     data=req)
@@ -91,7 +92,7 @@ class SearchTest(TestCase):
 
     def test_search_fakeerror_1(self):
         "Fake Error for client testing: bad_numeric"
-        req = '{ "search":{ } }'
+        req = '{}'
         response = self.client.post('/dal/search/?error=bad_numeric',
                                     content_type='application/json',
                                     data=req)
@@ -101,14 +102,13 @@ class SearchTest(TestCase):
 
     def test_search_error_1(self):
         "Error in request content: extra fields sent"
-        req = '''{ "search":{
+        req = '''{ 
         "coordinates": { 
             "ra": 181.368791666667,
             "dec": -45.5396111111111
         },
         "TRY_FILENAME": "foo.fits",
         "image_filter":["raw", "calibrated"]
-        }
         }'''
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
@@ -123,13 +123,12 @@ class SearchTest(TestCase):
 
     def test_search_error_2(self):
         "Error in request content: non-decimal RA"
-        req = '''{ "search":{
+        req = '''{ 
         "coordinates": { 
             "ra": "somethingbad",
             "dec": -45.5396111111111
         },
         "image_filter":["raw", "calibrated"]
-        }
         }'''
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
