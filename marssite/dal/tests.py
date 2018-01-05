@@ -19,7 +19,6 @@ class SearchTest(TestCase):
     def test_search_0(self):
         "No filter. Verify: API version."
         req = '{}'
-        print(settings.DATABASES['archive'])
         print('DBG: Using archive database: {}'.format(settings.DATABASES['archive']['HOST']))
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
@@ -53,7 +52,7 @@ class SearchTest(TestCase):
     def test_search_1(self):
         "MVP-1. Basics. No validation of input"
         #! "filename": "foo",
-        req = '''{
+        req = '''{ 
         "coordinates": { 
             "ra": 181.368791666667,
             "dec": -45.5396111111111
@@ -80,7 +79,7 @@ class SearchTest(TestCase):
 
     def test_search_fakeerror_0(self):
         "Fake Error for client testing: unknown type (return allowables)"
-        req = '{ }'
+        req = '{}'
         response = self.client.post('/dal/search/?error=foobar',
                                     content_type='application/json',
                                     data=req)
@@ -102,7 +101,7 @@ class SearchTest(TestCase):
 
     def test_search_error_1(self):
         "Error in request content: extra fields sent"
-        req = '''{ 
+        req = '''{
         "coordinates": { 
             "ra": 181.368791666667,
             "dec": -45.5396111111111
@@ -123,7 +122,7 @@ class SearchTest(TestCase):
 
     def test_search_error_2(self):
         "Error in request content: non-decimal RA"
-        req = '''{ 
+        req = '''{
         "coordinates": { 
             "ra": "somethingbad",
             "dec": -45.5396111111111
@@ -142,7 +141,7 @@ class SearchTest(TestCase):
         
     def test_search_error_3(self):
         "Error in request content: obs_date is numeric (not valid per schema)"
-        req = '{ "search":{ "obs_date": 99 } }'
+        req = '{ "obs_date": 99  }'
         response = self.client.post('/dal/search/',
                                     content_type='application/json',
                                     data=req  )
