@@ -1,14 +1,16 @@
 import json
-
+from os import path
 import coreapi
 import jsonschema
 from django.db import connections
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
 from rest_framework import response
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
 from tada.models import FilePrefix
+
 
 from . import exceptions as dex
 from . import utils
@@ -101,7 +103,7 @@ def search_by_json(request, query=None):
                 jsearch = json.loads(request.body.decode('utf-8'))
             # Validate against schema
             try:
-                schemafile = '/etc/mars/search-schema.json'
+                schemafile = path.join(settings.BASE_DIR, "dal", "fixtures", "search-schema.json")
                 with open(schemafile) as f:
                     schema = json.load(f)
                     jsonschema.validate(jsearch, schema)

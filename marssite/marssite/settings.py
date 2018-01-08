@@ -109,6 +109,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'marssite.context_processors.project_status',
                 #'django.core.context_processors.request',
             ],
         },
