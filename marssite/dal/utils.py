@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from pprint import pformat
 from . import exceptions as dex
 from django.db import connections
 from django.conf import settings
@@ -130,6 +131,7 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
         order_fields    - a string of fieldnames to order by: separated by space
     """
     #!print("DBG: Process Query using db host '{}'".format(settings.DATABASES['archive']['HOST']))
+    #!print('DBG: settings.DATABASES = {}'.format(pformat(settings.DATABASES)))
     limit_clause = 'LIMIT {}'.format(page_limit)
     offset = (page-1) * page_limit
     offset_clause = 'OFFSET {}'.format(offset)
@@ -164,7 +166,7 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
     # Query Legacy Science Archive
     cursor = connections['archive'].cursor()
     # Force material view refresh
-    #!cursor.execute('SELECT * FROM refresh_voi_material_views()')
+    cursor.execute('SELECT * FROM refresh_voi_material_views()')  #@@@
     where = '' # WHERE clause innards
 
     slop = jsearch.get('search_box_min', .001)
@@ -231,7 +233,7 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
         where += db_float_range(jsearch['exposure_time'], 'exposure')
 
     where = remove_leading(where, ' AND ')
-    #print('DBG-2 where="{}"'.format(where))
+    #!print('DBG-2 where="{}"'.format(where))
     where_clause = '' if len(where) == 0 else 'WHERE {}'.format(where)
 
     if return_where_clause:

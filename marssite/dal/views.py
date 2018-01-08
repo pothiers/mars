@@ -95,8 +95,6 @@ def search_by_json(request, query=None):
                 jsearch = query
             else:
                 jsearch = json.loads(request.body.decode('utf-8'))
-            #xml = dicttoxml.dicttoxml(body)
-            #!validate_by_xmlstr(xmlstr)
             # Validate against schema
             try:
                 schemafile = '/etc/mars/search-schema.json'
@@ -107,9 +105,6 @@ def search_by_json(request, query=None):
                 raise dex.BadSearchSyntax('JSON did not validate against /etc/mars/search-schema.json'
                                           '; {}'.format(err))
 
-        elif request.content_type == "application/xml":
-            print('WARNING: processing of XML payload not implemented!!!')
-            raise dex.CannotProcessContentType('Cannot parse content type: application/xml')
         else:
             raise dex.CannotProcessContentType('Cannot parse content type: {}'
                                                .format(request.content_type))

@@ -1,26 +1,24 @@
 {
-    "search":{
-        "coordinates": { 
-            "ra" : 47.49000083,
-            "dec": 32.481947
-        },
-        "pi":"Kurtis Williams",
-        "search_box_min": 30.0,
-        "prop_id":"2017B-123",
-        "obs_date":"2016-02-12",
-        "filename":"tu1234576.fits.fz",
-        "original_filename": "/md2/4meter/Sept022004/obj130.fits",
-        "telescope_instrument":[["ct4m", "cosmos"], ["soar","osiris"]],
-        "exposure_time":[3,5,"(]"],
-        "release_date":["2017-02-01","", "="],
-        "image_filter":[
-            "raw",
-            "calibrated",
-            "reprojected",
-            "stacked",
-            "master_calibration",
-            "image_tiles",
-            "sky_subtracted"
-        ]        
-    }
+    "coordinates": { 
+        "ra" : 47.49000083,
+        "dec": 32.481947
+    },
+    "pi":"Kurtis Williams",
+    "search_box_min": 30.0,
+    "prop_id":"2017B-123",
+    "obs_date":"2016-02-12",
+    "filename":"tu1234576.fits.fz",
+    "original_filename": "/md2/4meter/Sept022004/obj130.fits",
+    "telescope_instrument":[["ct4m", "cosmos"], ["soar","osiris"]],
+    "exposure_time":[3,5,"(]"],
+    "release_date":["2017-02-01","", "="],
+    "image_filter":[
+        "raw",
+        "calibrated",
+        "reprojected",
+        "stacked",
+        "master_calibration",
+        "image_tiles",
+        "sky_subtracted"
+    ]        
 }
