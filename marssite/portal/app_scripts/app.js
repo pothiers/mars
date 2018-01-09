@@ -3,10 +3,8 @@ var moment = require("moment");
 
 import Search from "../vue/Search.vue";
 import Results from "../vue/Results.vue";
-
 var AppStyles = require("../styles/search.scss");
 
-//import Main from "../vue/Main.vue";
 var initDone = false;
 
 class App {
@@ -19,6 +17,9 @@ class App {
         this.pushState();
         console.log("setting popstate function");
         window.onpopstate = this.popState;
+
+        // create an event bus for inter component communication
+        window.bus = new Vue();
       },
       methods: {
         popState(state){

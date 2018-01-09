@@ -9,6 +9,8 @@ import Vue from "vue";
 import VeeValidate, {Validator} from "vee-validate";
 import Shared from "./mixins.js";
 
+import ModalComponent from "../vue/ModalComponent.vue";
+
 const validateDependsOn = {
   getMessage(field, params, data){
     const id = params[0].replace("#", "");
@@ -78,6 +80,9 @@ const scrollingWatcher = function(){
 var Search;
 export default Search = {
   mixins: [Shared.mixin],
+  components: {
+    ModalComponent
+  },
   created(){
     this.getTelescopes();
   },

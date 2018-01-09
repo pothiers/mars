@@ -26,7 +26,6 @@ Number.prototype.pad = function(size, char) {
 
 config = Shared.config;
 
-window.bus = new Vue();
 
 var Results;
 

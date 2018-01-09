@@ -229,6 +229,7 @@
           <div class='code-view'>
             <pre class="code">{{ code }}</pre>
           </div>
+          <modal-component></modal-component>
           <!-- Modal -->
           <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-labelledby="searchModelLabel">
             <div class="modal-dialog" role="document">
