@@ -108,9 +108,9 @@ _config = {
   apiUrl: "/dal/search/",
   rangeInputs: ["obs_date", "exposure_time", "release_date"],
   validatorConfig: {
-    delay: 800,
-    events: "input|blur",
-    inject: true,
+    delay    : 800,
+    events   : "input|blur",
+    inject   : true,
     dependsOn: "dependson"
   },
   allColumns: [
@@ -221,17 +221,17 @@ _config = {
       ra: "",
       dec: ""
     },
-    pi: null,
-    search_box_min: null,
-    prop_id: null,
-    obs_date: ['', '', "="],
-    filename: null,
-    original_filename: null,
+    pi                  : null,
+    search_box_min      : null,
+    prop_id             : null,
+    obs_date            : ['', '', "="],
+    filename            : null,
+    original_filename   : null,
     telescope_instrument: [],
-    exposure_time: ['', '', "="],
-    release_date: ['', '', "="],
-    image_filter: []
-  },
+    exposure_time       : ['', '', "="],
+    release_date        : ['', '', "="],
+    image_filter        : []
+    },
   loadingMessages: ["Searching the cosmos...", "Deploying deep space probes...", "There's so much S P A C E!"]
 };
 
@@ -318,32 +318,32 @@ var Mixin;
         }
 
         new Ajax({
-        url: url,
-        method: "post",
-        accept: "json",
-        data: query,
-        success: function(data) {
-          var saveData;
-          //window.location.hash = "#query";
-          self.loading = false;
-          saveData = typeof data === "object" ? JSON.stringify(data) : data;
-          localStorage.setItem(resultsStorage, saveData);
-          self.$emit("displayform", ["results", saveData]);
-          if (cb) {
-            cb(data);
+          url   : url,
+          method: "post",
+          accept: "json",
+          data  : query,
+          success: function(data) {
+            var saveData;
+            //window.location.hash = "#query";
+            self.loading = false;
+            saveData = typeof data === "object" ? JSON.stringify(data) : data;
+            localStorage.setItem(resultsStorage, saveData);
+            self.$emit("displayform", ["results", saveData]);
+            if (cb) {
+              cb(data);
+            }
+          },
+          fail: function(statusMsg, status, xhr) {
+            console.log("Request failed, got this");
+            message = "" + statusMsg;
+            if (xhr.response) {
+              message += ":  " + xhr.response.errorMessage;
+            }
+            self.loading = false;
+            self.modalTitle = "Request Error";
+            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
+            ToggleModal("#search-modal");
           }
-        },
-        fail: function(statusMsg, status, xhr) {
-          console.log("Request failed, got this");
-          message = "" + statusMsg;
-          if (xhr.response) {
-            message += ":  " + xhr.response.errorMessage;
-          }
-          self.loading = false;
-          self.modalTitle = "Request Error";
-          self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
-          ToggleModal("#search-modal");
-        }
       });
 
       }

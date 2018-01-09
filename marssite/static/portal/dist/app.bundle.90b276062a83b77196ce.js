@@ -543,23 +543,25 @@ var Search;
   },
   data(){
     return {
-      url: config.apiUrl,
-      visible: true,
-      loading: false,
-      codeUpdate: 0,
-      codeView: "",
-      modalTitle: "",
-      modalBody: "",
-      loadingMessage: "Sweeping up star dust...",
-      search: JSON.parse(JSON.stringify(config.formData)), // deep copy
-      showExposureMax: false,
-      showObsDateMax: false,
-      showReleaseDateMax: false,
-      showBothExposureFields: false,
-      showBothObsDateFields: false,
+      url                      : config.apiUrl,
+      visible                  : true,
+      loading                  : false,
+      codeUpdate               : 0,
+      codeView                 : "",
+      modalTitle               : "",
+      modalBody                : "",
+      loadingMessage           : "Sweeping up star dust...",
+      objectName               : "",
+      search                   : JSON.parse(JSON.stringify(config.formData)), // deep copy
+      showExposureMax          : false,
+      showObsDateMax           : false,
+      showReleaseDateMax       : false,
+      showBothExposureFields   : false,
+      showBothObsDateFields    : false,
       showBothReleaseDateFields: false,
-      telescopes: [],
-      relatedSplitFieldFlags : {
+      resolvingObject          : false,
+      telescopes               : [],
+      relatedSplitFieldFlags   : {
         "exposure_time":
           {"fieldFlag":'showExposureMax', "bothFieldFlag":"showBothExposureFields"},
         "obs_date":
@@ -567,7 +569,7 @@ var Search;
         "release_date":
           {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
       },
-      option:{
+      option                    : {
         format: 'YYYY-MM-DD'
       }
     };
@@ -591,7 +593,7 @@ var Search;
         self.telescopes = telescopes.telescopes;
       } else {
         new Ajax({
-          url: window.location.origin+"/dal/ti-pairs",
+          url   : window.location.origin+"/dal/ti-pairs",
           method: "get",
           accept: "json",
           success(data){
@@ -605,7 +607,31 @@ var Search;
         });
       }
     },
-
+    resolveObject(event){
+      event.preventDefault();
+      // get the object name
+      this.resolvingObject = true;
+      self = this
+      new Ajax({
+        url: window.location.origin+"/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName),
+        method: "get",
+        accept: "json",
+        success(data){
+          self.search.coordinates.ra = data.ra;
+          self.search.coordinates.dec = data.dec;
+          self.resolvingObject = false;
+        },
+        fail(err_response, err_code, xhr){
+          self.resolvingObject = false;
+          console.log(xhr.response);
+          if(xhr.response.errorMessage){
+            self.modalTitle = "Request Error";
+            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + xhr.response.errorMessage + "</strong></div>";
+            ToggleModal("#search-modal");
+          }
+        }
+      });
+    },
     splitSelection(val){
       // for toggling conditional form inputs, one and sometimes both
       const fieldFlag = this.relatedSplitFieldFlags[val]['fieldFlag'];
@@ -743,6 +769,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "for": "object-name"
     }
   }, [_vm._v("Object Name")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.objectName),
+      expression: "objectName"
+    }],
     staticClass: "form-control",
     attrs: {
       "name": "object-name",
@@ -750,10 +782,24 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "value": "",
       "placeholder": "Object Name",
       "id": "object-name"
+    },
+    domProps: {
+      "value": (_vm.objectName)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.objectName = $event.target.value
+      }
     }
   })]), _vm._v(" "), _c('button', {
-    staticClass: "btn btn-default"
-  }, [_vm._v("Resolve object")])]), _vm._v(" "), _c('div', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": _vm.resolveObject
+    }
+  }, [_vm._v("Resolve object")]), _vm._v(" "), (_vm.resolvingObject) ? _c('span', {
+    staticClass: "fa fa-spinner fa-spin fa-2x fa-fw"
+  }) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "col-md-6"
   }, [_c('div', {
     staticClass: "col-md-6"
@@ -1581,6 +1627,22 @@ module.exports = Component.exports
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_js__ = __webpack_require__(15);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -19573,7 +19635,59 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.displayForm
     }
-  }, [_vm._v("Adjust Paramaters")])])])])])])]) : _vm._e()])], 1)
+  }, [_vm._v("Adjust Paramaters")])])])])])])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "id": "search-modal",
+      "tabindex": "-1",
+      "role": "dialog",
+      "aria-labelledby": "searchModelLabel"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    },
+    on: {
+      "click": _vm.closeModal
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title",
+    attrs: {
+      "id": "myModalLabel"
+    }
+  }, [_vm._v(_vm._s(_vm.modalTitle))])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body",
+    domProps: {
+      "innerHTML": _vm._s(_vm.modalBody)
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button",
+      "data-dismiss": "modal"
+    },
+    on: {
+      "click": _vm.closeModal
+    }
+  }, [_vm._v("Close")])])])])])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

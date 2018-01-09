@@ -21,6 +21,7 @@ ToggleModal = function(selector) {
     body.appendChild(backdrop);
   } else {
     b.remove();
+    m.style.display = 'none';
   }
 };
 

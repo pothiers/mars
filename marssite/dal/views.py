@@ -10,7 +10,7 @@ from rest_framework import response
 from rest_framework.decorators import api_view, renderer_classes
 from rest_framework_swagger.renderers import OpenAPIRenderer, SwaggerUIRenderer
 from tada.models import FilePrefix
-
+from astropy.coordinates import SkyCoord
 
 from . import exceptions as dex
 from . import utils
@@ -175,6 +175,18 @@ def get_categories_for_query(request):
 
     resp = {"status":"success", "categories":categories}
     return JsonResponse(resp, safe=False)
+
+
+@csrf_exempt
+@api_view(['GET'])
+def object_lookup(request):
+    """
+    Retrieve the RA,DEC coordinates for a given object by name.
+    """
+    obj_name = request.GET.get("object_name", "")
+    obj_coord = SkyCoord.from_name(obj_name)
+    return JsonResponse({'ra':obj_coord.ra.degree, 'dec':obj_coord.dec.degree})
+
 
 ###
 # API Schema Metadata

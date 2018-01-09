@@ -17,6 +17,7 @@ ToggleModal = (selector) ->
     body.appendChild backdrop
   else
     b.remove()
+    m.style.display = 'none'
   return
 
 class Ajax
