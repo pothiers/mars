@@ -209,6 +209,10 @@ export default Mixin = {
           resultsStorage = "filter_results_"+filter;
         }
         self = this;
+        // check datatypes - Numbers
+        if( query.exposure_time && !isNaN( query.exposure_time )){
+          query.exposure_time = parseFloat( query.exposure_time );
+        }
 
         new Ajax({
         url: url,

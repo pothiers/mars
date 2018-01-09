@@ -49,15 +49,15 @@
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label for="object-name" class="floating">Object Name</label>
-                                      <input name="object-name" type="text" value="" placeholder="Object Name" class="form-control" id="object-name">
+                                      <input name="object-name" type="text" value="" placeholder="Object Name" class="form-control" id="object-name" disabled>
                                   </div>
-                                  <button class="btn btn-default">Resolve object</button>
+                                  <button class="btn btn-default" disabled>Resolve object</button>
                               </div>
                               <div class="col-md-6">
                                   <div class="col-md-6">
                                       <div class="form-group">
                                           <label for="ra" class="floating">Ra</label>
-                                          <input class="form-control" placeholder="RA" name="ra" id="ra" type="text" value="" v-model="search.coordinates.ra" v-validate="'decimal|dependson:#dec'">
+                                          <input class="form-control" placeholder="RA" name="ra" id="ra" type="text" value="" v-model="search.coordinates.ra" v-validate="'decimal|dependson:#dec'" disabled>
                                           <!-- <span class="error-message" v-if="errors.has('ra')">
                                                {{errors.first('ra')}}
                                                </span> -->
@@ -66,7 +66,7 @@
                                   <div class="col-md-6">
                                       <div class="form-group">
                                           <label for="dec" class="floating">Dec</label>
-                                          <input class="form-control" placeholder="Dec" name="dec" id="dec" type="text" value="" v-model="search.coordinates.dec" v-validate="'decimal|dependson:#ra'">
+                                          <input class="form-control" placeholder="Dec" name="dec" id="dec" type="text" value="" v-model="search.coordinates.dec" v-validate="'decimal|dependson:#ra'" disabled>
 
                                           <!-- <span class="error-message" v-if="errors.has('dec')">
                                                {{errors.first('dec')}}
