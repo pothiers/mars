@@ -231,15 +231,15 @@ export default Mixin = {
             }
           },
           fail: function(statusMsg, status, xhr) {
-            console.log("Request failed, got this");
-            message = "" + statusMsg;
+            console.log("Request failed, got this", xhr);
+            var message = "" + statusMsg;
             if (xhr.response) {
               message += ":  " + xhr.response.errorMessage;
             }
             self.loading = false;
-            self.modalTitle = "Request Error";
-            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
-            ToggleModal("#search-modal");
+            var modalTitle = "Request Error";
+            var modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
+            window.bus.$emit("open-modal", {title:modalTitle, body:modalBody}); 
           }
       });
 

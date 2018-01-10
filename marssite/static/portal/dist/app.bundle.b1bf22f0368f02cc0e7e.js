@@ -6,22 +6,62 @@ webpackJsonp([0],[
 /* 4 */,
 /* 5 */,
 /* 6 */,
-/* 7 */,
-/* 8 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(13),
+  /* template */
+  __webpack_require__(14),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/ModalComponent.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] ModalComponent.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-80cd4904", Component.options)
+  } else {
+    hotAPI.reload("data-v-80cd4904", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 8 */,
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Search_vue__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Search_vue__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__vue_Search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__vue_Search_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__vue_Results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__vue_Results_vue__);
 var Vue = __webpack_require__(0);
 var moment = __webpack_require__(4);
 
 
 
-var AppStyles = __webpack_require__(7);
+var AppStyles = __webpack_require__(8);
 
 var initDone = false;
 
@@ -31,6 +71,8 @@ class App {
     new Vue({
       el: "#content",
       template: "<component compdata='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
+      
+      // initialization
       created: function(){
         this.pushState();
         console.log("setting popstate function");
@@ -98,15 +140,15 @@ new App();
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(10),
+  __webpack_require__(11),
   /* template */
-  __webpack_require__(15),
+  __webpack_require__(16),
   /* styles */
   null,
   /* scopeId */
@@ -114,7 +156,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -138,28 +180,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_search_js__ = __webpack_require__(11);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_search_js__ = __webpack_require__(12);
 //
 //
 //
@@ -400,7 +426,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 ///module.exports = search;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -408,8 +434,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_ModalComponent_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_ModalComponent_vue__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__vue_ModalComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__vue_ModalComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__scrollwatcher_js__ = __webpack_require__(15);
 /*
 Author: Peter Peterson
 Date: 2017-06-09
@@ -423,6 +450,9 @@ Description: Serves functionality for submitting and displaying archive query fo
 
 
 
+
+var config = __WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].config;
+
 const validateDependsOn = {
   getMessage(field, params, data){
     const id = params[0].replace("#", "");
@@ -434,8 +464,7 @@ const validateDependsOn = {
   }
 };
 
-var config = __WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].config;
-
+// Self executing setup
 (function(){
   // This gets called after the component has been mounted
   window.addEventListener('searchLoaded', function(e){
@@ -449,6 +478,8 @@ var config = __WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].config;
   __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_validate__["default"], config.validatorConfig); // validation plugin
 })();
 
+// Date mappinng info for handling dynamic fields and their
+// related data models
 const dateLookup = {
       "obs-date": {
         "field" : "obs_date",
@@ -471,24 +502,7 @@ const dateLookup = {
       }
 };
 
-const scrollingWatcher = function(){
-  if (document.querySelector("[rel=form-submit]") === null) {
-    return;
-  }
-
-  const doc = document.documentElement;
-  const top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-  const element = document.querySelector("[rel=form-submit]");
-  const elementTop = element.offsetTop;
-
-  // check offset
-  if (top > elementTop) {
-    element.classList.add("scroll");
-  } else {
-    element.classList.remove("scroll");
-  }
-};
-
+// Vue component
 var Search;
 /* harmony default export */ __webpack_exports__["a"] = (Search = {
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].mixin],
@@ -509,7 +523,7 @@ var Search;
     }
     window.base.bindEvents();
 
-    document.onscroll = scrollingWatcher;
+    document.onscroll = __WEBPACK_IMPORTED_MODULE_4__scrollwatcher_js__["a" /* default */];
 
     $("input.date").datepicker({
             changeMonth: true,
@@ -557,8 +571,6 @@ var Search;
       loading                  : false,
       codeUpdate               : 0,
       codeView                 : "",
-      modalTitle               : "",
-      modalBody                : "",
       loadingMessage           : "Sweeping up star dust...",
       objectName               : "",
       search                   : JSON.parse(JSON.stringify(config.formData)), // deep copy
@@ -585,9 +597,6 @@ var Search;
   },
 
   methods: {
-    closeModal(){
-      ToggleModal("#search-modal");
-    },
     newSearch(){
       // clear current search and storage
       this.search = JSON.parse(JSON.stringify(this.config.formData));
@@ -634,9 +643,9 @@ var Search;
           self.resolvingObject = false;
           console.log(xhr.response);
           if(xhr.response.errorMessage){
-            self.modalTitle = "Request Error";
-            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + xhr.response.errorMessage + "</strong></div>";
-            ToggleModal("#search-modal");
+            var modalTitle = "Couldn't find that object";
+            var modalBody = "<div class='alert alert-danger'><strong>" + xhr.response.errorMessage + "</strong></div>";
+            window.bus.$emit("open-modal", {title: modalTitle, body: modalBody});
           }
         }
       });
@@ -661,46 +670,6 @@ var Search;
   }
 
 });
-
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(1)(
-  /* script */
-  __webpack_require__(13),
-  /* template */
-  __webpack_require__(14),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/ModalComponent.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] ModalComponent.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-80cd4904", Component.options)
-  } else {
-    hotAPI.reload("data-v-80cd4904", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
 
 
 /***/ }),
@@ -841,6 +810,31 @@ if (false) {
 
 /***/ }),
 /* 15 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+/* harmony default export */ __webpack_exports__["a"] = (function(){
+  if (document.querySelector("[rel=form-submit]") === null) {
+    return;
+  }
+
+  const doc = document.documentElement;
+  const top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+  const element = document.querySelector("[rel=form-submit]");
+  const elementTop = element.offsetTop;
+
+  // check offset
+  if (top > elementTop) {
+    element.classList.add("scroll");
+  } else {
+    element.classList.remove("scroll");
+  }
+});;
+
+
+/***/ }),
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -1703,59 +1697,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "code-view"
   }, [_c('pre', {
     staticClass: "code"
-  }, [_vm._v(_vm._s(_vm.code))])]), _vm._v(" "), _c('modal-component'), _vm._v(" "), _c('div', {
-    staticClass: "modal fade",
-    attrs: {
-      "id": "search-modal",
-      "tabindex": "-1",
-      "role": "dialog",
-      "aria-labelledby": "searchModelLabel"
-    }
-  }, [_c('div', {
-    staticClass: "modal-dialog",
-    attrs: {
-      "role": "document"
-    }
-  }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal",
-      "aria-label": "Close"
-    },
-    on: {
-      "click": _vm.closeModal
-    }
-  }, [_c('span', {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title",
-    attrs: {
-      "id": "myModalLabel"
-    }
-  }, [_vm._v(_vm._s(_vm.modalTitle))])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-body",
-    domProps: {
-      "innerHTML": _vm._s(_vm.modalBody)
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer"
-  }, [_c('button', {
-    staticClass: "btn btn-default",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    },
-    on: {
-      "click": _vm.closeModal
-    }
-  }, [_vm._v("Close")])])])])])], 1)
+  }, [_vm._v(_vm._s(_vm.code))])]), _vm._v(" "), _c('modal-component')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -1766,15 +1708,15 @@ if (false) {
 }
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(17),
+  __webpack_require__(18),
   /* template */
-  __webpack_require__(21),
+  __webpack_require__(22),
   /* styles */
   null,
   /* scopeId */
@@ -1782,7 +1724,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -1806,12 +1748,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_js__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__js_results_js__ = __webpack_require__(19);
+//
+//
 //
 //
 //
@@ -1974,17 +1918,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_results_js__["a" /* default */]);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_js__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_js__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__vue_ModalComponent_vue__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__vue_ModalComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__vue_ModalComponent_vue__);
+
+
 
 
 
@@ -2019,6 +1967,9 @@ var Results;
 /* harmony default export */ __webpack_exports__["a"] = (Results = {
   props : ['componentData'],
   mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].mixin],
+  components: {
+    ModalComponent: __WEBPACK_IMPORTED_MODULE_4__vue_ModalComponent_vue___default.a
+  },
   data  : function() {
     return {
       visibleColumns   : [],
@@ -2393,7 +2344,7 @@ var Results;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Vue = __webpack_require__(0);
@@ -2469,7 +2420,7 @@ Vue.component("table-body", {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -19561,7 +19512,7 @@ Vue.component("table-body", {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(5)(module)))
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -19803,7 +19754,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     on: {
       "click": _vm.displayForm
     }
-  }, [_vm._v("Adjust Paramaters")])])])])])])]) : _vm._e()])], 1)
+  }, [_vm._v("Adjust Paramaters")])])])])])])]) : _vm._e()]), _vm._v(" "), _c('modal-component')], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -19814,4 +19765,4 @@ if (false) {
 }
 
 /***/ })
-],[8]);
+],[9]);

@@ -3,6 +3,8 @@ import "./components.js";
 import Shared from "./mixins.js";
 import _ from "lodash";
 
+import ModalComponent from "../vue/ModalComponent.vue";
+
 /*
   Helper functions
  */
@@ -32,6 +34,9 @@ var Results;
 export default Results = {
   props : ['componentData'],
   mixins: [Shared.mixin],
+  components: {
+    ModalComponent
+  },
   data  : function() {
     return {
       visibleColumns   : [],

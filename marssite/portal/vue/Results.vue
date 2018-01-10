@@ -152,6 +152,8 @@
             </div>
         </div>
     </transition>
+    <!-- Modal Component -->
+    <modal-component></modal-component>
     </div>      
 </template>
 

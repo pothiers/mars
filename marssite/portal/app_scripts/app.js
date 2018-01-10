@@ -13,6 +13,8 @@ class App {
     new Vue({
       el: "#content",
       template: "<component compdata='componentData' v-bind:is='currentView' v-on:displayform='switchComponent' />",
+      
+      // initialization
       created: function(){
         this.pushState();
         console.log("setting popstate function");

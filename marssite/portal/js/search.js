@@ -10,6 +10,9 @@ import VeeValidate, {Validator} from "vee-validate";
 import Shared from "./mixins.js";
 
 import ModalComponent from "../vue/ModalComponent.vue";
+import ScrollWatcher from "./scrollwatcher.js";
+
+var config = Shared.config;
 
 const validateDependsOn = {
   getMessage(field, params, data){
@@ -22,8 +25,7 @@ const validateDependsOn = {
   }
 };
 
-var config = Shared.config;
-
+// Self executing setup
 (function(){
   // This gets called after the component has been mounted
   window.addEventListener('searchLoaded', function(e){
@@ -37,6 +39,8 @@ var config = Shared.config;
   Vue.use(VeeValidate, config.validatorConfig); // validation plugin
 })();
 
+// Date mappinng info for handling dynamic fields and their
+// related data models
 const dateLookup = {
       "obs-date": {
         "field" : "obs_date",
@@ -59,24 +63,7 @@ const dateLookup = {
       }
 };
 
-const scrollingWatcher = function(){
-  if (document.querySelector("[rel=form-submit]") === null) {
-    return;
-  }
-
-  const doc = document.documentElement;
-  const top = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
-  const element = document.querySelector("[rel=form-submit]");
-  const elementTop = element.offsetTop;
-
-  // check offset
-  if (top > elementTop) {
-    element.classList.add("scroll");
-  } else {
-    element.classList.remove("scroll");
-  }
-};
-
+// Vue component
 var Search;
 export default Search = {
   mixins: [Shared.mixin],
@@ -97,7 +84,7 @@ export default Search = {
     }
     window.base.bindEvents();
 
-    document.onscroll = scrollingWatcher;
+    document.onscroll = ScrollWatcher;
 
     $("input.date").datepicker({
             changeMonth: true,
@@ -145,8 +132,6 @@ export default Search = {
       loading                  : false,
       codeUpdate               : 0,
       codeView                 : "",
-      modalTitle               : "",
-      modalBody                : "",
       loadingMessage           : "Sweeping up star dust...",
       objectName               : "",
       search                   : JSON.parse(JSON.stringify(config.formData)), // deep copy
@@ -173,9 +158,6 @@ export default Search = {
   },
 
   methods: {
-    closeModal(){
-      ToggleModal("#search-modal");
-    },
     newSearch(){
       // clear current search and storage
       this.search = JSON.parse(JSON.stringify(this.config.formData));
@@ -222,9 +204,9 @@ export default Search = {
           self.resolvingObject = false;
           console.log(xhr.response);
           if(xhr.response.errorMessage){
-            self.modalTitle = "Request Error";
-            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + xhr.response.errorMessage + "</strong></div>";
-            ToggleModal("#search-modal");
+            var modalTitle = "Couldn't find that object";
+            var modalBody = "<div class='alert alert-danger'><strong>" + xhr.response.errorMessage + "</strong></div>";
+            window.bus.$emit("open-modal", {title: modalTitle, body: modalBody});
           }
         }
       });

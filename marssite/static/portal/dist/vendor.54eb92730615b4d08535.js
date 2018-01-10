@@ -334,15 +334,15 @@ var Mixin;
             }
           },
           fail: function(statusMsg, status, xhr) {
-            console.log("Request failed, got this");
-            message = "" + statusMsg;
+            console.log("Request failed, got this", xhr);
+            var message = "" + statusMsg;
             if (xhr.response) {
               message += ":  " + xhr.response.errorMessage;
             }
             self.loading = false;
-            self.modalTitle = "Request Error";
-            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
-            ToggleModal("#search-modal");
+            var modalTitle = "Request Error";
+            var modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
+            window.bus.$emit("open-modal", {title:modalTitle, body:modalBody}); 
           }
       });
 
@@ -4854,13 +4854,14 @@ module.exports = function(module) {
 
 /***/ }),
 /* 6 */,
-/* 7 */
+/* 7 */,
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(22);
+var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -4868,7 +4869,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(24)(content, options);
+var update = __webpack_require__(25)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -4885,7 +4886,6 @@ if(false) {
 }
 
 /***/ }),
-/* 8 */,
 /* 9 */,
 /* 10 */,
 /* 11 */,
@@ -4899,10 +4899,11 @@ if(false) {
 /* 19 */,
 /* 20 */,
 /* 21 */,
-/* 22 */
+/* 22 */,
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(23)(undefined);
+exports = module.exports = __webpack_require__(24)(undefined);
 // imports
 
 
@@ -4913,7 +4914,7 @@ exports.push([module.i, "@charset \"UTF-8\";\n.code {\n  font-size: 14px;\n  hei
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports) {
 
 /*
@@ -4995,7 +4996,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -5041,7 +5042,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(25);
+var	fixUrls = __webpack_require__(26);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -5354,7 +5355,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 
@@ -5449,17 +5450,17 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 26 */,
 /* 27 */,
 /* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
-/* 32 */
+/* 32 */,
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(4);
 
 
 /***/ })
-],[32]);
+],[33]);
