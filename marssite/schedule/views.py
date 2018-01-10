@@ -100,29 +100,27 @@ def apply_tac_update(**query):
     """Update/add object unless it already exists and is FROZEN. """
     logger.debug('apply tac update for query={}'.format(query))
 
-    telescopes = [obj.name for obj in Telescope.objects.all()]
-    instruments = [obj.name for obj in Instrument.objects.all()]
+    telescopes = set([obj.name for obj in Telescope.objects.all()])
+    instruments = set([obj.name for obj in Instrument.objects.all()])
 
     with tac_webservice(fake=use_fake_tac, **query) as f:
         tree = ET.parse(f)
         root = tree.getroot()
     
-    logger.debug('DBG-1')
     slot_pids = defaultdict(set) # dict[slot] = [propid, ...]
-    sched2hdr = dict([(obj.tac, obj.hdr)
+    sched2hdr = dict([(obj.tac, obj.hdr.name)
                       for obj in TacInstrumentAlias.objects.all()])
-    logger.debug('DBG-2')
+    #!logger.debug('DBG-2: sched2hdr={}'.format(sched2hdr))
     for proposal in root:
         telescope = proposal.get('telescope')
-        instrument = proposal.get('instrument')
-        logger.debug('DBG-2.1')
+        inst = proposal.get('instrument')
  
-        if instrument not in sched2hdr:
+        if inst not in sched2hdr:
             logger.error(('No TAC alias found for "{}"; query="{}". Use MARS'
                           ' /admin/tada/tacinstrumentalias/ to add one.')
-                         .format(instrument, query))
+                         .format(inst, query))
             continue
-        instrument = sched2hdr.get(instrument)
+        instrument = sched2hdr.get(inst)
         if not FilePrefix.objects.filter(
                 telescope=telescope,
                 instrument=instrument).exists():
@@ -137,14 +135,14 @@ def apply_tac_update(**query):
         logger.debug('DBG-2.3: TAC instrument={}, telescope={}, date={}, pid={}'
                      .format(instrument, telescope,
                              proposal.get('date'), proposal.get('propid')))
-        #! if telescope not in telescopes:
-        #!     logger.warning('MARS: Telescope "{}" not one of: {}'
-        #!                     .format(telescope, telescopes))
-        #!     continue
-        #! if instrument not in instruments:
-        #!     logger.warning('MARS: Instrument "{}" not one of: {}'
-        #!                     .format(instrument, instruments))
-        #!     continue
+        if telescope not in telescopes:
+            logger.warning('TAC Telescope \'{}\' not in MARS db set: {}'
+                           .format(telescope, telescopes))
+            continue
+        if instrument not in instruments:
+            logger.warning('TAC Instrument \'{}\' not in MARS db set: {}'
+                           .format(instrument, instruments))
+            continue
         #!obsdate = datetime.strptime(proposal.get('date'),'%Y-%m-%d').date()
         obsdate = proposal.get('date')
         propid = proposal.get('propid')
