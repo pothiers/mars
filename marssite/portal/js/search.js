@@ -135,23 +135,25 @@ export default Search = {
   },
   data(){
     return {
-      url: config.apiUrl,
-      visible: true,
-      loading: false,
-      codeUpdate: 0,
-      codeView: "",
-      modalTitle: "",
-      modalBody: "",
-      loadingMessage: "Sweeping up star dust...",
-      search: JSON.parse(JSON.stringify(config.formData)), // deep copy
-      showExposureMax: false,
-      showObsDateMax: false,
-      showReleaseDateMax: false,
-      showBothExposureFields: false,
-      showBothObsDateFields: false,
+      url                      : config.apiUrl,
+      visible                  : true,
+      loading                  : false,
+      codeUpdate               : 0,
+      codeView                 : "",
+      modalTitle               : "",
+      modalBody                : "",
+      loadingMessage           : "Sweeping up star dust...",
+      objectName               : "",
+      search                   : JSON.parse(JSON.stringify(config.formData)), // deep copy
+      showExposureMax          : false,
+      showObsDateMax           : false,
+      showReleaseDateMax       : false,
+      showBothExposureFields   : false,
+      showBothObsDateFields    : false,
       showBothReleaseDateFields: false,
-      telescopes: [],
-      relatedSplitFieldFlags : {
+      resolvingObject          : false,
+      telescopes               : [],
+      relatedSplitFieldFlags   : {
         "exposure_time":
           {"fieldFlag":'showExposureMax', "bothFieldFlag":"showBothExposureFields"},
         "obs_date":
@@ -159,7 +161,7 @@ export default Search = {
         "release_date":
           {"fieldFlag":"showReleaseDateMax","bothFieldFlag":"showBothReleaseDateFields"}
       },
-      option:{
+      option                    : {
         format: 'YYYY-MM-DD'
       }
     };
@@ -183,7 +185,7 @@ export default Search = {
         self.telescopes = telescopes.telescopes;
       } else {
         new Ajax({
-          url: window.location.origin+"/dal/ti-pairs",
+          url   : window.location.origin+"/dal/ti-pairs",
           method: "get",
           accept: "json",
           success(data){
@@ -197,7 +199,31 @@ export default Search = {
         });
       }
     },
-
+    resolveObject(event){
+      event.preventDefault();
+      // get the object name
+      this.resolvingObject = true;
+      self = this
+      new Ajax({
+        url: window.location.origin+"/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName),
+        method: "get",
+        accept: "json",
+        success(data){
+          self.search.coordinates.ra = data.ra;
+          self.search.coordinates.dec = data.dec;
+          self.resolvingObject = false;
+        },
+        fail(err_response, err_code, xhr){
+          self.resolvingObject = false;
+          console.log(xhr.response);
+          if(xhr.response.errorMessage){
+            self.modalTitle = "Request Error";
+            self.modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + xhr.response.errorMessage + "</strong></div>";
+            ToggleModal("#search-modal");
+          }
+        }
+      });
+    },
     splitSelection(val){
       // for toggling conditional form inputs, one and sometimes both
       const fieldFlag = this.relatedSplitFieldFlags[val]['fieldFlag'];

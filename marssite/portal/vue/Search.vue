@@ -49,9 +49,9 @@
                               <div class="col-md-6">
                                   <div class="form-group">
                                       <label for="object-name" class="floating">Object Name</label>
-                                      <input name="object-name" type="text" value="" placeholder="Object Name" class="form-control" id="object-name">
+                                      <input name="object-name" type="text" value="" placeholder="Object Name" class="form-control" id="object-name" v-model="objectName">
                                   </div>
-                                  <button class="btn btn-default">Resolve object</button>
+                                  <button class="btn btn-default" v-on:click="resolveObject">Resolve object</button> <span v-if="resolvingObject" class="fa fa-spinner fa-spin fa-2x fa-fw"></span>
                               </div>
                               <div class="col-md-6">
                                   <div class="col-md-6">

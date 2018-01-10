@@ -152,6 +152,22 @@
             </div>
         </div>
     </transition>
+         <!-- Modal -->
+          <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-labelledby="searchModelLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" v-on:click="closeModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="myModalLabel">{{ modalTitle }}</h4>
+                </div>
+                <div class="modal-body" v-html="modalBody">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="closeModal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
 </template>
 

@@ -1,3 +1,4 @@
+astropy==2.0.3
 coreapi==2.2.4
 coreschema==0.0.4
 cycler==0.10.0
