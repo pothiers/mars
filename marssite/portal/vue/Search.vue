@@ -25,7 +25,7 @@
                               </select>
                           </label>
                           <button class="btn btn-primary" id="submit-form" type="submit" v-on:click="submitForm">Search</button>
-                          <div><a class="" href="#" v-on:click="newSearch">Clear Search</a></div>
+                          <div><a class="" href="#" v-on:click="toggleCodeView">Toggle Code View</a> | <a class="" href="#" v-on:click="newSearch">Clear Search</a></div>
                       </div>
                   </div><!-- /form-submit -->
               </div>
@@ -227,6 +227,8 @@
           </form>
       </transition>
           <div class='code-view'>
+            <h3>Code View</h3>
+            <p>Generated JSON search request object</p>
             <pre class="code">{{ code }}</pre>
           </div>
           <modal-component></modal-component>

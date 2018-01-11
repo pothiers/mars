@@ -6,9 +6,24 @@ $caret-down: "\f078";
 
 $error-color: #d85454;
 
-.code{
-  font-size: 14px;
-  height: 400px;
+.code-view{
+    transition: left 0.5s ease-in-out;
+    font-size: 14px;
+    height: 100%;
+    position: fixed;
+    left: -450px;
+    top: 0;
+    z-index: 1000;
+    background-color: #333;
+    color: orange;
+    width: 300px;
+    padding: 20px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.6); 
+    p{ color: #cccccc; }
+    .code{
+      color: rgb(0, 153, 255);
+      background: transparent;
+    }
 }
 
 div[rel=form-submit]{

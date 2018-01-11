@@ -420,6 +420,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = (__WEBPACK_IMPORTED_MODULE_0__js_search_js__["a" /* default */]);
@@ -666,6 +668,16 @@ var Search;
       } else {
         return this[bothFlag] = false;
       }
+    },
+    toggleCodeView(event){
+      event.preventDefault();
+      var cv = document.querySelector(".code-view");
+      if( cv.offsetLeft < 0){
+        cv.style.left = "0px";
+      }else{
+        cv.style.left = "-450px";
+      }
+      return false;
     }
   }
 
@@ -914,6 +926,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": _vm.submitForm
     }
   }, [_vm._v("Search")]), _vm._v(" "), _c('div', [_c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": _vm.toggleCodeView
+    }
+  }, [_vm._v("Toggle Code View")]), _vm._v(" | "), _c('a', {
     attrs: {
       "href": "#"
     },
@@ -1695,7 +1714,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(tel[0]) + " + " + _vm._s(tel[1]))])
   }))])])])])])])])]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "code-view"
-  }, [_c('pre', {
+  }, [_c('h3', [_vm._v("Code View")]), _vm._v(" "), _c('p', [_vm._v("Generated JSON search request object")]), _vm._v(" "), _c('pre', {
     staticClass: "code"
   }, [_vm._v(_vm._s(_vm.code))])]), _vm._v(" "), _c('modal-component')], 1)
 },staticRenderFns: []}

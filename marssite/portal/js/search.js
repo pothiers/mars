@@ -227,6 +227,16 @@ export default Search = {
       } else {
         return this[bothFlag] = false;
       }
+    },
+    toggleCodeView(event){
+      event.preventDefault();
+      var cv = document.querySelector(".code-view");
+      if( cv.offsetLeft < 0){
+        cv.style.left = "0px";
+      }else{
+        cv.style.left = "-450px";
+      }
+      return false;
     }
   }
 
