@@ -118,15 +118,6 @@ def search_by_json(request, query=None):
         return HttpResponse('Requires POST with json payload')
 
 @csrf_exempt
-def staging(request):
-    query = ""
-    # check if files exist
-    query = json.loads(request.body.decode('utf-8'))
-    res = search_by_json(request, query)
-
-
-
-@csrf_exempt
 @api_view(['GET'])
 def tele_inst_pairs(request):
     """

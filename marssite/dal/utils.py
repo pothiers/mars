@@ -186,7 +186,7 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
             where += db_exact(pi, 'dtpi')
     if 'prop_id' in jsearch:
         prop_id = jsearch['prop_id']
-        if prop_id is None or pi is '':
+        if prop_id is None or prop_id is '':
             where += db_null('dtpropid')
         else:
             where += db_exact(prop_id, 'dtpropid')
@@ -208,7 +208,6 @@ def process_query(jsearch, page, page_limit, order_fields, return_where_clause=F
             where += db_null('obsmode')
         else:
             where += db_exact(obsmode, 'obsmode')
-        
     if 'survey_id' in jsearch:
         surveyid = jsearch['survey_id']
         if surveyid is None or surveyid is '':

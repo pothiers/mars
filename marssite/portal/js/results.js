@@ -250,6 +250,8 @@ export default Results = {
         form.setAttribute("action", config.stagingUrl + "?stage=all");
         data = document.createElement("input");
         data.setAttribute("type", "hidden");
+        // use whatever search query is being used - filters/categories included
+
         searchObj = localStorage.getItem("searchData");
         data.setAttribute("value", searchObj);
         data.setAttribute("name", "searchData");
