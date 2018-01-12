@@ -112,15 +112,25 @@ export default Search = {
   },
 
   computed: {
+    hasFiltersSelected: {
+      get(){
+        return (this.search.image_filter.length > 0);
+      }
+    },
+    hasTelescopeSelected: {
+      get(){
+        return (this.search.telescope_instrument.length > 0);
+      }
+    },
     code: {
       get(){
-        this.codeView = JSON.stringify({search:this.stripData()}, null, 2);
+        this.codeView = JSON.stringify(this.stripData(), null, 2);
         return this.codeView;
       },
       set(update){
         // for some reason, the code view won't update unless we go through this mess
         this.codeUpdate = update;
-        this.codeView = JSON.stringify({search:this.stripData()}, null, 2);
+        this.codeView = JSON.stringify(this.stripData(), null, 2);
         return null;
       }
     }
@@ -162,6 +172,12 @@ export default Search = {
       // clear current search and storage
       this.search = JSON.parse(JSON.stringify(this.config.formData));
       localStorage.setItem("searchData", JSON.stringify(this.search));
+    },
+    clearFilterSelection(){
+      this.search.image_filter = [];
+    },
+    clearTelescopeSelection(){
+      this.search.telescope_instrument = [];
     },
     getTelescopes(){
       // check if we have a cached set to use

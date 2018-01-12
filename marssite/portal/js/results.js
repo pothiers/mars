@@ -25,9 +25,7 @@ Number.prototype.pad = function(size, char) {
 /*
   App - Results
  */
-
 config = Shared.config;
-
 
 var Results;
 

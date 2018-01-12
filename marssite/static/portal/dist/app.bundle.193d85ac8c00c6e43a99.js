@@ -553,15 +553,25 @@ var Search;
   },
 
   computed: {
+    hasFiltersSelected: {
+      get(){
+        return (this.search.image_filter.length > 0);
+      }
+    },
+    hasTelescopeSelected: {
+      get(){
+        return (this.search.telescope_instrument.length > 0);
+      }
+    },
     code: {
       get(){
-        this.codeView = JSON.stringify({search:this.stripData()}, null, 2);
+        this.codeView = JSON.stringify(this.stripData(), null, 2);
         return this.codeView;
       },
       set(update){
         // for some reason, the code view won't update unless we go through this mess
         this.codeUpdate = update;
-        this.codeView = JSON.stringify({search:this.stripData()}, null, 2);
+        this.codeView = JSON.stringify(this.stripData(), null, 2);
         return null;
       }
     }
@@ -603,6 +613,12 @@ var Search;
       // clear current search and storage
       this.search = JSON.parse(JSON.stringify(this.config.formData));
       localStorage.setItem("searchData", JSON.stringify(this.search));
+    },
+    clearFilterSelection(){
+      this.search.image_filter = [];
+    },
+    clearTelescopeSelection(){
+      this.search.telescope_instrument = [];
     },
     getTelescopes(){
       // check if we have a cached set to use
@@ -926,16 +942,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "click": _vm.submitForm
     }
   }, [_vm._v("Search")]), _vm._v(" "), _c('div', [_c('a', {
-    attrs: {
-      "href": "#"
-    },
     on: {
       "click": _vm.toggleCodeView
     }
   }, [_vm._v("Toggle Code View")]), _vm._v(" | "), _c('a', {
-    attrs: {
-      "href": "#"
-    },
     on: {
       "click": _vm.newSearch
     }
@@ -1613,7 +1623,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "image-filter"
     }
-  }, [_vm._v("Image Filter")]), _vm._v(" "), _c('select', {
+  }, [_vm._v("Image Filter "), (_vm.search.image_filter.length > 0) ? _c('a', {
+    on: {
+      "click": _vm.clearFilterSelection
+    }
+  }, [_vm._v("Clear")]) : _vm._e()]), _vm._v(" "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -1678,7 +1692,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "for": "telescope"
     }
-  }, [_vm._v("Telescope & Intrument")]), _vm._v(" "), _c('select', {
+  }, [_vm._v("Telescope & Intrument "), (_vm.search.telescope_instrument.length > 0) ? _c('a', {
+    on: {
+      "click": _vm.clearTelescopeSelection
+    }
+  }, [_vm._v("Clear")]) : _vm._e()]), _vm._v(" "), _c('select', {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -1977,9 +1995,7 @@ Number.prototype.pad = function(size, char) {
 /*
   App - Results
  */
-
 config = __WEBPACK_IMPORTED_MODULE_2__mixins_js__["a" /* default */].config;
-
 
 var Results;
 

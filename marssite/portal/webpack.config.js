@@ -2,8 +2,10 @@
 
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const WebpackOnBuildPlugin = require('on-build-webpack');
 const webpack = require('webpack');
 const path = require('path');
+const fs = require('fs');
 const outPath = "../static/portal/dist";
 var AssetsPlugin = require('assets-webpack-plugin');
 var assetsPluginInstance = new AssetsPlugin();
@@ -50,7 +52,24 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'vue', 'manifest'] // Specify the common bundle's name.
     }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new WebpackOnBuildPlugin(function (stats) {
+      // clean up built resource files after build during development/watch
+      const newlyCreatedAssets = stats.compilation.assets;
+
+      const unlinked = [];
+      fs.readdir(path.resolve(outPath), (err, files) => {
+        files.forEach(file => {
+          if (!newlyCreatedAssets[file]) {
+            fs.unlink(path.resolve(outPath +'/'+ file));
+            unlinked.push(file);
+          }
+        });
+        if (unlinked.length > 0) {
+          console.log('Removed old assets: ', unlinked);
+      }
+      });
+    })
   ],
   module: {
     rules: [

@@ -6,7 +6,7 @@
                <div class="row breadcrumb-wrapper">
                     <div class="category-history" v-if="categoryHistory.length > 0">
                         <ol class="breadcrumb">
-                            <li><button class="btn btn-link" v-on:click="clearCategory">Original Results</button></li>
+                            <li><button class="btn btn-link" @click="clearCategory">Original Results</button></li>
                             <li v-for="hist in categoryHistory"><button class="btn btn-link">{{ hist.category ? hist.category.toString() :  "Uncategorized" }}</button></li>
                         </ol>
                     </div>
@@ -17,7 +17,7 @@
                         <h2 class="text-warn">Query returned <em>{{totalItems}}</em> records</h2>
                          <ul class="list-inline category-filter-controls">
                              <li>
-                                 <button class="btn btn-default" v-on:click="toggleCategories"><span class="fa fa-bars"></span> Toggle Categories</button>
+                                 <button class="btn btn-default" @click="toggleCategories"><span class="fa fa-bars"></span> Toggle Categories</button>
                              </li>
                             <li>
                                <div class="form-inline">
@@ -30,7 +30,7 @@
 
                     </div>
                     <div class="col-xs-2 text-right">
-                        <button class="btn btn-primary" v-on:click="displayForm">Search Again</button>
+                        <button class="btn btn-primary" @click="displayForm">Search Again</button>
                     </div>
 
                 </div><!-- /heading -->
@@ -40,7 +40,7 @@
                         <div class="alert alert-info text-center" v-if="categorizeFirst">
                             There are too many results to effectively display here. Consider refining results further by categorizing.
                             <br>
-                            <button class="btn btn-primary btn-sm" v-on:click="toggleCategories">Show Categories</button>
+                            <button class="btn btn-primary btn-sm" @click="toggleCategories">Show Categories</button>
                         </div>
                        
                     </div>
@@ -60,7 +60,7 @@
                                    <li class="checkbox" v-for="item in cat" >
                                        <label>
                                            <!-- Send setCategory key, value  -->
-                                           <input type="radio" v-on:click="setCategory(indx,item.name)" name="category_selection"> {{ item.name || "Uncategorized" }} <span class="badge alert-info">{{ item.total }}</span>
+                                           <input type="radio" @click="setCategory(indx,item.name)" name="category_selection"> {{ item.name || "Uncategorized" }} <span class="badge alert-info">{{ item.total }}</span>
                                        </label>
                                    </li>
                                </ul>
@@ -91,9 +91,9 @@
                         <div class="row">
                             <div class="row results-controls">
                                 <div class="col-sm-5">
-                                    <button class="btn-link btn page-prev" v-on:click="pageBack">Prev</button>
+                                    <button class="btn-link btn page-prev" @click="pageBack">Prev</button>
                                     <span class="page-num">{{ pageNum }}</span>
-                                    <button class="btn-link btn page-next" v-on:click="pageNext">Next</button>
+                                    <button class="btn-link btn page-next" @click="pageNext">Next</button>
                                     <span class="records-from">{{ recordsFrom }}</span> to <span class="records-to">{{ recordsTo }}</span>
                                     <span class="fa fa-spinner fa-spin fa-1x fa-fw" v-if="isLoading"></span>
                             </div>
@@ -109,11 +109,11 @@
                         </div>
                         <div class="col-sm-9 text-right">
 
-                            <button class="btn btn-default" v-bind:disabled="selected.length == 0" v-on:click="stageSelected">Stage selected files</button>
-                            <button class="btn btn-default" v-bind:class="{ 'btn-danger' : stageAllConfirm }" v-on:click="confirmStage">{{ stageButtonText }}</button>
+                            <button class="btn btn-default" v-bind:disabled="selected.length == 0" @click="stageSelected">Stage selected files</button>
+                            <button class="btn btn-default" v-bind:class="{ 'btn-danger' : stageAllConfirm }" @click="confirmStage">{{ stageButtonText }}</button>
                         <div class="text-small help-block" v-if="stageAllConfirm" >
                             <span class="text-danger">You are about to stage <strong>ALL</strong> results. <strong>Click again to confirm</strong> </span>
-                            <span class="label label-primary" v-if="stageAllConfirm">{{ results.meta.total_count }} files</span> | <button class="btn btn-default btn-small" v-on:click="cancelStageAll">Cancel</button>
+                            <span class="label label-primary" v-if="stageAllConfirm">{{ results.meta.total_count }} files</span> | <button class="btn btn-default btn-small" @click="cancelStageAll">Cancel</button>
                         </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                             <thead>
                                 <tr>
                                     <th>Selected</th>
-                                <th v-for="col in visibleColumns">
+                                    <th v-for="col in visibleColumns">
                                     <span is="table-header" v-bind:name="col.name"></span>
                                 </th>
                                 </tr>
@@ -139,7 +139,7 @@
                         </pre>
                         <div class="text-center">
                             <h5>You might try and adjust your paramaters and search again</h5>
-                            <button class="btn btn-success" v-on:click="displayForm">Adjust Paramaters</button>
+                            <button class="btn btn-success" @click="displayForm">Adjust Paramaters</button>
                         </div>
                         </div>
                     </div>

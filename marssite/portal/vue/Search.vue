@@ -24,8 +24,8 @@
                                   <option value="">Decam...</option>
                               </select>
                           </label>
-                          <button class="btn btn-primary" id="submit-form" type="submit" v-on:click="submitForm">Search</button>
-                          <div><a class="" href="#" v-on:click="toggleCodeView">Toggle Code View</a> | <a class="" href="#" v-on:click="newSearch">Clear Search</a></div>
+                          <button class="btn btn-primary" id="submit-form" type="submit" @click="submitForm">Search</button>
+                          <div><a class=""  @click="toggleCodeView">Toggle Code View</a> | <a class=""  @click="newSearch">Clear Search</a></div>
                       </div>
                   </div><!-- /form-submit -->
               </div>
@@ -51,7 +51,7 @@
                                       <label for="object-name" class="floating">Object Name</label>
                                       <input name="object-name" type="text" value="" placeholder="Object Name" class="form-control" id="object-name" v-model="objectName">
                                   </div>
-                                  <button class="btn btn-default" v-on:click="resolveObject">Resolve object</button> <span v-if="resolvingObject" class="fa fa-spinner fa-spin fa-2x fa-fw"></span>
+                                  <button class="btn btn-default" @click="resolveObject">Resolve object</button> <span v-if="resolvingObject" class="fa fa-spinner fa-spin fa-2x fa-fw"></span>
                               </div>
                               <div class="col-md-6">
                                   <div class="col-md-6">
@@ -194,7 +194,7 @@
                               <div class="col-sm-3">
                                   <div class="form-group">
                                       <div class="input-group">
-                                          <label for="image-filter">Image Filter</label>
+                                          <label for="image-filter">Image Filter <a v-if="search.image_filter.length > 0" @click="clearFilterSelection">Clear</a></label>
                                           <select multiple name="image-filter" size="10 "id="image-filter" class="form-control" v-model="search.image_filter">
                                               <option value="raw">Raw image</option>
                                               <option value="calibrated">Calibrated</option>
@@ -213,7 +213,7 @@
                           <div class="col-sm-3">
                                   <div class="form-group">
                                       <div class="input-group">
-                                          <label for="telescope">Telescope &amp; Intrument</label>
+                                          <label for="telescope">Telescope &amp; Intrument <a v-if="search.telescope_instrument.length > 0" @click="clearTelescopeSelection">Clear</a></label>
                                           <select id="telescope" name="telescope[]" class="form-control" multiple size="10" v-model="search.telescope_instrument">
                                             <option value="" v-for="tel in telescopes" v-bind:value="tel[0]+','+tel[1]">{{ tel[0] }} + {{ tel[1] }}</option>
                                           </select>
