@@ -23,8 +23,7 @@ module.exports = {
     data: function(){
         return {
             modalTitle: "",
-            modalBody:"",
-            modalComponent: null,
+            modalBody: "",
             backdrop: null,
             body: document.querySelector("body")
         }
@@ -35,15 +34,12 @@ module.exports = {
             window.bus.$on("close-modal", this.closeModal);
         }
     },
-    mounted() {
-        this.modalComponent = document.querySelector("#modal-component");
-    },
     methods: {
         closeModal: function() {
             this.backdrop.remove();
             this.backdrop = null;
-            this.modalComponent.style.display = 'none';
-            this.modalComponent.classList.remove('in');
+            this.$el.style.display = 'none';
+            this.$el.classList.remove('in');
         },
         /*
          * Args require:
@@ -51,10 +47,11 @@ module.exports = {
          * - body
          */
         openModal: function(args) {
+            console.log("setting title to", args.title);
             this.modalTitle = args.title;
             this.modalBody = args.body;
-            this.modalComponent.style.display = 'block';
-            this.modalComponent.classList.add('in')
+            this.$el.style.display = 'block';
+            this.$el.classList.add('in')
             this.backdrop = document.createElement('div');
             this.backdrop.setAttribute('class', 'modal-backdrop fade in');
             this.body.append(this.backdrop);
