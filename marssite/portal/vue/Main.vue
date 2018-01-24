@@ -4,11 +4,10 @@
   </div>
 </template>
 
-<script src="../js/main.js">
+<script>
 
 // import Main from "../js/main.js";
 // export default Main;
- /*
 export default {
   data: function(){
       return {
@@ -16,5 +15,4 @@ export default {
       }
   }
  }
- */
 </script>
