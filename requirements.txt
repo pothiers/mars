@@ -1,5 +1,6 @@
 astropy==2.0.3
 coreapi==2.2.4
+django-cors-headers==1.2.0
 coreschema==0.0.4
 cycler==0.10.0
 dicttoxml==1.7.4

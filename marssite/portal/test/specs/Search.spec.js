@@ -21,8 +21,15 @@ describe('Search component should mount', ()=>{
   it('Should mount without issue', ()=>{
     expect(typeof vm.getTelescopes).to.equal('function');
   });
+  it('Should have an $el element', ()=>{
+    assert.property(vm, '$el');
+  });
+  it('Should have a children element', ()=>{
+    assert.property(vm, '$children');
+
+  });
   it('Should have a list of the telescopes', ()=>{
-    debugger
+    //debugger
     expect(vm.telescopes.length).to.be.above(1);
   });
 });

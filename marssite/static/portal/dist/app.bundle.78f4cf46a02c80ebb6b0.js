@@ -22,7 +22,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/ModalComponent.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/ModalComponent.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] ModalComponent.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -156,7 +156,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Search.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -620,7 +620,7 @@ var Search;
     clearTelescopeSelection(){
       this.search.telescope_instrument = [];
     },
-    getTelescopes(){
+    getTelescopes(cb){
       // check if we have a cached set to use
       let telescopes = JSON.parse(localStorage.getItem("telescopes")||"0");
       const self = this;
@@ -628,8 +628,15 @@ var Search;
       if (telescopes && (moment(telescopes != null ? telescopes.expires : undefined) > now)) {
         self.telescopes = telescopes.telescopes;
       } else {
+
+        var url = "//" + window.location.hostname;
+        if( window.testing ){
+          url += ":8000/dal/ti-pairs/";
+        }else{
+          url += ":"+window.location.port+"/dal/ti-pairs/";
+        }
         new Ajax({
-          url   : window.location.origin+"/dal/ti-pairs",
+          url   : url,
           method: "get",
           accept: "json",
           success(data){
@@ -639,6 +646,9 @@ var Search;
               telescopes: data
             };
             localStorage.setItem("telescopes", JSON.stringify(telescopes));
+            if( typeof cb == 'function' ){
+              cb(data);
+            }
           }
         });
       }
@@ -647,7 +657,7 @@ var Search;
       event.preventDefault();
       // get the object name
       this.resolvingObject = true;
-      self = this
+      self = this;
       new Ajax({
         url: window.location.origin+"/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName),
         method: "get",
@@ -730,7 +740,6 @@ module.exports = {
         return {
             modalTitle: "",
             modalBody: "",
-            modalComponent: null,
             backdrop: null,
             body: document.querySelector("body")
         };
@@ -741,15 +750,12 @@ module.exports = {
             window.bus.$on("close-modal", this.closeModal);
         }
     },
-    mounted() {
-        this.modalComponent = document.querySelector("#modal-component");
-    },
     methods: {
         closeModal: function () {
             this.backdrop.remove();
             this.backdrop = null;
-            this.modalComponent.style.display = 'none';
-            this.modalComponent.classList.remove('in');
+            this.$el.style.display = 'none';
+            this.$el.classList.remove('in');
         },
         /*
          * Args require:
@@ -757,10 +763,11 @@ module.exports = {
          * - body
          */
         openModal: function (args) {
+            console.log("setting title to", args.title);
             this.modalTitle = args.title;
             this.modalBody = args.body;
-            this.modalComponent.style.display = 'block';
-            this.modalComponent.classList.add('in');
+            this.$el.style.display = 'block';
+            this.$el.classList.add('in');
             this.backdrop = document.createElement('div');
             this.backdrop.setAttribute('class', 'modal-backdrop fade in');
             this.body.append(this.backdrop);
@@ -1761,7 +1768,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/peter/Workspace/NOAO/portal/mars/marssite/portal/vue/Results.vue"
+Component.options.__file = "/Users/ppeterson/Workspace/portal/mars/marssite/portal/vue/Results.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Results.vue: functional components are not supported with templates, they should use render functions.")}
 

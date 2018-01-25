@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+
 #!import warnings
 #!
 #!warnings.filterwarnings(
@@ -75,6 +77,7 @@ INSTALLED_APPS = (
     'django_tables2',
     'audit',  # tada audit and status REST API
     'debug_toolbar',
+    'corsheaders',
     #'users', # LDAP admin
     #'ldapdb',
 )
@@ -83,6 +86,7 @@ INSTALLED_APPS = (
 
 
 MIDDLEWARE = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -118,6 +122,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'marssite.wsgi.application'
 
+
+# CORS settings
+# See https://github.com/ottoyiu/django-cors-headers/ for details
+CORS_ORIGIN_ALLOW_ALL = True
+
+# Alternate whitelist:
+'''CORS_ORIGIN_WHITELIST = (
+    'google.com',
+    'hostname.example.com',
+    'localhost:8000',
+    '127.0.0.1:9000'
+)
+'''
+
+CORS_ALLOW_HEADERS = (
+    'x-mars-ajax-handler',
+    'accept',
+    'accepts',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -260,4 +291,3 @@ if 'TRAVIS' in os.environ:
     }
 else:
     exec(open('/etc/mars/django_local_settings.py').read())
-
