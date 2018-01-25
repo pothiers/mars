@@ -179,7 +179,7 @@ export default Search = {
     clearTelescopeSelection(){
       this.search.telescope_instrument = [];
     },
-    getTelescopes(){
+    getTelescopes(cb){
       // check if we have a cached set to use
       let telescopes = JSON.parse(localStorage.getItem("telescopes")||"0");
       const self = this;
@@ -187,8 +187,15 @@ export default Search = {
       if (telescopes && (moment(telescopes != null ? telescopes.expires : undefined) > now)) {
         self.telescopes = telescopes.telescopes;
       } else {
+
+        var url = "//" + window.location.hostname;
+        if( window.testing ){
+          url += ":8000/dal/ti-pairs/";
+        }else{
+          url += ":"+window.location.port+"/dal/ti-pairs/";
+        }
         new Ajax({
-          url   : window.location.origin+"/dal/ti-pairs",
+          url   : url,
           method: "get",
           accept: "json",
           success(data){
@@ -198,6 +205,9 @@ export default Search = {
               telescopes: data
             };
             localStorage.setItem("telescopes", JSON.stringify(telescopes));
+            if( typeof cb == 'function' ){
+              cb(data);
+            }
           }
         });
       }
@@ -206,7 +216,7 @@ export default Search = {
       event.preventDefault();
       // get the object name
       this.resolvingObject = true;
-      self = this
+      self = this;
       new Ajax({
         url: window.location.origin+"/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName),
         method: "get",

@@ -11,11 +11,18 @@ require('jquery-ui');
 window.moment = moment;
 window._ = _;
 
+// this is necessary to have ajax calls go to the right place
+window.testing = true;
+
 require('../../../theme/js/main.js');
 
 describe('Search component should mount', ()=>{
+  var vm = new Vue(Search).$mount();
   it('Should mount without issue', ()=>{
-    var vm = new Vue(Search).$mount();
     expect(typeof vm.getTelescopes).to.equal('function');
-  }); 
+  });
+  it('Should have a list of the telescopes', ()=>{
+    debugger
+    expect(vm.telescopes.length).to.be.above(1);
+  });
 });

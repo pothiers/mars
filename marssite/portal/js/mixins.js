@@ -2,6 +2,7 @@ var _config;
 
 _config = {
   stagingUrl: "/portal/staging/",
+  testingPort: '8000',
   apiUrl: "/dal/search/",
   rangeInputs: ["obs_date", "exposure_time", "release_date"],
   validatorConfig: {
@@ -239,7 +240,7 @@ export default Mixin = {
             self.loading = false;
             var modalTitle = "Request Error";
             var modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
-            window.bus.$emit("open-modal", {title:modalTitle, body:modalBody}); 
+            window.bus.$emit("open-modal", {title:modalTitle, body:modalBody});
           }
       });
 
