@@ -25,31 +25,42 @@ ToggleModal = function (selector) {
 
 Ajax = (function () {
   function Ajax(_opts) {
-    this._response = bind(this._response, this);
-    var settings;
-    this.settings = {
-      url: window.location.path,
-      method: "GET",
-      accept: "html",
-      data: {},
-      success: function () {
-        return "";
-      },
-      fail: function () {
-        return "";
-      }
-    };
-    settings = _.extend(this.settings, _opts);
-    this.settings = settings;
-    this.xhr = new XMLHttpRequest();
-    this.xhr.onload = this._response;
-    this.xhr.onerror = settings.fail;
-    this.xhr.open(settings.method.toUpperCase(), settings.url, true);
-    this.xhr.setRequestHeader('Content-Type', 'application/json');
-    this.xhr.setRequestHeader('Accepts', settings.accepts);
-    this.xhr.setRequestHeader('x-mars-ajax-handler', '1.0');
-    this.xhr.responseType = settings.accept;
-    this.xhr.send(JSON.stringify(settings.data));
+    return new Promise(function(resolve, reject){
+      var settings;
+      this.settings = {
+        url: window.location.path,
+        method: "GET",
+        accept: "html",
+        data: {},
+      };
+      settings = _.extend(this.settings, _opts);
+      this.settings = settings;
+      this.xhr = new XMLHttpRequest();
+      this.xhr.open(settings.method.toUpperCase(), settings.url, true);
+      this.xhr.onload = function(){
+        if( this.status >= 200 && this.status < 300){
+          resolve(xhr.response);
+        }else{
+          reject({
+            status: this.status,
+            statusText: this.statusText,
+            xhr: xhr
+          });
+        }
+      };
+      this.xhr.onerror = function(){
+        reject({
+          status: this.status,
+          statusText: this.statusText,
+          xhr: xhr
+        });
+      };
+      this.xhr.setRequestHeader('Content-Type', 'application/json');
+      this.xhr.setRequestHeader('Accepts', settings.accepts);
+      this.xhr.setRequestHeader('x-mars-ajax-handler', '1.0');
+      this.xhr.responseType = settings.accept;
+      this.xhr.send(JSON.stringify(settings.data));
+    });
   }
 
   Ajax.prototype._response = function (e) {
@@ -157,4 +168,3 @@ window.Ajax = Ajax;
 window.base = new Base();
 
 window.base.bindEvents();
-

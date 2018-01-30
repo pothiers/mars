@@ -620,62 +620,81 @@ var Search;
     clearTelescopeSelection(){
       this.search.telescope_instrument = [];
     },
-    getTelescopes(cb){
-      // check if we have a cached set to use
-      let telescopes = JSON.parse(localStorage.getItem("telescopes")||"0");
-      const self = this;
-      const now = moment();
-      if (telescopes && (moment(telescopes != null ? telescopes.expires : undefined) > now)) {
-        self.telescopes = telescopes.telescopes;
-      } else {
-
-        var url = "//" + window.location.hostname;
-        if( window.testing ){
-          url += ":8000/dal/ti-pairs/";
-        }else{
-          url += ":"+window.location.port+"/dal/ti-pairs/";
-        }
-        new Ajax({
-          url   : url,
-          method: "get",
-          accept: "json",
-          success(data){
-            self.telescopes = data;
-            telescopes = {
-              expires: moment().add(7,'days'),
-              telescopes: data
-            };
-            localStorage.setItem("telescopes", JSON.stringify(telescopes));
-            if( typeof cb == 'function' ){
-              cb(data);
-            }
+    /*
+     * Gets the telescope list from the server
+     *
+     * returns promise object
+     */
+    getTelescopes(nocache){
+      return new Promise((resolve, reject)=>{
+        // check if we have a cached set to use
+        let telescopes = JSON.parse(localStorage.getItem("telescopes")||"0");
+        const self = this;
+        const now = moment();
+        if (!nocache && telescopes && (moment(telescopes != null ? telescopes.expires : undefined) > now)) {
+          self.telescopes = telescopes.telescopes;
+          resolve(self.telescopes);
+        } else {
+          var url = "//" + window.location.hostname;
+          if( window.testing ){
+            url += ":8000/dal/ti-pairs/";
+          }else{
+            url += ":"+window.location.port+"/dal/ti-pairs/";
           }
-        });
-      }
+
+          new Ajax({
+            url   : url,
+            method: "get",
+            accept: "json"
+          }).then(
+            // resolve
+            (data)=>{
+              console.log("got telescopes !!!!!");
+              self.telescopes = data;
+              telescopes = {
+                expires: moment().add(7,'days'),
+                telescopes: data
+              };
+              localStorage.setItem("telescopes", JSON.stringify(telescopes));
+              resolve(data);
+            },
+            // reject
+            (err)=>{
+              console.error("failed");
+              reject(err);
+            }
+          );// end Ajax
+        }
+      });// end promise
+
     },
     resolveObject(event){
       event.preventDefault();
-      // get the object name
-      this.resolvingObject = true;
-      self = this;
-      new Ajax({
-        url: window.location.origin+"/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName),
-        method: "get",
-        accept: "json",
-        success(data){
-          self.search.coordinates.ra = data.ra;
-          self.search.coordinates.dec = data.dec;
-          self.resolvingObject = false;
-        },
-        fail(err_response, err_code, xhr){
-          self.resolvingObject = false;
-          console.log(xhr.response);
-          if(xhr.response.errorMessage){
-            var modalTitle = "Couldn't find that object";
-            var modalBody = "<div class='alert alert-danger'><strong>" + xhr.response.errorMessage + "</strong></div>";
-            window.bus.$emit("open-modal", {title: modalTitle, body: modalBody});
+      return new Promise((resolve, reject)=>{
+        // get the object name
+        this.resolvingObject = true;
+        self = this;
+        return new Ajax({
+          url: window.location.origin+"/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName),
+          method: "get",
+          accept: "json"
+        }).then(
+          (data)=>{
+            self.search.coordinates.ra = data.ra;
+            self.search.coordinates.dec = data.dec;
+            self.resolvingObject = false;
+            resolve(data);
+          },
+          (err)=>{
+            self.resolvingObject = false;
+            console.log(err.xhr.response);
+            if(err.xhr.response.errorMessage){
+              var modalTitle = "Couldn't find that object";
+              var modalBody = "<div class='alert alert-danger'><strong>" + err.xhr.response.errorMessage + "</strong></div>";
+              window.bus.$emit("open-modal", {title: modalTitle, body: modalBody});
+            }
           }
-        }
+        );
       });
     },
     splitSelection(val){
@@ -705,7 +724,7 @@ var Search;
       }
       return false;
     }
-  }
+    }
 
 });
 
