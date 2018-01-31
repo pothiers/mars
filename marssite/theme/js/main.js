@@ -41,6 +41,7 @@ Ajax = (function () {
         if( this.status >= 200 && this.status < 300){
           resolve(xhr.response);
         }else{
+          console.log("Reponse FOOBARD");
           reject({
             status: this.status,
             statusText: this.statusText,
@@ -56,7 +57,7 @@ Ajax = (function () {
         });
       };
       this.xhr.setRequestHeader('Content-Type', 'application/json');
-      this.xhr.setRequestHeader('Accepts', settings.accepts);
+      this.xhr.setRequestHeader('Accept', 'text/html;application/json');
       this.xhr.setRequestHeader('x-mars-ajax-handler', '1.0');
       this.xhr.responseType = settings.accept;
       this.xhr.send(JSON.stringify(settings.data));

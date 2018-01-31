@@ -195,6 +195,7 @@ export default Search = {
           resolve(self.telescopes);
         } else {
           var url = "//" + window.location.hostname;
+          console.log("fetching telescopes");
           if( window.testing ){
             url += ":8000/dal/ti-pairs/";
           }else{
@@ -233,8 +234,12 @@ export default Search = {
         // get the object name
         this.resolvingObject = true;
         self = this;
+        var url = window.location.origin+"/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName);
+        if( window.testing ){
+          url = "//localhost:8000/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName);
+        }
         return new Ajax({
-          url: window.location.origin+"/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName),
+          url: url,
           method: "get",
           accept: "json"
         }).then(
@@ -246,7 +251,7 @@ export default Search = {
           },
           (err)=>{
             self.resolvingObject = false;
-            console.log(err.xhr.response);
+            console.dir(err.xhr);
             if(err.xhr.response.errorMessage){
               var modalTitle = "Couldn't find that object";
               var modalBody = "<div class='alert alert-danger'><strong>" + err.xhr.response.errorMessage + "</strong></div>";
