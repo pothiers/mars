@@ -698,6 +698,7 @@ class AuditRecordList(ListView):
 
     
 def get_recent(request):
+    #format = request.GET.get('format','csv')
     #today = datetime.date.today()
     today = now()
     yesterday = (today - datetime.timedelta(days=1))
@@ -750,6 +751,11 @@ def hide_all(request):
     return HttpResponse('All audit record set to HIDE=True')
         
 def get_unhide_count(request):
+    """
+    Return counts of selected Audit record fields for all records that are 
+    not hidden.
+
+    """
     success_cnt = Counter()
     telescope_cnt = Counter()
     instrument_cnt = Counter()

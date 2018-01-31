@@ -73,7 +73,11 @@ def fake_error_response(request, error_type):
 @csrf_exempt
 def search_by_json(request, query=None):
     """
-    Search the NOAO Archive, returns a list of image resource metadata
+    Search the NOAO Archive, returns a list of image resource metadata.
+    **Context**
+
+    ``query``
+        Payload satisfying /etc/mars/search-schema.json .
     """
     #!print('DBG-0: search_by_json')
     gen_error = request.GET.get('error',None)

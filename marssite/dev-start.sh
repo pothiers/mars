@@ -13,5 +13,5 @@ nohup unbuffer python3 -u manage.py  runserver 0.0.0.0:8000 >  /var/log/mars/ser
 
 
 # Stop this server with:
-#   pkill -f "manage.py runserver"
+#   sudo pkill -f "manage.py runserver"
 
