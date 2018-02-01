@@ -1,14 +1,12 @@
-
 /*
 Author: Peter Peterson
 Date: 2017-06-09
 Description: Base functionality/interactions + helper functions
-Original file: main.coffee
  */
-var Ajax, Base, ToggleModal,
-  bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+var Ajax, Base, ToggleModal;
+  //bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; };
 
-ToggleModal = function(selector) {
+ToggleModal = function (selector) {
   var b, backdrop, body, m;
   m = document.querySelector(selector);
   b = document.querySelector('.modal-backdrop');
@@ -25,62 +23,47 @@ ToggleModal = function(selector) {
   }
 };
 
-Ajax = (function() {
-  function Ajax(_opts) {
-    this._response = bind(this._response, this);
-    var settings;
-    this.settings = {
-      url: window.location.path,
-      method: "GET",
-      accept: "html",
-      data: {},
-      success: function() {
-        return "";
-      },
-      fail: function() {
-        return "";
-      }
-    };
-    settings = _.extend(this.settings, _opts);
-    this.settings = settings;
-    this.xhr = new XMLHttpRequest();
-    this.xhr.onload = this._response;
-    this.xhr.onerror = settings.fail;
-    this.xhr.open(settings.method.toUpperCase(), settings.url, true);
-    this.xhr.setRequestHeader('Content-Type', 'application/json');
-    this.xhr.setRequestHeader('Accepts', settings.accepts);
-    this.xhr.setRequestHeader('x-mars-ajax-handler', '1.0');
-    this.xhr.responseType = settings.accept;
-    this.xhr.send(JSON.stringify(settings.data));
-  }
+Ajax = function (_opts) {
+    return new Promise(function(resolve, reject){
+      var settings;
+      this.settings = {
+        url: window.location.path,
+        method: "GET",
+        accept: "html",
+        data: {},
+      };
+      settings = _.extend(this.settings, _opts);
+      this.settings = settings;
+      this.xhr = new XMLHttpRequest();
+      this.xhr.open(settings.method.toUpperCase(), settings.url, true);
+      this.xhr.onload = function(){
+        if( this.status >= 200 && this.status < 300){
+          resolve(xhr.response);
+        }else{
+          console.log("Reponse FOOBARD");
+          reject({
+            status: this.status,
+            statusText: this.statusText,
+            xhr: xhr
+          });
+        }
+      };
+      this.xhr.onerror = function(){
+        reject({
+          status: this.status,
+          statusText: this.statusText,
+          xhr: xhr
+        });
+      };
+      this.xhr.setRequestHeader('Content-Type', 'application/json');
+      this.xhr.setRequestHeader('Accept', 'text/html;application/json');
+      this.xhr.setRequestHeader('x-mars-ajax-handler', '1.0');
+      this.xhr.responseType = settings.accept;
+      this.xhr.send(JSON.stringify(settings.data));
+    });
+};
 
-  Ajax.prototype._response = function(e) {
-    if (e.target.status !== 200) {
-      this.settings.fail(e.target.statusText, e.target.status, e.target);
-      return;
-    }
-    this.settings.success(e.target.response);
-  };
-
-  Ajax.prototype.send = function() {
-    var path, settings;
-    settings = this.settings;
-    return path = settings.url;
-
-    /*
-    unless _.isEmpty(settings.data)
-      params = Object.keys(settings.data).map (k) ->
-        return encodeURIComponent(k) + '=' + encodeURIComponent(settings.data[k])
-      .join('&')
-      path += "?"+params
-     */
-  };
-
-  return Ajax;
-
-})();
-
-Base = (function() {
+Base = (function () {
   function Base() {
 
     /*
@@ -88,8 +71,8 @@ Base = (function() {
     Usage: addMutiEventListener($el, "click blur", function(){})
      */
     var nohup;
-    window.addMultiEventListener = function(elem, events, fn) {
-      return events.split(' ').forEach(function(e) {
+    window.addMultiEventListener = function (elem, events, fn) {
+      return events.split(' ').forEach(function (e) {
         if (elem.events && elem.events[e]) {
           elem.removeEventListener(e, elem.events[e], false);
         }
@@ -101,7 +84,7 @@ Base = (function() {
       });
     };
     if (window.location.hostname.indexOf('local') < 0) {
-      nohup = function() {
+      nohup = function () {
         return "Console commands (log, info, dir, debug) have been mapped into `console.live` in production environments";
       };
       console.live = {
@@ -119,12 +102,12 @@ Base = (function() {
     return "";
   }
 
-  Base.prototype.bindEvents = function() {
+  Base.prototype.bindEvents = function () {
     var el, els, i, j, len, len1, results, section, sections, toggle;
     els = document.querySelectorAll("input[type=text],input[type=textarea],input[type=password],input[type=date]");
     for (i = 0, len = els.length; i < len; i++) {
       el = els[i];
-      addMultiEventListener(el, 'keyup blur', function(event) {
+      addMultiEventListener(el, 'keyup blur', function (event) {
         var ref, ref1, target, targetId;
         targetId = event.currentTarget.id;
         target = event.currentTarget;
@@ -143,10 +126,10 @@ Base = (function() {
     for (j = 0, len1 = sections.length; j < len1; j++) {
       section = sections[j];
       toggle = section.querySelector(".section-toggle");
-      results.push((function(thisSection) {
+      results.push((function (thisSection) {
         var colsection, fn;
         colsection = thisSection.querySelector(".section-heading");
-        fn = function(e) {
+        fn = function (e) {
           return thisSection.classList.toggle("open");
         };
         if (colsection.clickevent) {
@@ -163,20 +146,7 @@ Base = (function() {
 
 })();
 
-
-/*
-    splitVals = document.querySelectorAll(".split-val")
-    for splits in splitVals
-      select = splits.querySelector("select")
-      ((select, container)->
-        select.addEventListener "change", (event)->
-          if event.currentTarget.selectedOptions[0].classList.contains("toggle-option")
-            container.classList.add("display-hidden")
-          else
-            container.classList.remove("display-hidden")
-      )(select, splits)
- */
-
+window.Ajax = Ajax;
 window.base = new Base();
 
 window.base.bindEvents();

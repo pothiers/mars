@@ -3,8 +3,8 @@ Author: Peter Peterson
 Date: 2017-06-09
 Description: Base functionality/interactions + helper functions
  */
-var Ajax, Base, ToggleModal,
-  bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; };
+var Ajax, Base, ToggleModal;
+  //bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; };
 
 ToggleModal = function (selector) {
   var b, backdrop, body, m;
@@ -23,8 +23,7 @@ ToggleModal = function (selector) {
   }
 };
 
-Ajax = (function () {
-  function Ajax(_opts) {
+Ajax = function (_opts) {
     return new Promise(function(resolve, reject){
       var settings;
       this.settings = {
@@ -62,25 +61,7 @@ Ajax = (function () {
       this.xhr.responseType = settings.accept;
       this.xhr.send(JSON.stringify(settings.data));
     });
-  }
-
-  Ajax.prototype._response = function (e) {
-    if (e.target.status !== 200) {
-      this.settings.fail(e.target.statusText, e.target.status, e.target);
-      return;
-    }
-    this.settings.success(e.target.response);
-  };
-
-  Ajax.prototype.send = function () {
-    var path, settings;
-    settings = this.settings;
-    return path = settings.url;
-  };
-
-  return Ajax;
-
-})();
+};
 
 Base = (function () {
   function Base() {

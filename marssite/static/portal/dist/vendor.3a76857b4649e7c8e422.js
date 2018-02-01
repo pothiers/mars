@@ -318,14 +318,13 @@ var Mixin;
           query.exposure_time = parseFloat( query.exposure_time );
         }
 
-        new Ajax({
+        Ajax({
           url   : url,
           method: "post",
           accept: "json",
-          data  : query,
-          success: function(data) {
+          data  : query
+        }).then((data)=>{
             var saveData;
-            //window.location.hash = "#query";
             self.loading = false;
             saveData = typeof data === "object" ? JSON.stringify(data) : data;
             localStorage.setItem(resultsStorage, saveData);
@@ -334,10 +333,10 @@ var Mixin;
               cb(data);
             }
           },
-          fail: function(statusMsg, status, xhr) {
-            console.log("Request failed, got this", xhr);
-            var message = "" + statusMsg;
-            if (xhr.response) {
+          (err) => {
+            console.log("Request failed, got this", err);
+            var message = "" + err.statusText;
+            if (err.xhr.response) {
               message += ":  " + xhr.response.errorMessage;
             }
             self.loading = false;
@@ -345,7 +344,7 @@ var Mixin;
             var modalBody = "<div class='alert alert-danger'>There was an error with your request.<br> <strong>" + message + "</strong></div>";
             window.bus.$emit("open-modal", {title:modalTitle, body:modalBody});
           }
-      });
+      );
 
       }
 

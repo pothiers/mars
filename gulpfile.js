@@ -25,6 +25,7 @@ var libraries = [
 //  "./node_modules/*font-awesome/**/*",
 //  "./node_modules/*vue/dist/*.js",
 //  "./node_modules/*better*/**/*.min.js",
+  "./marssite/*theme/**/*.js",
   "./marssite/bower_components/*jquery-ui/**/*",
   "./marssite/*theme/images/**/*",
   "./marssite/bower_components/*fullcalendar/**/*",

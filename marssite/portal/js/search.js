@@ -201,15 +201,13 @@ export default Search = {
           }else{
             url += ":"+window.location.port+"/dal/ti-pairs/";
           }
-
-          new Ajax({
+          Ajax({
             url   : url,
             method: "get",
             accept: "json"
           }).then(
             // resolve
             (data)=>{
-              console.log("got telescopes !!!!!");
               self.telescopes = data;
               telescopes = {
                 expires: moment().add(7,'days'),
@@ -238,7 +236,7 @@ export default Search = {
         if( window.testing ){
           url = "//localhost:8000/dal/object-lookup/?object_name="+encodeURIComponent(this.objectName);
         }
-        return new Ajax({
+        Ajax({
           url: url,
           method: "get",
           accept: "json"
