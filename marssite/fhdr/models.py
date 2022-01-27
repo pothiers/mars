@@ -29,7 +29,7 @@ class FitsMetadata(models.Model):
     telescope  = models.CharField(max_length=20,
                                   choices=[(v, v.upper())
                                            for v in telescopes] )
-    prop_id    = models.CharField(max_length=10)
+    prop_id    = models.CharField(max_length=20)
     date_obs   = models.DateTimeField()
     filename   = models.CharField(max_length=80)    
     
